@@ -80,3 +80,4 @@ export class CatsEyeBoxOffice extends plugin {
         return Json.movieInfo.movieInfo.imgUrl
     }
 }
+
