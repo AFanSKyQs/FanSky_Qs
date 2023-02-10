@@ -1,0 +1,246 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+}
+
+#i14h {
+    background-image: url('https://api.gmit.vip/Api/DmImg?format=image');
+}
+
+#iutl {
+    text-align: left;
+    margin: 0 0 0 0;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin-top: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+}
+.c8111 {
+    color: black;
+    width: 60px;
+    height: 60px;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    border-bottom-left-radius: 30px;
+    box-shadow: 5px 0 5px #ff00ff;
+    border-top-width: 4px;
+    border-right-width: 4px;
+    border-bottom-width: 4px;
+    border-left-width: 4px;
+    border-top-style: inset;
+    border-right-style: inset;
+    border-bottom-style: inset;
+    border-left-style: inset;
+    border-top-color: rgb(225, 177, 177);
+    border-right-color: rgb(225, 177, 177);
+    border-bottom-color: rgb(225, 177, 177);
+    border-left-color: rgb(225, 177, 177);
+    border-image-source: initial;
+    border-image-slice: initial;
+    border-image-repeat: initial;
+    margin: -337px 0 0 131px;
+    background-color: #ff00ff;
+  }
+.c3659 {
+    color: black;
+    width: 200px;
+    height: 200px;
+    border-top-width: 7px;
+    border-right-width: 7px;
+    border-bottom-width: 7px;
+    border-left-width: 7px;
+    border-top-style: double;
+    border-right-style: double;
+    border-bottom-style: double;
+    border-left-style: double;
+    border-top-color: rgb(239, 38, 38);
+    border-right-color: rgb(239, 38, 38);
+    border-bottom-color: rgb(239, 38, 38);
+    border-left-color: rgb(239, 38, 38);
+    border-image-source: initial;
+    border-image-slice: initial;
+    border-image-outset: initial;
+    border-image-repeat: initial;
+    border-radius: 100px 100px 100px 100px;
+    margin: 0 0 30px -190px;
+}
+.c1727 {
+opacity:0.50;
+    filter:alpha(opacity=50);/* 针对 IE8 以及更早的版本 */
+    color: black;
+    width: 320px;
+    height: 328px;
+    padding-top: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+    border-radius: 120px 120px 120px 120px;
+    margin: -330px 0 -31px 1480px;
+}
+
+.c3899 {
+    color: black;
+    width: 60px;
+    border-top-left-radius: 60px;
+    border-top-right-radius: 60px;
+    border-bottom-right-radius: 60px;
+    border-bottom-left-radius: 60px;
+    height: 60px;
+    box-shadow: 5px 0 5px 0 #00fa9a;
+    border-top-width: 4px;
+    border-right-width: 4px;
+    border-bottom-width: 4px;
+    border-left-width: 4px;
+    border-top-style: inset;
+    border-right-style: inset;
+    border-bottom-style: inset;
+    border-left-style: inset;
+    border-top-color: rgb(229, 83, 83);
+    border-right-color: rgb(229, 83, 83);
+    border-bottom-color: rgb(229, 83, 83);
+    border-left-color: rgb(229, 83, 83);
+    border-image-source: initial;
+    border-image-slice: initial;
+    border-image-width: initial;
+    border-image-outset: initial;
+    border-image-repeat: initial;
+    margin: -80px 0 0 91px;
+    background-color: #00ffff;
+}
+
+.c4832 {
+    color: black;
+    width: 60px;
+    height: 60px;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+    border-bottom-right-radius: 40px;
+    border-bottom-left-radius: 40px;
+    border-top-width: 4px;
+    border-right-width: 4px;
+    border-bottom-width: 4px;
+    border-left-width: 4px;
+    border-top-style: inset;
+    border-right-style: inset;
+    border-bottom-style: inset;
+    border-left-style: inset;
+    border-top-color: rgb(230, 71, 71);
+    border-right-color: rgb(230, 71, 71);
+    border-bottom-color: rgb(230, 71, 71);
+    border-left-color: rgb(230, 71, 71);
+    border-image-source: initial;
+    border-image-slice: initial;
+    border-image-width: initial;
+    border-image-outset: initial;
+    border-image-repeat: initial;
+    box-shadow: 5px 0 5px 0 #ff7f50;
+    margin: -80px 0 0 51px;
+    background-color: #ff7f50;
+}
+
+.c5773 {
+    color: black;
+    width: 60px;
+    height: 60px;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+    border-bottom-right-radius: 40px;
+    border-bottom-left-radius: 40px;
+    border-top-width: 4px;
+    border-right-width: 4px;
+    border-bottom-width: 4px;
+    border-left-width: 4px;
+    border-top-style: inset;
+    border-right-style: inset;
+    border-bottom-style: inset;
+    border-left-style: inset;
+    border-top-color: rgb(250, 241, 241);
+    border-right-color: rgb(250, 241, 241);
+    border-bottom-color: rgb(250, 241, 241);
+    border-left-color: rgb(250, 241, 241);
+    border-image-source: initial;
+    border-image-slice: initial;
+    border-image-width: initial;
+    border-image-outset: initial;
+    border-image-repeat: initial;
+    margin: -80px 0 0 31px;
+    background-color: #f0e68c;
+    box-shadow: 5px 0 5px 0 #f0e68c;
+}
+
+.c6609 {
+    color: black;
+    width: 60px;
+    height: 60px;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+    border-bottom-right-radius: 40px;
+    border-bottom-left-radius: 40px;
+    border-top-width: 4px;
+    border-right-width: 4px;
+    border-bottom-width: 4px;
+    border-left-width: 4px;
+    border-top-style: inset;
+    border-right-style: inset;
+    border-bottom-style: inset;
+    border-left-style: inset;
+    border-top-color: rgb(194, 69, 69);
+    border-right-color: rgb(194, 69, 69);
+    border-bottom-color: rgb(194, 69, 69);
+    border-left-color: rgb(194, 69, 69);
+    border-image-source: initial;
+    border-image-slice: initial;
+    border-image-width: initial;
+    border-image-outset: initial;
+    border-image-repeat: initial;
+    box-shadow: 5px 0 5px 0 #adff2f;
+    margin: -80px 0 0 111px;
+    background-color: #adff2f;
+}
+.c9236 {
+    color: black;
+    width: 60px;
+    height: 60px;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    border-bottom-left-radius: 30px;
+    box-shadow: 5px 0 5px 0 #00fa9a;
+    border-top-width: 4px;
+    border-right-width: 4px;
+    border-bottom-width: 4px;
+    border-left-width: 4px;
+    border-top-style: inset;
+    border-right-style: inset;
+    border-bottom-style: inset;
+    border-left-style: inset;
+    border-top-color: rgb(176, 2, 2);
+    border-right-color: rgb(176, 2, 2);
+    border-bottom-color: rgb(176, 2, 2);
+    border-left-color: rgb(176, 2, 2);
+    border-image-source: initial;
+    border-image-slice: initial;
+    border-image-width: initial;
+    border-image-outset: initial;
+    border-image-repeat: initial;
+    margin: -80px 0 0 71px;
+    background-color: #00fa9a;
+}
+
+.c2492 {
+    color: black;
+    width: 270px;
+    height: 270px;
+    margin: -20px -46px 0 60px;
+}
