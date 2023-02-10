@@ -1,1 +1,22 @@
-
+@font-face {
+  font-family: InconsolataGo;
+  src: url("../fonts/InconsolataGo.ttf");
+}
+body {
+  background: url("https://api.gmit.vip/Api/DmImg?format=image") white center top no-repeat;
+  background-size: cover;
+  padding: 10px 20px;
+}
+.box {
+  /*设置字体大小*/
+  font-size: 35px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.45);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+/*  一行-内容自动过长自动换行*/
+    word-wrap: break-word;  
+}
