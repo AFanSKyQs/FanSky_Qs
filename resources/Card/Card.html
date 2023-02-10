@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="zh-CN">
+}<style>
+  body{
+    transform: scale(1.5);
+    transform-origin: 0 0;
+    /*background-image:url('https://api.gmit.vip/Api/DmImg?format=image');*/
+    background-image:url({{UserHtml.AcgBg}});
+    background-repeat:no-repeat;
+    background-position:left top;
+    background-attachment:scroll;
+    background-size:cover;
+    width:1800px;
+    /*height:1140px;*/
+    height:1091px
+  }
+  
+  /*一言*/
+  .c4502 {
+    backdrop-filter: blur(20px);
+    opacity:0.60;
+    filter:alpha(opacity=60);/* 针对 IE8 以及更早的版本 */
+    padding-top: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    text-align: center;
+    width: 1400px;
+    border-top-left-radius: 80px;
+    border-top-right-radius: 80px;
+    border-bottom-right-radius: 80px;
+    border-bottom-left-radius: 80px;
+    background-image: url({{UserHtml.StarImg}});
+    font-family: Arial Black, Gadget, sans-serif;
+    font-size: 38px;
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    border-top-style: inset;
+    border-right-style: inset;
+    border-bottom-style: inset;
+    border-left-style: inset;
+    border-top-color: rgb(218, 112, 112);
+    border-right-color: rgb(218, 112, 112);
+    border-bottom-color: rgb(218, 112, 112);
+    border-left-color: rgb(218, 112, 112);
+    border-image-source: initial;
+    border-image-slice: initial;
+    border-image-repeat: initial;
+    background-repeat-x: repeat;
+    background-repeat-y: repeat;
+    background-position-x: left;
+    background-position-y: center;
+    background-attachment: local;
+    background-size: cover;
+    font-weight: 600;
+    background-repeat: repeat;
+    border-image-source:initial;
+    border-image-repeat:initial;
+    margin:130px 0 0 200px;
+  }
+  /*By*/
+  .c4423{
+    padding-top:10px;
+    padding-right:10px;
+    padding-bottom:10px;
+    padding-left:10px;
+    text-align:center;
+    width:600px;
+    font-family:"Arial Black", Gadget, sans-serif;
+    border-top-left-radius:80px;
+    border-top-right-radius:80px;
+    border-bottom-right-radius:20px;
+    border-bottom-left-radius:20px;
+    background-image:url({{UserHtml.ByImg}});
+    background-repeat-x:repeat;
+    background-repeat-y:repeat;
+    background-position-x:left;
+    background-position-y:top;
+    background-attachment:scroll;
+    background-size:auto;
+    border-top-width:4px;
+    border-right-width:4px;
+    border-bottom-width:4px;
+    border-left-width:4px;
+    border-top-style:double;
+    border-right-style:double;
+    border-bottom-style:double;
+    border-left-style:double;
+    border-top-color:rgb(232, 95, 95);
+    border-right-color:rgb(232, 95, 95);
+    border-bottom-color:rgb(232, 95, 95);
+    border-left-color:rgb(232, 95, 95);
+    border-image-source:initial;
+    border-image-slice:initial;
+    border-image-repeat:initial;
+    font-size:25px;
+    margin:50px 0 0 600px;
+  }
+  /*小图标背景*/
+  .c4581 {
+    opacity:0.70;
+    filter:alpha(opacity=70);/* 针对 IE8 以及更早的版本 */
+    backdrop-filter: blur(20px);
+    padding-top: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    width: 500px;
+    background-color: #f0e68c;
+    font-family: "Arial Black", Gadget, sans-serif;
+    text-align: left;
+    font-size: 35px;
+    border-top-width: 5px;
+    border-right-width: 5px;
+    border-bottom-width: 5px;
+    border-left-width: 5px;
+    border-top-style: double;
+    border-right-style: double;
+    border-bottom-style: double;
+    border-left-style: double;
+    border-top-color: rgb(211, 75, 75);
+    border-right-color: rgb(211, 75, 75);
+    border-bottom-color: rgb(211, 75, 75);
+    border-left-color: rgb(211, 75, 75);
+    border-image-source: initial;
+    border-image-slice: initial;
+    border-image-repeat: initial;
+    height: 70px;
+    border-radius: 50px 50px 50px 50px;
+    margin: 10px 0 0 100px;
+    background-image:url({{UserHtml.hg}});
+    background-repeat:no-repeat;
+    background-position:right top;
+    background-attachment:scroll;
+    background-size:contain;
+  }
+  .c4186 {
+    opacity:0.70;
+    filter:alpha(opacity=70);/* 针对 IE8 以及更早的版本 */
+    backdrop-filter: blur(20px);
+    padding-top: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    width: 550px;
+    background-color: #ff7f50;
+    font-family: "Arial Black", Gadget, sans-serif;
+    text-align: left;
+    font-size: 35px;
+    border-top-width: 5px;
+    border-right-width: 5px;
+    border-bottom-width: 5px;
+    border-left-width: 5px;
+    border-top-style: double;
+    border-right-style: double;
+    border-bottom-style: double;
+    border-left-style: double;
+    border-top-color: rgb(211, 75, 75);
+    border-right-color: rgb(211, 75, 75);
+    border-bottom-color: rgb(211, 75, 75);
+    border-left-color: rgb(211, 75, 75);
+    border-image-source: initial;
+    border-image-slice: initial;
+    border-image-repeat: initial;
+    height: 70px;
+    border-radius: 50px 50px 50px 50px;
+    margin: 4px 0 0 120px;
+    background-image:url({{UserHtml.hy}});
+    background-repeat:no-repeat;
+    background-position:right top;
+    background-attachment:scroll;
+    background-size:contain;
+  }
+  .c4028 {
+    opacity:0.70;
+    filter:alpha(opacity=70);/* 针对 IE8 以及更早的版本 */
+    backdrop-filter: blur(20px);
+    padding-top: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    width: 600px;
+    background-color: #00fa9a;
+    font-family: "Arial Black", Gadget, sans-serif;
+    text-align: left;
+    font-size: 35px;
+    border-top-width: 5px;
+    border-right-width: 5px;
+    border-bottom-width: 5px;
+    border-left-width: 5px;
+    border-top-style: double;
+    border-right-style: double;
+    border-bottom-style: double;
+    border-left-style: double;
+    border-top-color: rgb(211, 75, 75);
+    border-right-color: rgb(211, 75, 75);
+    border-bottom-color: rgb(211, 75, 75);
+    border-left-color: rgb(211, 75, 75);
+    border-image-source: initial;
+    border-image-slice: initial;
+    border-image-repeat: initial;
+    height: 70px;
+    border-radius: 50px 50px 50px 50px;
+    margin: 4px 0 0 140px;
+    background-image:url({{UserHtml.love}});
+    background-repeat:no-repeat;
+    background-position:right top;
+    background-attachment:scroll;
+    background-size:contain;
+  }
+  .c4265 {
+    opacity:0.70;
+    filter:alpha(opacity=70);/* 针对 IE8 以及更早的版本 */
+    backdrop-filter: blur(20px);
+    padding-top: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    width: 650px;
+    background-color: #00ffff;
+    font-family: "Arial Black", Gadget, sans-serif;
+    text-align: left;
+    font-size: 35px;
+    border-top-width: 5px;
+    border-right-width: 5px;
+    border-bottom-width: 5px;
+    border-left-width: 5px;
+    border-top-style: double;
+    border-right-style: double;
+    border-bottom-style: double;
+    border-left-style: double;
+    border-top-color: rgb(211, 75, 75);
+    border-right-color: rgb(211, 75, 75);
+    border-bottom-color: rgb(211, 75, 75);
+    border-left-color: rgb(211, 75, 75);
+    border-image-source: initial;
+    border-image-slice: initial;
+    border-image-repeat: initial;
+    background-position-x: center;
+    background-position-y: center;
+    box-shadow: rgb(243, 40, 40) 4px 2px 5px 0;
+    height: 70px;
+    border-radius: 50px 50px 50px 50px;
+    margin: 4px 0 0 160px;
+    background-image:url({{UserHtml.yuans}});
+    background-repeat:no-repeat;
+    background-position:right top;
+    background-attachment:scroll;
+    background-size:contain;
+  }
+  .c4344 {
+    opacity:0.70;
+    filter:alpha(opacity=70);/* 针对 IE8 以及更早的版本 */
+    backdrop-filter: blur(20px);
+    padding-top: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    width: 700px;
+    background-color: #adff2f;
+    font-family: "Arial Black", Gadget, sans-serif;
+    text-align: left;
+    font-size: 35px;
+    border-top-width: 5px;
+    border-right-width: 5px;
+    border-bottom-width: 5px;
+    border-left-width: 5px;
+    border-top-style: double;
+    border-right-style: double;
+    border-bottom-style: double;
+    border-left-style: double;
+    border-top-color: rgb(211, 75, 75);
+    border-right-color: rgb(211, 75, 75);
+    border-bottom-color: rgb(211, 75, 75);
+    border-left-color: rgb(211, 75, 75);
+    border-image-source: initial;
+    border-image-slice: initial;
+    border-image-repeat: initial;
+    height: 70px;
+    border-radius: 50px 50px 50px 50px;
+    margin: 4px 0 0 180px;
+    background-image:url({{UserHtml.salou}});
+    background-repeat:no-repeat;
+    background-position:right top;
+    background-attachment:scroll;
+    background-size:contain;
+  }
+  .c4107 {
+    opacity:0.70;
+    filter:alpha(opacity=70);/* 针对 IE8 以及更早的版本 */
+    backdrop-filter: blur(20px);
+    padding-top: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    width: 700px;
+    background-color: #ff00ff;
+    font-family: "Arial Black", Gadget, sans-serif;
+    text-align: left;
+    font-size: 35px;
+    border-top-width: 5px;
+    border-right-width: 5px;
+    border-bottom-width: 5px;
+    border-left-width: 5px;
+    border-top-style: double;
+    border-right-style: double;
+    border-bottom-style: double;
+    border-left-style: double;
+    border-top-color: rgb(211, 75, 75);
+    border-right-color: rgb(211, 75, 75);
+    border-bottom-color: rgb(211, 75, 75);
+    border-left-color: rgb(211, 75, 75);
+    border-image-source: initial;
+    border-image-slice: initial;
+    border-image-repeat: initial;
+    height: 70px;
+    border-radius: 50px 50px 50px 50px;
+    margin: 4px 0 0 200px;
+    background-image:url({{UserHtml.syc}});
+    background-repeat:no-repeat;
+    background-position:right top;
+    background-attachment:scroll;
+    background-size:contain;
+  }
+  </style>
+  <head>
+    <meta charset="utf-8">
+    <title>我的网页</title>
+<!--    <link rel="shortcut icon" href="https://htmlpage.cn/favicon.png">-->
+<!--    <link rel="stylesheet" href="{{CssPath}}style.css">-->
+    <link rel="stylesheet" href="{{CssPath}}style.css">
+  </head>
+
+  <body>
+  <div data-v-32b84ec5=""></div>
+  <img src="{{@UserHtml.Txk1}}" alt="txk1" class="c2492" />
+  <img src="{{@UserHtml.user_img}}" alt="toux" class="c3659" />
+  
+  <div id="jrdk" class="c4581"><span id="iutl">今日第 {{@UserHtml.CardTop}} 位打卡喵~</span></div>
+<!--  <img src="{{@UserHtml.hg}}" alt="hg" class="c5773" />-->
+  <div id="lxdk" class="c4186">已连续打卡 {{@UserHtml.CardContinuous}} 天喵~</div>
+<!--  <img src="{{@UserHtml.hy}}" alt="hy" class="c4832" />-->
+  <div id="name" class="c4028">nickname：{{@UserHtml.nickname}}</div>
+<!--  <img src="{{@UserHtml.love}}" alt="love" class="c9236" />-->
+  <div id="yszj" class="c4265">原石总计：{{@UserHtml.CardRough}} 颗喵~ | ☆+{{@UserHtml.addRough}} | 赞+10</div>
+<!--  <img src="{{@UserHtml.yuans}}" alt="yuans" class="c3899" />-->
+  <div id="scdk" class="c4344">上次打卡：{{@UserHtml.CardLastTime}}</div>
+<!--  <img src="{{@UserHtml.salou}}" alt="salou" class="c6609" />-->
+  <div id="dkts" class="c4107">打卡天数：{{@UserHtml.CardDay}} 天 | 总打卡：{{@UserHtml.CardCount}} 次~</div>
+<!--  <div id="yiyan" class="c4502"><i>{{@UserHtml.AWords}}</i> | {{@UserHtml.CardNowTime}}</div>-->
+<!--  <div id="By" class="c4423"><b>Created by Yunzai-Bot 3.0 &amp; FanSky_Qs</b></div>-->
+  <!-- <img src="{{@UserHtml.TuPath}}" alt="tutu" class="c1727" /> -->
+  <div id="yiyan" class="c4502">
+    <i>{{@UserHtml.AWords}}
+    </i> | {{@UserHtml.CardNowTime}}
+  </div>
+  <div id="By" class="c4423">
+    <b>Created by Yunzai-Bot 3.0 &amp; FanSky_Qs
+    </b>
+  </div>
+<!--  <img src="{{@UserHtml.syc}}" alt="syc" class="c8111"  />-->
+    </body>
+  <html>
