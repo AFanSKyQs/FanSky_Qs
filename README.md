@@ -4,10 +4,10 @@
   </a>
 FanSky_Qs是一个Yunzai-Bot插件，实现了一些奇奇怪怪的功能。<br><br><img src="https://count.getloli.com/get/@:fansky_qs?theme=rule28" /> <br>
 
-[![AFanSKyQs](https://img.shields.io/badge/GitHub_AFanSKyQs-grey?logo=github)](https://github.com/AFanSKyQs)
+[![AFanSKyQs](https://img.shields.io/badge/GitHub_AFanSKyQs-yellowgreen?logo=github)](https://github.com/AFanSKyQs)
 [![Discord](https://img.shields.io/badge/Discord_FanSky_Qo-blueviolet?logo=discord)](https://twitter.com/lilianlee90/)
 <!-- [![GitHub](https://img.shields.io/badge/GitHub-FanSky_Qs-black?style=flat-square&logo=github)](https://github.com/AFanSKyQs/FanSky_Qs) -->
-[![YunzaiBot](https://img.shields.io/badge/Yunzai-v3.0.0-black?style=flat-square&logo=dependabot)](https://gitee.com/Le-niao/Yunzai-Bot) [![Group](https://img.shields.io/badge/Q群-755794036-red?style=flat-square&logo=GroupMe&logoColor=important)](https://jq.qq.com/?_wv=1027&k=I2HCxKdM) [![QQ](https://img.shields.io/badge/QQ-3141865879-success?style=flat-square&logo=tencent-qq)](https://res.abeim.cn/api/qq/?qq=3141865879) 
+[![YunzaiBot](https://img.shields.io/badge/Yunzai-v3.0.0-9cf?style=flat-square&logo=dependabot)](https://gitee.com/Le-niao/Yunzai-Bot) [![Group](https://img.shields.io/badge/Q群-755794036-red?style=flat-square&logo=GroupMe&logoColor=important)](https://jq.qq.com/?_wv=1027&k=I2HCxKdM) [![QQ](https://img.shields.io/badge/QQ-3141865879-success?style=flat-square&logo=tencent-qq)](https://res.abeim.cn/api/qq/?qq=3141865879) 
 
 <br>
 
