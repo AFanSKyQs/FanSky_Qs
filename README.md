@@ -92,6 +92,9 @@ git -C ./plugins/FanSky_Qs/ pull
 * Miao-Plugin
    - [gitee](https://github.com/yoimiya-kokomi/miao-plugin)
    - [github](https://github.com/yoimiya-kokomi/miao-plugin)
+   - 
+### 五、喵喵喵喵喵~
 
 ##### QQ群:[755794036](https://jq.qq.com/?_wv=1027&k=I2HCxKdM)
 ##### Q Q：[3141865879](https://res.abeim.cn/api/qq/?qq=3141865879)
+##### Discord：FanSky_Qo#9926
