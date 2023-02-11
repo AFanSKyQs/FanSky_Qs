@@ -2,7 +2,7 @@
 <h1>FanSky_Qs</h1>
   <img src="https://i.imgtg.com/2023/02/11/cmxuS.png" alt="BgImg">
   </a>
-FanSky_Qs是一个Yunzai-Bot插件，实现了一些奇奇怪怪的功能。<br><br><img src="https://count.getloli.com/get/@:fansky_qs?theme=rule28" /> <br>
+FanSky_Qs是一个Yunzai-Bot插件，实现了一些奇奇怪怪的功能。<br><br><img src="https://count.getloli.com/get/@:fansky_qs?theme=asoul" /> <br>
 
 [![AFanSKyQs](https://img.shields.io/badge/GitHub_AFanSKyQs-yellowgreen?logo=github)](https://github.com/AFanSKyQs)
 [![Discord](https://img.shields.io/badge/Discord_FanSky_Qo-blueviolet?logo=discord)](https://twitter.com/lilianlee90/)
