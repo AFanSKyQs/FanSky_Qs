@@ -4,7 +4,7 @@
   </a>
 FanSky_Qs是一个Yunzai-Bot插件，实现了一些奇奇怪怪的功能。<br><br><img src="https://count.getloli.com/get/@:fansky_qs?theme=asoul" /> <br>
 
-[![AFanSKyQs](https://img.shields.io/badge/GitHub_AFanSKyQs-yellowgreen?logo=github)]((https://github.com/AFanSKyQs){target="_blank"})
+[![AFanSKyQs](https://img.shields.io/badge/GitHub_AFanSKyQs-yellowgreen?logo=github)](https://github.com/AFanSKyQs)
 [![Discord](https://img.shields.io/badge/Discord_FanSky_Qo-blueviolet?logo=discord)](https://twitter.com/lilianlee90/)
 <!-- [![GitHub](https://img.shields.io/badge/GitHub-FanSky_Qs-black?style=flat-square&logo=github)](https://github.com/AFanSKyQs/FanSky_Qs) -->
 [![Bilibili](https://img.shields.io/badge/Bilibili_繁星灬守护-ff69b4?logo=bilibili)](https://space.bilibili.com/400618772)
