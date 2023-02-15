@@ -103,3 +103,8 @@ git -C ./plugins/FanSky_Qs/ pull
 ##### QQ群:[755794036](https://jq.qq.com/?_wv=1027&k=I2HCxKdM)
 ##### Q Q：[3141865879](https://res.abeim.cn/api/qq/?qq=3141865879)
 ##### Discord：FanSky_Qo#9926
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=AFanSKyQs/FanSky_Qs&type=Date)](https://star-history.com/#AFanSKyQs/FanSky_Qs&Date)
+
