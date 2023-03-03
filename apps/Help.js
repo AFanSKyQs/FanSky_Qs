@@ -17,7 +17,7 @@ export class UpdatePlugin extends plugin {
     }
     async AFanSKyQsHelp(e){
         let HelpList=[
-            " 猫眼票房 | 一眼丁真 \n 打卡、冒泡、签到\n 首次打卡时间\n点赞、赞我"
+            "艾特+消息即可与OpenAI对话\n语言模型列表 | 更换语言模型x\n猫眼票房 | 一眼丁真 \n打卡、冒泡、签到\n首次打卡时间\n点赞、赞我\n更多正在赶工中~"
         ]
         e.reply(HelpList)
         return true
