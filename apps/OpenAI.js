@@ -1,11 +1,12 @@
-let OpenAI_Key="这里填你的Key"
-import plugin from "../../../lib/plugins/plugin.js";
+let OpenAI_Key="OpenAI_Key"   //填入key,OpenAI官网申请的Key，一个号18刀免费那个，不是chatgpt
+// import plugin from "../../../lib/plugins/plugin.js";
 import common from "../../../lib/common/common.js";
 import puppeteer from "../../../lib/puppeteer/puppeteer.js"
 import Markdown_it from "markdown-it"
 import axios from "axios";
 import {createRequire} from "module";
 import fs from "fs";
+import getCfg from "../models/getCfg.js";
 //已自动除开#开头命令
 // 每个人的单次对话长度，即存储的记忆轮数，管理员不受限，直到报错
 let userCount = [0]  //从一开始艾特开始，回复8次即为9轮，即重置该人的对话
@@ -15,21 +16,14 @@ let BlackList = []   //黑名单
 const MarkDownIT = new Markdown_it()
 let Model = "text-davinci-003"
 let banQQ = []    //禁止使用的QQ号
-let BotName ="2233"
+let BotName ="2233"  //机器人昵称
 let _path = `${process.cwd()}/resources/FanSky`
 let path = `${process.cwd()}/resources/FanSky/SignIn.json`
 let path_SignTop = `${process.cwd()}/resources/FanSky/SignTop.json`
 let htmlPath = `${process.cwd()}/plugins/FanSky_Qs/resources/OpenAI/`
 let cssPath = `${htmlPath}OpenAI.html`
 let Axios=[]
-// 对话列表
 let OpenAIList = [""]
-// const path=process.cwd()//获取当前路径
-// const Html_path = `${process.cwd()}/plugins/FanSky_Qs/resources/ChatGPT/`//html文件路径
-// const Html__path = `${Html_path}ChatGPT.html`//html文件路径
-// let salt = '1435660288'//一个salt，不用改，随机的
-// let appid = "20221021001405138"//换成你的appid，直接用我的有ip检测，不行的，当然也可以私我给你服务器加一个ip即可
-// let key = "Yk3UXB0Lxx_CfCsNc9aU"//换成你的key，直接用我的有ip检测，不行的，当然也可以私我给你服务器加一个ip即可
 
 export class OpenAI extends plugin {
     constructor() {
@@ -42,30 +36,18 @@ export class OpenAI extends plugin {
             // 消息匹配规则
             rule: [
                 {
-                    // 清空所有Axios、OpenAIList、userCount
                     reg: /^#清空所有|#清空全部|#清除所有|#清除全部$/i,
                     fnc:'DelAll'
                 },
-                // {
-                // //reg匹配"#原图"或者"原图"
-                // // reg: /#原图/,
-                //     reg:/^#?原图$/,
-                //     fnc:'yt'
-                // },
                 {
-                    //reg匹配所有包含"面板图列表"的消息
                     reg: '面板图列表',
                     fnc:'mbt'
                 },{
-                    //reg匹配"#对话列表"
                     reg: /#对话列表|#聊天列表|#会话列表/,
                     fnc:'Axios_list'
                 },
                 {
-                    //reg匹配所有非"#开头"的信息
-
                     reg: /.*/i,
-                    // reg: '',
                     fnc: 'OpenAI',
                     log:false
                 }
@@ -110,7 +92,6 @@ export class OpenAI extends plugin {
         }
     }
     async SingIn(e){
-
         if (!fs.existsSync(_path)) {
             console.log("已创建FanSky文件夹");
             fs.mkdirSync(_path);
@@ -124,27 +105,31 @@ export class OpenAI extends plugin {
             console.log("已创建SignTop.json文件");
         }
         let SignDay = JSON.parse(fs.readFileSync(path));
-        if (!SignDay[e.group_id]) {
-            SignDay[e.group_id] = {};
-        }
-        if (!SignDay[e.group_id][e.user_id] ) {
+        // if (!SignDay[e.group_id]) {
+        //     SignDay[e.group_id] = {};
+        // }
+        if (!SignDay[e.user_id] ) {
             e.reply("没有您的打卡记录\n请发送[打卡/签到/冒泡]来打卡\n获取原石以进行提问");
-            fs.writeFileSync(path, JSON.stringify(SignDay));
-            return
+            // fs.writeFileSync(path, JSON.stringify(SignDay));
+            return true
         }
-        if(SignDay[e.group_id][e.user_id].rough<8 && !e.isMaster){
-            e.reply(`您的[原石]：${SignDay[e.group_id][e.user_id].rough}\n少于8，已无法进行对话\n继续努力吧~`);
-            return
+        if(SignDay[e.user_id].rough<8 && !e.isMaster){
+            e.reply(`您的[原石]：${SignDay[e.user_id].rough}\n少于8，已无法进行对话\n继续努力吧~`);
+            return true
         }
         if(!e.isMaster){
-            SignDay[e.group_id][e.user_id].rough -= 8;
+            SignDay[e.user_id].rough -= 8;
         }
         fs.writeFileSync(path, JSON.stringify(SignDay));
-        return SignDay[e.group_id][e.user_id].rough
+        return SignDay[e.user_id].rough
     }
     async OpenAI(e) {
         if(!e.isGroup && !e.isMaster){
             return false
+        }
+        if(OpenAI_Key === "OpenAI_Key"){
+            e.reply("要与我聊天？请先在OpenAI.js中填写OpenAI_Key")
+            return true
         }
         if (!e.msg) return false
         if (!e.msg.includes(BotName) && !e.atBot) return false
@@ -285,8 +270,9 @@ export class OpenAI extends plugin {
                     Axios[e.user_id]=[""]
                     e.reply("对话记录已经重置，将开始新的记忆。")
                 }
+                let TextToImg=(await getCfg("OpenAI")).Text_img
                 // let SendMsg = ReciveMsg.trim().replace(/[\n|\r]|AI:/g, '<br>')
-                if (Axios_Temp.length > 80) {
+                if (Axios_Temp.length > TextToImg) {
                     await ScreenAndSend(e, Axios_Temp)
                 }else{
                     e.reply(Axios_Temp, true)
