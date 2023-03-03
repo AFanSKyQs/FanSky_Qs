@@ -128,8 +128,8 @@ export class OpenAI extends plugin {
             return false
         }
         if(OpenAI_Key === "OpenAI_Key"){
-            e.reply("要与我聊天？请先在OpenAI.js中填写OpenAI_Key")
-            return true
+            e.reply("要与OpenAI聊天吗喵qwq,请先在FanSky_Qs下的OpenAI.js中填写OpenAI_Key")
+            return false
         }
         if (!e.msg) return false
         if (!e.msg.includes(BotName) && !e.atBot) return false
