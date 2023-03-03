@@ -2,7 +2,9 @@
 import fs from "fs";
 import cfg from "../../../lib/config/config.js";
 import plugin from "../../../lib/plugins/plugin.js";
+
 let path = `${process.cwd()}/resources/FanSky/SignIn.json`
+
 export class EliminateEveryDay extends plugin {
     constructor() {
         super({
@@ -12,8 +14,8 @@ export class EliminateEveryDay extends plugin {
             priority: 8,
             rule: [
                 {
-                    reg: /^#(重置|清除)每日?打卡(状态)?$/,
-                    fnc: 'Eliminate',
+                    reg: /^#?(重置打卡|清除打卡)$/,
+                    fnc: 'ClearSign',
                 },
             ]
         })
@@ -24,12 +26,13 @@ export class EliminateEveryDay extends plugin {
             fnc: () => this.Eliminate(),
         }
     }
+
     async Eliminate() {
         let data = JSON.parse(fs.readFileSync(path));
-        for (let group in data) {
-            for (let user in data[group]) {
-                data[group][user].today = false;
-            }
+        let Num = 0;
+        for (let user in data) {
+            data[user].today = false;
+            Num++;
         }
         fs.writeFileSync(path, JSON.stringify(data));
         //将消息发送给机器人的主人
@@ -41,6 +44,21 @@ export class EliminateEveryDay extends plugin {
         for (let userId of list) {
             await Bot.pickFriend(userId).sendMsg(msg)
         }
+    }
+    async ClearSign(e) {
+        if (!e.isMaster) {
+            e.reply("你在干什么baka!~")
+            return true
+        }
+        let data = JSON.parse(fs.readFileSync(path));
+        let Num = 0;
+        for (let user in data) {
+            data[user].today = false;
+            Num++;
+        }
+        fs.writeFileSync(path, JSON.stringify(data));
+        e.reply(`总计${Num}用户，已重置今日打卡状态为false喵~`)
+        return true
     }
 }
 
