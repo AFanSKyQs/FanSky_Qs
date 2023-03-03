@@ -23,6 +23,7 @@ FanSky_Qs是一个Yunzai-Bot插件，实现了一些奇奇怪怪的功能。<br>
 因为目前插件包功能已经基于饱和，功能不知道写什么，还在开发阶段，随便玩玩qwq~ ~ ~ ~
 
 具体功能将在下面列举，安装后通过发送`#fans帮助`来进行查看。
+
 更新：`#fans更新`、`#fans强制更新`
 ##
 
@@ -84,7 +85,11 @@ plugins目录下：
 git clone https://github.com/AFanSKyQs/FanSky_Qs.git
 ```
 
-后续更新，在Yunzai-Bot根目录下下打开`cmd命令窗口` 或 `右键选择Git Bash Here`
+后续更新：
+
+1.发送`#fans更新或#fans强制更新`
+
+2.在Yunzai-Bot根目录下下打开`cmd命令窗口` 或 `右键选择Git Bash Here`
 
 ```
 git -C ./plugins/FanSky_Qs/ pull
