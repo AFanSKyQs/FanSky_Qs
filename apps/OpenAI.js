@@ -1,30 +1,25 @@
-let OpenAI_Key="OpenAI_Key"   //填入key,OpenAI官网申请的Key，一个号18刀免费那个，不是chatgpt
-// import plugin from "../../../lib/plugins/plugin.js";
 import common from "../../../lib/common/common.js";
 import puppeteer from "../../../lib/puppeteer/puppeteer.js"
 import Markdown_it from "markdown-it"
 import axios from "axios";
-import {createRequire} from "module";
 import fs from "fs";
-import getCfg from "../models/getCfg.js";
-//已自动除开#开头命令
+import getCfg from "../models/getCfg.js"
 // 每个人的单次对话长度，即存储的记忆轮数，管理员不受限，直到报错
 let userCount = [0]  //从一开始艾特开始，回复8次即为9轮，即重置该人的对话
-let CountMember=9
+let CountMember = 9
 let adminCount = 99  //管理员不受限制，直到报错
-let BlackList = []   //黑名单
 const MarkDownIT = new Markdown_it()
-let Model = "text-davinci-003"
-let banQQ = []    //禁止使用的QQ号
-let BotName ="2233"  //机器人昵称
+let yunPath = process.cwd()
 let _path = `${process.cwd()}/resources/FanSky`
 let path = `${process.cwd()}/resources/FanSky/SignIn.json`
 let path_SignTop = `${process.cwd()}/resources/FanSky/SignTop.json`
 let htmlPath = `${process.cwd()}/plugins/FanSky_Qs/resources/OpenAI/`
 let cssPath = `${htmlPath}OpenAI.html`
-let Axios=[]
+let Axios = []
 let OpenAIList = [""]
-
+let Moudel1List = []
+let MoudelStatus = [] //模型状态
+let Moudel1Num = [] //模型1的轮数
 export class OpenAI extends plugin {
     constructor() {
         super({
@@ -32,32 +27,147 @@ export class OpenAI extends plugin {
             dsc: 'OpenAI_ChatGPT',
             event: 'message',
             // 优先级(数值越小优先度越高)
-            priority: 9,
+            priority: 99999,
             // 消息匹配规则
             rule: [
                 {
                     reg: /^#清空所有|#清空全部|#清除所有|#清除全部$/i,
-                    fnc:'DelAll'
+                    fnc: 'DelAll'
                 },
                 {
-                    reg: '面板图列表',
-                    fnc:'mbt'
-                },{
                     reg: /#对话列表|#聊天列表|#会话列表/,
-                    fnc:'Axios_list'
+                    fnc: 'Axios_list'
                 },
                 {
                     reg: /.*/i,
                     fnc: 'OpenAI',
-                    log:false
+                }, {
+                    reg: /#?(对话|语言)?模型列表/,
+                    fnc: 'OpenAPModel_list'
                 }
             ]
         })
     };
-    async DelAll(e){
-        if(!e.isMaster){
+
+    async OpenAI(e) {
+        if (!e.isGroup && !e.isMaster) {
+            return false
+        }
+        if (/^#/.test(e.msg)) {
+            // e.reply("如果是想与AI对话\n请不要在开头输入#\n【这一般是指令】\n\n如果是指令请不要艾特机器人\n【艾特一般是与机器人对话】", true)
+            return false
+        }
+        if (!e.atBot) return false
+        if (!e.msg) {
+            e.reply("你想对我说什么呢？baka不要空白呀！", true)
+            return false
+        }
+        const Json = await getCfg(yunPath, "OpenAI")
+        const OpenAI_Key = Json.OpenAI_Key
+        if (OpenAI_Key === "OpenAI_Key" || !OpenAI_Key || OpenAI_Key === "") {
+            console.log("OpenAI_Key:"+OpenAI_Key)
+            e.reply("要与OpenAI聊天吗喵qwq,请先在FanSky_Qs/config/OpenAI中填写获取的OpenAI_Key")
+            return false
+        }
+        if (e.msg.includes("原图") && e.msg.length <= 3 && !e.isMaster) {
+            e.reply("涩涩打咩...打咩打咩~", true)
+            console.log("不给原图！")
             return true
+        }
+        const BlackList = Json.BlackList //[123, 456] 黑名单列表
+        if (BlackList.includes(e.user_id)) {
+            e.reply("伱被禁止与我聊天了呜呜（；へ：）~", true)
+            console.log("\nAI对话黑名单：" + e.user_id)
+            return true
+        }
+        if(MoudelStatus[e.user_id]){
+            e.reply("AI正在处理柠上一个请求噢~", true)
+            return true
+        }
+        if (Json.Model === 1) {
+            await this.OpenAIModel1(e, OpenAI_Key, Json)
+        } else if (Json.Model === 2) {
+            await this.OpenAIModel2(e, OpenAI_Key, Json.Model_list[1])
+        }
+        return true
+    }
+
+    async OpenAIModel1(e, OpenAI_Key, Json) {
+        let msg = e.msg
+        Bot.logger.info("处理插件：FanSky_Qs-OpenAI模型1:" + `\n群：${e.group_id}\n` + "QQ:" + `${e.user_id}\n` + `消息：${msg}`)
+        let GetResult = await this.SingIn(e)
+        if (!GetResult) {
+            return true
+        }
+        MoudelStatus[e.user_id] = true
+        let Persona = Json.Persona// 人设
+        let DataList= {
+            "model": "gpt-3.5-turbo",
+            "messages": [
+                {"role": "system", "content": Persona}
+            ]
+        }
+
+        if(!Moudel1List[e.user_id]){
+            DataList.messages.push({"role": "user", "content": msg})
+            Moudel1List[e.user_id] = DataList
+            Moudel1Num[e.user_id] = 1
         }else{
+            Moudel1List[e.user_id].messages.push({"role": "user", "content": msg})
+            Moudel1Num[e.user_id]++
+        }
+        console.log(Moudel1List[e.user_id])
+        try {
+            axios({
+                method: 'post',
+                url: 'https://api.openai.com/v1/chat/completions',
+                headers: {
+                    'Content-Type': "application/json",
+                    'Authorization': 'Bearer ' + OpenAI_Key
+                },
+                data: JSON.stringify(Moudel1List[e.user_id]),
+                proxy: {
+                    protocol: 'http',
+                    host: '127.0.0.1',
+                    port: 7890,
+                },
+            }).then(async function (response) {
+                console.log(response.data.choices[0])
+                let result = response.data.choices[0].message.content
+                let SendResult = `【魔晶：${GetResult} | 重置：${10-Moudel1Num[e.user_id]}】\n` + result
+                e.reply(SendResult, true)
+                Moudel1List[e.user_id].messages.push({"role": "assistant", "content": result})
+                delete MoudelStatus[e.user_id]
+                if(Moudel1Num[e.user_id] >= 10 && !e.isMaster){
+                    delete Moudel1List[e.user_id]
+                    delete Moudel1Num[e.user_id]
+                }
+            }).catch(function (error) {
+                delete Moudel1List[e.user_id]
+                delete MoudelStatus[e.user_id]
+                e.reply("可能超过对话上限，已重置柠的对话喵~")
+                console.log(error);
+            });
+        } catch (err) {
+            e.reply("运行有问题~,请联系开发人员(3141865879)")
+            console.log(err)
+        }
+    }
+
+    async OpenAPModel_list(e) {
+        let Model_list = (await getCfg(yunPath, "OpenAI")).Model_list
+        let Model_list_str = ""
+        for (let i = 0; i < Model_list.length; i++) {
+            Model_list_str += `${i + 1}、${Model_list[i]}\n`
+        }
+        e.reply(`模型列表：\n${Model_list_str}\n\n请发送[更换语言模型+数字]来切换模型\n如：更换语言模型1`)
+        return true
+    }
+
+    async DelAll(e) {
+        if (!e.isMaster) {
+            return true
+        } else {
             OpenAIList = [""]
             userCount = [0]
             Axios = []
@@ -65,33 +175,20 @@ export class OpenAI extends plugin {
             return true
         }
     }
-    async Axios_list(e){
-        if(!e.isMaster){
+
+    async Axios_list(e) {
+        if (!e.isMaster) {
             return true
-        }else{
-            if(!OpenAIList.length){
+        } else {
+            if (!OpenAIList.length) {
                 e.reply("对话列表为空")
                 return true
             }
-            await ScreenAndSend(e,OpenAIList[0])
+            await ScreenAndSend(e, OpenAIList[0])
         }
     }
-    // async yt(e){
-    //     if(!e.user_id===3141865879){
-    //         e.reply("涩涩打咩...打咩打咩~")
-    //         return true
-    //     }else{
-    //         return false
-    //     }
-    // }
-    async mbt(e){
-        if(!e.isMaster){
-            return true
-        }else{
-            return false
-        }
-    }
-    async SingIn(e){
+
+    async SingIn(e) {
         if (!fs.existsSync(_path)) {
             console.log("已创建FanSky文件夹");
             fs.mkdirSync(_path);
@@ -105,122 +202,87 @@ export class OpenAI extends plugin {
             console.log("已创建SignTop.json文件");
         }
         let SignDay = JSON.parse(fs.readFileSync(path));
-        // if (!SignDay[e.group_id]) {
-        //     SignDay[e.group_id] = {};
-        // }
-        if (!SignDay[e.user_id] ) {
-            e.reply("没有您的打卡记录\n请发送[打卡/签到/冒泡]来打卡\n获取原石以进行提问");
-            // fs.writeFileSync(path, JSON.stringify(SignDay));
+        if (!SignDay[e.user_id]) {
+            e.reply("没有您的打卡记录\n请发送[打卡/冒泡]来打卡\n获取魔晶以进行对话");
             return true
         }
-        if(SignDay[e.user_id].rough<8 && !e.isMaster){
-            e.reply(`您的[原石]：${SignDay[e.user_id].rough}\n少于8，已无法进行对话\n继续努力吧~`);
+        if (SignDay[e.user_id].rough < 8 && !e.isMaster) {
+            e.reply(`您的[魔晶]：${SignDay[e.user_id].rough}\n少于8，已无法进行对话\n攒攒魔晶吧喵~`);
             return true
         }
-        if(!e.isMaster){
+        if (!e.isMaster) {
             SignDay[e.user_id].rough -= 8;
         }
         fs.writeFileSync(path, JSON.stringify(SignDay));
         return SignDay[e.user_id].rough
     }
-    async OpenAI(e) {
-        if(!e.isGroup && !e.isMaster){
-            return false
-        }
-        if(OpenAI_Key === "OpenAI_Key"){
-            e.reply("要与OpenAI聊天吗喵qwq,请先在FanSky_Qs下的OpenAI.js中填写OpenAI_Key")
-            return false
-        }
-        if (!e.msg) return false
-        if (!e.msg.includes(BotName) && !e.atBot) return false
-        if (banQQ.includes(e.user_id)) return false
-        let msg = e.msg.trim().replace(/[\n|\r]|2233/g, '，')
-        Bot.logger.info("处理插件：OpenAI:"+`\n群组：${e.group_id}\n`+"用户:"+`${e.user_id}\n`+`消息：${msg}`)
-        if (!msg) {
-            e.reply("你想对我说什么呢？baka不要空白呀！", true)
-            console.log("消息为空")
+
+    async OpenAIModel2(e, OpenAI_Key, Model) {
+        let msg = e.msg
+        Bot.logger.info("处理插件：FanSky_Qs-OpenAI模型2:" + `\n群：${e.group_id}\n` + "QQ:" + `${e.user_id}\n` + `消息：${msg}`)
+        let GetResult = await this.SingIn(e)
+        if (!GetResult) {
             return true
         }
-        if(msg.includes("原图")&& msg.length<=4 && !e.isMaster){
-            e.reply("涩涩打咩...打咩打咩~", true)
-            console.log("不给原图！")
-            return true
+        MoudelStatus[e.user_id] = true
+        if (!Axios[e.user_id]) {
+            Axios[e.user_id] = [""]
+            OpenAIList[0] = OpenAIList[0] + `【${OpenAIList.length}】:${e.user_id}\n`
         }
-        if (/^#/.test(e.msg)) { //如果是命令
-            // e.reply("如果是想与AI对话\n请不要在开头输入#\n【这一般是指令】\n\n如果是指令请不要艾特机器人\n【艾特一般是与机器人对话】", true)
-            return false
-        }
-        // if(msg.length<3 ){
-        //     e.reply("小于3个字符，已过滤", true)
-        //     console.log("消息太短,如果是指令请不要艾特我哇！")
-        //     return true
-        // }
-        if(BlackList.includes(e.user_id)){
-            // e.reply("你已被拉黑，无法使用本插件！", true)
-            console.log("黑名单")
-            return true
-        }
-        let GetResult=await this.SingIn(e)
-        if(!GetResult){
-            console.log("没有返回结果，已退出")
-            return true
-        }
-        // 如果没有或为空则返回
-        if(!Axios[e.user_id]){
-            Axios[e.user_id]=[""]
-            //为了防止无法在字符串上创建属性，所以先创建一个空字符串
-            OpenAIList[0]=OpenAIList[0]+`【${OpenAIList.length}】:${e.user_id}\n`
-        }
-        if(!userCount[e.user_id] || userCount[e.user_id][0] === 0){
+        if (!userCount[e.user_id] || userCount[e.user_id][0] === 0) {
             userCount[e.user_id] = 0
-            if(e.isMaster){
-                userCount[e.user_id]=adminCount
-            }else{
-                userCount[e.user_id]=CountMember
+            if (e.isMaster) {
+                userCount[e.user_id] = adminCount
+            } else {
+                userCount[e.user_id] = CountMember
             }
-            Axios[e.user_id]=[""]
+            Axios[e.user_id] = [""]
         }
-        //给Axios[e.user_id]的第一个元素的字符串后面加上msg，然后再把这个字符串赋值给Axios[e.user_id]的第一个元素
         Axios[e.user_id][0] = Axios[e.user_id][0] + `\nHuman:${msg}`
-        console.log("Axios:"+Axios[e.user_id][0])
+        console.log("Axios:" + Axios[e.user_id][0])
         const OpenAI = {
             "model": `${Model}`,
             "prompt": Axios[e.user_id][0],
             "max_tokens": 2048,
-            "temperature": 0.3, //作用是控制生成的文本的多样性
-            "top_p": 1,     //作用是
-            "frequency_penalty": 0, //作用是
-            "presence_penalty": 0.6,//
-            "stop":[" Human:", " AI:"]
+            "temperature": 0.3,
+            "top_p": 1,
+            "frequency_penalty": 0,
+            "presence_penalty": 0.6,
+            "stop": [" Human:", " AI:"]
         };
         try {
-            userCount[e.user_id]=userCount[e.user_id]-1;
-            await this.OpenAI_Get(e, OpenAI,GetResult)
-            //如果返回的消息长度大于150，就封装发送
+            userCount[e.user_id] = userCount[e.user_id] - 1;
+            await this.MsgOpenAIModel2(e, OpenAI, GetResult, OpenAI_Key)
         } catch (err) {
-                e.reply("AI出问题了，正在呼叫管理员...\n【如您是命令请在前面加#号】\n", true)
-                await common.sleep(3000)
-                await Bot.pickFriend(3141865879).sendMsg(`错误信息：${err}\n群组：${e.group_id}\n`+"用户:"+`${e.user_id}`)
-                console.log(err)
-                return true
+            delete MoudelStatus[e.user_id]
+            e.reply("AI出错了！请联系开发人员（3141865879）\n" + err, true)
+            await common.sleep(3000)
+            await Bot.pickFriend(3141865879).sendMsg(`错误信息：${err}\n群组：${e.group_id}\n` + "用户:" + `${e.user_id}`)
+            console.log(err)
+            return true
         }
     }
-    async OpenAI_Get(e,PostDate,GetResult) {
-        // let Msg
+
+    async MsgOpenAIModel2(e, PostDate, GetResult, OpenAI_KEY) {
         try {
             axios({
-            method: 'post',
-            url: 'https://api.openai.com/v1/completions',
-            headers: {
-                'Content-Type': "application/json",
-                'Accept-Encoding': 'gzip,deflate',
-                'Content-Length': 1024,
-                'Transfer-Encoding': 'chunked',
-                'Authorization': 'Bearer ' + OpenAI_Key
-            },
-            data: JSON.stringify(PostDate)
-        }).then(async function (response) {
-            let ReciveMsg = response.data.choices[0].text
+                method: 'post',
+                url: 'https://api.openai.com/v1/completions',
+                headers: {
+                    'Content-Type': "application/json",
+                    'Accept-Encoding': 'gzip,deflate',
+                    'Content-Length': 1024,
+                    'Transfer-Encoding': 'chunked',
+                    'Authorization': 'Bearer ' + OpenAI_KEY
+                },
+                data: JSON.stringify(PostDate),
+                proxy: {
+                    protocol: 'http',
+                    host: '127.0.0.1',
+                    port: 7890,
+                },
+            }).then(async function (response) {
+                let ReciveMsg = response.data.choices[0].text
                 let Axios_Temp = ReciveMsg
                     .replace(/机器人：/, "").trim()
                     .replace(/\n/, "").trim()
@@ -231,92 +293,59 @@ export class OpenAI extends plugin {
                     .replace(/Robot:/, "").trim()
                     .replace(/Computer:/, "").trim()
                     .replace(/computer:/, "").trim()
-                if (Axios_Temp.startsWith("，") || Axios_Temp.startsWith("？")||Axios_Temp.startsWith("?")||Axios_Temp.startsWith(",")||Axios_Temp.startsWith("。")) {
+                if (Axios_Temp.startsWith("，") || Axios_Temp.startsWith("？") || Axios_Temp.startsWith("?") || Axios_Temp.startsWith(",") || Axios_Temp.startsWith("。")) {
                     Axios_Temp = Axios_Temp.slice(1)
                 }
-                if(Axios_Temp.startsWith("吗？")||Axios_Temp.startsWith("吗?")){
-                    // 删除前俩
+                if (Axios_Temp.startsWith("吗？") || Axios_Temp.startsWith("吗?")) {
                     Axios_Temp = Axios_Temp.slice(2)
                 }
-                // Msg = ReciveMsg.trim().replace(/[\n|\r]|AI:/g, '')
-                // Msg=Msg.replace(/答：/, "").trim()
-                //     .replace(/机器人：/, "").trim()
-                //     .replace(/AI:/, "").trim()
-                //     .replace(/Bot:/, "").trim()
-                //     .replace(/robot:/, "").trim()
-                //     .replace(/Robot:/, "").trim()
-                //     .replace(/Computer:/, "").trim()
-                //     .replace(/computer:/, "").trim()
-                // //如果Msg是以"，"或"?"开头的，就去掉开头这个符号
-                // if (Msg.startsWith("，") || Msg.startsWith("？")||Msg.startsWith("?")||Msg.startsWith(",")||Msg.startsWith("。")) {
-                //     Msg = Msg.slice(1)
-                // }
-                // if(Msg.startsWith("吗？")||Msg.startsWith("吗?")){
-                //     // 删除前俩
-                //     Msg = Msg.slice(2)
-                // }
-                // 在Msg的开头加一个"【】"符号
-                Axios[e.user_id][0] = Axios[e.user_id][0]+"\nAI:" + Axios_Temp
+                Axios[e.user_id][0] = Axios[e.user_id][0] + "\nAI:" + Axios_Temp
                 if (!Axios_Temp.startsWith("【")) {
-                    Axios_Temp = `【距离对话重置：${userCount[e.user_id]}】\n【消耗8原石 | 剩余：${GetResult}】` + Axios_Temp
+                    Axios_Temp = `【距对话重置：${userCount[e.user_id]}】\n【消耗8魔晶 | 剩余：${GetResult}】` + Axios_Temp
                 }
-                // console.log("OpenAI:" + Axios_Temp)
-                if(userCount[e.user_id]===0){
-                    if(e.isMaster){
-                        userCount[e.user_id]=adminCount
-                    }else {
-                        userCount[e.user_id]=CountMember
+                if (userCount[e.user_id] === 0) {
+                    if (e.isMaster) {
+                        userCount[e.user_id] = adminCount
+                    } else {
+                        userCount[e.user_id] = CountMember
                     }
-                    Axios[e.user_id]=[""]
-                    e.reply("对话记录已经重置，将开始新的记忆。")
+                    Axios[e.user_id] = [""]
+                    e.reply("对话已重置，将开始新的记忆。")
                 }
-                let TextToImg=(await getCfg("OpenAI")).Text_img
-                // let SendMsg = ReciveMsg.trim().replace(/[\n|\r]|AI:/g, '<br>')
+                let TextToImg = (await getCfg(yunPath, "OpenAI")).Text_img
                 if (Axios_Temp.length > TextToImg) {
                     await ScreenAndSend(e, Axios_Temp)
-                }else{
+                } else {
                     e.reply(Axios_Temp, true)
                 }
+                delete MoudelStatus[e.user_id]
             }).catch(function (error) {
+                delete MoudelStatus[e.user_id]
                 console.log(error);
-                Axios[e.user_id]=[""]
-                e.reply("超过上限，已重置对话", true)
+                Axios[e.user_id] = [""]
+                e.reply("超过记忆上限，已重置对话", true)
                 console.log("超过对话上限！")
             });
-        }catch (err) {
-            e.reply("AI出错了！正在呼叫管理员...\n【如您是发送命令请在前面加#号】", true)
+        } catch (err) {
+            delete MoudelStatus[e.user_id]
+            e.reply("AI出错了！请联系开发人员（3141865879）\n" + err, true)
+            await common.sleep(3000)
+            await Bot.pickFriend(3141865879).sendMsg(`错误信息：${err}\n群组：${e.group_id}\n` + "用户:" + `${e.user_id}`)
             console.log(err)
             return true
         }
         return true
     }
 }
+
 async function ScreenAndSend(e, message) {
-    if(message){
-        // let OpenAI = MarkDownIT.render(message)
-        // console.log(OpenAI)
+    if (message) {
         console.log("OpenAI:" + message)
-        // 这个是message的内容
-        // const bubbleSort = (arr) => {
-        //     for (let i = 0; i < arr.length; i++) {
-        //         for (let j = 0; j < arr.length - i - 1; j++) {
-        //             if (arr[j] > arr[j + 1]) {
-        //                 let temp = arr[j];
-        //                 arr[j] = arr[j + 1];
-        //                 arr[j + 1] = temp;
-        //             }
-        //         }
-        //     }
-        //     return arr;
-        // }
-        // 将其格式化成html可以正常显示的格式，并且原本有空格的地方也会有空格
         let OpenAI = message.replace(/ /g, "&nbsp;").replace(/\n/g, "<br>")
-        // let OpenAI = message.replace(/[\n|\r]/g, '<br>')
-        let img= await puppeteer.screenshot("OpenAI", {tplFile: cssPath, htmlDir: htmlPath, OpenAI}) //截图
+        let img = await puppeteer.screenshot("OpenAI", {tplFile: cssPath, htmlDir: htmlPath, OpenAI}) //截图
         e.reply(img)
-        //关闭浏览器
         return true
-    }else{
+    } else {
         e.reply("消息为空，已退出")
         return true
     }
