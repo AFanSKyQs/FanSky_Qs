@@ -50,6 +50,12 @@ export class OpenAI extends plugin {
     };
 
     async OpenAI(e) {
+        if (e.message[0].type !== "at") {
+            return false
+        }
+        if (e.message[1].type !== "text") {
+            return false
+        }
         if (!e.isGroup && !e.isMaster) {
             return false
         }
@@ -68,11 +74,6 @@ export class OpenAI extends plugin {
             console.log("OpenAI_Key:"+OpenAI_Key)
             e.reply("要与OpenAI聊天吗喵qwq,请先在FanSky_Qs/config/OpenAI中填写获取的OpenAI_Key")
             return false
-        }
-        if (e.msg.includes("原图") && e.msg.length <= 3 && !e.isMaster) {
-            e.reply("涩涩打咩...打咩打咩~", true)
-            console.log("不给原图！")
-            return true
         }
         const BlackList = Json.BlackList //[123, 456] 黑名单列表
         if (BlackList.includes(e.user_id)) {
@@ -96,7 +97,8 @@ export class OpenAI extends plugin {
         let msg = e.msg
         Bot.logger.info("处理插件：FanSky_Qs-OpenAI模型1:" + `\n群：${e.group_id}\n` + "QQ:" + `${e.user_id}\n` + `消息：${msg}`)
         let GetResult = await this.SingIn(e)
-        if (!GetResult) {
+        console.log("GetResult:"+GetResult)
+        if (!GetResult || GetResult === true || GetResult === "true") {
             return true
         }
         MoudelStatus[e.user_id] = true
@@ -221,7 +223,8 @@ export class OpenAI extends plugin {
         let msg = e.msg
         Bot.logger.info("处理插件：FanSky_Qs-OpenAI模型2:" + `\n群：${e.group_id}\n` + "QQ:" + `${e.user_id}\n` + `消息：${msg}`)
         let GetResult = await this.SingIn(e)
-        if (!GetResult) {
+        console.log("GetResult:"+GetResult)
+        if (!GetResult || GetResult === true || GetResult === "true") {
             return true
         }
         MoudelStatus[e.user_id] = true
