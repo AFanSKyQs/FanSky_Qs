@@ -116,7 +116,7 @@ export class OpenAI extends plugin {
         } else {
             // 先对比一下本次预设的人设是否与上次一致，如果不一致则重置重新开始
             if (Moudel1List[e.user_id].messages[0].content !== Persona) {
-                e.reply("AI检测到人设已经改变，已重置记忆，生成中...", true)
+                e.reply("AI检测到人设已经改变，已重置记忆，生成中...", true,{recallMsg: 10})
                 DataList.messages.push({"role": "user", "content": msg})
                 Moudel1List[e.user_id] = DataList
                 Moudel1Num[e.user_id] = 1
@@ -143,7 +143,7 @@ export class OpenAI extends plugin {
             }).then(async function (response) {
                 console.log(response.data.choices[0])
                 let result = response.data.choices[0].message.content
-                let SendResult = `【魔晶：${GetResult} | 重置：${10 - Moudel1Num[e.user_id]}】\n` + result
+                let SendResult = `【魔晶：${GetResult} | 重置：${10 - Moudel1Num[e.user_id]} | ${response.data.choices[0].message.content.length}字】\n` + result
                 e.reply(SendResult, true)
                 Moudel1List[e.user_id].messages.push({"role": "assistant", "content": result})
                 delete MoudelStatus[e.user_id]
