@@ -71,7 +71,7 @@ export class OpenAI extends plugin {
         const Json = await getCfg(yunPath, "OpenAI")
         const OpenAI_Key = Json.OpenAI_Key
         if (OpenAI_Key === "OpenAI_Key" || !OpenAI_Key || OpenAI_Key === "") {
-            console.log("OpenAI_Key:"+OpenAI_Key)
+            console.log("OpenAI_Key:" + OpenAI_Key)
             e.reply("要与OpenAI聊天吗喵qwq,请先在FanSky_Qs/config/OpenAI中填写获取的OpenAI_Key")
             return false
         }
@@ -81,7 +81,7 @@ export class OpenAI extends plugin {
             console.log("\nAI对话黑名单：" + e.user_id)
             return true
         }
-        if(MoudelStatus[e.user_id]){
+        if (MoudelStatus[e.user_id]) {
             e.reply("AI正在处理柠上一个请求噢~", true)
             return true
         }
@@ -97,26 +97,33 @@ export class OpenAI extends plugin {
         let msg = e.msg
         Bot.logger.info("处理插件：FanSky_Qs-OpenAI模型1:" + `\n群：${e.group_id}\n` + "QQ:" + `${e.user_id}\n` + `消息：${msg}`)
         let GetResult = await this.SingIn(e)
-        console.log("GetResult:"+GetResult)
+        console.log("GetResult:" + GetResult)
         if (!GetResult || GetResult === true || GetResult === "true") {
             return true
         }
         MoudelStatus[e.user_id] = true
         let Persona = Json.Persona// 人设
-        let DataList= {
+        let DataList = {
             "model": "gpt-3.5-turbo",
             "messages": [
                 {"role": "system", "content": Persona}
             ]
         }
-
-        if(!Moudel1List[e.user_id]){
+        if (!Moudel1List[e.user_id]) {
             DataList.messages.push({"role": "user", "content": msg})
             Moudel1List[e.user_id] = DataList
             Moudel1Num[e.user_id] = 1
-        }else{
-            Moudel1List[e.user_id].messages.push({"role": "user", "content": msg})
-            Moudel1Num[e.user_id]++
+        } else {
+            // 先对比一下本次预设的人设是否与上次一致，如果不一致则重置重新开始
+            if (Moudel1List[e.user_id].messages[0].content !== Persona) {
+                e.reply("AI检测到人设已经改变，已重置记忆，生成中...", true)
+                DataList.messages.push({"role": "user", "content": msg})
+                Moudel1List[e.user_id] = DataList
+                Moudel1Num[e.user_id] = 1
+            } else {
+                Moudel1List[e.user_id].messages.push({"role": "user", "content": msg})
+                Moudel1Num[e.user_id]++
+            }
         }
         console.log(Moudel1List[e.user_id])
         try {
@@ -136,11 +143,11 @@ export class OpenAI extends plugin {
             }).then(async function (response) {
                 console.log(response.data.choices[0])
                 let result = response.data.choices[0].message.content
-                let SendResult = `【魔晶：${GetResult} | 重置：${10-Moudel1Num[e.user_id]}】\n` + result
+                let SendResult = `【魔晶：${GetResult} | 重置：${10 - Moudel1Num[e.user_id]}】\n` + result
                 e.reply(SendResult, true)
                 Moudel1List[e.user_id].messages.push({"role": "assistant", "content": result})
                 delete MoudelStatus[e.user_id]
-                if(Moudel1Num[e.user_id] >= 10 && !e.isMaster){
+                if (Moudel1Num[e.user_id] >= 10 && !e.isMaster) {
                     delete Moudel1List[e.user_id]
                     delete Moudel1Num[e.user_id]
                 }
@@ -223,7 +230,7 @@ export class OpenAI extends plugin {
         let msg = e.msg
         Bot.logger.info("处理插件：FanSky_Qs-OpenAI模型2:" + `\n群：${e.group_id}\n` + "QQ:" + `${e.user_id}\n` + `消息：${msg}`)
         let GetResult = await this.SingIn(e)
-        console.log("GetResult:"+GetResult)
+        console.log("GetResult:" + GetResult)
         if (!GetResult || GetResult === true || GetResult === "true") {
             return true
         }
