@@ -25,10 +25,35 @@ export class ChangeAIModel extends plugin {
                 }, {
                     reg: /#?(设置|更改|修改)模型模式(.*)/,
                     fnc: 'ChangeAIModelMode'
+                },{
+                    reg: /#?(设置|更改|修改)模型打卡(开启|打开|启用|关闭|不启用)/,
+                    fnc: 'ChangeAISignMode'
                 }
             ]
         })
     };
+    async ChangeAISignMode(e){
+        if (!e.isMaster) {
+            e.reply("打咩，你还不可以控制这个噢(Ｔ▽Ｔ)~")
+            return true
+        }
+        let path = `${process.cwd()}/plugins/FanSky_Qs/config/OpenAI.json`
+        path = path.replace(/\\/g, "/");
+        let OpenAIJson = JSON.parse(fs.readFileSync(path))
+        let SignMode =e.msg.match(/#?(设置|更改|修改)模型打卡(开启|打开|启用|关闭|不启用)/)[2]
+        //读取SignMode，如为开启、打开、启用，则为true，否则为false
+        let ModeSta= SignMode === "开启" || SignMode === "打开" || SignMode === "启用" ? true : false
+        if(ModeSta){
+            OpenAIJson.SignMode = "开启"
+            await fs.writeFileSync(path, JSON.stringify(OpenAIJson));
+            e.reply(`艾特对话 绑定打卡系统开启`)
+        }else{
+            OpenAIJson.SignMode = "关闭"
+            await fs.writeFileSync(path, JSON.stringify(OpenAIJson));
+            e.reply(`艾特对话 绑定打卡系统关闭`)
+        }
+        return true
+    }
     async ChangeAIModelMode(e){
         if (!e.isMaster) {
             e.reply("打咩，你还不可以控制这个噢(Ｔ▽Ｔ)~")
