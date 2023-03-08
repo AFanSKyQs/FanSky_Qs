@@ -15,6 +15,9 @@ export class SayHelloToAI extends plugin {
                 {
                     reg: /#?(早|早上|上午|午|中午|下午|晚|晚上|午夜|半夜|凌晨|深夜)(好！|好!|好呀!|好呀！|好|安|安好梦|好呀|愉快|好喵！|好喵!|好喵)(.*)/,
                     fnc: 'SayHelloToAI'
+                },{
+                    reg: "^早$",
+                    fnc: 'SayHelloToAI'
                 },
             ]
         })
