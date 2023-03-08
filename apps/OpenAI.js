@@ -88,7 +88,7 @@ export class OpenAI extends plugin {
         if (Json.Model === 1) {
             await this.OpenAIModel1(e, OpenAI_Key, Json)
         } else if (Json.Model === 2) {
-            await this.OpenAIModel2(e, OpenAI_Key, Json.Model_list[1],Json)
+            await this.OpenAIModel2(e, OpenAI_Key, Json.Model_list[1], Json)
         }
         return true
     }
@@ -96,10 +96,13 @@ export class OpenAI extends plugin {
     async OpenAIModel1(e, OpenAI_Key, Json) {
         let msg = e.msg
         Bot.logger.info("处理插件：FanSky_Qs-OpenAI模型1:" + `\n群：${e.group_id}\n` + "QQ:" + `${e.user_id}\n` + `消息：${msg}`)
-        let GetResult = await this.SingIn(e)
-        console.log("GetResult:" + GetResult)
-        if (!GetResult || GetResult === true || GetResult === "true") {
-            return true
+        let GetResult = "不限"
+        if (Json.SignMode === "开启") {
+            GetResult = await this.SingIn(e)
+            console.log("GetResult:" + GetResult)
+            if (!GetResult || GetResult === true || GetResult === "true") {
+                return true
+            }
         }
         MoudelStatus[e.user_id] = true
         let Persona = Json.Persona// 人设
@@ -116,7 +119,7 @@ export class OpenAI extends plugin {
         } else {
             // 先对比一下本次预设的人设是否与上次一致，如果不一致则重置重新开始
             if (Moudel1List[e.user_id].messages[0].content !== Persona) {
-                e.reply("AI检测到人设已经改变，已重置记忆，生成中...", true,{recallMsg: 10})
+                e.reply("AI检测到人设已经改变，已重置记忆，生成中...", true, {recallMsg: 10})
                 DataList.messages.push({"role": "user", "content": msg})
                 Moudel1List[e.user_id] = DataList
                 Moudel1Num[e.user_id] = 1
@@ -151,7 +154,7 @@ export class OpenAI extends plugin {
                     delete Moudel1List[e.user_id]
                     delete Moudel1Num[e.user_id]
                 }
-                if(Json.ModelMode === 1){
+                if (Json.ModelMode === 1) {
                     delete Moudel1List[e.user_id]
                     delete Moudel1Num[e.user_id]
                 }
@@ -230,13 +233,16 @@ export class OpenAI extends plugin {
         return SignDay[e.user_id].rough
     }
 
-    async OpenAIModel2(e, OpenAI_Key, Model ,Json) {
+    async OpenAIModel2(e, OpenAI_Key, Model, Json) {
         let msg = e.msg
         Bot.logger.info("处理插件：FanSky_Qs-OpenAI模型2:" + `\n群：${e.group_id}\n` + "QQ:" + `${e.user_id}\n` + `消息：${msg}`)
-        let GetResult = await this.SingIn(e)
-        console.log("GetResult:" + GetResult)
-        if (!GetResult || GetResult === true || GetResult === "true") {
-            return true
+        let GetResult = "不限"
+        if (Json.SignMode === "开启") {
+            GetResult = await this.SingIn(e)
+            console.log("GetResult:" + GetResult)
+            if (!GetResult || GetResult === true || GetResult === "true") {
+                return true
+            }
         }
         MoudelStatus[e.user_id] = true
         if (!Axios[e.user_id]) {
@@ -266,7 +272,7 @@ export class OpenAI extends plugin {
         };
         try {
             userCount[e.user_id] = userCount[e.user_id] - 1;
-            await this.MsgOpenAIModel2(e, OpenAI, GetResult, OpenAI_Key ,Json)
+            await this.MsgOpenAIModel2(e, OpenAI, GetResult, OpenAI_Key, Json)
         } catch (err) {
             delete MoudelStatus[e.user_id]
             e.reply("AI出错了！请联系开发人员（3141865879）\n" + err, true)
@@ -277,7 +283,7 @@ export class OpenAI extends plugin {
         }
     }
 
-    async MsgOpenAIModel2(e, PostDate, GetResult, OpenAI_KEY ,Json) {
+    async MsgOpenAIModel2(e, PostDate, GetResult, OpenAI_KEY, Json) {
         try {
             axios({
                 method: 'post',
@@ -326,7 +332,7 @@ export class OpenAI extends plugin {
                     Axios[e.user_id] = [""]
                     e.reply("对话已重置，将开始新的记忆。")
                 }
-                if(Json.ModelMode === 1){
+                if (Json.ModelMode === 1) {
                     Axios[e.user_id] = [""]
                 }
                 let TextToImg = (await getCfg(yunPath, "OpenAI")).Text_img
