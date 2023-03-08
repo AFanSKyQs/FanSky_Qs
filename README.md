@@ -15,10 +15,9 @@ FanSky_Qs是一个Yunzai-Bot插件，实现了一些奇奇怪怪的功能。<br>
 
 </div>
 
-##
+
 ## OpenAI现在需要设置代理使用，有使用问题请入群艾特我一下，免费解决问题提供一些东西[755794036](https://jq.qq.com/?_wv=1027&k=I2HCxKdM)
 
-##
 ## 一、FanSky_Qs说明
 
 `FanSky_Qs`是`Yunzai-Bot`的扩展插件，提供部分群聊等小功能小游戏。
