@@ -22,11 +22,36 @@ export class ChangeAIModel extends plugin {
                 }, {
                     reg: /#?(设置|更改|修改)模型人设(.*)/,
                     fnc: 'SetPersona'
+                }, {
+                    reg: /#?(设置|更改|修改)模型模式(.*)/,
+                    fnc: 'ChangeAIModelMode'
                 }
             ]
         })
     };
-
+    async ChangeAIModelMode(e){
+        if (!e.isMaster) {
+            e.reply("打咩，你还不可以控制这个噢(Ｔ▽Ｔ)~")
+            return true
+        }
+        let path = `${process.cwd()}/plugins/FanSky_Qs/config/OpenAI.json`
+        path = path.replace(/\\/g, "/");
+        let msg = e.msg
+        let ModelMode = Number(msg.match(/\d+/)[0])
+        let OpenAIJson = JSON.parse(fs.readFileSync(path))
+        if (ModelMode === 1 ) {
+            OpenAIJson.ModelMode = ModelMode
+            await fs.writeFileSync(path, JSON.stringify(OpenAIJson));
+            e.reply(`您选择了模式${ModelMode}:\n1:每轮重置,不记忆对话`)
+        } else if(ModelMode === 2) {
+            OpenAIJson.ModelMode = ModelMode
+            await fs.writeFileSync(path, JSON.stringify(OpenAIJson));
+            e.reply(`您选择了模式${ModelMode}：\n每轮不重置,记忆对话`)
+        }else{
+            e.reply(`您选择了模式${ModelMode},暂时仅支持1和2两种模式~\n1:每轮重置\n2:每轮不重置,记忆对话\n当前模型模式：${OpenAIJson.ModelMode}}`)
+        }
+        return true
+    }
     async addBlackList(e) {
         if (!e.isMaster) {
             e.reply("打咩，你在赣神魔！∑(ΦдΦlll~")
