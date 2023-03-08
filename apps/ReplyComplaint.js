@@ -10,7 +10,8 @@ export class ReplyComplaint extends plugin {
             rule: [
                 {
                     reg: /.*/i,
-                    fnc: 'Complaint'
+                    fnc: 'Complaint',
+                    log:false
                 }, {
                     reg: /#?(发病|发电|发癫|发疯)/,
                     fnc: 'Complaint'
