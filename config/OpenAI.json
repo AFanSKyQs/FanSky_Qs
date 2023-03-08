@@ -10,6 +10,7 @@
   ],
   "Model": 1,
   "ModelMode":1,
+  "SignMode": "开启",
   "BlackList": [
     123,
     456
