@@ -88,7 +88,7 @@ export class OpenAI extends plugin {
         if (Json.Model === 1) {
             await this.OpenAIModel1(e, OpenAI_Key, Json)
         } else if (Json.Model === 2) {
-            await this.OpenAIModel2(e, OpenAI_Key, Json.Model_list[1])
+            await this.OpenAIModel2(e, OpenAI_Key, Json.Model_list[1],Json)
         }
         return true
     }
@@ -148,6 +148,10 @@ export class OpenAI extends plugin {
                 Moudel1List[e.user_id].messages.push({"role": "assistant", "content": result})
                 delete MoudelStatus[e.user_id]
                 if (Moudel1Num[e.user_id] >= 10 && !e.isMaster) {
+                    delete Moudel1List[e.user_id]
+                    delete Moudel1Num[e.user_id]
+                }
+                if(Json.ModelMode === 1){
                     delete Moudel1List[e.user_id]
                     delete Moudel1Num[e.user_id]
                 }
@@ -226,7 +230,7 @@ export class OpenAI extends plugin {
         return SignDay[e.user_id].rough
     }
 
-    async OpenAIModel2(e, OpenAI_Key, Model) {
+    async OpenAIModel2(e, OpenAI_Key, Model ,Json) {
         let msg = e.msg
         Bot.logger.info("处理插件：FanSky_Qs-OpenAI模型2:" + `\n群：${e.group_id}\n` + "QQ:" + `${e.user_id}\n` + `消息：${msg}`)
         let GetResult = await this.SingIn(e)
@@ -262,7 +266,7 @@ export class OpenAI extends plugin {
         };
         try {
             userCount[e.user_id] = userCount[e.user_id] - 1;
-            await this.MsgOpenAIModel2(e, OpenAI, GetResult, OpenAI_Key)
+            await this.MsgOpenAIModel2(e, OpenAI, GetResult, OpenAI_Key ,Json)
         } catch (err) {
             delete MoudelStatus[e.user_id]
             e.reply("AI出错了！请联系开发人员（3141865879）\n" + err, true)
@@ -273,7 +277,7 @@ export class OpenAI extends plugin {
         }
     }
 
-    async MsgOpenAIModel2(e, PostDate, GetResult, OpenAI_KEY) {
+    async MsgOpenAIModel2(e, PostDate, GetResult, OpenAI_KEY ,Json) {
         try {
             axios({
                 method: 'post',
@@ -321,6 +325,9 @@ export class OpenAI extends plugin {
                     }
                     Axios[e.user_id] = [""]
                     e.reply("对话已重置，将开始新的记忆。")
+                }
+                if(Json.ModelMode === 1){
+                    Axios[e.user_id] = [""]
                 }
                 let TextToImg = (await getCfg(yunPath, "OpenAI")).Text_img
                 if (Axios_Temp.length > TextToImg) {
