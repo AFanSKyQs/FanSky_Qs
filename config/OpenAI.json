@@ -1,5 +1,5 @@
 {
-  "OpenAI_Key": "OpenAI_Key",
+  "OpenAI_Key": "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",
   "Text_img": 100,
   "Model_list": [
     "gpt-3.5-turbo-0301",
