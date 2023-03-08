@@ -4,7 +4,7 @@ import cfg from "../../../lib/config/config.js";
 import plugin from "../../../lib/plugins/plugin.js";
 
 let Sign_path = `${process.cwd()}/resources/FanSky/SignIn.json`
-let Top_path = `${process.cwd()}/resources/FanSky/SignIn.json`
+let Top_path = `${process.cwd()}/resources/FanSky/SignTop.json`
 let Test1_path = `${process.cwd()}/resources/FanSky/Test1.json`
 let Test2_path = `${process.cwd()}/resources/FanSky/Test2.json`
 export class EliminateEveryDay extends plugin {
@@ -34,7 +34,6 @@ export class EliminateEveryDay extends plugin {
             //     this.ClearSignTaskTest();
             //     this.ClearTopTest();
             // },
-
         }
     }
     async ClearSignTaskTest() {
