@@ -7,6 +7,6 @@ export async function getUrlJson(URL, e) {
         return await e.reply(`${URL}\n请求失败~~`)
     }
     let json = await res.json()
-    console.log(json)
+    // console.log(json)
     return json
 }
