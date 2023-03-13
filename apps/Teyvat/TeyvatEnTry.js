@@ -63,7 +63,7 @@ export class TeyvatEnTry extends plugin {
             priority: 3141,
             rule: [
                 {
-                    reg: /#?提瓦特小助手/,
+                    reg: /#提瓦特小助手/,
                     fnc: 'TeyvatEnTry'
                 }, {
                     reg: /#更新小助手配置/,
@@ -78,6 +78,7 @@ export class TeyvatEnTry extends plugin {
     }
 
     async TeyvatEnTry(e) {
+        if(e.is_owner)
         e.reply(">>>FanSky_Qs正在施工中");
         // let PATH = DATA_PATH.replace(/\\/g, "/");
         // let DATA_JSON = JSON.parse(fs.readFileSync(PATH));
@@ -110,3 +111,5 @@ export class TeyvatEnTry extends plugin {
         e.reply(">>>[FanSky_Qs]已写入JSON配置项");
     }
 }
+
+export default FirstUpdataJSON
