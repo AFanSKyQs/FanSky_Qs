@@ -6,6 +6,7 @@ import cfg from "../../../../lib/config/config.js";
 
 let ONE_PATH = `${process.cwd()}/plugins/FanSky_Qs/config/TeyvatConfig`
 let DATA_PATH = `${process.cwd()}/plugins/FanSky_Qs/config/TeyvatConfig/TeyvatUrlJson.json`
+
 if (!fs.existsSync(ONE_PATH)) {
     Bot.logger.info(">>>已创建TeyvatConfig文件夹");
     fs.mkdirSync(ONE_PATH);
@@ -111,5 +112,3 @@ export class TeyvatEnTry extends plugin {
         e.reply(">>>[FanSky_Qs]已写入JSON配置项");
     }
 }
-
-export default FirstUpdataJSON
