@@ -1,21 +1,23 @@
 import {ELEM, GROW_VALUE, MAIN_AFFIXS, POS, PROP, RANK_MAP, SKILL, SUB_AFFIXS} from "../../models/Teyvat/index.js"
 
-await getAvatarData("117556563", "single");
+let DATA_PATH = `E:/Bot_V3/yunzai/Yunzai-Bot/plugins/FanSky_Qs/config/TeyvatConfig/TeyvatUrlJson.json`   //本地测试路径
+// await getAvatarData("117556563", "single"); // uid   单人伤害：single  队伍伤害：team
 import ReturnConfig from "./ReadTeyvatJson.js";
 
-let JSON = await ReturnConfig()
-let CHAR_DATA, HASH_TRANS, CALC_RULES, RELIC_APPEND
-CHAR_DATA = JSON["CHAR_DATA"]
-HASH_TRANS = JSON["HASH_TRANS"]
-CALC_RULES = JSON["CALC_RULES"]
-RELIC_APPEND = JSON["RELIC_APPEND"]
+async function ReturnJson() {
+    console.log("DATA_PATH" + DATA_PATH)
+    return await ReturnConfig(DATA_PATH)
+}
+
 const headers = {
     referer: 'https://servicewechat.com/wx2ac9dce11213c3a8/192/page-frame.html',
     'user-agent':
         'Mozilla/5.0 (Linux; Android 12; SM-G977N Build/SP1A.210812.016; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/86.0.4240.99 XWEB/4375 MMWEBSDK/20221011 Mobile Safari/537.36 MMWEBID/4357 MicroMessenger/8.0.30.2244(0x28001E44) WeChat/arm64 Weixin GPVersion/1 NetType/WIFI Language/zh_CN ABI/arm64 MiniProgramEnv/android',
 };
+await getAvatarData("117556563", "single")
 
 async function getTeyvatData(TBody, type = "single") {
+    console.log("进入了：getTeyvatData---type:" + type)
     const apiMap = {
         "single": "https://api.lelaer.com/ys/getDamageResult.php",
         "team": "https://api.lelaer.com/ys/getTeamResult.php",
@@ -88,6 +90,7 @@ async function getTeam(uid, chars = [], showDetail = false) {
 }
 
 async function getAvatarData(uid, char = "全部") {
+    console.log("进入了：getAvatarData")
     // const cache = LOCAL_DIR.join("cache", `${uid}.json`);
     let cacheData = {},
         nextQueryTime = 0;
@@ -207,6 +210,7 @@ async function getAvatarData(uid, char = "全部") {
 }
 
 async function simplDamageRes(damage) {
+    console.log("进入了：simplDamageRes")
     const res = {level: damage["zdl_result"] || "NaN", data: [], buff: []};
     for (const key of ["damage_result_arr", "damage_result_arr2"]) {
         console.log("------------damage[key]------------")
@@ -244,6 +248,7 @@ async function simplDamageRes(damage) {
 }
 
 async function transTeyvatData(avatarsData, uid) {
+    console.log("进入了：transTeyvatData")
     let res = {"uid": uid, "role_data": []};
     if (uid[0] !== "1" && uid[0] !== "2") {
         res["server"] = getServer(uid, true);
@@ -349,6 +354,7 @@ async function transTeyvatData(avatarsData, uid) {
 
 // 请求enka的api
 async function requestDataApi(uid) {
+    console.log("进入了：requestDataApi")
     const enkaMirrors = [
         "https://enka.network",
         "http://profile.microgg.cn",
@@ -421,8 +427,13 @@ async function requestDataApi(uid) {
 }
 
 async function transFromEnka(avatarInfo, ts = 0) {
+    console.log("进入了：transFromEnka")
+    let Json = await ReturnJson()
+    let HASH_TRANS = Json["HASH_TRANS"]
+    let CHAR_DATA = Json["CHAR_DATA"]
     const charData = CHAR_DATA[String(avatarInfo["avatarId"])];
-    console.log("charData:" + charData)
+    console.log("----------------charData:-----------------")
+    console.log(charData)
     const res = {
         "id": avatarInfo["avatarId"],
         "rarity": (charData["QualityType"].includes("QUALITY_ORANGE")) ? 5 : 4,
@@ -474,7 +485,8 @@ async function transFromEnka(avatarInfo, ts = 0) {
     const extraLevels = Object.fromEntries(
         Object.entries(avatarInfo["proudSkillExtraLevelMap"] || {}).map(([k, v]) => [k.slice(-1), v])
     );
-    console.log("extraLevels:" + extraLevels)
+    console.log("---------extraLevels---------")
+    console.log(extraLevels)
     for (let idx = 0; idx < charData["SkillOrder"].length; idx++) {
         const skillId = charData["SkillOrder"][idx];
         // 实际技能等级、显示技能等级
@@ -489,9 +501,9 @@ async function transFromEnka(avatarInfo, ts = 0) {
     }
     res["skills"] = skills;
     // 命座数据
-    const consts = [];
+    let consts = [];
     for (let cIdx = 0; cIdx < charData["Consts"].length; cIdx++) {
-        const consImgName = charData["Consts"][cIdx];
+        let consImgName = charData["Consts"][cIdx];
         consts.push({
             "style": cIdx + 1 > res["cons"] ? "off" : "",
             "icon": consImgName,
@@ -499,7 +511,7 @@ async function transFromEnka(avatarInfo, ts = 0) {
     }
     res["consts"] = consts;
     // 装备数据
-    const [affixWeight, pointMark, maxMark] = getRelicConfig(charData["NameCN"], res["baseProp"]);
+    let [affixWeight, pointMark, maxMark] = await getRelicConfig(charData["NameCN"], res["baseProp"]);
     let [relicsMark, relicsCnt, relicSet] = [0.0, 0, {}];
     for (let equip of avatarInfo["equipList"]) {
         if (equip["flat"]["itemType"] === "ITEM_WEAPON") {
@@ -571,10 +583,13 @@ async function transFromEnka(avatarInfo, ts = 0) {
 }
 
 async function calcRelicMark(relicData, charElement, affixWeight, pointMark, maxMark) {
+    console.log("进入了：calcRelicMark")
     const posIdx = relicData["pos"].toString();
     const relicLevel = relicData["level"];
     const mainProp = relicData["main"];
     const subProps = relicData["sub"];
+    let Json = await ReturnJson();
+    let RELIC_APPEND = Json["RELIC_APPEND"]
 
     // 主词条得分、主词条收益系数（百分数）
     let calcMain, calcMainPct;
@@ -636,87 +651,83 @@ async function calcRelicMark(relicData, charElement, affixWeight, pointMark, max
 }
 
 function getRelicRank(score) {
+    console.log("进入了：getRelicRank")
     const rank = RANK_MAP.find(r => score <= r[1]);
     return rank ? rank[0] : score <= 66 ? "ERR" : null;
 }
 
-function getRelicConfig(char, base = {}) {
-    const affixWeight = CALC_RULES[char] || {"攻击力百分比": 75, "暴击率": 100, "暴击伤害": 100};
+async function getRelicConfig(char, base = {}) {
+    console.log("进入了：getRelicConfig")
+    let Json = await ReturnJson()
+    let CALC_RULES = Json["CALC_RULES"]
+    const affixWeight = CALC_RULES[char] ?? {"攻击力百分比": 75, "暴击率": 100, "暴击伤害": 100};
     const sortedAffixWeight = Object.fromEntries(
         Object.entries(affixWeight).sort((a, b) => {
-            const keyA = a[0], keyB = b[0];
-            const valA = a[1], valB = b[1];
-            if (valA === valB) {
-                if (keyA.includes("暴击")) {
-                    return -1;
-                }
-                if (keyB.includes("暴击")) {
-                    return 1;
-                }
-                if (keyA.includes("加成")) {
-                    return -1;
-                }
-                if (keyB.includes("加成")) {
-                    return 1;
-                }
-                if (keyA.includes("元素")) {
-                    return -1;
-                }
-                if (keyB.includes("元素")) {
-                    return 1;
-                }
-                return 0;
-            }
-            return valB - valA;
+            return (
+                b[1] - a[1] ||
+                (a[0].includes("暴击") ? -1 : 1) ||
+                (a[0].includes("加成") ? -1 : 1) ||
+                (a[0].includes("元素") ? -1 : 1)
+            );
         })
     );
     const pointMark = {};
     for (const [k, v] of Object.entries(sortedAffixWeight)) {
         pointMark[k] = v / GROW_VALUE[k];
-        if (k === "攻击力百分比") {
-            pointMark["攻击力"] = pointMark[k] / (base["攻击力"] || 1020) * 100;
-        }
-        if (k === "防御力百分比") {
-            pointMark["防御力"] = pointMark[k] / (base["防御力"] || 300) * 100;
-        }
-        if (k === "生命值百分比") {
-            pointMark["生命值"] = pointMark[k] / (base["生命值"] || 400) * 100;
-        }
     }
-    const maxMark = {"1": {}, "2": {}, "3": {}, "4": {}, "5": {}};
+    if (pointMark["攻击力百分比"]) {
+        pointMark["攻击力"] =
+            (pointMark["攻击力百分比"] / (base["攻击力"] ?? 1020)) * 100;
+    }
+    if (pointMark["防御力百分比"]) {
+        pointMark["防御力"] =
+            (pointMark["防御力百分比"] / (base["防御力"] ?? 300)) * 100;
+    }
+    if (pointMark["生命值百分比"]) {
+        pointMark["生命值"] =
+            (pointMark["生命值百分比"] / (base["生命值"] ?? 400)) * 100;
+    }
+    const maxMark = {
+        "1": {main: 0, total: 0},
+        "2": {main: 0, total: 0},
+        "3": {main: 0, total: 0},
+        "4": {main: 0, total: 0},
+        "5": {main: 0, total: 0},
+    };
     for (let posIdx = 1; posIdx < 6; posIdx++) {
         // 主词条最高得分
         let mainAffix;
         if (posIdx <= 2) {
             // 花和羽不计算主词条得分
-            mainAffix = posIdx === 1 ? "生命值" : "攻击力";
+            mainAffix = (posIdx === 1) ? "生命值" : "攻击力";
             maxMark[posIdx.toString()]["main"] = 0;
             maxMark[posIdx.toString()]["total"] = 0;
         } else {
             // 沙杯头计算该位置评分权重最高的词条得分
-            const avalMainAffix = Object.fromEntries(Object.entries(affixWeight)
-                .filter(([k]) => MAIN_AFFIXS[posIdx.toString()].includes(k)));
+            const avalMainAffix = Object.fromEntries(Object.entries(affixWeight).filter(([k, v]) => MAIN_AFFIXS[posIdx.toString()].includes(k)));
             mainAffix = Object.keys(avalMainAffix)[0];
             maxMark[posIdx.toString()]["main"] = affixWeight[mainAffix];
             maxMark[posIdx.toString()]["total"] = affixWeight[mainAffix] * 2;
         }
         // 副词条最高得分
-        const maxSubAffixs = Object.keys(affixWeight)
-            .filter(k => SUB_AFFIXS.includes(k) && k !== mainAffix && affixWeight[k])
-            .map(k => [k, affixWeight[k]]);
-        // 副词条中评分权重最高的词条得分大幅提升
-        maxMark[posIdx.toString()]["total"] += maxSubAffixs.slice(0, 4).reduce((sum, [k], kIdx) => {
-            return sum + affixWeight[k] * (kIdx === 0 ? 1 : 6);
+        let maxSubAffixs = {};
+        for (let k in affixWeight) {
+            if (SUB_AFFIXS.includes(k) && k !== mainAffix && affixWeight[k]) {
+                maxSubAffixs[k] = affixWeight[k];
+            }
+        }
+        let subAffixList = Object.keys(maxSubAffixs).slice(0, 4);
+        let totalScore = subAffixList.reduce((acc, k, kIdx) => {
+            return acc + affixWeight[k] * (kIdx === 0 ? 1 : 6);
         }, 0);
-
+        maxMark[posIdx.toString()]["total"] += totalScore;
+        // 副词条最高得分
+        // const maxSubAffixs = Object.fromEntries(Object.entries(affixWeight).filter(([k, v]) => SUB_AFFIXS.includes(k) && k !== mainAffix && affixWeight[k]));
+        // maxMark[posIdx.toString()]["total"] += [...maxSubAffixs.entries()].slice(0, 4).reduce((sum, [k, v], kIdx) => sum + affixWeight[k] * (kIdx ? 6 : 1), 0);
     }
-    console.debug(`「${char}」圣遗物评分依据：
-    \n\t词条评分权重 affixWeight\n\t${Object.entries(affixWeight).map(([k, v]) => `${k}[${v}]`).join(' / ')}
-    \n\t词条数值原始权重 pointMark\n\t${Object.entries(pointMark).map(([k, v]) => `${k}[${v}]`).join(' / ')}
-    \n\t各位置圣遗物最高得分 maxMark\n\t${Object.entries(maxMark).map(([k, v]) => `${Object.values(POS)[parseInt(k) - 1]}>主词条[${v['main']}]总分[${v['total']}]`).join(' / ')}`);
-
-    return [sortedAffixWeight, pointMark, maxMark];
+    return [affixWeight, pointMark, maxMark];
 }
+
 
 function vStr(prop, value) {
     if (["生命值", "攻击力", "防御力", "元素精通"].includes(prop)) {
