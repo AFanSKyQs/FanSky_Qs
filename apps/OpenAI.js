@@ -50,12 +50,12 @@ export class OpenAI extends plugin {
     };
 
     async OpenAI(e) {
-        if (e.message[0].type !== "at") {
-            return false
-        }
-        if (e.message[1].type !== "text") {
-            return false
-        }
+        // if (e.message[0].type !== "at") {
+        //     return false
+        // }
+        // if (e.message[1].type !== "text") {
+        //     return false
+        // }
         if (!e.isGroup && !e.isMaster) {
             return false
         }
