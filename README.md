@@ -47,14 +47,14 @@
   
   ##
   
-## ⊚  使用安装
+## ⊚  使用安装(这里使用的gitee)
 根目录下：
 ```
-git clone https://github.com/AFanSKyQs/FanSky_Qs.git ./plugins/FanSky_Qs/
+git clone https://gitee.com/FanSky_Qs/FanSky_Qs.git ./plugins/FanSky_Qs/
 ```
 plugins目录下：
 ```
-git clone https://github.com/AFanSKyQs/FanSky_Qs.git
+git clone https://gitee.com/FanSky_Qs/FanSky_Qs.git
 ```
 ## ⊚  更新：`#fans更新`、`#fans强制更新`
 
