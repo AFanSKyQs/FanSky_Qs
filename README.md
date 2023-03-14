@@ -72,11 +72,15 @@ git clone https://gitee.com/FanSky_Qs/FanSky_Qs.git
 
 <div align="left">
   
-  <h1>🌟单功能系统</h1>
+<!--   <h1>🌟单功能系统</h1> -->
   
    
-  <details><summary><h2>点击展开查看单功能系统</h2></summary>
-   <div>
+  <details>
+    <summary>
+      <h1>🌟单功能系统</h1>
+<!--     <h2>点击展开查看单功能系统</h2> -->
+    </summary>
+<!--    <div> -->
   
 | 功能名称  | 功能指令 |功能示例说明 |
 | :-------------: | :-------------: |:-------------: |
@@ -88,18 +92,19 @@ git clone https://gitee.com/FanSky_Qs/FanSky_Qs.git
      
      
   
-  </div>
+<!--   </div> -->
     </details>
  </div>
  
 ##
 
 <div align="left">
-  <h1>🍁打卡-魔晶系统</h1>
+<!--   <h1>🍁打卡-魔晶系统（卡牌系统开发中）</h1> -->
   
-### 目前仅记录魔晶值与部分信息，后续将开发联动魔晶的`卡牌系统`
+<!-- ### 目前仅记录魔晶值与部分信息，后续将开发联动魔晶的`卡牌系统` -->
   <details>
-    <summary><h2>点击展开查看打卡系统</h2></summary>
+    <summary><h1>🍁打卡-魔晶系统（卡牌系统开发中）</h1></summary>
+<!--     <summary><h2>点击展开查看打卡系统</h2></summary> -->
     
 | 功能名称 | 功能指令？ |功能示例说明 |
 | ------------- | ------------- |:-------------: |
@@ -114,9 +119,13 @@ git clone https://gitee.com/FanSky_Qs/FanSky_Qs.git
 ##
 
 <div align="left">
-  <h1> 🤯 OpenAI系统 </h1>
+<!--   <h1> 🤯 OpenAI系统 </h1> -->
   
-  <details><summary><h2>点击展开查看OpenAI系统</h2></summary>
+  <details>
+    <summary>
+      <h1> 🤯 OpenAI系统 </h1>
+<!--       <h2>点击展开查看OpenAI系统</h2> -->
+    </summary>
   
 模型的使用:设置好你的`OpenAI_Key`以后，艾特机器人即可开始对话聊天<br>![S@QNXEP$V{2TY`Z@SNKQ8XL](https://user-images.githubusercontent.com/59954030/224913376-7a6a0ca0-9d5e-48c7-a687-8f85e6ac56c3.png)
   
@@ -131,8 +140,10 @@ git clone https://gitee.com/FanSky_Qs/FanSky_Qs.git
 |  模型模式 | `设置模型模式`1  | 模式1：每轮重置,`不记忆对话`、模式2：`记忆对话`，`每个人的记忆是单独的` |
 | 模型联动打卡系统|`设置模型打卡`开启  | 与打卡的魔晶系统联动，每次对话`花费8魔晶`，无魔晶或无打卡会提示  |
 | 早、中、晚问候|无需指令  | 设置了`OpenAI_key`后，群友发早、晚、早安...等所有问候词语都会`接入AI`，然后AI做出对问候的回复<br>![AI问候压缩](https://user-images.githubusercontent.com/59954030/224919065-3ca33e2d-5644-4c40-8f76-a87ce7f384fc.png)|
-    
+    </details>
  </div>
+ 
+ ##
  
 ## 后续帮助完善后通过发送`#fans帮助`来进行查看。
 
