@@ -20,7 +20,7 @@ for (let i in files) {
         const AMatchFan = AFanReaSon.match(ARegexFan);
         if (AMatchFan) {
             const APackageNameY = AMatchFan[1];
-            logger.warn(`请运行：${logger.red(`pnpm add ${APackageNameY} -w`)}安装依赖`)
+            logger.warn(`请运行：${logger.red(`pnpm install`)}安装依赖`)
             APackageFanError++
         }else{
           logger.error(ret[i].reason)
