@@ -1,0 +1,3 @@
+请不要动default_config配置,在OpenAI.json填入OpenAI_Key即可
+请不要动default_config配置,在OpenAI.json填入OpenAI_Key即可
+请不要动default_config配置,在OpenAI.json填入OpenAI_Key即可

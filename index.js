@@ -1,9 +1,11 @@
 import fs from 'fs'
+import {ReadOpenAIDefaultConfig} from "./models/OpenAI/ReadOpenAIDefaultConfig.js";
 
 Bot.logger.info('-------------^_^--------------')
 Bot.logger.info(`----FanSky_Qs插件初始化中------`)
 
 const files = fs.readdirSync('./plugins/FanSky_Qs/apps').filter(file => file.endsWith('.js'))
+await ReadOpenAIDefaultConfig()
 let ret = []
 files.forEach((file) => {
     ret.push(import(`./apps/${file}`))
@@ -20,7 +22,7 @@ for (let i in files) {
         const AMatchFan = AFanReaSon.match(ARegexFan);
         if (AMatchFan) {
             const APackageNameY = AMatchFan[1];
-            logger.warn(`请运行：${logger.red(`pnpm install`)}安装依赖`)
+            logger.warn(`请在根目录或FanSky_Qs目录运行：${logger.red(`pnpm install`)}安装依赖`)
             APackageFanError++
         }else{
           logger.error(ret[i].reason)
@@ -32,8 +34,7 @@ for (let i in files) {
 }
 Bot.logger.info(`----FanSky_Qs插件载入完成------`)
 if(APackageFanError>0){
-  logger.warn(logger.yellow(`---报错请按提示安装依赖，否则对应功能会无效喵！------`))
-  logger.warn(logger.yellow(`---报错请按提示安装依赖，否则对应功能会无效喵！------`))
-  logger.warn(logger.yellow(`---报错请按提示安装依赖，否则对应功能会无效喵！------`))
+  logger.warn(logger.yellow(`---请按提示安装依赖，否则对应功能会无效喵！------`))
+  logger.warn(logger.yellow(`---请按提示安装依赖，否则对应功能会无效喵！------`))
 }
 export {apps}

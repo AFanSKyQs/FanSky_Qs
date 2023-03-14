@@ -13,8 +13,8 @@ if (!fs.existsSync(ONE_PATH)) {
 }
 if (!await isFileExist(DATA_PATH)) {
     fs.writeFileSync(DATA_PATH, '{}');
-    Bot.logger.info(">>>已创建TeyvatUrlJson.json配置文件");
-    Bot.logger.info(">>>将在15s后初次写入必须JSON配置项");
+    logger.info(logger.magenta(">>>已创建TeyvatUrlJson.json配置文件"));
+    logger.info(logger.magenta(">>>将在15s后初次写入必须JSON配置项"));
 }
 setTimeout(async () => {
     await FirstUpdataJSON();
@@ -36,10 +36,10 @@ async function FirstUpdataJSON() {
             DATA_JSON["CALC_RULES"] = WriteCALC_RULESJson;
             DATA_JSON["RELIC_APPEND"] = WriteRELIC_APPENDJson;
             fs.writeFileSync(PATH, JSON.stringify(DATA_JSON));
-            Bot.logger.info(`>>>已写入CHAR_DATA配置项 `);
-            Bot.logger.info(`>>>已写入HASH_TRANS配置项 `);
-            Bot.logger.info(`>>>已写入CALC_RULES配置项 `);
-            Bot.logger.info(`>>>已写入RELIC_APPEND配置项 `);
+            // Bot.logger.info(`>>>已写入CHAR_DATA配置项 `);
+            // Bot.logger.info(`>>>已写入HASH_TRANS配置项 `);
+            // Bot.logger.info(`>>>已写入CALC_RULES配置项 `);
+            // Bot.logger.info(`>>>已写入RELIC_APPEND配置项 `);
             let list = cfg.masterQQ;
             for (let userId of list) {
                 await Bot.pickFriend(userId).sendMsg(">>>FanSky_Qs已写入JSON配置项,若JSON配置项为空，请发送【#更新小助手配置】！")
@@ -49,7 +49,7 @@ async function FirstUpdataJSON() {
             for (let userId of list) {
                 await Bot.pickFriend(userId).sendMsg(">>>FanSky_Qs写入配置项失败，请检查错误信息！")
             }
-            Bot.logger.info("FanSky_Qs写入配置项失败，请检查错误信息！");
+            logger.info(logger.red("FanSky_Qs写入配置项失败，请检查错误信息！"));
             console.log(err)
         }
     }
@@ -105,10 +105,10 @@ export class TeyvatEnTry extends plugin {
         DATA_JSON["CALC_RULES"] = CALC_RULES;
         DATA_JSON["RELIC_APPEND"] = RELIC_APPEND;
         fs.writeFileSync(PATH, JSON.stringify(DATA_JSON));
-        Bot.logger.info(`>>>已写入CHAR_DATA配置项 `);
-        Bot.logger.info(`>>>已写入HASH_TRANS配置项 `);
-        Bot.logger.info(`>>>已写入CALC_RULES配置项 `);
-        Bot.logger.info(`>>>已写入RELIC_APPEND配置项 `);
+        logger.info(logger.magenta(`>>>已写入CHAR_DATA配置项 `));
+        logger.info(logger.magenta(`>>>已写入HASH_TRANS配置项 `));
+        logger.info(logger.magenta(`>>>已写入CALC_RULES配置项 `));
+        logger.info(logger.magenta(`>>>已写入RELIC_APPEND配置项 `));
         e.reply(">>>[FanSky_Qs]已写入JSON配置项");
     }
 }

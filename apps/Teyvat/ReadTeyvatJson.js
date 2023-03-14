@@ -7,27 +7,27 @@ async function ReturnConfig(DATA_PATH) {
     let PATH = DATA_PATH.replace(/\\/g, "/");
     if (!await isFileExist(DATA_PATH)) {
         fs.writeFileSync(DATA_PATH, '{}');
-        console.info(">>>已创建TeyvatUrlJson.json配置文件");
+        logger.info(logger.magenta(">>>已创建TeyvatUrlJson.json配置文件"));
     }
     let DATA_JSON = JSON.parse(fs.readFileSync(PATH));
     if (!DATA_JSON["CHAR_DATA"] || !DATA_JSON["HASH_TRANS"] || !DATA_JSON["CALC_RULES"] || !DATA_JSON["RELIC_APPEND"]) {
-        console.info(">>>开始写入配置项");
+        logger.info(logger.magenta(">>>开始写入配置项"));
         await GetJson(PATH);
-        console.info(">>>写入配置项完成");
+        logger.info(logger.magenta(">>>写入配置项完成"));
     }
-    console.info(">>>检查配置项完成");
+    logger.info(logger.magenta(">>>检查配置项完成"));
     return await JSON.parse(fs.readFileSync(PATH));
 }
 async function GetJson(PATH) {
     let DATA_JSON = JSON.parse(fs.readFileSync(PATH));
     let CHAR_DATA = await LocalUpdateJson("https://cdn.monsterx.cn/bot/gspanel/char-data.json");
-    console.info(`>>>已写入CHAR_DATA配置项 `);
+    // console.info(`>>>已写入CHAR_DATA配置项 `);
     let HASH_TRANS = await LocalUpdateJson("https://cdn.monsterx.cn/bot/gspanel/hash-trans.json");
-    console.info(`>>>已写入HASH_TRANS配置项 `);
+    // console.info(`>>>已写入HASH_TRANS配置项 `);
     let CALC_RULES = await LocalUpdateJson("https://cdn.monsterx.cn/bot/gspanel/calc-rule.json");
-    console.info(`>>>已写入CALC_RULES配置项 `);
+    // console.info(`>>>已写入CALC_RULES配置项 `);
     let RELIC_APPEND = await LocalUpdateJson("https://cdn.monsterx.cn/bot/gspanel/relic-append.json");
-    console.info(`>>>已写入RELIC_APPEND配置项 `);
+    // console.info(`>>>已写入RELIC_APPEND配置项 `);
     DATA_JSON["CHAR_DATA"] = CHAR_DATA;
     DATA_JSON["HASH_TRANS"] = HASH_TRANS;
     DATA_JSON["CALC_RULES"] = CALC_RULES;

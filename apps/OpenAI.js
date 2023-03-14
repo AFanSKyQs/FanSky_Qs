@@ -70,9 +70,9 @@ export class OpenAI extends plugin {
         }
         const Json = await getCfg(yunPath, "OpenAI")
         const OpenAI_Key = Json.OpenAI_Key
-        if (OpenAI_Key === "OpenAI_Key" || !OpenAI_Key || OpenAI_Key === "") {
-            console.log("OpenAI_Key:" + OpenAI_Key)
-            e.reply("要与OpenAI聊天吗喵qwq,请先在FanSky_Qs/config/OpenAI中填写获取的OpenAI_Key")
+        if (OpenAI_Key === "这里填入你的OpenAI密钥即可" || !OpenAI_Key || OpenAI_Key === "") {
+            logger.info(logger.cyan("没有OpenAI密钥喵~"))
+            // e.reply("要与OpenAI聊天吗喵qwq,请先在FanSky_Qs/config/OpenAI中填写你的OpenAI_Key")
             return false
         }
         const BlackList = Json.BlackList //[123, 456] 黑名单列表
