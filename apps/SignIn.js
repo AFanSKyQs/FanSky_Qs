@@ -290,7 +290,7 @@ export class ClockIn extends plugin {
         await Bot.pickFriend(e.user_id).thumbUp(20);
         // let MsgListTwo=[segment.at(e.user_id),"\n给你点赞了喵~\n没点上加我好友发【打卡】~"]
         // await e.reply(MsgListTwo)
-        await this.setCard(e, NowSum)
+        // await this.setCard(e, NowSum)
         return true
     }
 
@@ -338,7 +338,7 @@ export class ClockIn extends plugin {
         await Bot.pickFriend(e.user_id).thumbUp(20);
         // let MsgListTwo=[segment.at(e.user_id),"\n给你点赞了喵~\n没点上加我好友发【打卡】~"]
         // await e.reply(MsgListTwo)
-        await this.setCard(e, NowSum)
+        // await this.setCard(e, NowSum)
         return true
     }
 
@@ -357,7 +357,7 @@ export class ClockIn extends plugin {
         })
         // let MsgListTwo=[segment.at(e.user_id),`\n给你点赞喵~\n没点上加我好友发【打卡】~\nhttps://gchat.qpic.cn/gchatpic_new/0/0-0-${Md5}/0`]
         // await e.reply(MsgListTwo)
-        await this.setCard(e, NowSum)
+        // await this.setCard(e, NowSum)
         return true
     }
 
