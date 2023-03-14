@@ -3,6 +3,8 @@ import {ELEM, GROW_VALUE, MAIN_AFFIXS, POS, PROP, RANK_MAP, SKILL, SUB_AFFIXS} f
 let DATA_PATH = `E:/Bot_V3/yunzai/Yunzai-Bot/plugins/FanSky_Qs/config/TeyvatConfig/TeyvatUrlJson.json`   //本地测试路径
 // await getAvatarData("117556563", "single"); // uid   单人伤害：single  队伍伤害：team
 import ReturnConfig from "./ReadTeyvatJson.js";
+import _ from 'lodash';
+import fetch from 'node-fetch';
 
 async function ReturnJson() {
     console.log("DATA_PATH" + DATA_PATH)
@@ -14,7 +16,8 @@ const headers = {
     'user-agent':
         'Mozilla/5.0 (Linux; Android 12; SM-G977N Build/SP1A.210812.016; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/86.0.4240.99 XWEB/4375 MMWEBSDK/20221011 Mobile Safari/537.36 MMWEBID/4357 MicroMessenger/8.0.30.2244(0x28001E44) WeChat/arm64 Weixin GPVersion/1 NetType/WIFI Language/zh_CN ABI/arm64 MiniProgramEnv/android',
 };
-await getAvatarData("117556563", "single")
+// await getAvatarData("117556563", "single")
+await getTeam('117556563');
 
 async function getTeyvatData(TBody, type = "single") {
     console.log("进入了：getTeyvatData---type:" + type)
@@ -68,7 +71,7 @@ async function getTeam(uid, chars = [], showDetail = false) {
     } else {
         return `玩家 ${uid} 的面板数据甚至不足以组成一支队伍呢！`;
     }
-    const extractCopy = JSON.parse(JSON.stringify(extract));
+    const extractCopy = extract;
     const TiwateBody = await transTeyvatData(extractCopy, uid);
     const TiwateRaw = await getTeyvatData(TiwateBody, "team");
     if (TiwateRaw["code"] !== 200 || !TiwateRaw["result"]) {
@@ -163,12 +166,25 @@ async function getAvatarData(uid, char = "全部") {
                 } else {
                     console.log("---------teyvatRaw.result--------------")
                     console.log(teyvatRaw.result)
-                    console.log("---------Object.entries(teyvatRaw.result)--------------")
-                    console.log(Object.entries(teyvatRaw.result))
-                    for (let [dmgIdx, dmgData] of Object.entries(teyvatRaw.result || [])) {
+                    // console.log("---------Object.entries(teyvatRaw.result)--------------")
+                    // console.log(Object.entries(teyvatRaw.result));
+                    let result = [];
+                    _.each(teyvatRaw.result, (v, k) => {
+                        let tmp = {};
+                        tmp[k] = v;
+                        result.push(tmp);
+                    });
+                    for (const dmgIdx in result) {
                         let aIdx = parseInt(Object.keys(wait4Dmg)[dmgIdx]);
-                        avatars[aIdx].damage = await simplDamageRes(dmgData);
+                        let dmgData = result[dmgIdx];
+                        if (avatars[aIdx]) {
+                            avatars[aIdx].damage = await simplDamageRes(dmgData);
+                        }
                     }
+                    // for (let [dmgIdx, dmgData] in Object.entries(teyvatRaw.result)) {
+                    //     let aIdx = parseInt(Object.keys(wait4Dmg)[dmgIdx]);
+                    //     avatars[aIdx].damage = await simplDamageRes(dmgData);
+                    // }
                     cacheData.avatars = [
                         ...avatars,
                         // ...Object.values(avatarsCache).filter(aData => !refreshed.includes(aData.id))
@@ -215,7 +231,8 @@ async function simplDamageRes(damage) {
     for (const key of ["damage_result_arr", "damage_result_arr2"]) {
         console.log("------------damage[key]------------")
         console.log(key)
-        for (const dmgDetail of damage[key]) {
+        for (const _key in damage[key]) {
+            let dmgDetail = damage[key][_key];
             console.log("------------dmgDetail------------")
             const dmgTitle = (key === "damage_result_arr2"
                 ? `[${damage["zdl_result2"]}]<br>`
@@ -231,7 +248,8 @@ async function simplDamageRes(damage) {
             res["data"].push([dmgTitle, dmgCrit, dmgExp]);
         }
     }
-    for (const buff of damage["bonus"]) {
+    for (const _key in damage["bonus"]) {
+        let buff = damage["bonus"][_key];
         const intro = buff.intro
             ? buff.intro
             : buff["intro"]
@@ -245,6 +263,139 @@ async function simplDamageRes(damage) {
     console.log("-----------数据检查simplDamageRes(damage)-------------")
     console.log(res)
     return res;
+}
+
+/**
+ * 转换队伍伤害计算请求数据为精简格式
+ * @param {Object} raw 队伍伤害计算请求数据，由 queryDamageApi(*, "team")["result"] 获取
+ * @param {Object} rolesData 角色数据，键为角色中文名，值为内部格式
+ * @returns {Object} 精简格式伤害数据。出错时返回 {"error": "错误信息"}
+ */
+async function simplTeamDamageRes (raw, rolesData) {
+    console.log('进入simplTeamDamageRes');
+    let s = raw['zdl_tips0'].replace(/你的队伍|，DPS为:/g,'').split("秒内造成总伤害");
+    let tm = s[0], total = s[1];
+    let pieData = [], pieColor = [];
+    _.each(raw.chart_data, v => {
+        let name_split = v.name.split('\n')
+        pieData.push({
+            'char': name_split[0],
+            'damage': parseFloat(name_split[1].replace('W', ''))
+        });
+        pieColor.push(v.label.color);
+    })
+    pieData = _.sortBy(pieData, 'damage').reverse();
+    // 寻找伤害最高的角色元素属性，跳过绽放等伤害来源
+    let elem = _.map(_.filter(pieData, i => rolesData[i.char]), v => rolesData[v.char].element)[0];
+
+    let avatars = {};
+    _.each(raw.role_list, role => {
+        let panelData = rolesData[role.role];
+
+        let relicSet = _.pickBy(panelData.relicSet, i=> i>=2);
+        let relics = _.map(_.filter(panelData.relics, r => _.keys(relicSet).includes(r.setName)), v => _.nth(v.icon.split('_'), -2));
+        relics = _.countBy(relics, v => v);
+        let sets = {};
+        _.each(relics, (r, k) => {
+            sets[k] = r < 4 ? 2 : 4;
+        });
+        
+        let skills = [];
+        _.each(panelData.skills, skill => {
+            skills.push({
+                "icon": skill.icon,
+                "style": skill.style,
+                "level": skill.level,
+            });
+        });
+
+        avatars[role.role] = {
+            "rarity": role.role_star,
+            "icon": panelData.icon,
+            "name": role.role,
+            "elem": panelData.element,
+            "cons": role.role_class,
+            "level": role.role_level.replace('Lv', ''),
+            "weapon": {
+                "icon": panelData.weapon.icon,
+                "level": panelData.weapon.level,
+                "rarity": panelData.weapon.rarity,
+                "affix": panelData.weapon.affix,
+            },
+            "sets": sets,
+            "cp": _.round(panelData.fightProp["暴击率"], 1),
+            "cd": _.round(panelData.fightProp["暴击伤害"], 1),
+            "key_prop": role.key_ability,
+            "key_value": role.key_value,
+            
+            "skills": skills,
+        }
+    });
+    
+    _.each(raw.recharge_info, rechargeData => {
+        let name = rechargeData.recharge.split('共获取同色球')[0];
+        let tmp = rechargeData.recharge.split('共获取同色球')[1];
+        let same = tmp.split("个，异色球")[0], diff = tmp.split("个，异色球")[1];
+        if (diff.split("个，无色球").length === 2) {
+            // 暂未排版无色球
+            diff = diff.split("个，无色球")[0]
+        }
+        avatars[name].recharge = {
+            "pct": rechargeData.rate,
+            "same": _.round(parseFloat(same), 1),
+            "diff": _.round(parseFloat(diff.replace("个", "")), 1),
+        };
+    });
+
+    let damages = [];
+    for (let step of raw.advice) {
+        if (!step.content) {
+            logger.error(`奇怪的伤害：${step}`);
+            continue;
+        }
+        let t = step.content.split(' ')[0], s = step.content.split(' ')[1];
+        let a = s.split('，')[0], d = []
+        if (s.split('，').length === 1) {
+            d = ['-', '-', '-'];
+        } else {
+            let dmgs = s.split('，')[1];
+            if (dmgs.split(',').length === 1) {
+                d = ['-', '-', _.last(dmgs.split(',')[0].split('：'))];
+            } else {
+                d = []; 
+                _.each(dmgs.split(','), dd => {
+                    d.push(_.last(dd.split(':')));
+                });     
+            }
+        }
+        damages.push([t.replace('s', ''), _.toUpper(a), ...d]);
+    }
+
+    let buffs = [];
+    for (let buff of raw.buff) {
+        if (!buff.content) {
+            logger.error(`奇怪的伤害：${step}`);
+            continue;
+        }
+        let t = buff.content.split(' ')[0], tmp = buff.content.split(' ')[1];
+        let b = tmp.split("-")[0], bd = _.tail(tmp.split('-')).join('-');
+        buffs.push([t.replace('s', ''), _.toUpper(b), _.toUpper(bd)]);
+    }
+
+    return {
+        "uid": raw.uid,
+        "elem": elem,
+        "rank": raw.zdl_tips2,
+        "dps": raw.zdl_result,
+        "tm": tm,
+        "total": total,
+        "pie_data": JSON.stringify(pieData),
+        "pie_color": JSON.stringify(pieColor),
+        "avatars": avatars,
+        "actions": raw.combo_intro.split(","),
+        "damages": damages,
+        "buffs": buffs,
+    }
 }
 
 async function transTeyvatData(avatarsData, uid) {
