@@ -64,7 +64,8 @@ export class OpenAI extends plugin {
       // e.reply("如果是想与AI对话\n请不要在开头输入#\n【这一般是指令】\n\n如果是指令请不要艾特机器人\n【艾特一般是与机器人对话】", true)
       return false
     }
-    if (!e.atBot) return false
+    console.log('e.atBot:' + e.atBot)
+    if (!e.atBot && !e.atme) return false
     if (!e.msg) {
       e.reply('你想对我说什么呢？baka不要空白呀！', true)
       return false
