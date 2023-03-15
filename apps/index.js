@@ -1,2 +1,2 @@
-import {TeyvatEnTry} from './Teyvat/TeyvatEnTry.js';
-export default TeyvatEnTry;
+import { BotEntry } from './Teyvat/BotEntry.js'
+export default BotEntry
