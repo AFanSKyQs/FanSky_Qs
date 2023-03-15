@@ -3,6 +3,7 @@
 <!--   <img src="https://i.imgtg.com/2023/02/11/cmxuS.png" alt="BgImg"> -->
   <img src="https://raw.githubusercontent.com/AFanSKyQs/AFanSKyQs/main/acg.png" alt="BgImg">
   </a>
+<!-- ![](https://komarev.com/ghpvc/?username=AFanSKyQs) -->
 <br><img src="https://count.getloli.com/get/@:fansky_qs?theme=asoul" /> <br>
 
 [![AFanSKyQs](https://img.shields.io/badge/GitHub_AFanSKyQs-yellowgreen?logo=github)](https://github.com/AFanSKyQs)
@@ -21,6 +22,7 @@
 </table>
 
 [![Contributors](https://img.shields.io/badge/Contributors-2-orange.svg?style=flat-square)](#Cntributors)
+![AFanSKyQs](https://komarev.com/ghpvc/?username=AFanSkyQs)
 
 </div>
 
@@ -33,7 +35,7 @@
 
 
 <div align="center">
-<h3>多读不如一见，功能请看[三、]的示例图</h3>
+<h3>多读不如一见，功能请看步骤` 三 `的示例图</h3>
   </div>
 
 <br>
