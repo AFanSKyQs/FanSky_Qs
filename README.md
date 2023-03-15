@@ -11,8 +11,30 @@
 [![Bilibili](https://img.shields.io/badge/Bilibili_繁星灬守护-ff69b4?logo=bilibili)](https://space.bilibili.com/400618772)
 [![Gitee](https://img.shields.io/badge/Gitee？那是什么鸭~-blueviolet?style=flat-square&logo=gitee)](https://gitee.com/FanSky_Qs)
 [![YunzaiBot](https://img.shields.io/badge/Yunzai-v3.0.0-9cf?style=flat-square&logo=dependabot)](https://gitee.com/Le-niao/Yunzai-Bot) [![Group](https://img.shields.io/badge/Q群-755794036-red?style=flat-square&logo=GroupMe&logoColor=important)](https://jq.qq.com/?_wv=1027&k=I2HCxKdM) [![QQ](https://img.shields.io/badge/QQ-3141865879-success?style=flat-square&logo=tencent-qq)](https://res.abeim.cn/api/qq/?qq=3141865879) 
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="16%"><a href="https://github.com/AFanSKyQs"><img src="https://avatars.githubusercontent.com/u/59954030?v=4?s=100" width="100px;" alt="AFanSKyQs"/><br /><sub><b>AFanSKyQs</b></sub></a><br /><a href="https://github.com/AFanSKyQs/FanSky_Qs/commits?author=AFanSKyQs" title="Code">🌸</a></td>
+      <td align="center" valign="top" width="16%"><a href="https://github.com/Rrrrrrray"><img src="https://avatars.githubusercontent.com/u/28804884?v=4?s=100" width="100px;" alt="Rrrrrrray"/><br /><sub><b>Rrrrrrray</b></sub></a><br /><a href="https://github.com/AFanSKyQs/FanSky_Qs/commits?author=Rrrrrrray" title="Code">🍀</a></td>
+      </tr>
+  </tbody>
+</table>
+
 [![Contributors](https://img.shields.io/badge/Contributors-2-orange.svg?style=flat-square)](#Cntributors)
+
 </div>
+
+<div align="center">
+  <h2>Yunzai-Bot/Miao-Yunzai</h2>
+
+`提瓦特小助手伤害系统(正在开发)`、`GPT各模型记忆聊天`、`切换多模型`、`设置模型人设`、`设置模型打卡绑定`、`设置模型模式`、`发病文学`、`接入AI问候`、`电影票房`、`打卡、冒泡`、`QQ名片点赞`、`拉黑语言模型使用者`、`表情包丁真`等后续功能持续围绕 `【打卡-魔晶系统】` 开发中....
+  
+  </div>
+
+
+<div align="center">
+<h3>多读不如一见，功能请看[三、]的示例图</h3>
+  </div>
 
 <br>
 
@@ -21,52 +43,40 @@
    - ⊚ 打卡-魔晶系统-`卡牌系统`
    - ⊚ `全服成就宝箱排行`
    - ⊚ 欢迎加入开发qwq喵~
-   - ⊚ 感谢Contributors<table>
-  <tbody>
-    <tr>
-      <td align="center" valign="top" width="16%"><a href="https://github.com/Rrrrrrray"><img src="https://avatars.githubusercontent.com/u/28804884?v=4?s=100" width="110px;" alt="Rrrrrrray"/><br /><sub><b>Rrrrrrray</b></sub></a><br /><a href="https://github.com/AFanSKyQs/FanSky_Qs/commits?author=Rrrrrrray" title="Code">🍀</a></td>
-<!--       <td align="center" valign="top" width="16%"><a href="https://github.com/AFanSKyQs"><img src="https://avatars.githubusercontent.com/u/59954030?v=4?s=100" width="100px;" alt="AFanSKyQs"/><br /><sub><b>AFanSKyQs</b></sub></a><br /><a href="https://github.com/AFanSKyQs/FanSky_Qs/commits?author=AFanSKyQs" title="Code">🍀</a></td> -->
-<!--       </tr> -->
-  </tbody>
-</table>
+   - <h2> 后续更新发送 #fans帮助 查看功能(还没写帮助的累鸟🐦...) </h2>
 
 
 <br>
-
-<div align="center">
-  <h2>FanSky_Qs是一个Yunzai-Bot/Miao-Yunzai 插件 , 提供部分小功能</h2>
-
-`提瓦特小助手伤害系统(正在开发)`、`GPT各模型记忆聊天`、`切换多模型`、`设置模型人设`、`设置模型打卡绑定`、`设置模型模式`、`发病文学`、`接入AI问候`、`电影票房`、`打卡、冒泡`、`QQ名片点赞`、`拉黑语言模型使用者`、`表情包丁真`等后续功能持续围绕 `【打卡-魔晶系统】` 开发中....
-  
-  </div>
-
-
-<div align="center">
-<h3>多读不如一见，功能请看下面的示例图</h3>
-  </div>
-  
+ 
   ##
   
-* ## ⊚  使用安装(这里使用的gitee)，二选一！
+<h1>一、安装(镜像gitee)，二选一即可</h1> 
+
   - ### 方法1、`Miao-Yunzai`根目录下：
-```
-git clone --depth=1 https://gitee.com/FanSky_Qs/FanSky_Qs.git ./plugins/FanSky_Qs/
-```
+   ```
+   git clone --depth=1 https://gitee.com/FanSky_Qs/FanSky_Qs.git ./plugins/FanSky_Qs/
+   ```
   - ### 方法2、`Miao-Yunzai/plugins`目录下：
 ```
 git clone --depth=1 https://gitee.com/FanSky_Qs/FanSky_Qs.git
 ```
 
+<hr>
+<hr>
 
+<h1>二、更新</h1>
 
-* ## ⊚  更新
-  - 普通更新：`#fans更新`
-  - 强制更新：`#fans强制更新`
+  - ### 普通更新：`#fans更新`
 
-<h1>可用功能介绍：</h1>
+  - ### 强制更新： `#fans强制更新`
+
+<hr>
+<hr>
+
+<h1>三、可用功能介绍：</h1>
 
 <div align="left">
-  <h2>🔥提瓦特小助手系统</h2>
+  <h3>🔥一、提瓦特小助手系统</h3>
   
 | 功能名称  | 功能指令 |功能示例说明 |
 | :-------------: | :-------------: |:-------------: |
@@ -83,7 +93,7 @@ git clone --depth=1 https://gitee.com/FanSky_Qs/FanSky_Qs.git
    
   <details>
     <summary>
-      <h1>🌟单功能系统</h1>
+      <h3>🌟二、单功能系统</h3>
 <!--     <h2>点击展开查看单功能系统</h2> -->
     </summary>
 <!--    <div> -->
@@ -109,7 +119,7 @@ git clone --depth=1 https://gitee.com/FanSky_Qs/FanSky_Qs.git
   
 <!-- ### 目前仅记录魔晶值与部分信息，后续将开发联动魔晶的`卡牌系统` -->
   <details>
-    <summary><h1>🍁打卡-魔晶系统（卡牌系统开发中）</h1></summary>
+    <summary><h3>🍁三、打卡-魔晶系统（卡牌系统开发中）</h3></summary>
 <!--     <summary><h2>点击展开查看打卡系统</h2></summary> -->
     
 | 功能名称 | 功能指令？ |功能示例说明 |
@@ -129,7 +139,7 @@ git clone --depth=1 https://gitee.com/FanSky_Qs/FanSky_Qs.git
   
   <details>
     <summary>
-      <h1> 🤯 OpenAI系统 </h1>
+      <h3> 🤯四、OpenAI系统 </h3>
 <!--       <h2>点击展开查看OpenAI系统</h2> -->
     </summary>
   
@@ -150,44 +160,31 @@ git clone --depth=1 https://gitee.com/FanSky_Qs/FanSky_Qs.git
 <!--     </details> -->
  </div>
  
- ##
- 
-## 后续帮助完善后通过发送`#fans帮助`来进行查看。
+  
+      (x)...........写帮助好lie,休息♂一下🥝
+  喵喵喵喵喵喵，咕咕咕咕咕咕，这是个连帮助都还没写好的累鸟......
 
-      
-(x)...........写帮助好lie,休息♂一下🥝
-
-    喵喵喵喵喵喵，咕咕咕咕咕咕，这是个连帮助都还没写好的累鸟......
-
-## 致谢 [数据/方法/API等]
+## 五、致谢 [数据/方法/API等]
   - [@monsterxcn(原型及接口！)](https://github.com/monsterxcn)
   - [@yoimiya-kokomi](https://github.com/yoimiya-kokomi)
   - [@MiniGrayGay](https://github.com/MiniGrayGay)
   - Enka: https://enka.network/
   - Wechat: #小程序://提瓦特小助手/ysMJOWO6fzx0MsD
+  - [Gitee-nonebot-plugin-gspanel](https://gitee.com/work-for-myself/nonebot-plugin-gspanel)
+  - [Github-nonebot-plugin-gspanel](https://github.com/monsterxcn/nonebot-plugin-gspanel)
+  - [Gitee-Miao-Yunzai](https://gitee.com/yoimiya-kokomi/Miao-Yunzai)
+  - [Github-Miao-Yunzai](https://github.com/yoimiya-kokomi/Miao-Yunzai)
 
  
 
-## 其他
+## 六、其他
   - ⊚ 严禁将FanSky_Qs用于任何商业用途
   - ⊚ 需要什么功能可以提出来，尽量实现喵~
-
-* nonebot-plugin-gspanel
-   - [Gitee](https://gitee.com/work-for-myself/nonebot-plugin-gspanel)
-   - [Github](https://github.com/monsterxcn/nonebot-plugin-gspanel)
-  
-* Miao-Yunzai
-   - [Gitee](https://gitee.com/yoimiya-kokomi/Miao-Yunzai)
-   - [Github](https://github.com/yoimiya-kokomi/Miao-Yunzai)
-* Miao-Plugin
-   - [Gitee](https://github.com/yoimiya-kokomi/miao-plugin)
-   - [Github](https://github.com/yoimiya-kokomi/miao-plugin)
-  
-## 喵喵喵~
-  - QQ群:[755794036](https://jq.qq.com/?_wv=1027&k=I2HCxKdM)
+<!--   - QQ群:[755794036](https://jq.qq.com/?_wv=1027&k=I2HCxKdM) -->
+  - [![Group](https://img.shields.io/badge/QQ群-755794036-red?style=flat-square&logo=GroupMe&logoColor=important)](https://jq.qq.com/?_wv=1027&k=I2HCxKdM)
   - Q Q：[3141865879](https://res.abeim.cn/api/qq/?qq=3141865879)
   - Discord：FanSky_Qo#9926
-
+  
 ## Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=AFanSKyQs/FanSky_Qs&type=Date)](https://star-history.com/#AFanSKyQs/FanSky_Qs&Date)
