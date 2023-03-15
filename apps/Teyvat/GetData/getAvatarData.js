@@ -13,8 +13,8 @@ import { getTeyvatData, simpleDamageRes, transFromEnka, transToTeyvatRequest } f
 async function getAvatarData (Json, uid, char = '全部') {
   // let Json = await ReturnConfig()
   console.log('进入了：getAvatarData')
-  const cache = await getCache(uid)
-  let cacheData = cache?.rolesData || {}; let nextQueryTime = cache?.rolesData?.next || 0
+  const cache = await getCache(uid, 'rolesData')
+  let cacheData = cache; let nextQueryTime = cache?.next || 0
   let refreshed = []; let _tip = ''; let _time = 0
 
   if (Date.now() <= nextQueryTime) {
@@ -102,8 +102,8 @@ async function getAvatarData (Json, uid, char = '全部') {
         }
       })
       cacheData.next = +moment(now).add(newData.ttl, 's') //  cd 60s
-      cache.rolesData = cacheData
-      await redis.set(`FanSky:Teyvet:${uid}`, JSON.stringify(cache))
+      cache = cacheData
+      await redis.set(`FanSky:Teyvet:${uid}:rolesData`, JSON.stringify(cache))
     } else {
       // 有缓存 & 本次刷新失败，打印错误信息
       _tip = 'error'
@@ -130,9 +130,10 @@ async function getAvatarData (Json, uid, char = '全部') {
       }
     : searchRes[0]
 }
+
 /** 获取缓存数据 */
-async function getCache (uid) {
-  let key = `FanSky:Teyvet:${uid}`
+async function getCache (uid, type) {
+  let key = `FanSky:Teyvet:${uid}:${type}`
   if (await redis.exists(key)) {
     return JSON.parse(await redis.get(key))
   } else {
