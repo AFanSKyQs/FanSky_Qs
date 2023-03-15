@@ -43,6 +43,7 @@ async function getTeam (uid, chars = [], showDetail = false) {
     }), {}))
     console.log('-----------------getTeam_data-----------------')
     console.log(data)
+    return data;
   } catch (e) {
     console.log(`[${e.constructor.name}] 队伍伤害数据解析出错`)
     return `[${e.constructor.name}] 队伍伤害数据解析出错咯`

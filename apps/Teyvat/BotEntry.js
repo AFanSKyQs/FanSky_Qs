@@ -4,6 +4,9 @@ import { isFileExist } from '../../models/isFileExist.js'
 import plugin from '../../../../lib/plugins/plugin.js'
 import fs from 'fs'
 import cfg from '../../../../lib/config/config.js'
+import { getTeam } from './TeyvatTotalEntry.js'
+import _ from 'lodash'
+import gsCfg from '../../../genshin/model/gsCfg.js'
 
 let ONE_PATH = `${process.cwd()}/plugins/FanSky_Qs/config/TeyvatConfig`
 let DATA_PATH = `${process.cwd()}/plugins/FanSky_Qs/config/TeyvatConfig/TeyvatUrlJson.json`
@@ -62,7 +65,7 @@ export class BotEntry extends plugin {
       priority: 3141,
       rule: [
         {
-          reg: /#提瓦特小助手/,
+          reg: '^#\\S+(提瓦特)?小助手\\S+$',
           fnc: 'TeyvatEnTry'
         }, {
           reg: /#更新小助手配置/,
@@ -70,7 +73,7 @@ export class BotEntry extends plugin {
         }
       ]
     })
-  };
+  }
 
   async getE () {
     return this.e
@@ -78,10 +81,53 @@ export class BotEntry extends plugin {
 
   async TeyvatEnTry (e) {
     if (e.is_owner) { e.reply('>>>FanSky_Qs正在施工中') }
+    e.msg = e.msg.replace(/提瓦特|小助手/g, '');
+    console.log('===============小助手')
+    console.log(e.msg)
+    let res = {};
+    if (e.msg.includes('队伍伤害')) {
+      e.msg = e.msg.split('队伍伤害')[1];
+      res = await this.TeamDamage(e);
+    }
     // let PATH = DATA_PATH.replace(/\\/g, "/");
     // let DATA_JSON = JSON.parse(fs.readFileSync(PATH));
     // console.log(DATA_JSON)
+    // 错误信息
+    if (res.error) {
+      logger.error(res.error);
+      e.reply(res.error);
+      return false;
+    }
+
+    e.reply(res);
     return true
+  }
+
+  async TeamDamage (e) {
+    let msg = e.msg;
+    let detail = ['详情', '过程', '全图'];
+    let show = false;
+    _.each(detail, v => {
+      if (msg.includes(v)) {
+        show = true;
+        msg.replace(v, '');
+      }
+    });
+    let uid = /([0-9]{9})/g.exec(msg)[1];
+    console.log('===============uid')
+    console.log(uid);
+    if (!uid) uid = await redis.get(`Yz:genshin:mys:qq-uid:${e.user_id}`) || false;
+    if (!uid) return { error: '请先绑定uid' };
+    
+    let chars = msg.split(/ |,|，/g) || [];
+
+    if (!_.isEmpty(chars)) {
+      let err_chars = _.filter(chars, v => !gsCfg.getRole(v));
+      if (!_.isEmpty(err_chars)) return { error: `无法识别${err_chars.join(',')}，请检查输入是否有误` };
+      chars = _.map(chars, char => gsCfg.getRole(char).name);
+    }
+    
+    return await getTeam(uid, chars, show);
   }
 
   async UpdataJSON (e) {
