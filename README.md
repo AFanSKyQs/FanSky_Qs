@@ -24,7 +24,7 @@
    - ⊚ 感谢Contributors<table>
   <tbody>
     <tr>
-      <td align="center" valign="top" width="16%"><a href="https://github.com/Rrrrrrray"><img src="https://avatars.githubusercontent.com/u/28804884?v=4?s=100" width="80px;" alt="Rrrrrrray"/><br /><sub><b>Rrrrrrray</b></sub></a><br /><a href="https://github.com/AFanSKyQs/FanSky_Qs/commits?author=Rrrrrrray" title="Code">🍀</a></td>
+      <td align="center" valign="top" width="16%"><a href="https://github.com/Rrrrrrray"><img src="https://avatars.githubusercontent.com/u/28804884?v=4?s=100" width="110px;" alt="Rrrrrrray"/><br /><sub><b>Rrrrrrray</b></sub></a><br /><a href="https://github.com/AFanSKyQs/FanSky_Qs/commits?author=Rrrrrrray" title="Code">🍀</a></td>
 <!--       <td align="center" valign="top" width="16%"><a href="https://github.com/AFanSKyQs"><img src="https://avatars.githubusercontent.com/u/59954030?v=4?s=100" width="100px;" alt="AFanSKyQs"/><br /><sub><b>AFanSKyQs</b></sub></a><br /><a href="https://github.com/AFanSKyQs/FanSky_Qs/commits?author=AFanSKyQs" title="Code">🍀</a></td> -->
 <!--       </tr> -->
   </tbody>
@@ -47,7 +47,7 @@
   
   ##
   
-## ⊚  使用安装(这里使用的gitee)，二选一！
+* ## ⊚  使用安装(这里使用的gitee)，二选一！
   - ### 方法1、`Miao-Yunzai`根目录下：
 ```
 git clone --depth=1 https://gitee.com/FanSky_Qs/FanSky_Qs.git ./plugins/FanSky_Qs/
@@ -59,7 +59,7 @@ git clone --depth=1 https://gitee.com/FanSky_Qs/FanSky_Qs.git
 
 
 
-## ⊚  更新
+* ## ⊚  更新
   - 普通更新：`#fans更新`
   - 强制更新：`#fans强制更新`
 
@@ -159,27 +159,34 @@ git clone --depth=1 https://gitee.com/FanSky_Qs/FanSky_Qs.git
 
     喵喵喵喵喵喵，咕咕咕咕咕咕，这是个连帮助都还没写好的累鸟......
 
+## 致谢 [数据/方法/API等]
+  - [@monsterxcn(原型及接口！)](https://github.com/monsterxcn)
+  - [@yoimiya-kokomi](https://github.com/yoimiya-kokomi)
+  - [@MiniGrayGay](https://github.com/MiniGrayGay)
+  - Enka: https://enka.network/
+  - Wechat: #小程序://提瓦特小助手/ysMJOWO6fzx0MsD
 
-### 说明
+ 
 
+## 其他
+  - ⊚ 严禁将FanSky_Qs用于任何商业用途
+  - ⊚ 需要什么功能可以提出来，尽量实现喵~
 
-
-### 四、其他
-
-⊚ 严禁将FanSky_Qs用于任何商业用途
-⊚ 需要什么功能可以提出来，尽量实现喵~
-* Yunzai-Bot
-   - [gitee](https://gitee.com/Le-niao/Yunzai-Bot)
-   - [github](https://github.com/Le-niao/Yunzai-Bot)
-* Miao-Plugin
-   - [gitee](https://github.com/yoimiya-kokomi/miao-plugin)
-   - [github](https://github.com/yoimiya-kokomi/miao-plugin)
+* nonebot-plugin-gspanel
+   - [Gitee](https://gitee.com/work-for-myself/nonebot-plugin-gspanel)
+   - [Github](https://github.com/monsterxcn/nonebot-plugin-gspanel)
   
-### 五、喵喵喵喵喵~
-
-##### QQ群:[755794036](https://jq.qq.com/?_wv=1027&k=I2HCxKdM)
-##### Q Q：[3141865879](https://res.abeim.cn/api/qq/?qq=3141865879)
-##### Discord：FanSky_Qo#9926
+* Miao-Yunzai
+   - [Gitee](https://gitee.com/yoimiya-kokomi/Miao-Yunzai)
+   - [Github](https://github.com/yoimiya-kokomi/Miao-Yunzai)
+* Miao-Plugin
+   - [Gitee](https://github.com/yoimiya-kokomi/miao-plugin)
+   - [Github](https://github.com/yoimiya-kokomi/miao-plugin)
+  
+## 喵喵喵~
+  - QQ群:[755794036](https://jq.qq.com/?_wv=1027&k=I2HCxKdM)
+  - Q Q：[3141865879](https://res.abeim.cn/api/qq/?qq=3141865879)
+  - Discord：FanSky_Qo#9926
 
 ## Star History
 
