@@ -1,4 +1,5 @@
 /* eslint-disable camelcase */
+import plugin from '../../../lib/plugins/plugin.js'
 import common from '../../../lib/common/common.js'
 import puppeteer from '../../../lib/puppeteer/puppeteer.js'
 import Markdown_it from 'markdown-it'
@@ -28,7 +29,7 @@ export class OpenAI extends plugin {
       dsc: 'OpenAI_ChatGPT',
       event: 'message',
       // 优先级(数值越小优先度越高)
-      priority: 99999,
+      priority: 3,
       // 消息匹配规则
       rule: [
         {
@@ -64,6 +65,7 @@ export class OpenAI extends plugin {
       // e.reply("如果是想与AI对话\n请不要在开头输入#\n【这一般是指令】\n\n如果是指令请不要艾特机器人\n【艾特一般是与机器人对话】", true)
       return false
     }
+
     console.log('e.atBot:' + e.atBot)
     if (!e.atBot && !e.atme) return false
     if (!e.msg) {
