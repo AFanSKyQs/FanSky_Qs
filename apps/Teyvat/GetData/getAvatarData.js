@@ -2,6 +2,14 @@ import moment from 'moment/moment.js'
 import RequestEnka from '../../../models/RequestEnka.js'
 import _ from 'lodash'
 import { getTeyvatData, simpleDamageRes, transFromEnka, transToTeyvatRequest } from '../Index.js'
+/**
+ * 仅限本地测试使用
+ * 开启需要redis:
+ * - 取消注释 6 & 30行
+ * - 注释 redis.js => 14 & 80行
+ */
+import redisInit from '../../../../lib/config/redis.js' // 仅限本地测试
+await redisInit()
 
 /**
  * 角色数据获取（内部格式）

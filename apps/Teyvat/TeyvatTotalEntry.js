@@ -1,13 +1,5 @@
-import redisInit from '../../../../lib/config/redis.js'
 import { getAvatarData, getTeyvatData, ReturnConfig, simpleTeamDamageRes, transToTeyvatRequest } from './Index.js'
 
-/**
- * 仅限本地测试使用
- * 开启需要redis:
- * - 取消注释 6 & 30行
- * - 注释 redis.js => 14 & 80行
- */
-await redisInit()
 await getSingle('117556563', '魈') //  单人伤害：uid, 角色名
 // await getTeam('117556563'); //队伍伤害：uid，角色列表
 
@@ -73,3 +65,5 @@ async function getSingle (uid, char = '全部') {
   if (data.error) return data.error
   return char === '全部' ? 'list' : 'panel'
 }
+
+export { getTeam, getSingle }
