@@ -21,10 +21,10 @@
    - ⊚ 打卡-魔晶系统-`卡牌系统`
    - ⊚ `全服成就宝箱排行`
    - ⊚ 欢迎加入开发qwq喵~
-   - ⊚ 感谢Cntributors<table>
+   - ⊚ 感谢Contributors<table>
   <tbody>
     <tr>
-      <td align="center" valign="top" width="16%"><a href="https://github.com/Rrrrrrray"><img src="https://avatars.githubusercontent.com/u/28804884?v=4?s=100" width="80px;" alt="Rrrrrrray"/><br /><sub><b>Rrrrrrray</b></sub></a><br /><a href="https://github.com/AFanSKyQs/FanSky_Qs/commits?author=TimeRainStarSky" title="Code">🍀</a></td>
+      <td align="center" valign="top" width="16%"><a href="https://github.com/Rrrrrrray"><img src="https://avatars.githubusercontent.com/u/28804884?v=4?s=100" width="80px;" alt="Rrrrrrray"/><br /><sub><b>Rrrrrrray</b></sub></a><br /><a href="https://github.com/AFanSKyQs/FanSky_Qs/commits?author=Rrrrrrray" title="Code">🍀</a></td>
 <!--       <td align="center" valign="top" width="16%"><a href="https://github.com/AFanSKyQs"><img src="https://avatars.githubusercontent.com/u/59954030?v=4?s=100" width="100px;" alt="AFanSKyQs"/><br /><sub><b>AFanSKyQs</b></sub></a><br /><a href="https://github.com/AFanSKyQs/FanSky_Qs/commits?author=AFanSKyQs" title="Code">🍀</a></td> -->
 <!--       </tr> -->
   </tbody>
@@ -50,11 +50,11 @@
 ## ⊚  使用安装(这里使用的gitee)
 根目录下：
 ```
-git clone https://gitee.com/FanSky_Qs/FanSky_Qs.git ./plugins/FanSky_Qs/
+git clone --depth=1 https://gitee.com/FanSky_Qs/FanSky_Qs.git ./plugins/FanSky_Qs/
 ```
 plugins目录下：
 ```
-git clone https://gitee.com/FanSky_Qs/FanSky_Qs.git
+git clone --depth=1 https://gitee.com/FanSky_Qs/FanSky_Qs.git
 ```
 ## ⊚  更新：`#fans更新`、`#fans强制更新`
 
