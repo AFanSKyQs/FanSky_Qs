@@ -3,7 +3,7 @@ import common from "../../../lib/common/common.js";
 import plugin from "../../../lib/plugins/plugin.js";
 import puppeteer from "../../../lib/puppeteer/puppeteer.js"
 import {segment} from "oicq"
-import {getAcgBg, getBgImg, getByImg, getTuImg} from "../models/getTuImg.js";
+import {getAcgBg, getBgImg, getByImg} from "../models/getTuImg.js";
 import {getGroup} from "../models/getGroupList.js";
 import {getWords} from "../models/getAwords.js";
 import crypto from "crypto";
@@ -250,7 +250,6 @@ export class ClockIn extends plugin {
         let ImgList = await getBgImg()
         let syc, hy, hg, name, salou, star, yuans, Txk1;
         [syc, hy, hg, name, salou, star, yuans, Txk1] = ImgList
-        let TuPath = await getTuImg()
         let ByImg = await getByImg()
         let AcgBg = await getAcgBg()
         let LastTime = new Date(LastTimeTemp).toLocaleString();
@@ -268,7 +267,6 @@ export class ClockIn extends plugin {
             yuans: yuans,
             ByImg: ByImg,
             StarImg: star,
-            TuPath: TuPath,
             user_tips: "今日打卡成功！",
             user_id: e.user_id, //用户QQ号
             nickname: e.sender.nickname,    //用户昵称
@@ -298,7 +296,6 @@ export class ClockIn extends plugin {
         let ImgList = await getBgImg()
         let syc, hy, hg, name, salou, star, yuans, Txk1;
         [syc, hy, hg, name, salou, star, yuans, Txk1] = ImgList
-        let TuPath = await getTuImg()
         let ByImg = await getByImg()
         let AcgBg = await getAcgBg()
         // ["dayL","fire","Kingimg","name","SaLou","star","Yuan"]
@@ -316,7 +313,6 @@ export class ClockIn extends plugin {
             yuans: yuans,
             ByImg: ByImg,
             StarImg: star,
-            TuPath: TuPath,
             user_tips: "首次打卡！奖励160原石！",
             user_id: e.user_id, //用户QQ号
             nickname: e.sender.nickname,    //用户昵称

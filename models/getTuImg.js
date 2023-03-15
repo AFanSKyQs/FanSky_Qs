@@ -21,16 +21,6 @@ export async function getBgImg() {
     return ImgPath
 }
 
-export async function getTuImg() {
-    let TuImgNum = fs.readdirSync(TuImg).length
-    if (!TuImgNum || TuImgNum === 0) {
-        TuImgNum = 2
-    }
-    let Num = Math.floor(Math.random() * TuImgNum) + 1
-    let Tu = TuImg + `tu${Num}.png`
-    return Tu.replace(/\\/g, "/")
-}
-
 export async function getByImg() {
     // 将路径里面所有的\替换成/
     return ByPath.replace(/\\/g, "/")
