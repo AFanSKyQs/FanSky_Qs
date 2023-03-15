@@ -54,7 +54,7 @@ export class ChestAndAcheievementsTop extends plugin {
       let Name = 'NotFound'
       let level = 'NotFound'
       let signature = '这是一条咸鱼吗~'
-      await fetch('https://enka.network/api/uid/117556563?info').then(res => res.json()).then(async res => {
+      await fetch(`https://enka.network/api/uid/${uid}?info`).then(res => res.json()).then(async res => {
         if (res.playerInfo.nickname) {
           Name = res.playerInfo.nickname
           level = res.playerInfo.level
@@ -99,7 +99,7 @@ export class ChestAndAcheievementsTop extends plugin {
       let Name = 'NotFound'
       let level = 'NotFound'
       let signature = '这是一条咸鱼吗~'
-      await fetch('https://enka.network/api/uid/117556563?info').then(res => res.json()).then(async res => {
+      await fetch(`https://enka.network/api/uid/${uid}?info`).then(res => res.json()).then(async res => {
         if (res.playerInfo.nickname) {
           Name = res.playerInfo.nickname
           level = res.playerInfo.level
