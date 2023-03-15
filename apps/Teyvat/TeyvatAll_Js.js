@@ -1,24 +1,42 @@
 import {ELEM, GROW_VALUE, MAIN_AFFIXS, POS, PROP, RANK_MAP, SKILL, SUB_AFFIXS} from "../../models/Teyvat/index.js"
-
-let DATA_PATH = `E:/Bot_V3/yunzai/Yunzai-Bot/plugins/FanSky_Qs/config/TeyvatConfig/TeyvatUrlJson.json`   //本地测试路径
-// await getAvatarData("117556563", "single"); // uid   单人伤害：single  队伍伤害：team
 import ReturnConfig from "./ReadTeyvatJson.js";
 import _ from 'lodash';
 import fetch from 'node-fetch';
+import moment from 'moment';
+// import redisInit from '../../../../lib/config/redis.js';    //  仅限本地测试使用
+
+
+/** 小助手请求头 */
+const headers = {
+    referer: 'https://servicewechat.com/wx2ac9dce11213c3a8/192/page-frame.html',
+    'user-agent':
+        'Mozilla/5.0 (Linux; Android 12; SM-G977N Build/SP1A.210812.016; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/86.0.4240.99 XWEB/4375 MMWEBSDK/20221011 Mobile Safari/537.36 MMWEBID/4357 MicroMessenger/8.0.30.2244(0x28001E44) WeChat/arm64 Weixin GPVersion/1 NetType/WIFI Language/zh_CN ABI/arm64 MiniProgramEnv/android',
+};
+
+// 本地测试路径
+let DATA_PATH = `E:/Bot_V3/yunzai/Yunzai-Bot/plugins/FanSky_Qs/config/TeyvatConfig/TeyvatUrlJson.json`;
 
 async function ReturnJson() {
     console.log("DATA_PATH" + DATA_PATH)
     return await ReturnConfig(DATA_PATH)
 }
 
-const headers = {
-    referer: 'https://servicewechat.com/wx2ac9dce11213c3a8/192/page-frame.html',
-    'user-agent':
-        'Mozilla/5.0 (Linux; Android 12; SM-G977N Build/SP1A.210812.016; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/86.0.4240.99 XWEB/4375 MMWEBSDK/20221011 Mobile Safari/537.36 MMWEBID/4357 MicroMessenger/8.0.30.2244(0x28001E44) WeChat/arm64 Weixin GPVersion/1 NetType/WIFI Language/zh_CN ABI/arm64 MiniProgramEnv/android',
-};
-// await getAvatarData("117556563", "single")
-await getTeam('117556563');
+/** 
+ * 仅限本地测试使用
+ * 开启需要redis:
+ * - 取消注释 6 & 30行
+ * - 注释 redis.js => 14 & 80行 
+ */
+// await redisInit();
+await getSingle("117556563", "魈");  //  单人伤害：uid, 角色名
+// await getTeam('117556563'); //队伍伤害：uid，角色列表
 
+/**
+ * 获取小助手对应功能的数据
+ * @param {String} TBody 请求需要的数据
+ * @param {String} type 功能对应api 默认为 Single
+ * @returns 小助手返回数据
+ */
 async function getTeyvatData(TBody, type = "single") {
     console.log("进入了：getTeyvatData---type:" + type)
     const apiMap = {
@@ -36,8 +54,6 @@ async function getTeyvatData(TBody, type = "single") {
             body: JSON.stringify(TBody),
         });
         const resJson = await response.json();
-        // console.log("-----------resJson---------------")
-        // console.log(resJson);
         return resJson;
     } catch (error) {
         console.error("提瓦特小助手接口无法访问或返回错误", error);
@@ -51,12 +67,11 @@ async function getTeyvatData(TBody, type = "single") {
  @param {boolean} showDetail 查询结果是否展示伤害过程。默认不展示
  @return {string|ArrayBuffer} 查询结果。一般返回图片字节，出错时返回错误信息字符串
  **/
-async function getTeam(uid, chars = [], showDetail = false) {
+async function getTeam (uid, chars = [], showDetail = false) {
     // 获取面板数据
     const data = await getAvatarData(uid, "全部");
-    if (data["error"]) {
-        return data["error"];
-    }
+    if (data.error) return data.error;
+
     let extract;
     if (chars.length) {
         extract = data["avatars"].filter(a => chars.includes(a["name"]));
@@ -76,7 +91,7 @@ async function getTeam(uid, chars = [], showDetail = false) {
     const TiwateRaw = await getTeyvatData(TiwateBody, "team");
     if (TiwateRaw["code"] !== 200 || !TiwateRaw["result"]) {
         console.log(`UID${uid} 的 ${extract.length} 位角色队伍伤害计算请求失败！\n>>>> [提瓦特返回] ${JSON.stringify(TiwateRaw)}`);
-        return `玩家 ${uid} 队伍伤害计算失败，接口可能发生变动！` || "啊哦，队伍伤害计算小程序状态异常！";
+        return TiwateRaw ? `玩家 ${uid} 队伍伤害计算失败，接口可能发生变动！` : "啊哦，队伍伤害计算小程序状态异常！";
     }
     try {
         let data = await simplTeamDamageRes(TiwateRaw["result"], extract.reduce((acc, a) => ({
@@ -89,177 +104,177 @@ async function getTeam(uid, chars = [], showDetail = false) {
         console.log(`[${e.constructor.name}] 队伍伤害数据解析出错`);
         return `[${e.constructor.name}] 队伍伤害数据解析出错咯`;
     }
+
+    // todo: @return html数据
     // const htmlBase = LOCAL_DIR.resolve().toString();
+    return;
 }
 
-async function getAvatarData(uid, char = "全部") {
-    console.log("进入了：getAvatarData")
-    // const cache = LOCAL_DIR.join("cache", `${uid}.json`);
-    let cacheData = {},
-        nextQueryTime = 0;
-    // if (await cache.exists()) {
-    //     cacheData = JSON.parse(await cache.readText("utf-8"));
-    //     nextQueryTime = cacheData.next;
-    // }
-    let refreshed = [],
-        _tip = "",
-        _time = 0;
+/**
+ * 原神游戏内角色展柜消息生成入口(无需前台展示)
+ * @param {String} uid 查询用户 UID
+ * @param {String} char 全部 || 查询角色
+ * @returns 查询结果
+ */
+async function getSingle (uid, char = '全部') {
+    // 获取面板数据
+    let data = await getAvatarData(uid, char);
+    if (data.error) return data.error;
+
+    let mode = char == '全部' ? 'list' : 'panel';
+    return mode;
+}
+
+/**
+ * 角色数据获取（内部格式）
+ * @param {String} uid 查询用户 UID
+ * @param {String} char 全部 || 查询角色名
+ * @returns 查询结果。出错时返回 ``{"error": "错误信息"}``
+ */
+async function getAvatarData (uid, char = "全部") {
+    console.log("进入了：getAvatarData");
+    const cache = await getCache(uid);
+    let cacheData = cache?.rolesData || {}, nextQueryTime = cache?.rolesData?.next || 0;
+    let refreshed = [], _tip = "", _time = 0;
+
     if (Date.now() <= nextQueryTime) {
-        console.info(`UID${uid} 的角色展柜数据刷新冷却还有 ${Math.floor((nextQueryTime - Date.now()) / 1000)} 秒！`);
+        _tip = 'warning';
+        _time = nextQueryTime;
+        console.info(`UID ${uid} 的角色展柜数据刷新冷却还有 ${moment(nextQueryTime).diff(moment(), 'seconds')} 秒！`);
     } else {
-        console.info(`UID${uid} 的角色展柜数据正在刷新！`);
-        // const newData = EnkaJson;
+        console.info(`UID ${uid} 的角色展柜数据正在刷新！`);
         const newData = await requestDataApi(uid);
         _time = Date.now();
-        // if (!cacheData && newData.error) {
-        if (newData.error) {
+        // 没有缓存 & 本次刷新失败，返回错误信息
+        if (_.isEmpty(cacheData) && newData.error) {
             return newData;
         } else if (!newData.error) {
-            console.error("newData.error: " + newData.error);
-            _tip = "success";
-            // const avatarsCache = cacheData.avatars?.reduce((acc, x) => {
-            //     acc[x.id.toString()] = x;
-            //     return acc;
-            // }, {});
-            const now = Date.now(),
-                wait4Dmg = {},
-                avatars = [];
-            for (const newAvatar of newData.avatarInfoList) {
+        // 本次刷新成功，处理全部角色
+            _tip = 'success';
+            let avatarsCache = {};
+            _.each(cacheData.avatars || [], x => {
+                avatarsCache[x.id] = x;
+            });
+            const now = Date.now();
+            let wait4Dmg = {}, avatars = [];
+            for (const newKey in newData.avatarInfoList) {
+                let newAvatar = newData.avatarInfoList[newKey];
                 if ([10000005, 10000007].includes(newAvatar.avatarId)) {
                     console.info("旅行者面板查询暂未支持！");
                     continue;
                 }
-                const tmp = await transFromEnka(newAvatar, now),
-                    nowIdStr = tmp.id.toString();
-                let gotDmg = false;
-                // if (avatarsCache) {
-                //     if (nowIdStr in avatarsCache) {
-                //         const {damage: cacheDmg} = avatarsCache[nowIdStr];
-                //         const nowStat = Object.fromEntries(Object.entries(tmp).filter(([k]) => !["damage", "time"].includes(k)));
-                //         if (cacheDmg && avatarsCache[tmp["id"].toString()] === nowStat) {
-                //             console.info(`UID${uid} 的 ${tmp.name} 伤害计算结果无需刷新！`);
-                //             tmp.damage = cacheDmg;
-                //             gotDmg = true;
-                //         } else {
-                //             console.info(`UID${uid} 的 ${tmp.name} 数据变化细则：\n${JSON.stringify(avatarsCache[nowIdStr])}\n${JSON.stringify(nowStat)}`);
-                //         }
-                //     }
-                // }
+                let tmp = await transFromEnka(newAvatar, now), gotDmg = false;
+                
+                if (_.has(avatarsCache, tmp.id)) {
+                    // 保留旧的伤害数据
+                    _.omit(avatarsCache[tmp.id], 'time');
+                    let cacheDmg = _.omit(avatarsCache[tmp.id], 'damage');
+                    let nowStat = {};
+                    _.each(tmp, (v, k) => {
+                        if (!['damage', 'time'].includes(k)) {
+                            nowStat[k] = v;
+                        }
+                    });
+                    if (cacheDmg && avatarsCache[tmp.id] == nowStat) {
+                        console.log(`UID${uid} 的 ${tmp.name} 伤害计算结果无需刷新`);
+                        tmp.damage = cacheDmg;
+                        gotDmg = true;
+                    } else {
+                        console.log(`UID${uid} 的 ${tmp.name} 数据变化细则：\n${avatarsCache[tmp.id]}\n${nowStat}`);
+                    }
+                }
                 refreshed.push(tmp.id);
                 avatars.push(tmp);
                 if (!gotDmg) {
                     wait4Dmg[avatars.length - 1] = tmp;
                 }
             }
-            if (Object.keys(wait4Dmg).length > 0) {
+
+            if (!_.isEmpty(wait4Dmg)) {
                 console.log("wait4Dmg typeof:" + typeof wait4Dmg)
-                const wtf = Object.values(wait4Dmg).map(x => ({...x}));
-                // const wtf = wait4Dmg.map(x => ({...x}));
+                let _names = [];
+                _.each(wait4Dmg, (a, aI) => {
+                    _names[aI] = a.name;
+                });
+                console.log(`正在为 UID ${uid} 的 ${_names.join('/')} 重新请求伤害计算接口`);
+                const wtf = Object.values(wait4Dmg).map(x => ({...x})); 
                 const teyvatBody = await transTeyvatData(wtf, uid);
-                const teyvatRaw = await getTeyvatData(teyvatBody, "team");
-                // console.log("teyvatRaw typeof:" + typeof teyvatRaw)
-                // console.log("------------teyvatRaw----------------")
-                // console.log(teyvatRaw)
-                // if (teyvatRaw.code !== 200 || teyvatRaw.result.length !== Object.keys(wait4Dmg).length) {
-                if (teyvatRaw.code !== 200) {
-                    console.info(`UID${uid} 的 ${Object.keys(wait4Dmg).length} 位角色伤害计算请求失败！\n>>>> [提瓦特返回] ${JSON.stringify(teyvatRaw)}`);
+                const teyvatRaw = await getTeyvatData(teyvatBody);
+                if (teyvatRaw.code != 200 || _.size(wait4Dmg) != teyvatRaw.result.length) {
+                    console.log(`UID ${uid} 的 ${_.size(wait4Dmg)} 位角色伤害计算请求失败！\n>>>> [提瓦特返回] ${teyvatRaw}`);
                 } else {
-                    console.log("---------teyvatRaw.result--------------")
-                    console.log(teyvatRaw.result)
-                    // console.log("---------Object.entries(teyvatRaw.result)--------------")
-                    // console.log(Object.entries(teyvatRaw.result));
-                    let result = [];
-                    _.each(teyvatRaw.result, (v, k) => {
-                        let tmp = {};
-                        tmp[k] = v;
-                        result.push(tmp);
-                    });
-                    for (const dmgIdx in result) {
-                        let aIdx = parseInt(Object.keys(wait4Dmg)[dmgIdx]);
-                        let dmgData = result[dmgIdx];
-                        if (avatars[aIdx]) {
-                            avatars[aIdx].damage = await simplDamageRes(dmgData);
-                        }
+                    for (const dmgIdx in teyvatRaw.result) {
+                        let aIdx = parseInt(_.keys(wait4Dmg)[dmgIdx]);
+                        let dmgData = teyvatRaw.result[dmgIdx];
+                        avatars[aIdx].damage = await simplDamageRes(dmgData);
                     }
-                    // for (let [dmgIdx, dmgData] in Object.entries(teyvatRaw.result)) {
-                    //     let aIdx = parseInt(Object.keys(wait4Dmg)[dmgIdx]);
-                    //     avatars[aIdx].damage = await simplDamageRes(dmgData);
-                    // }
-                    cacheData.avatars = [
-                        ...avatars,
-                        // ...Object.values(avatarsCache).filter(aData => !refreshed.includes(aData.id))
-                    ];
-                    cacheData.next = now + newData.ttl;
-                    // console.log("-----------------数据检查cacheData-------------------")
-                    // console.log(cacheData)
-                    // await fs.promises.writeFile(
-                    //     CACHE_FILE_PATH,
-                    //     JSON.stringify(cacheData, null, 2),
-                    //     {encoding: "utf-8"}
-                    // );
-                }// 有缓存 & 本次刷新失败，打印错误信息
+                } 
             }
-        } else {
-            console.error(newData.error);
-        }
-        // 获取所需角色数据
-        if (char === "全部") {
-            if (cacheData && cacheData.avatars) {
-                // 为本次更新的角色添加刷新标记
-                for (let [aIdx, aData] of Object.entries(cacheData.avatars)) {
-                    cacheData.avatars[aIdx].refreshed = refreshed.includes(aData.id);
+
+            cacheData.avatars = [...avatars];
+            _.each(avatarsCache, aData => {
+                if (!refreshed.includes(aData.id)) {
+                    cacheData.avatars.push(aData);
                 }
-                // 格式化刷新时间
-                const _datetime = new Date(_time * 1000).toLocaleString("zh-cn", {timeZone: "Asia/Shanghai"});
-                cacheData.timetips = [_tip, _datetime];
-                return cacheData;
-            } else {
-                console.error(">>>cacheData对象或化身属性未定义或为空\n");
-                console.log(cacheData)
-            }
+            });
+            cacheData.next = +moment(now).add(newData.ttl, 's');  //  cd 60s
+            cache['rolesData'] = cacheData;
+            await redis.set(`FanSky:Teyvet:${uid}`, JSON.stringify(cache)); 
+        } else {
+            // 有缓存 & 本次刷新失败，打印错误信息
+            _tip = 'error';
+            console.log(newData.error);
         }
-        const searchRes = cacheData.avatars.filter(x => x.name === char);
-        return searchRes.length > 0 ? searchRes[0] : {
-            error: `玩家 ${uid} 游戏内展柜中的 ${cacheData.avatars.length} 位角色中没有 ${char}！`
-        };
     }
+
+    // 获取所需角色数据
+    if (char == '全部') {
+        // 为本次更新的角色添加刷新标记
+        _.each(cacheData.avatars, (aData, aIdx) => {
+            cacheData.avatars[aIdx].refreshed = refreshed.includes(aData.id);
+        });
+        // 格式化刷新时间
+        let _datetime = moment(_time).format('YYYY-MM-DD HH:mm:ss');
+        cacheData.timetips = [_tip, _datetime];
+        return cacheData;
+    }
+
+    let searchRes = _.filter(cacheData.avatars, x => x.name == char);
+    return _.isEmpty(searchRes) ? {
+        'error': `UID ${uid} 游戏内展柜中的 ${cacheData.avatars.length} 位角色中没有 ${char}！`
+    } : searchRes[0];
 }
 
+/**
+ * 转换角色伤害计算请求数据为精简格式
+ * @param {Object} damage 角色伤害计算请求数据，由 getTeyvatData()["result"][int] 获取
+ * @returns 精简格式伤害数据，出错时返回 {}
+ */
 async function simplDamageRes(damage) {
     console.log("进入了：simplDamageRes")
     const res = {level: damage["zdl_result"] || "NaN", data: [], buff: []};
     for (const key of ["damage_result_arr", "damage_result_arr2"]) {
-        console.log("------------damage[key]------------")
-        console.log(key)
-        for (const _key in damage[key]) {
-            let dmgDetail = damage[key][_key];
-            console.log("------------dmgDetail------------")
-            const dmgTitle = (key === "damage_result_arr2"
-                ? `[${damage["zdl_result2"]}]<br>`
-                : "") + dmgDetail["title"];
-            let dmgCrit, dmgExp;
-            if ("期望" in String(dmgDetail["value"]) || !dmgDetail.expect) {
-                dmgCrit = "-";
-                dmgExp = String(dmgDetail["value"]).replace("期望", "");
+        console.log(`------------damage[${key}]------------`)
+        _.each(damage[key], dmgDetail => {
+            let dmgTitle = key=='damage_result_arr2'? `[${damage.zdl_result2}]<br>` : dmgDetail.title;
+            let dmgCrit = '', dmgExp = '';
+            if (_.includes(dmgDetail.value, '期望') || !dmgDetail.expect) {
+                dmgCrit = '-';
+                dmgExp = _.replace(dmgDetail.value, '期望', '');
             } else {
-                dmgCrit = String(dmgDetail["value"]);
-                dmgExp = String(dmgDetail["expect"]).replace("期望", "");
+                dmgCrit = dmgDetail.value;
+                dmgExp = _.replace(dmgDetail.expect, '期望', '');
             }
-            res["data"].push([dmgTitle, dmgCrit, dmgExp]);
-        }
+            res.data.push([dmgTitle, dmgCrit, dmgExp]);
+        });
     }
-    for (const _key in damage["bonus"]) {
-        let buff = damage["bonus"][_key];
-        const intro = buff.intro
-            ? buff.intro
-            : buff["intro"]
-                ? buff["intro"]
-                : "";
-        const [buffTitle, buffDetail] = intro.split("：");
-        if (buffTitle !== "注" && buffTitle !== "备注") {
-            res["buff"].push([buffTitle, buffDetail]);
+    _.each(damage.bonus, buff => {
+        let intro = _.isString(buff) ? damage.bonus[buff].intro : buff.intro;
+        let [buffTitle, buffDetail] = intro.split("：");
+        if (!["注", "备注"].includes(buffTitle)) {
+            res.buff.push([buffTitle, buffDetail]);
         }
-    }
+    });
     console.log("-----------数据检查simplDamageRes(damage)-------------")
     console.log(res)
     return res;
@@ -267,14 +282,13 @@ async function simplDamageRes(damage) {
 
 /**
  * 转换队伍伤害计算请求数据为精简格式
- * @param {Object} raw 队伍伤害计算请求数据，由 queryDamageApi(*, "team")["result"] 获取
+ * @param {Object} raw 队伍伤害计算请求数据，由 getTeyvatData(*, "team")["result"] 获取
  * @param {Object} rolesData 角色数据，键为角色中文名，值为内部格式
  * @returns {Object} 精简格式伤害数据。出错时返回 {"error": "错误信息"}
  */
 async function simplTeamDamageRes (raw, rolesData) {
     console.log('进入simplTeamDamageRes');
-    let s = raw['zdl_tips0'].replace(/你的队伍|，DPS为:/g,'').split("秒内造成总伤害");
-    let tm = s[0], total = s[1];
+    let [tm, total] = raw['zdl_tips0'].replace(/你的队伍|，DPS为:/g,'').split("秒内造成总伤害");
     let pieData = [], pieColor = [];
     _.each(raw.chart_data, v => {
         let name_split = v.name.split('\n')
@@ -327,18 +341,16 @@ async function simplTeamDamageRes (raw, rolesData) {
             "cd": _.round(panelData.fightProp["暴击伤害"], 1),
             "key_prop": role.key_ability,
             "key_value": role.key_value,
-            
             "skills": skills,
         }
     });
     
     _.each(raw.recharge_info, rechargeData => {
-        let name = rechargeData.recharge.split('共获取同色球')[0];
-        let tmp = rechargeData.recharge.split('共获取同色球')[1];
-        let same = tmp.split("个，异色球")[0], diff = tmp.split("个，异色球")[1];
+        let [name, tmp] = rechargeData.recharge.split('共获取同色球');
+        let [same, diff] = tmp.split("个，异色球");
         if (diff.split("个，无色球").length === 2) {
             // 暂未排版无色球
-            diff = diff.split("个，无色球")[0]
+            diff = diff.split("个，无色球")[0];
         }
         avatars[name].recharge = {
             "pct": rechargeData.rate,
@@ -353,7 +365,7 @@ async function simplTeamDamageRes (raw, rolesData) {
             logger.error(`奇怪的伤害：${step}`);
             continue;
         }
-        let t = step.content.split(' ')[0], s = step.content.split(' ')[1];
+        let [t, s] = step.content.split(' ');
         let a = s.split('，')[0], d = []
         if (s.split('，').length === 1) {
             d = ['-', '-', '-'];
@@ -377,7 +389,7 @@ async function simplTeamDamageRes (raw, rolesData) {
             logger.error(`奇怪的伤害：${step}`);
             continue;
         }
-        let t = buff.content.split(' ')[0], tmp = buff.content.split(' ')[1];
+        let [t, tmp] = buff.content.split(' ');
         let b = tmp.split("-")[0], bd = _.tail(tmp.split('-')).join('-');
         buffs.push([t.replace('s', ''), _.toUpper(b), _.toUpper(bd)]);
     }
@@ -398,6 +410,12 @@ async function simplTeamDamageRes (raw, rolesData) {
     }
 }
 
+/**
+ * 角色数据转小助手请求格式
+ * @param {Object} avatarsData 角色数据
+ * @param {String} uid 查询uid
+ * @returns 请求格式数据
+ */
 async function transTeyvatData(avatarsData, uid) {
     console.log("进入了：transTeyvatData")
     let res = {"uid": uid, "role_data": []};
@@ -460,9 +478,7 @@ async function transTeyvatData(avatarsData, uid) {
             tData = {...tData, ...tips};
             artifacts.push(tData);
         }
-        // let roleData = {name, cons, weapon, baseProp, fightProp, skills, relics: artifacts, relicSet};
-        // res["role_data"].push(roleData);
-        console.log("relicSet:", relicSet);
+
         res["role_data"].push({
             "uid": uid,
             "role": name,
@@ -478,21 +494,19 @@ async function transTeyvatData(avatarsData, uid) {
             "defend": parseInt(fightProp["防御力"]),
             "base_defend": parseInt(baseProp["防御力"]),
             "element": Math.round(fightProp["元素精通"]),
-            "crit": `${Math.round(fightProp['暴击率'] * 10) / 10}%`,
-            "crit_dmg": `${Math.round(fightProp['暴击伤害'] * 10) / 10}%`,
-            "heal": `${Math.round(fightProp['治疗加成'] * 10) / 10}%`,
-            "recharge": `${Math.round(fightProp['元素充能效率'] * 10) / 10}%`,
-            "fire_dmg": `${Math.round(fightProp['火元素伤害加成'] * 10) / 10}%`,
-            "water_dmg": `${Math.round(fightProp['水元素伤害加成'] * 10) / 10}%`,
-            "thunder_dmg": `${Math.round(fightProp['雷元素伤害加成'] * 10) / 10}%`,
-            "wind_dmg": `${Math.round(fightProp['风元素伤害加成'] * 10) / 10}%`,
-            "ice_dmg": `${Math.round(fightProp['冰元素伤害加成'] * 10) / 10}%`,
-            "rock_dmg": `${Math.round(fightProp['岩元素伤害加成'] * 10) / 10}%`,
-            "grass_dmg": `${Math.round(fightProp['草元素伤害加成'] * 10) / 10}%`,
-            "physical_dmg": `${Math.round(fightProp['物理伤害加成'] * 10) / 10}%`,
-            "artifacts": Object.entries(relicSet)
-                .filter(([k, v]) => v >= 2 || (typeof k === 'string' && k.length >= 2))
-                .map(([k, v]) => `${k}${v >= 4 ? 4 : v >= 2 ? 2 : 1}`).join("+"),
+            "crit": `${_.round(fightProp['暴击率'], 1)}%`,
+            "crit_dmg": `${_.round(fightProp['暴击伤害'], 1)}%`,
+            "heal": `${_.round(fightProp['治疗加成'], 1)}%`,
+            "recharge": `${_.round(fightProp['元素充能效率'], 1)}%`,
+            "fire_dmg": `${_.round(fightProp['火元素伤害加成'], 1)}%`,
+            "water_dmg": `${_.round(fightProp['水元素伤害加成'], 1)}%`,
+            "thunder_dmg": `${_.round(fightProp['雷元素伤害加成'], 1)}%`,
+            "wind_dmg": `${_.round(fightProp['风元素伤害加成'], 1)}%`,
+            "ice_dmg": `${_.round(fightProp['冰元素伤害加成'], 1)}%`,
+            "rock_dmg": `${_.round(fightProp['岩元素伤害加成'], 1)}%`,
+            "grass_dmg": `${_.round(fightProp['草元素伤害加成'], 1)}%`,
+            "physical_dmg": `${_.round(fightProp['物理伤害加成'], 1)}%`,
+            "artifacts": _.map(_.pickBy(relicSet, (v, k) => v>=2 || k.includes('之人')), (v1, k1) => `${k1}${v1>=4 ? 4 : v1>=2 ? 2 : 1 }`).join('+'),
             "ability1": skills["a"]["level"],
             "ability2": skills["e"]["level"],
             "ability3": skills["q"]["level"],
@@ -577,6 +591,12 @@ async function requestDataApi(uid) {
     return resJson;
 }
 
+/**
+ * 转换 Enka.Network 角色查询数据为内部格式
+ * @param {Object} avatarInfo Enka.Network 角色查询数据，取自 data["avatarInfoList"] 列表
+ * @param {Number} ts 数据时间戳
+ * @returns 内部格式角色数据，用于本地缓存等
+ */
 async function transFromEnka(avatarInfo, ts = 0) {
     console.log("进入了：transFromEnka")
     let Json = await ReturnJson()
@@ -630,9 +650,6 @@ async function transFromEnka(avatarInfo, ts = 0) {
     };
     // 技能数据
     const skills = {"a": {}, "e": {}, "q": {}};
-    // const extraLevels = Object.fromEntries(
-    //     Object.entries(avatarInfo.get("proudSkillExtraLevelMap", {})).map(([k, v]) => [k.slice(-1), v])
-    // );
     const extraLevels = Object.fromEntries(
         Object.entries(avatarInfo["proudSkillExtraLevelMap"] || {}).map(([k, v]) => [k.slice(-1), v])
     );
@@ -733,6 +750,16 @@ async function transFromEnka(avatarInfo, ts = 0) {
     return res;
 }
 
+
+/**
+ * 指定角色圣遗物评分计算
+ * @param {Object} relicData 圣遗物数据
+ * @param {String} charElement 角色的中文元素属性
+ * @param {Object} affixWeight 色的词条评分权重，由 getRelicConfig() 获取
+ * @param {Object} pointMark 角色的词条数值原始权重，由 getRelicConfig() 获取
+ * @param {Object} maxMark 角色的各位置圣遗物最高得分，由 getRelicConfig() 获取
+ * @returns 圣遗物评分结果
+ */
 async function calcRelicMark(relicData, charElement, affixWeight, pointMark, maxMark) {
     console.log("进入了：calcRelicMark")
     const posIdx = relicData["pos"].toString();
@@ -801,12 +828,23 @@ async function calcRelicMark(relicData, charElement, affixWeight, pointMark, max
     };
 }
 
+/** 
+ * 圣遗物评级获取
+ * 在角色等级较低（基础数值较低）时评级可能显示为 "ERR"
+ * 注：角色等级较低时不为 "ERR" 的评分也有可能出错
+ */
 function getRelicRank(score) {
     console.log("进入了：getRelicRank")
     const rank = RANK_MAP.find(r => score <= r[1]);
     return rank ? rank[0] : score <= 66 ? "ERR" : null;
 }
 
+/**
+ *  指定角色圣遗物计算配置获取，包括词条评分权重、词条数值原始权重、各位置圣遗物总分理论最高分和主词条理论最高得分 
+ * @param {String} char 角色名
+ * @param {Object} base 角色的基础数值，可由 Enka 返回获得，格式为 {"生命值": 1, "攻击力": 1, "防御力": 1}
+ * @returns 词条评分权重、词条数值原始权重、各位置圣遗物最高得分
+ */
 async function getRelicConfig(char, base = {}) {
     console.log("进入了：getRelicConfig")
     let Json = await ReturnJson()
@@ -879,7 +917,7 @@ async function getRelicConfig(char, base = {}) {
     return [affixWeight, pointMark, maxMark];
 }
 
-
+/** 转换词条数值为字符串形式 */
 function vStr(prop, value) {
     if (["生命值", "攻击力", "防御力", "元素精通"].includes(prop)) {
         return String(value);
@@ -905,6 +943,12 @@ function kStr(prop, reverse = false) {
         .replace("物理伤害", "物伤");
 }
 
+/**
+ * uid=>服务器
+ * @param {String} uid 查询uid
+ * @param {Boolean} teyvat 小助手 默认false
+ * @returns 
+ */
 function getServer(uid, teyvat = false) {
     if (uid[0] === "5") {
         return "cn_qd01";
@@ -918,5 +962,15 @@ function getServer(uid, teyvat = false) {
         return teyvat ? "hk" : "os_cht";
     } else {
         return "cn_gf01";
+    }
+}
+
+/** 获取缓存数据 */
+async function getCache (uid) {
+    let key = `FanSky:Teyvet:${uid}`;
+    if (await redis.exists(key)) {
+        return JSON.parse(await redis.get(key));
+    } else {
+        return {};
     }
 }
