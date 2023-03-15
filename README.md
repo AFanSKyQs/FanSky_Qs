@@ -48,11 +48,11 @@
   ##
   
 ## ⊚  使用安装(这里使用的gitee)
-根目录下：
+`Yunzai-Bot`或`Miao-Yunzai`根目录下：
 ```
 git clone --depth=1 https://gitee.com/FanSky_Qs/FanSky_Qs.git ./plugins/FanSky_Qs/
 ```
-plugins目录下：
+`Miao-Yunzai/plugins`或...目录下：
 ```
 git clone --depth=1 https://gitee.com/FanSky_Qs/FanSky_Qs.git
 ```
