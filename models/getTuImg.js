@@ -5,7 +5,7 @@ let BgImgPath = `${process.cwd()}/plugins/FanSky_Qs/resources/Card/bg/`
 let TuImg = `${process.cwd()}/plugins/FanSky_Qs/resources/Card/TuImg/`
 let ByPath = `${process.cwd()}/plugins/FanSky_Qs/resources/Card/bg/by.jpg`
 let AcgBg = `${process.cwd()}/plugins/FanSky_Qs/resources/Card/acgBg/`
-
+let Top = `${process.cwd()}/plugins/FanSky_Qs/resources/ChestAchieveTop/img/`
 export async function getBgImg() {
     // 头像框随机数字1或2
     let Num = Math.floor(Math.random() * 2) + 1
@@ -25,7 +25,12 @@ export async function getByImg() {
     // 将路径里面所有的\替换成/
     return ByPath.replace(/\\/g, "/")
 }
-
+export async function getChestAndAchieve() {
+    const files = fs.readdirSync(Top);
+    const randomIndex = Math.floor(Math.random() * files.length);
+    const randomFile = files[randomIndex];
+    return path.join(Top, randomFile).replace(/\\/g, "/")
+}
 export async function getAcgBg() {
     const files = fs.readdirSync(AcgBg);
     const randomIndex = Math.floor(Math.random() * files.length);

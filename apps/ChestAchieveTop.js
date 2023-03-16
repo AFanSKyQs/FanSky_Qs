@@ -1,11 +1,13 @@
 /* eslint-disable camelcase */
+import puppeteer from "../../../lib/puppeteer/puppeteer.js"
 import plugin from '../../../lib/plugins/plugin.js'
 import axios from "axios";
+import {getChestAndAchieve} from "../models/getTuImg.js";
 
 let Achievement = []
 let Chest = []
 
-export class ChestAndAcheievementsTop extends plugin {
+export class ChestAchieveTop extends plugin {
     constructor() {
         super({
             name: '宝箱成就排行',
@@ -84,7 +86,7 @@ export class ChestAndAcheievementsTop extends plugin {
     }
 
     async AchievementTop(e) {
-        if (Achievement[e.user_id]) {
+        if (Achievement[e.user_id] && !e.isMaster) {
             e.reply("成就排行CD：80s/一次喵~")
             return true
         }
@@ -132,8 +134,11 @@ export class ChestAndAcheievementsTop extends plugin {
         if (JsonRes.data.length > 0) {
             JsonRes.data[0].title = unescape(JsonRes.data[0].title.replace(/\\u/g, '%u'))
             let {Name, level, signature} = await this.axiosRequest(uid)
-            let Msg = [`UID：${uid}\n`, `个性签名：${signature}\n`, `冒险等级：${level}\n`, `游戏昵称：${Name} \n`, `达成成就:【${JsonRes.data[0].achievement_number}】/892个\n`, `官哔排行：第${JsonRes.data[0].total_index}名\n`, `排名分数：${JsonRes.data[0].grade}\n图像渲染正在施工中~`]
-            e.reply(Msg)
+
+            // let Msg = [`UID：${uid}\n`, `个性签名：${signature}\n`, `冒险等级：${level}\n`, `游戏昵称：${Name} \n`, `达成成就:【${JsonRes.data[0].achievement_number}】/892个\n`, `官哔排行：第${JsonRes.data[0].total_index}名\n`, `排名分数：${JsonRes.data[0].grade}\n图像渲染正在施工中~`]
+            // e.reply(Msg)
+
+            await this.toImgSend(e,"Achieve", uid, signature, level, Name, JsonRes)
             return true
         } else {
             e.reply(`uid:${uid}没有匹配的数据，可能是米游社权限未开放或者为国际服uid喵~`)
@@ -191,13 +196,63 @@ export class ChestAndAcheievementsTop extends plugin {
             JsonRes.data[0].title = unescape(JsonRes.data[0].title.replace(/\\u/g, '%u'))
             let {Name, level, signature} = await this.axiosRequest(uid)
 
-            let Msg = [`UID：${uid}\n`, `个性签名：${signature}\n`, `冒险等级：${level}\n`, `游戏昵称：${Name} \n`, `宝箱总计:【${JsonRes.data[0].total_box}】个\n`, `官哔排行：第${JsonRes.data[0].total_index}名\n`, `排名分数：${JsonRes.data[0].grade}\n`, `华丽/珍贵/精致/普通：\n${JsonRes.data[0].luxurious}/${JsonRes.data[0].precious}/${JsonRes.data[0].exquisite}/${JsonRes.data[0].common}\n图像渲染正在施工中~`]
-            e.reply(Msg)
+
+            // let Msg = [`UID：${uid}\n`, `个性签名：${signature}\n`, `冒险等级：${level}\n`, `游戏昵称：${Name} \n`, `宝箱总计:【${JsonRes.data[0].total_box}】个\n`, `官哔排行：第${JsonRes.data[0].total_index}名\n`, `排名分数：${JsonRes.data[0].grade}\n`, `华丽/珍贵/精致/普通：\n${JsonRes.data[0].luxurious}/${JsonRes.data[0].precious}/${JsonRes.data[0].exquisite}/${JsonRes.data[0].common}\n图像渲染正在施工中~`]
+            // e.reply(Msg)
+
+            await this.toImgSend(e, "Chest", uid, signature, level, Name, JsonRes)
             return true
         } else {
             e.reply(`uid:${uid}没有匹配的数据，可能是米游社权限未开放或者为国际服uid喵~`)
             return true
         }
+    }
+
+    async toImgSend(e, type, uid, signature, level, Name, JsonRes) {
+        let toImg
+        let CssPath = `${process.cwd()}/plugins/FanSky_Qs/resources/ChestAchieveTop/`
+        let AchieveHtmlPath = `${process.cwd()}/plugins/FanSky_Qs/resources/ChestAchieveTop/achieve.html`
+        let ChestHtmlPath = `${process.cwd()}/plugins/FanSky_Qs/resources/ChestAchieveTop/chest.html`
+        let bg=await getChestAndAchieve()
+        if (type === "Chest") {
+            let ChestHtml = {
+                uid: uid,
+                name: Name,
+                nickname: signature,
+                allchest: JsonRes.data[0].total_box,
+                top: JsonRes.data[0].total_index,
+                Achest: JsonRes.data[0].luxurious,
+                Bchest: JsonRes.data[0].precious,
+                Cchest: JsonRes.data[0].exquisite,
+                Dchest: JsonRes.data[0].common,
+                title: JsonRes.data[0].title,
+                score: JsonRes.data[0].grade,
+                user_img: `https://q1.qlogo.cn/g?b=qq&nk=${e.user_id}&s=160`,
+                AcgBg: bg
+            }
+            toImg = await puppeteer.screenshot("ChestTop", {tplFile: ChestHtmlPath, quality: 100, CssPath, ChestHtml});
+        }
+        if (type === "Achieve") {
+            let AchieveHtml = {
+                uid: uid,
+                name: Name,
+                nickname: signature,
+                allAc: JsonRes.data[0].achievement_number,
+                top: JsonRes.data[0].total_index,
+                title: JsonRes.data[0].title,
+                score: JsonRes.data[0].grade,
+                user_img: `https://q1.qlogo.cn/g?b=qq&nk=${e.user_id}&s=160`,
+                AcgBg: bg
+            }
+            toImg = await puppeteer.screenshot("AchieveTop", {
+                tplFile: AchieveHtmlPath,
+                quality: 100,
+                CssPath,
+                AchieveHtml
+            });
+        }
+        await e.reply(toImg)
+        return true
     }
 
     async uidGet(e) {

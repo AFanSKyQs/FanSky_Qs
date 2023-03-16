@@ -8,7 +8,6 @@ import _ from 'lodash'
  * @returns {Object} 精简格式伤害数据。出错时返回 {"error": "错误信息"}
  */
 async function simpleTeamDamageRes (raw, rolesData) {
-  console.log('进入simplTeamDamageRes')
   let [tm, total] = raw.zdl_tips0.replace(/你的队伍|，DPS为:/g, '').split('秒内造成总伤害')
   let pieData = []; let pieColor = []
   _.each(raw.chart_data, v => {

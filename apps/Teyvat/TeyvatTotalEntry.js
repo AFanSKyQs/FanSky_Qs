@@ -41,8 +41,8 @@ async function getTeam (uid, chars = [], showDetail = false) {
       ...acc,
       [a.name]: a
     }), {}))
-    console.log('-----------------getTeam_data-----------------')
-    console.log(data)
+    // console.log('-----------------getTeam_data-----------------')
+    // console.log(data)
     return data;
   } catch (e) {
     console.log(`[${e.constructor.name}] 队伍伤害数据解析出错`)

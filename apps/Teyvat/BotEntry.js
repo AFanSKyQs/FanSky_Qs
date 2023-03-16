@@ -136,7 +136,7 @@ export class BotEntry extends plugin {
                 e.msg.replace(v, '');
             }
         });
-        let chars = roleList.split(/ |,|，|、|。|-|./g) || [];
+        let chars = roleList.split(/ |,|，|、|。|-/g) || [];
         console.log(chars)
         if (!_.isEmpty(chars)) {
             let err_chars = _.filter(chars, v => !gsCfg.getRole(v));
