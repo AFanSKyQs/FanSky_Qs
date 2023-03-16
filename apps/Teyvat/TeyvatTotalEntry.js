@@ -1,6 +1,6 @@
 import { getAvatarData, getTeyvatData, ReturnConfig, simpleTeamDamageRes, transToTeyvatRequest } from './Index.js'
 
-await getSingle('117556563', '魈') //  单人伤害：uid, 角色名
+// await getSingle('117556563', '魈') //  单人伤害：uid, 角色名
 // await getTeam('117556563'); //队伍伤害：uid，角色列表
 
 /** 队伍伤害消息生成入口

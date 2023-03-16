@@ -9,8 +9,6 @@ import { calcRelicMark, getRelicConfig, getRelicRank, kStr, vStr } from '../Inde
  * @returns 内部格式角色数据，用于本地缓存等
  */
 async function transFromEnka (Json, avatarInfo, ts = 0) {
-  console.log('进入了：transFromEnka')
-  // let Json = await ReturnConfig()
   let HASH_TRANS = Json.HASH_TRANS
   let CHAR_DATA = Json.CHAR_DATA
   const charData = CHAR_DATA[String(avatarInfo.avatarId)]

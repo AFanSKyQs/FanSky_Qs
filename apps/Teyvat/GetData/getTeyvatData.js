@@ -13,13 +13,11 @@ const headers = {
  * @returns 小助手返回数据
  */
 async function getTeyvatData (TBody, type = 'single') {
-  console.log('进入了：getTeyvatData---type:' + type)
   const apiMap = {
     single: 'https://api.lelaer.com/ys/getDamageResult.php',
     team: 'https://api.lelaer.com/ys/getTeamResult.php'
   }
   try {
-    console.log('getTWTData_apiMap:' + apiMap[type])
     const response = await fetch(apiMap[type], {
       method: 'POST',
       headers: {

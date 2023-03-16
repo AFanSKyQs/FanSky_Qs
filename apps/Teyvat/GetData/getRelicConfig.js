@@ -9,8 +9,6 @@ import { ReturnConfig } from '../Index.js'
  * @returns 词条评分权重、词条数值原始权重、各位置圣遗物最高得分
  */
 async function getRelicConfig (Json, char, base = {}) {
-  console.log('进入了：getRelicConfig')
-  // let Json = await ReturnConfig()
   let CALC_RULES = Json.CALC_RULES
   const affixWeight = CALC_RULES[char] ?? { 攻击力百分比: 75, 暴击率: 100, 暴击伤害: 100 }
   const sortedAffixWeight = Object.fromEntries(

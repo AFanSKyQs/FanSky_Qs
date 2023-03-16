@@ -19,9 +19,7 @@ import { getTeyvatData, simpleDamageRes, transFromEnka, transToTeyvatRequest } f
  * @returns 查询结果。出错时返回 ``{"error": "错误信息"}``
  */
 async function getAvatarData (Json, uid, char = '全部') {
-  // let Json = await ReturnConfig()
-  console.log('进入了：getAvatarData')
-  const cache = await getCache(uid, 'rolesData')
+  let cache = await getCache(uid, 'rolesData')
   let cacheData = cache; let nextQueryTime = cache?.next || 0
   let refreshed = []; let _tip = ''; let _time = 0
 
@@ -81,7 +79,6 @@ async function getAvatarData (Json, uid, char = '全部') {
       }
 
       if (!_.isEmpty(wait4Dmg)) {
-        console.log('wait4Dmg typeof:' + typeof wait4Dmg)
         let _names = []
         _.each(wait4Dmg, (a, aI) => {
           _names[aI] = a.name

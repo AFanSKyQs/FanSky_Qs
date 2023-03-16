@@ -2,6 +2,7 @@
 node_modules/
 .idea/
 config/TeyvatConfig/
+resources/cache/
 config/OpenAI.json
 package-lock.json
 

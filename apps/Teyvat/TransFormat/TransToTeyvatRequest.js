@@ -9,7 +9,6 @@ import { getServer, kStr } from '../Index.js'
  * @returns 请求格式数据
  */
 async function transToTeyvatRequest (avatarsData, uid) {
-  console.log('进入了：transTeyvatData')
   let res = { uid, role_data: [] }
   if (uid[0] !== '1' && uid[0] !== '2') {
     res.server = getServer(uid, true)

@@ -6,7 +6,6 @@ import _ from 'lodash'
  * @returns 精简格式伤害数据，出错时返回 {}
  */
 async function simpleDamageRes (damage) {
-  console.log('进入了：simplDamageRes')
   const res = { level: damage.zdl_result || 'NaN', data: [], buff: [] }
   for (const key of ['damage_result_arr', 'damage_result_arr2']) {
     // console.log(`------------damage[${key}]------------`)
@@ -33,8 +32,8 @@ async function simpleDamageRes (damage) {
   // zdl_tips0:'经鉴定，你的 钟离 角色伤害评级为:'
   // 取出 zdl_tips0 中的角色名
   let charName = damage.zdl_tips0.match(/你的(.+?)角色/)[1]
-  console.log(`-----------数据检查simplDamageRes| ${charName} |-------------`)
-  console.log(res)
+  // console.log(`-----------数据检查simplDamageRes| ${charName} |-------------`)
+  // console.log(res)
   return res
 }
 export default simpleDamageRes

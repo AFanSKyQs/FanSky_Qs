@@ -12,7 +12,6 @@ import { getRelicRank } from '../Index.js'
  * @returns 圣遗物评分结果
  */
 async function calcRelicMark (Json, relicData, charElement, affixWeight, pointMark, maxMark) {
-  console.log('进入了：calcRelicMark')
   const posIdx = relicData.pos.toString()
   const relicLevel = relicData.level
   const mainProp = relicData.main
