@@ -29,7 +29,7 @@ export class OpenAI extends plugin {
       dsc: 'OpenAI_ChatGPT',
       event: 'message',
       // 优先级(数值越小优先度越高)
-      priority: 3,
+      priority: 3141,
       // 消息匹配规则
       rule: [
         {
@@ -65,8 +65,7 @@ export class OpenAI extends plugin {
       // e.reply("如果是想与AI对话\n请不要在开头输入#\n【这一般是指令】\n\n如果是指令请不要艾特机器人\n【艾特一般是与机器人对话】", true)
       return false
     }
-
-    console.log('e.atBot:' + e.atBot)
+    // console.log('e.atBot:' + e.atBot)
     if (!e.atBot && !e.atme) return false
     if (!e.msg) {
       e.reply('你想对我说什么呢？baka不要空白呀！', true)
@@ -165,7 +164,7 @@ export class OpenAI extends plugin {
       }).catch(function (error) {
         delete Moudel1List[e.user_id]
         delete MoudelStatus[e.user_id]
-        e.reply('可能超过对话上限，已重置柠的对话喵~')
+        e.reply('Clash设置未生效或其他问题喵~')
         console.log(error)
       })
     } catch (err) {

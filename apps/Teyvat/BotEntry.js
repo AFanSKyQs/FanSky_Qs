@@ -80,7 +80,7 @@ export class BotEntry extends plugin {
   }
 
   async TeyvatEnTry (e) {
-    if (e.is_owner) { e.reply('>>>FanSky_Qs正在施工中') }
+    if (!e.isMaster) { e.reply('>>>FanSky_Qs正在施工中') }
     e.msg = e.msg.replace(/提瓦特|小助手/g, '');
     console.log('===============小助手')
     console.log(e.msg)

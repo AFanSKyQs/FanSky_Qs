@@ -1,3 +1,11 @@
+#过滤pull文件
+node_modules/
+.idea/
+config/TeyvatConfig/
+config/OpenAI.json
+package-lock.json
+
+
 # Compiled class file
 *.class
 
