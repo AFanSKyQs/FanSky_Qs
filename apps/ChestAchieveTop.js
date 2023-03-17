@@ -16,10 +16,10 @@ export class ChestAchieveTop extends plugin {
             priority: 1,
             rule: [
                 {
-                    reg: '^#?(查|look|看)?成就(排行|排名|查询|统计)?(.*)$',
+                    reg: '^#成就(排行|排名|查询|统计)?(.*)$',
                     fnc: 'AchievementTop'
                 }, {
-                    reg: '^#?(查|look|看)?宝箱(排行|排名|查询|统计)?(.*)$',
+                    reg: '^#宝箱(排行|排名|查询|统计)?(.*)$',
                     fnc: 'ChestTop'
                 },
                 {
@@ -86,6 +86,7 @@ export class ChestAchieveTop extends plugin {
     }
 
     async AchievementTop(e) {
+        if(e.msg && e.msg.includes("成就查漏")){return false}
         if (Achievement[e.user_id] && !e.isMaster) {
             e.reply("成就排行CD：80s/一次喵~")
             return true
