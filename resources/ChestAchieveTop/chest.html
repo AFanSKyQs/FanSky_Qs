@@ -1,37 +1,39 @@
 <!doctype html>
 <html lang="zh-CN">
 <style>
-  body{
-    transform: scale(1.5);
-    transform-origin: 0 0;
-    /*background-image:url('https://api.gmit.vip/Api/DmImg?format=image');*/
-    background-image:url({{AchieveHtml.AcgBg}});
-    width: 800px;
-    background-repeat:no-repeat;
-    background-position:center;
-    background-attachment:scroll;
-    background-size:cover;
-  }
-  </style>
-  <head>
+    body {
+        transform: scale(1.5);
+        transform-origin: 0 0;
+        background-image: url({{ChestHtml.AcgBg}});
+        width: 800px;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-attachment: scroll;
+        background-size: cover;
+    }
+</style>
+<head>
     <meta charset="utf-8">
     <title>宝箱排行</title>
     <link rel="shortcut icon" href="https://htmlpage.cn/favicon.png">
-<!--    <link rel="stylesheet" href="{{CssPath}}style.css">-->
-     <link rel="stylesheet" href="{{CssPath}}style.css">
-  </head>
+    <link rel="stylesheet" href="{{CssPath}}style.css">
+</head>
 
-  <body>
+<body>
 
-    <body>
-      <div data-v-32b84ec5=""></div><img src="{{@ChestHtml.user_img}}" height="256" width="256" class="c10089" /><img src="https://template-1253409072.cos.ap-guangzhou.myqcloud.com/user-upload-images/1086/Txk3.png" class="c11873" />
-      <div class="c5635">UID:{{@ChestHtml.uid}}<br />『{{@ChestHtml.name}}』 <br />{{@ChestHtml.nickname}}</div>
-      <div class="c9830">宝箱总计:【{{@ChestHtml.allchest}}】/4751个</div>
-      <div class="c6855">[官服 &amp; B服] ：第{{@ChestHtml.top}}名</div>
-      <div class="c6934">华丽  /  珍贵  /  精致  / 普通<br />{{@ChestHtml.Achest}}  /  {{@ChestHtml.Bchest}}   /  {{@ChestHtml.Cchest}} / {{@ChestHtml.Dchest}}<br /></div>
-      <div class="c7013">排名称号：{{@ChestHtml.title}}</div>
-      <div class="c7092">排名得分：{{@ChestHtml.score}}</div>
-      <div class="c15854">Created by Yunzai-Bot &amp; FanSky_Qs</div>
-    </body>
-  </body>
-  <html>
+<body>
+<div data-v-32b84ec5=""></div>
+<img src="{{@ChestHtml.user_img}}" height="256" width="256" class="c10089"/><img
+        src="https://template-1253409072.cos.ap-guangzhou.myqcloud.com/user-upload-images/1086/Txk3.png"
+        class="c11873"/>
+<div class="c5635">UID:{{@ChestHtml.uid}}<br/>『{{@ChestHtml.name}}』 <br/>{{@ChestHtml.nickname}}</div>
+<div class="c9830">宝箱总计:【{{@ChestHtml.allchest}}】/4751个</div>
+<div class="c6855">[官服 &amp; B服] ：第{{@ChestHtml.top}}名</div>
+<div class="c6934">华丽  /  珍贵  /  精致  / 普通<br/>{{@ChestHtml.Achest}}  /  {{@ChestHtml.Bchest}}   / 
+    {{@ChestHtml.Cchest}} / {{@ChestHtml.Dchest}}<br/></div>
+<div class="c7013">排名称号：{{@ChestHtml.title}}</div>
+<div class="c7092">排名得分：{{@ChestHtml.score}}</div>
+<div class="c15854">Created by Yunzai-Bot &amp; FanSky_Qs</div>
+</body>
+</body>
+<html>

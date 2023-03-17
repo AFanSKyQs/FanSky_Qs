@@ -216,6 +216,7 @@ export class ChestAchieveTop extends plugin {
         let ChestHtmlPath = `${process.cwd()}/plugins/FanSky_Qs/resources/ChestAchieveTop/chest.html`
         let bg=await getChestAndAchieve()
         if (type === "Chest") {
+            console.log("bg:"+bg)
             let ChestHtml = {
                 uid: uid,
                 name: Name,
@@ -234,6 +235,7 @@ export class ChestAchieveTop extends plugin {
             toImg = await puppeteer.screenshot("ChestTop", {tplFile: ChestHtmlPath, quality: 100, CssPath, ChestHtml});
         }
         if (type === "Achieve") {
+            console.log("bg:"+bg)
             let AchieveHtml = {
                 uid: uid,
                 name: Name,
