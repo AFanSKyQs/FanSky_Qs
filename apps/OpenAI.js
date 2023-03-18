@@ -76,8 +76,8 @@ export class OpenAI extends plugin {
             Json.OnOff = "开启"
             await fs.writeFileSync(path, JSON.stringify(Json))
         }
-        if(Json.OnOff === "关闭"){
-          return false
+        if (Json.OnOff === "关闭") {
+            return false
         }
         const OpenAI_Key = Json.OpenAI_Key
         if (OpenAI_Key === '这里填入你的OpenAI密钥即可' || !OpenAI_Key || OpenAI_Key === '') {
@@ -168,11 +168,38 @@ export class OpenAI extends plugin {
                     delete Moudel1List[e.user_id]
                     delete Moudel1Num[e.user_id]
                 }
-            }).catch(function (error) {
-                delete Moudel1List[e.user_id]
-                delete MoudelStatus[e.user_id]
-                e.reply('Clash设置未生效或其他问题喵~')
-                console.log(error)
+            }).catch(async function (error) {
+                try {
+                    await axios({
+                        method: 'post', url: 'https://api.openai.com/v1/chat/completions', headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: 'Bearer ' + OpenAI_Key
+                        }, data: JSON.stringify(Moudel1List[e.user_id])
+                    }).then((response) => {
+                        console.log(response.data.choices[0])
+                        let result = response.data.choices[0].message.content
+                        let SendResult = `【魔晶：${GetResult} | 重置：${10 - Moudel1Num[e.user_id]} | ${response.data.choices[0].message.content.length}字】\n` + result
+                        e.reply(SendResult, true)
+                        Moudel1List[e.user_id].messages.push({role: 'assistant', content: result})
+                        delete MoudelStatus[e.user_id]
+                        if (Moudel1Num[e.user_id] >= 10 && !e.isMaster) {
+                            delete Moudel1List[e.user_id]
+                            delete Moudel1Num[e.user_id]
+                        }
+                        if (Json.ModelMode === 1) {
+                            delete Moudel1List[e.user_id]
+                            delete Moudel1Num[e.user_id]
+                        }
+                    }).catch(async function (error) {
+                        delete Moudel1List[e.user_id]
+                        delete MoudelStatus[e.user_id]
+                        e.reply('[Clash设置未生效]或[机场不可用(如:一元)]喵\n请查看控制台错误信息~')
+                        console.log(error)
+                    })
+                } catch (err) {
+                    console.log(err)
+                    e.reply("访问没有成功")
+                }
             })
         } catch (err) {
             e.reply('运行有问题~,请联系开发人员(3141865879)')
@@ -356,8 +383,72 @@ export class OpenAI extends plugin {
                 delete MoudelStatus[e.user_id]
                 console.log(error)
                 Axios[e.user_id] = ['']
-                e.reply('超过记忆上限，已重置对话', true)
-                console.log('超过对话上限！')
+                e.reply('已重置对话、发送error', true)
+
+                try {
+                    axios({
+                        method: 'post',
+                        url: 'https://api.openai.com/v1/completions',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept-Encoding': 'gzip,deflate',
+                            'Content-Length': 1024,
+                            'Transfer-Encoding': 'chunked',
+                            Authorization: 'Bearer ' + OpenAI_KEY
+                        },
+                        data: JSON.stringify(PostDate),
+                    }).then(async function (response) {
+                        let ReciveMsg = response.data.choices[0].text
+                        let Axios_Temp = ReciveMsg
+                            .replace(/机器人：/, '').trim()
+                            .replace(/\n/, '').trim()
+                            .replace(/答：/, '').trim()
+                            .replace(/AI:/, '').trim()
+                            .replace(/Bot:/, '').trim()
+                            .replace(/robot:/, '').trim()
+                            .replace(/Robot:/, '').trim()
+                            .replace(/Computer:/, '').trim()
+                            .replace(/computer:/, '').trim()
+                        if (Axios_Temp.startsWith('，') || Axios_Temp.startsWith('？') || Axios_Temp.startsWith('?') || Axios_Temp.startsWith(',') || Axios_Temp.startsWith('。')) {
+                            Axios_Temp = Axios_Temp.slice(1)
+                        }
+                        if (Axios_Temp.startsWith('吗？') || Axios_Temp.startsWith('吗?')) {
+                            Axios_Temp = Axios_Temp.slice(2)
+                        }
+                        Axios[e.user_id][0] = Axios[e.user_id][0] + '\nAI:' + Axios_Temp
+                        if (!Axios_Temp.startsWith('【')) {
+                            Axios_Temp = `【距对话重置：${userCount[e.user_id]}】\n【消耗8魔晶 | 剩余：${GetResult}】` + Axios_Temp
+                        }
+                        if (userCount[e.user_id] === 0) {
+                            if (e.isMaster) {
+                                userCount[e.user_id] = adminCount
+                            } else {
+                                userCount[e.user_id] = CountMember
+                            }
+                            Axios[e.user_id] = ['']
+                            e.reply('对话已重置，将开始新的记忆。')
+                        }
+                        if (Json.ModelMode === 1) {
+                            Axios[e.user_id] = ['']
+                        }
+                        let TextToImg = (await getCfg(yunPath, 'OpenAI')).Text_img
+                        if (Axios_Temp.length > TextToImg) {
+                            await ScreenAndSend(e, Axios_Temp)
+                        } else {
+                            e.reply(Axios_Temp, true)
+                        }
+                        delete MoudelStatus[e.user_id]
+                        return true
+                    }).catch(function (error) {
+                        delete MoudelStatus[e.user_id]
+                        console.log(error)
+                        Axios[e.user_id] = ['']
+                        e.reply('已重置对话、发送error', true)
+                        return true
+                    })
+                } catch (err) {
+                    console.log(err)
+                }
             })
         } catch (err) {
             delete MoudelStatus[e.user_id]

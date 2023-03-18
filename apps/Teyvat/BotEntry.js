@@ -92,6 +92,7 @@ export class BotEntry extends plugin {
     async TeyvatEnTry(e) {
         if (!e.isMaster) {
             e.reply('>>>[FanSky_Qs]正在施工中~')
+            return true
         }
         const regexTeam = /^#队伍伤害(\d+)?(.*)$/;
         const regexALevel = /^#单人评级(\d+)?(.*)$/;
@@ -114,17 +115,29 @@ export class BotEntry extends plugin {
         }
         let res = await this.TeamDamage(e, uid, roleList);
         if (!res) {
-            e.reply("获取失败:"+uid)
+            e.reply("获取失败:" + uid)
             return true
         }
-        let cachePath = CachePath + "/" + uid + '.json'
-        if (!fs.existsSync(CachePath)) {fs.mkdirSync(CachePath);}
-        if (!fs.existsSync(cachePath)) {fs.writeFileSync(cachePath, '{}')}
-        await fs.writeFileSync(cachePath, JSON.stringify(res))
-        logger.info(logger.cyan("==>[FanSky_Qs]小助手 请求完成!"))
+        try {
+            if (res.includes("未发现")) {
+                logger.info(logger.cyan(`==>[FanSky_Qs][UID:${uid}]小助手:${res}`))
+                e.reply(res)
+                return true
+            }
+        } catch (err) {
+            let cachePath = CachePath + "/" + uid + '.json'
+            if (!fs.existsSync(CachePath)) {
+                fs.mkdirSync(CachePath);
+            }
+            if (!fs.existsSync(cachePath)) {
+                fs.writeFileSync(cachePath, '{}')
+            }
+            await fs.writeFileSync(cachePath, JSON.stringify(res))
+            logger.info(logger.cyan("==>[FanSky_Qs]小助手 请求完成!"))
 
-        // e.reply(res);
-        return true
+            // e.reply(res);
+            return true
+        }
     }
 
     async TeamDamage(e, uid, roleList) {

@@ -93,7 +93,7 @@ async function getAvatarData (Json, uid, char = '全部') {
           for (const dmgIdx in teyvatRaw.result) {
             let aIdx = parseInt(_.keys(wait4Dmg)[dmgIdx])
             let dmgData = teyvatRaw.result[dmgIdx]
-            console.log(teyvatRaw.result[dmgIdx])
+            // console.log(teyvatRaw.result[dmgIdx])
             // zdl_tips0:'经鉴定，你的钟离角色伤害评级为:'
             avatars[aIdx].damage = await simpleDamageRes(dmgData)
           }

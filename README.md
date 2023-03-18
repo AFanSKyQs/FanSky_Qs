@@ -186,6 +186,7 @@ git clone --depth=1 https://gitee.com/FanSky_Qs/FanSky_Qs.git
   - [![Group](https://img.shields.io/badge/QQ群-755794036-red?style=flat-square&logo=GroupMe&logoColor=important)](https://jq.qq.com/?_wv=1027&k=I2HCxKdM)
   - Q Q：[3141865879](https://res.abeim.cn/api/qq/?qq=3141865879)
   - Discord：FanSky_Qo#9926
+  - [爱发电🌸](https://afdian.net/a/afanskyqs)<br><td align="center" valign="top" width="100%"><a href="https://afdian.net/a/afanskyqs"><img src="https://i.imgtg.com/2023/03/18/luiPi.jpg" width="300px;" alt="AFanSKyQs"/><br /><sub><b></b></sub></a><br /><a href="https://github.com/AFanSKyQs/FanSky_Qs/commits?author=AFanSKyQs" title="Code"></a></td>
   
 ## Star History
 
