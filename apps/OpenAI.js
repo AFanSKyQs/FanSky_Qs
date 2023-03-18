@@ -193,8 +193,8 @@ export class OpenAI extends plugin {
                     }).catch(async function (error) {
                         delete Moudel1List[e.user_id]
                         delete MoudelStatus[e.user_id]
+                        Bot.logger.info(error)
                         e.reply('[Clash设置未生效]或[机场不可用(如:一元)]喵\n请查看控制台错误信息~')
-                        console.log(error)
                     })
                 } catch (err) {
                     console.log(err)

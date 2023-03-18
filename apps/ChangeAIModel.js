@@ -17,7 +17,7 @@ export class ChangeAIModel extends plugin {
                     reg: /#?(更换|切换|换|换一下)语言模型(.*)/, // (.*)里面接收的是数字，如1或者2等..
                     fnc: 'ChangeAIModel'
                 }, {
-                    reg: /#?(拉黑|加黑|禁止|禁用)语言模型(.*)/, // (.*)里面接收的是qq号，即要拉黑的人的qq号
+                    reg: /#?(拉黑|加黑|禁止|禁用)模型使用(.*)/, // (.*)里面接收的是qq号，即要拉黑的人的qq号
                     fnc: 'addBlackList'
                 }, {
                     reg: /#?(设置|更改|修改)模型人设(.*)/,
