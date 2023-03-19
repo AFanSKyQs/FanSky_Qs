@@ -37,6 +37,10 @@ export class OpenAI extends plugin {
                     fnc: 'DelAll'
                 },
                 {
+                    reg: /^#重置(对话|聊天|记忆)$/i,
+                    fnc: 'Reset'
+                },
+                {
                     reg: /#对话列表|#聊天列表|#会话列表/,
                     fnc: 'Axios_list'
                 },
@@ -50,6 +54,24 @@ export class OpenAI extends plugin {
             ]
         })
     };
+
+    async Reset(e) {
+        try {
+            if (MoudelStatus[e.user_id]) {
+                delete MoudelStatus[e.user_id]
+            }
+            if (Moudel1List[e.user_id]) {
+                delete Moudel1List[e.user_id]
+            }
+            if (Moudel1Num[e.user_id]) {
+                delete Moudel1Num[e.user_id]
+            }
+            e.reply('已重置您的对话记录~')
+        } catch (err) {
+            console.log(err)
+        }
+        return true
+    }
 
     async OpenAI(e) {
         // if (e.message[0].type !== "at") {
@@ -114,8 +136,25 @@ export class OpenAI extends plugin {
                 return true
             }
         }
-        MoudelStatus[e.user_id] = true
         let Persona = Json.Persona// 人设
+        if (!e.isMaster) {
+            let singleModelFolder = `${process.cwd()}/resources/FanSky`
+            let singleModel = `${process.cwd()}/resources/FanSky/singleModel.json`
+            if (!fs.existsSync(singleModelFolder)) {
+                fs.mkdirSync(singleModelFolder);
+                console.log('>>>已创建FanSky文件夹')
+            }
+            if (!fs.existsSync(singleModel)) {
+                fs.writeFileSync(singleModel, '{}');
+                console.log('>>>已创建singleModel.json文件')
+            }
+            let singleModelConfig = JSON.parse(fs.readFileSync(singleModel))
+            if (singleModelConfig[e.user_id].Persona) {
+                Persona = singleModelConfig[e.user_id].Persona
+            }
+        }
+        MoudelStatus[e.user_id] = true
+
         let DataList = {
             model: 'gpt-3.5-turbo',
             messages: [
@@ -152,7 +191,7 @@ export class OpenAI extends plugin {
                     protocol: 'http',
                     host: '127.0.0.1',
                     port: 7890
-                }
+                },
             }).then(async function (response) {
                 console.log(response.data.choices[0])
                 let result = response.data.choices[0].message.content
@@ -219,10 +258,14 @@ export class OpenAI extends plugin {
 
     async DelAll(e) {
         if (!e.isMaster) {
+            e.reply('你不可以这样做噢喵~，因为这个是清除所有人的对话记录的，只有主人才可以这样做喵~')
             return true
         } else {
             OpenAIList = ['']
             userCount = [0]
+            Moudel1Num = []
+            MoudelStatus = []
+            Moudel1List = []
             Axios = []
             e.reply('已清空所有')
             return true
