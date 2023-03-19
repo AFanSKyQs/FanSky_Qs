@@ -6,6 +6,7 @@ let TuImg = `${process.cwd()}/plugins/FanSky_Qs/resources/Card/TuImg/`
 let ByPath = `${process.cwd()}/plugins/FanSky_Qs/resources/Card/bg/by.jpg`
 let AcgBg = `${process.cwd()}/plugins/FanSky_Qs/resources/Card/acgBg/`
 let Top = `${process.cwd()}/plugins/FanSky_Qs/resources/ChestAchieveTop/img/`
+let helpBg = `${process.cwd()}/plugins/FanSky_Qs/resources/help/img/bg/`
 export async function getBgImg() {
     // 头像框随机数字1或2
     let Num = Math.floor(Math.random() * 2) + 1
@@ -36,4 +37,10 @@ export async function getAcgBg() {
     const randomIndex = Math.floor(Math.random() * files.length);
     const randomFile = files[randomIndex];
     return path.join(AcgBg, randomFile).replace(/\\/g, "/")
+}
+export async function getHelpBg() {
+    const files = fs.readdirSync(helpBg);
+    const randomIndex = Math.floor(Math.random() * files.length);
+    const randomFile = files[randomIndex];
+    return path.join(helpBg, randomFile).replace(/\\/g, "/")
 }

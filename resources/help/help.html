@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<style>
+  .container {
+    width: 530px;
+    padding: 20px 15px 10px 15px;
+    background-color: #eeeed3;
+    background-image: url({{acgBg}});
+}
+</style>
+
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+  <link rel="stylesheet" type="text/css" href="{{pluResPath}}help.css" />
+  <link rel="shortcut icon" href="#" />
+</head>
+{{@headStyle}}
+
+<body>
+  <div class="container" id="container">
+    <div class="head_box">
+      <div class="id_text">FanSky_Qs</div>
+      <h2 class="day_text">食用菜单-v{{version}}</h2>
+      <img class="genshin_logo" src="{{pluResPath}}img/other/Logo.png"/>
+    </div>
+    {{each helpData val}}
+    <div class="data_box">
+      <div class="tab_lable">{{val.group}}</div>
+      <div class="list">
+        {{each val.list item}}
+        <div class="item">
+          <img class="icon" src="{{pluResPath}}img/icon/{{item.icon}}.png" />
+          <div class="title">
+            <div class="text">{{item.title}}</div>
+            <div class="dec">{{item.desc}}</div>
+          </div>
+        </div>
+        {{/each}}
+      </div>
+    </div>
+    {{/each}}
+    <div class="logo" style="background-color: #f5f3dceb;border-radius: 50px;width: auto"><span style="color: #e17bab;font-weight: bold">{{YunzaiName}} {{YunzaiVersion}}</span> && <span style="color: #0bb199;font-weight: bold">FanSky_Qs</span> <span style="color: #ff3c00;font-weight: bold">{{version}}</span> </div>
+  </div>
+</body>
+
+</html>
