@@ -149,8 +149,12 @@ export class OpenAI extends plugin {
                 console.log('>>>已创建singleModel.json文件')
             }
             let singleModelConfig = JSON.parse(fs.readFileSync(singleModel))
-            if (singleModelConfig[e.user_id].Persona) {
-                Persona = singleModelConfig[e.user_id].Persona
+            try{
+                if(singleModelConfig[e.user_id].Persona){
+                    Persona = singleModelConfig[e.user_id].Persona
+                }
+            }catch (err){
+                Persona = Json.Persona
             }
         }
         MoudelStatus[e.user_id] = true
