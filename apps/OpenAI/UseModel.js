@@ -24,7 +24,6 @@ export async function UseModel(e) {
     }
     if (!e.atBot && !e.atme) return false
     if (!e.msg) {
-        e.reply('你想对我说什么呢？baka不要空白呀！', true)
         return false
     }
     const Json = await getCfg(yunPath, 'OpenAI')
