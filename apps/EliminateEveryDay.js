@@ -22,76 +22,14 @@ export class EliminateEveryDay extends plugin {
             ]
         })
         this.task = {
-            /** 任务名称 */
             name: '清除打卡状态',
             cron: '0 0 0 * * *',
-            fnc: () => {
-                this.ClearSignTask();
-                this.ClearTop();
+            fnc: async () => {
+                await this.ClearSignTask();
+                await this.ClearTop();
             },
-            // cron: '0 0/1 * * * ?',
-            // fnc: () => {
-            //     this.ClearSignTaskTest();
-            //     this.ClearTopTest();
-            // },
         }
     }
-    async ClearSignTaskTest() {
-        const RunPath= await this.ChangePath(Test1_path);
-        let isExist = await this.isFileExist(RunPath);
-        let list = cfg.masterQQ;
-        if (!isExist) {
-            console.log("isExist:"+isExist)
-            for (let userId of list) {
-                await Bot.pickFriend(userId).sendMsg("Sign重置失败,文件还不存在。")
-            }
-            return true;
-        }
-        let data = JSON.parse(fs.readFileSync(RunPath));
-        let Num = 0;
-        let SignNum= 0;
-        for (let user in data) {
-            if(data[user].today===true){
-                SignNum++;
-            }
-            data[user].today = false;
-            Num++;
-        }
-        fs.writeFileSync(RunPath, JSON.stringify(data));
-        let msg = [
-            `重置打卡状态：${Num}位\n打卡：${SignNum}位。\n当前时间: `+ new Date().toLocaleString()
-        ];
-        for (let userId of list) {
-            await Bot.pickFriend(userId).sendMsg(msg)
-        }
-    }
-    async ClearTopTest() {
-        const RunPath= await this.ChangePath(Test2_path);
-        let isExist = await this.isFileExist(RunPath);
-        let list = cfg.masterQQ;
-        if (!isExist) {
-            console.log("isExist:"+isExist)
-            for (let userId of list) {
-                await Bot.pickFriend(userId).sendMsg("SignTop已经重置过啦~。")
-            }
-            return true;
-        }
-        console.log("isExist:"+isExist)
-        fs.unlink(RunPath, async (err) => {
-            if (err) {
-                console.log(err);
-                for (let userId of list) {
-                    await Bot.pickFriend(userId).sendMsg("SignTop重置失败：\n"+err)
-                }
-                return true;
-            }
-            console.log("文件删除成功");
-            for (let userId of list) {
-                await Bot.pickFriend(userId).sendMsg("SignTop重置成功。")
-            }
-        });
-    }
-
     async isFileExist(isFilePath) {
         return new Promise((resolve, reject) => {
             fs.access(isFilePath, (err) => {
@@ -126,14 +64,13 @@ export class EliminateEveryDay extends plugin {
             }
             console.log("文件删除成功");
             for (let userId of list) {
-                await Bot.pickFriend(userId).sendMsg("SignTop重置成功。")
+                await Bot.pickFriend(userId).sendMsg("不知不觉已经00点啦，新的一天要开心喵~\nSignTop重置成功。")
             }
         });
     }
     async ChangePath(changePath){
         return changePath.replace(/\\/g,"/");
     }
-
     async ClearSignTask() {
         const RunPath= await this.ChangePath(Sign_path);
         let isExist = await this.isFileExist(RunPath);
@@ -163,7 +100,6 @@ export class EliminateEveryDay extends plugin {
             await Bot.pickFriend(userId).sendMsg(msg)
         }
     }
-
     async ClearSign(e) {
         if (!e.isMaster) {
             e.reply("你在干什么baka!~")

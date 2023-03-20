@@ -1,9 +1,9 @@
+// 暂时咕咕咕的功能，不可用
 import {segment} from "oicq";
 import fs from "fs";
-import puppeteer from "../../../lib/puppeteer/puppeteer.js";
-import plugin from '../../../lib/plugins/plugin.js'
-import gsCfg from '../../genshin/model/gsCfg.js'
-
+import puppeteer from "../../../../lib/puppeteer/puppeteer.js";
+import plugin from '../../../../lib/plugins/plugin.js'
+import gsCfg from '../../../genshin/model/gsCfg.js'
 let Paimon_path = `${process.cwd()}/plugins/FanSky_Qs/resources/派蒙的星光考察/`
 let tipsPath= `${Paimon_path}元素提示图/`
 let RoleImgPath = `${Paimon_path}/角色图标/`
@@ -21,10 +21,10 @@ export class PemonStar extends plugin {
             priority: 3141,
             rule: [
                 {
-                    reg: "^#?(派蒙的星光考察|星光考察)$",
+                    reg: "^#?xxxxxxxxxxxxxxxxxxxxxx(派蒙的星光考察|星光考察)$",
                     fnc: 'guessRole'
                 },{
-                    reg: "^#?猜(.*)$",
+                    reg: "^#?xxxxxxxxxxxxxxxxxxx猜(.*)$",
                     fnc: 'guess'
                 }
             ]

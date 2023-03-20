@@ -5,13 +5,13 @@ let cwd = process.cwd().replace(/\\/g, '/')
 
 export async function screenData(e) {
     // let BgImgPath=`${cwd}/plugins/FanSky_Qs/resources/help/img/bg`
-    let NameList=['提纳里','艾尔海森','八重神子','迪希雅','甘雨','柯莱','可莉','流浪者','纳西妲','妮露','赛诺','提纳里','夜兰']
+    let NameList=['艾尔海森','八重神子','迪希雅','甘雨','柯莱','可莉','流浪者','纳西妲','妮露','赛诺','提纳里','夜兰']
     let Package = `${cwd}/plugins/FanSky_Qs/package.json`
     let YunzaiPath = `${cwd}/package.json`
     let Version = JSON.parse(fs.readFileSync(Package));
     let Yunzai = JSON.parse(fs.readFileSync(YunzaiPath));
     let Data = (await helpData()).helpData
-    let headImg = NameList[Math.floor(Math.random() * NameList.length)]
+    let headImg = (NameList[Math.floor(Math.random() * NameList.length)])
     // let RandomBgImg
     // fs.readdir(BgImgPath, (err, files) => {if (err) throw err;RandomBgImg = files[Math.floor(Math.random() * files.length)];console.log("随机名字："+RandomBgImg); });
     let AcgPath=await getHelpBg()
@@ -140,7 +140,11 @@ export async function helpData() {
                         "icon": "sign",
                         "title": "打卡总计",
                         "desc": "统计今日已经打卡和系统总打卡用户"
-                    }
+                    },{
+                        "icon": "点赞",
+                        "title": "#开启fan点赞",
+                        "desc": "设置点赞功能开启"
+                    },
                 ]
             },
         ]

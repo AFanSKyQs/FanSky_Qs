@@ -8,8 +8,9 @@
     "text-babbage-001",
     "text-ada-001"
   ],
+  "thuMUpOFF": "开启",
   "Model": 1,
-  "ModelMode":1,
+  "ModelMode": 1,
   "SignMode": "开启",
   "OnOff": "开启",
   "BlackList": [
