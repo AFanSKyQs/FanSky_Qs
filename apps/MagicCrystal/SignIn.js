@@ -256,13 +256,13 @@ async function MsgList(e, Data, LastTimeTemp, SignTop, TempRough) {
         user_img: `https://q1.qlogo.cn/g?b=qq&nk=${e.user_id}&s=160`,  //用户头像
         Acg_url: Acg_url_,  //随机图片链接
     }
-    let NowSum = SignTop["AllGroupTopTime"].TopToday
+    // let NowSum = SignTop["AllGroupTopTime"].TopToday
     let MsgList = await puppeteer.screenshot("UserCard", {tplFile: htmlPath, quality: 100, CssPath, UserHtml});
     await e.reply(MsgList);
     await Bot.pickFriend(e.user_id).thumbUp(20);
     // let MsgListTwo=[segment.at(e.user_id),"\n给你点赞了喵~\n没点上加我好友发【打卡】~"]
     // await e.reply(MsgListTwo)
-    await setCard(e, NowSum)
+    // await setCard(e, NowSum)
     return true
 }
 
