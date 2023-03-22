@@ -91,10 +91,10 @@ export class BotEntry extends plugin {
     }
 
     async TeyvatEnTry(e) {
-        if (!e.isMaster) {
-            e.reply('>>>[FanSky_Qs]正在施工中~')
-            return true
-        }
+        //if (!e.isMaster) {
+            //e.reply('>>>[FanSky_Qs]正在施工中~')
+            //return true
+        //}
         const regexTeam = /^#队伍伤害(\d+)?(.*)$/;
         const regexALevel = /^#单人评级(\d+)?(.*)$/;
         let uid, roleList;
