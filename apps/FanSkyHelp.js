@@ -1,12 +1,6 @@
 import plugin from "../../../lib/plugins/plugin.js";
-import common from '../../../lib/common/common.js'
 import puppeteer from '../../../lib/puppeteer/puppeteer.js'
-import fs from "fs";
 import {screenData} from "./Help/ReturnHelpData.js";
-
-let _path = `${process.cwd()}/resources/FanSky`
-let path = `${process.cwd()}/resources/FanSky/SignIn.json`
-let path_SignTop = `${process.cwd()}/resources/FanSky/SignTop.json`
 
 
 export class UpdatePlugin extends plugin {

@@ -1,4 +1,5 @@
 /* eslint-disable camelcase */
+import puppeteer from '../../../../lib/puppeteer/puppeteer.js'
 import {getUrlJson} from '../../models/getUrlJson.js'
 import {isFileExist} from '../../models/isFileExist.js'
 import plugin from '../../../../lib/plugins/plugin.js'
@@ -7,7 +8,7 @@ import cfg from '../../../../lib/config/config.js'
 import {getTeam} from './TeyvatTotalEntry.js'
 import _ from 'lodash'
 import gsCfg from '../../../genshin/model/gsCfg.js'
-
+let cwd=process.cwd().replace(/\\/g,'/')
 let ONE_PATH = `${process.cwd()}/plugins/FanSky_Qs/config/TeyvatConfig`
 let DATA_PATH = `${process.cwd()}/plugins/FanSky_Qs/config/TeyvatConfig/TeyvatUrlJson.json`
 let CachePath = `${process.cwd()}/plugins/FanSky_Qs/resources/cache`
@@ -114,6 +115,14 @@ export class BotEntry extends plugin {
             return true
         }
         let res = await this.TeamDamage(e, uid, roleList);
+        let detail = ['详情', '过程', '全图'];
+        let show = true;
+        _.each(detail, v => {
+            if (e.msg.includes(v)) {
+                show = true;
+                e.msg.replace(v, '');
+            }
+        });
         if (!res) {
             e.reply("获取失败:" + uid)
             return true
@@ -134,21 +143,31 @@ export class BotEntry extends plugin {
             }
             await fs.writeFileSync(cachePath, JSON.stringify(res))
             logger.info(logger.cyan("==>[FanSky_Qs]小助手 请求完成!"))
-
-            // e.reply(res);
+            let ScreenData=await this.screenData(e,res,show)
+            let img = await puppeteer.screenshot('FanSkyTeyvat', ScreenData)
+            await e.reply(img)
             return true
         }
     }
-
+    async screenData(e,data,show) {
+        let Package = `${cwd}/plugins/FanSky_Qs/package.json`
+        let YunzaiPath = `${cwd}/package.json`
+        let Version = JSON.parse(fs.readFileSync(Package));
+        let Yunzai = JSON.parse(fs.readFileSync(YunzaiPath));
+        return {
+            detail:show,
+            YunzaiName: Yunzai.name,
+            YunzaiVersion: Yunzai.version,
+            data: data,
+            version: `${Version.version}`,
+            saveId: e.user_id,
+            cwd: cwd,
+            tplFile: `${cwd}/plugins/FanSky_Qs/resources/Teyvat/html.html`,
+            /** 绝对路径 */
+            pluResPath: `${cwd}/plugins//FanSky_Qs/resources/Teyvat/`,
+        }
+    }
     async TeamDamage(e, uid, roleList) {
-        let detail = ['详情', '过程', '全图'];
-        let show = false;
-        _.each(detail, v => {
-            if (e.msg.includes(v)) {
-                show = true;
-                e.msg.replace(v, '');
-            }
-        });
         let chars = roleList.split(/ |,|，|、|。|-/g) || [];
         console.log(chars)
         if (!_.isEmpty(chars)) {
@@ -156,10 +175,10 @@ export class BotEntry extends plugin {
             if (!_.isEmpty(err_chars)) return {error: `无法识别${err_chars.join(',')}，请检查输入是否有误`};
             chars = _.map(chars, char => gsCfg.getRole(char).name);
         }
-        logger.info(logger.cyan(`==>[FanSky_Qs]小助手 uid：${uid} | show：${show} | 角色列表：`))
+        logger.info(logger.cyan(`==>[FanSky_Qs]小助手 uid：${uid}  | 角色列表：`))
         logger.info(logger.cyan(chars))
         e.reply(`正在获取UID:[${uid}][${chars}]队伍伤害，请稍等...`)
-        return await getTeam(uid, chars, show);
+        return await getTeam(uid, chars,true,e);
     }
 
     async UpdataJSON(e) {

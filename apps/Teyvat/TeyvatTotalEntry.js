@@ -7,12 +7,13 @@ import { getAvatarData, getTeyvatData, ReturnConfig, simpleTeamDamageRes, transT
  @param {string} uid 查询用户 UID
  @param {Array<string>} chars 查询角色，为空默认数据中前四个
  @param {boolean} showDetail 查询结果是否展示伤害过程。默认不展示
+ @param e 事件
  @return {string|ArrayBuffer} 查询结果。一般返回图片字节，出错时返回错误信息字符串
  **/
-async function getTeam (uid, chars = [], showDetail = false) {
+async function getTeam (uid, chars = [], showDetail = false,e) {
   let Json = await ReturnConfig()
   // 获取面板数据
-  const data = await getAvatarData(Json, uid, '全部')
+  const data = await getAvatarData(Json, uid, '全部',e)
   if (data.error) return data.error
 
   let extract
@@ -34,6 +35,7 @@ async function getTeam (uid, chars = [], showDetail = false) {
   const TiwateRaw = await getTeyvatData(TiwateBody, 'team')
   if (TiwateRaw.code !== 200 || !TiwateRaw.result) {
     console.log(`UID${uid} 的 ${extract.length} 位角色队伍伤害计算请求失败！\n>>>> [提瓦特返回] ${JSON.stringify(TiwateRaw)}`)
+    await e.reply(`UID ${uid} 的 ${extract.length} 位角色伤害计算请求失败！`)
     return TiwateRaw ? `玩家 ${uid} 队伍伤害计算失败，接口可能发生变动！` : '啊哦，队伍伤害计算小程序状态异常！'
   }
   try {
@@ -57,12 +59,13 @@ async function getTeam (uid, chars = [], showDetail = false) {
  * 原神游戏内角色展柜消息生成入口(无需前台展示)
  * @param {String} uid 查询用户 UID
  * @param {String} char 全部 || 查询角色
+ * @param e 事件
  * @returns 查询结果
  */
-async function getSingle (uid, char = '全部') {
+async function getSingle (uid, char = '全部',e) {
   let Json = await ReturnConfig()
   // 获取面板数据
-  let data = await getAvatarData(Json, uid, char)
+  let data = await getAvatarData(Json, uid, char,e)
   if (data.error) return data.error
   return char === '全部' ? 'list' : 'panel'
 }

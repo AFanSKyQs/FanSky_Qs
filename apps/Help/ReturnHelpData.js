@@ -34,8 +34,13 @@ export async function helpData() {
     return {
         helpData: [
             {
-                "group": "原神排行榜[数据来源：非小酋]",
+                "group": "原神[数据：非小酋、提瓦特小助手]",
                 "list": [
+                    {
+                        "icon": "队伍伤害",
+                        "title": "#队伍伤害xx xx...",
+                        "desc": "#队伍伤害uid xx xx xx"
+                    },
                     {
                         "icon": "team",
                         "title": "#成就排行",

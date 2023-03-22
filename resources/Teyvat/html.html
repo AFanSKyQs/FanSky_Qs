@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{pluResPath}}style.css">
+</head>
+
+<body>
+<div id="container" class="{{ data['elem'] }}">
+    <div class="TopLeftPanel">
+        <div class="UID">{{ data["uid"] }}</div>
+        <div class="rank">
+            <div class="title">{{ data["rank"] }}</div>
+            <div class="dps">{{ data["dps"] }}</div>
+            <div class="time">{{ data["tm"] }}</div>
+            <div class="total">{{ data["total"] }}</div>
+        </div>
+        <div id="pie"></div>
+    </div>
+    <div class="Avatars">
+        {{each data["avatars"] a}}
+        <div class="avatar">
+<!--            <img class="char r{{ a['rarity'] }}" src="./{{ a['name'] }}/{{ a['icon'] }}.png">-->
+            <img class="char r{{ a['rarity'] }}" src="{{cwd}}/plugins/miao-plugin/resources/meta/character/{{ a['name'] }}/imgs/face-q.webp">
+            <div class="char-con c{{ a['cons'] }}"></div>
+            <div class="char-lvl">{{ a["level"] }}</div>
+<!--            <img class="weapon r{{ a['weapon']['rarity'] }}" src="./weapon/{{ a['weapon']['icon'] }}.png">-->
+            <img class="weapon r{{ a['weapon']['rarity'] }}" src="{{pluResPath}}imgs/load/LoadWeapon.webp">
+
+            <div class="weapon-aff a{{ a['weapon']['affix'] }}"></div>
+            <div class="weapon-lvl">{{ a['weapon']['level'] }}</div>
+            <div class="arti">
+                {{each a["sets"] item}}
+<!--                <img class="arti s{{ item[0] }}" src="./artifacts/UI_RelicIcon_{{ item[1] }}_4.png" height="100%">-->
+                <img class="arti s{{ item[0] }}" src="{{pluResPath}}imgs/load/LoadArtifact.webp" height="65%">
+                {{/each}}
+            </div>
+            <div class="detail">
+                <div class="cp">{{ a["cp"] }}%</div>
+                <div class="cd">{{ a["cd"] }}%</div>
+                <div class="prop">
+                    <div class="value">{{ a["key_value"] }}</div>
+                    <div class="name">{{ a["key_prop"] }}</div>
+                </div>
+                <div class="recharge">{{ a["recharge"]["pct"] }}</div>
+                <div class="same">{{ a["recharge"]["same"] }}</div>
+                <div class="diff">{{ a["recharge"]["diff"] }}</div>
+                <div class="talent {{ a['elem'] }}">
+                    {{each a["skills"] skill}}
+                    <div>
+                        {{ if skill['icon'].indexOf("_A_") != -1 }}
+                        <img src="{{cwd}}/plugins/miao-plugin/resources/meta/character/{{ a['name'] }}/icons/talent-a.webp">
+                        <span class="{{ skill['style'] }}">{{ skill["level"] }}</span>
+                        {{/if}}
+                        {{ if skill['icon'].indexOf("_S_") != -1 }}
+                        <img src="{{cwd}}/plugins/miao-plugin/resources/meta/character/{{ a['name'] }}/icons/talent-e.webp">
+                        <span class="{{ skill['style'] }}">{{ skill["level"] }}</span>
+                        {{/if}}
+                        {{ if skill['icon'].indexOf("_E_") != -1 }}
+                        <img src="{{cwd}}/plugins/miao-plugin/resources/meta/character/{{ a['name'] }}/icons/talent-q.webp">
+                        <span class="{{ skill['style'] }}">{{ skill["level"] }}</span>
+                        {{/if}}
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+    <div class="Actions">
+        <div class="title"></div>
+        <div class="act">
+            {{each data["actions"] action}}
+            <div>{{ action }}</div>
+            {{/each}}
+        </div>
+    </div>
+    <ul class="Buffs">
+        <li class="title"></li>
+        {{each data["buffs"] item}}
+        <li class="buff">
+            <div>{{ item[0] }}</div>
+            <div>{{ item[1] }}</div>
+            <div>{{ item[2] }}</div>
+        </li>
+        {{/each}}
+    </ul>
+    {{ if detail }}
+    <ul class="Damages">
+        <li class="title"></li>
+        <li class="head">
+            <!-- use css to fill this -->
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </li>
+        {{each data["damages"] damage}}
+        <li class="dmg">
+            <div>{{ damage[0] }}</div>
+            <div>{{ damage[1] }}</div>
+            <div>{{ damage[2] }}</div>
+            <div>{{ damage[3] }}</div>
+            <div>{{ damage[4] }}</div>
+        </li>
+        {{/each}}
+    </ul>
+    {{/if}}
+    <div class="copyright">
+        FanSky_Qs × Data from Teyvat × Prototype by Nonebot-plugin-gspanel
+    </div>
+<!--    <div class="copyright">-->
+<!--        <span style="color: #ffffff; opacity: 0.68; text-shadow: 3px 5px 4px #333333ad; font-size: 20px; width: 960px; text-align: center; padding-top: 60px; padding-bottom: 20px; content: {{dynamicContent}};">Data from Teyvat × Powered by NoneBot2 × Inspired by Miao-Plugin</span>-->
+<!--    </div>-->
+</div>
+<script type="text/javascript" src="{{pluResPath}}g2plot.min.js"></script>
+<script>
+    const {Pie} = G2Plot;
+    const data = JSON.parse(`{{ data["pie_data"] }}`);
+    const piePlot = new Pie("pie", {
+        renderer: "svg",
+        animation: false,
+        data: data,
+        padding: [-10, 0, 20, 0],
+        angleField: "damage",
+        colorField: "char",
+        radius: 0.8,
+        color: JSON.parse(`${ data["pie_color"] }`),
+        label: {
+            type: "inner",
+            autoRotate: false,
+            style: {
+                textAlign: "center",
+                fill: "#000",
+                fontSize: 20,
+                fontFamily: "PanelNumFont",
+            },
+            formatter: ({char, damage, percent}) => {
+                percent = (percent * 100).toFixed(0);
+                return percent > 6 ? `${char}\n${damage}W` : "";
+            },
+        },
+        legend: false,
+    });
+    piePlot.render();
+</script>
+</body>
+</html>

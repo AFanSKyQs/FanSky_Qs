@@ -2,7 +2,6 @@ import fs from "fs";
 import path from "path"
 
 let BgImgPath = `${process.cwd()}/plugins/FanSky_Qs/resources/Card/bg/`
-let TuImg = `${process.cwd()}/plugins/FanSky_Qs/resources/Card/TuImg/`
 let ByPath = `${process.cwd()}/plugins/FanSky_Qs/resources/Card/bg/by.jpg`
 let AcgBg = `${process.cwd()}/plugins/FanSky_Qs/resources/Card/acgBg/`
 let Top = `${process.cwd()}/plugins/FanSky_Qs/resources/ChestAchieveTop/img/`
