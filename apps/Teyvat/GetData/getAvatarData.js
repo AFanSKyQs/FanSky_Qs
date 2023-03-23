@@ -115,7 +115,7 @@ async function getAvatarData(Json, uid, char = '全部', e) {
                     cacheData.avatars.push(aData)
                 }
             })
-            cacheData.next = +moment(now).add(newData.ttl, 's') //  cd 60s
+            cacheData.next = +moment(now).add(newData.ttl + 20, 's') //  cd 60s
             cache = cacheData
             await redis.set(`FanSky:Teyvet:${uid}:rolesData`, JSON.stringify(cache))
         } else {

@@ -22,7 +22,7 @@ for (let i in files) {
         const AMatchFan = AFanReaSon.match(ARegexFan);
         if (AMatchFan) {
             const APackageNameY = AMatchFan[1];
-            logger.warn(`请在根目录或FanSky_Qs目录运行：${logger.red(`pnpm install`)}安装依赖`)
+            logger.warn(`请先在${logger.red(`FanSky_Qs`)}目录运行：${logger.red(`pnpm install`)}安装依赖`)
             APackageFanError++
         }else{
           logger.error(ret[i].reason)
