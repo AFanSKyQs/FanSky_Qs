@@ -148,16 +148,16 @@ export class BotEntry extends plugin {
     }
 
     async TeyvatEnTry(e) {
-        //if (!e.isMaster) {
-        //e.reply('>>>[FanSky_Qs]正在施工中~')
-        //return true
-        //}
+        let at = e.at;
         const regexTeam = /^#队伍伤害(详情|过程|全图)?(\d+)?(.*)$/;
         const regexALevel = /^#单人评级(\d+)?(.*)$/;
         let uid, roleList, detail;
         if (e.msg.includes("#队伍伤害")) {
             const matchTeam = e.msg.match(regexTeam);
             uid = matchTeam[2] ? matchTeam[2] : await this.GetNowUid(e);
+            if (!uid && at) {
+                uid = await redis.get(`Yz:genshin:mys:qq-uid:${at}`);
+            }
             roleList = matchTeam[3];
             detail = !!matchTeam[1];
         } else if (e.msg.includes("#单人评级")) {
@@ -168,9 +168,13 @@ export class BotEntry extends plugin {
             console.log("用户指令：" + e.msg)
             return false
         }
-        if (!uid || !roleList) {
-            e.reply("没有匹配到你要计算什么噢喵~，如：\n#队伍伤害钟离，阿贝多，可莉\n#队伍伤害117556563钟离，阿贝多，可莉")
+        if (!uid) {
+            e.reply("尚未绑定uid~，请【绑定uid】\n或输入其他uid，如：#队伍伤害117556563钟离，阿贝多，可莉");
             return true
+        }
+        if (!roleList) {
+            e.reply("尚未检测到角色，默认计算展柜前四位角色...\n具体队伍请输入对应角色名，如：\n#队伍伤害钟离，阿贝多，可莉\n#队伍伤害117556563钟离，阿贝多，可莉");
+            roleList = [];
         }
         let res = await this.TeamDamage(e, uid, roleList);
         if (!res) {

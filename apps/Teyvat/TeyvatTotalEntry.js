@@ -21,22 +21,22 @@ async function getTeam (uid, chars = [], showDetail = false,e) {
     extract = data.avatars.filter(a => chars.includes(a.name))
     if (extract.length !== chars.length) {
       const gotThis = extract.map(a => a.name)
-      const notFound = chars.filter(c => !gotThis.includes(c)).join('、')
-      return `玩家 ${uid} 的最新数据中未发现${notFound}！`
+      const notFound = chars.filter(c => !gotThis.includes(c))
+      return { error: `玩家 ${uid} 的最新数据中未发现${notFound.join('、')}！` }
     }
   } else if (data.avatars.length >= 4) {
     extract = data.avatars.slice(0, 4)
-    console.log(`UID${uid} 未指定队伍，自动选择面板中前 4 位进行计算：${extract.map(a => a.name).join('、')} ...`)
+    e.reply(`UID${uid} 前 4 位：${extract.map(a => a.name).join('、')} 进行计算...`)
   } else {
-    return `玩家 ${uid} 的面板数据甚至不足以组成一支队伍呢！`
+    return { error: `玩家 ${uid} 的面板数据甚至不足以组成一支队伍呢！` }
   }
   const extractCopy = extract
   const TiwateBody = await transToTeyvatRequest(extractCopy, uid)
   const TiwateRaw = await getTeyvatData(TiwateBody, 'team')
   if (TiwateRaw.code !== 200 || !TiwateRaw.result) {
-    console.log(`UID${uid} 的 ${extract.length} 位角色队伍伤害计算请求失败！\n>>>> [提瓦特返回] ${JSON.stringify(TiwateRaw)}`)
+    logger.error(`UID${uid} 的 ${extract.length} 位角色队伍伤害计算请求失败！\n>>>> [提瓦特返回] ${JSON.stringify(TiwateRaw)}`)
     await e.reply(`UID ${uid} 的 ${extract.length} 位角色伤害计算请求失败！`)
-    return TiwateRaw ? `玩家 ${uid} 队伍伤害计算失败，接口可能发生变动！` : '啊哦，队伍伤害计算小程序状态异常！'
+    return { error: TiwateRaw ? `玩家 ${uid} 队伍伤害计算失败，接口可能发生变动！` : '啊哦，队伍伤害计算小程序状态异常！' }
   }
   try {
     let data = await simpleTeamDamageRes(TiwateRaw.result, extract.reduce((acc, a) => ({
@@ -45,8 +45,8 @@ async function getTeam (uid, chars = [], showDetail = false,e) {
     }), {}))
     return data;
   } catch (e) {
-    console.log(`[${e.constructor.name}] 队伍伤害数据解析出错`)
-    return `[${e.constructor.name}] 队伍伤害数据解析出错咯`
+    logger.error(`[${e.constructor.name}] 队伍伤害数据解析出错`)
+    return { error: `[${e.constructor.name}] 队伍伤害数据解析出错咯` }
   }
 
   // todo: @return html数据
