@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>图片展示</title>
+    <style>
+        body {
+            background-image: url("../imgs/bg-hydro.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+        }
+
+        #container {
+            background-image: url("../imgs/bg-hydro.jpg");
+            width: 960px;
+            margin: 0 auto;
+            padding: 20px;
+            left: 0;
+            background-color: #4d68b152;
+            border-radius: 10px;
+            box-shadow: 0 0 20px #ffc107;
+
+            height: auto;
+            min-height: 720px;
+            font-family: "PanelFont";
+            background-repeat: no-repeat;
+            background-position: center 0;
+            background-size: auto 100%;
+            position: absolute;
+            top: 0;
+        }
+
+        #header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        #header h1 {
+            font-family: cursive;
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        #header p {
+            font-size: 25px;
+            font-weight: 600;
+        }
+
+        #avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto;
+            margin-top: 50px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        #avatar img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        #name {
+            font-family: fantasy;
+            color: #795548;
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 0px;
+        }
+
+        .image-container {
+            margin-top: 50px;
+            width: 150px;
+            height: 150px;
+            margin-right: 16px;
+            margin-bottom: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        #footer {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 16px;
+        }
+
+        .image-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            border: 14px solid #6f848c9e;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+<div id="container">
+    <div id="header">
+        <div id="avatar">
+        <img src="{{user_img}}" alt="avatar">
+    </div>
+    <div id="name">
+        <p>{{NickName}}</p>
+    </div>
+        <h1>#队伍面板{{uid}}</h1>
+        <p>>>>你可以使用<span style="color: #93189c;font-weight: bold">#队伍伤害钟离 阿贝多、...</span><br>>>>或者<span
+        style="color: #18229c;font-weight: bold">#队伍伤害123456789钟离、阿贝多、...</span>命令来查看队伍伤害</p>
+<!--        <p style="color: #00b2ff">使用[#队伍伤害+任意几个角色]即可查看队伍伤害</p>-->
+<!--        <p style="color: #00b2ff">#队伍伤害钟离 阿贝多 魈</p>-->
+    </div>
+    <div id="gallery">
+        <div class="image-row">
+            {{each RolesInfo RoleInfo}}
+            <div class="image-container">
+                <img src="{{cwd}}/plugins/miao-plugin/resources/meta/character/{{RoleInfo.name}}/imgs/face-q.webp"
+                     alt="Roles">
+                <p style="color: #994646;
+    font-weight: bold;
+    font-size: 20px;margin-top: 0;"
+                >Lv.{{RoleInfo.level}}<br>{{RoleInfo.name}}</p>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+    <div>
+        <span style="color: #1a731b;font-weight: bold;font-size:20px">○数据最后更新时间：{{LastUpdateTime}}</span>
+    </div>
+    <div id="footer">
+        <p style="font-size: 25px;color: #18369e;font-weight: bold;">{{BotName}} {{BotVersion}} × FanSky_Qs {{PluginVersion}}</p>
+    </div>
+</div>
+</body>
+
