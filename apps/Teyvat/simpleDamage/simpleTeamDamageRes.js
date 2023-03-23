@@ -1,8 +1,9 @@
 /* eslint-disable camelcase */
 import _ from 'lodash';
-import YAML from 'yaml';
 import gsCfg from '../../../../genshin/model/gsCfg.js';
+import fs from 'node:fs';
 
+const cwd = process.cwd().replace(/\\/g,'/');
 /**
  * 转换队伍伤害计算请求数据为精简格式
  * @param {Object} raw 队伍伤害计算请求数据，由 getTeyvatData(*, "team")["result"] 获取
@@ -50,6 +51,7 @@ async function simpleTeamDamageRes (raw, rolesData) {
       rarity: role.role_star,
       icon: panelData.icon,
       name: role.role,
+      face: getFace(role.role),
       elem: panelData.element,
       cons: role.role_class,
       level: role.role_level.replace('Lv', ''),
@@ -118,7 +120,7 @@ async function simpleTeamDamageRes (raw, rolesData) {
     let b = tmp.split('-')[0]; let bd = _.tail(tmp.split('-')).join('-')
     buffs.push([t.replace('s', ''), _.toUpper(b), _.toUpper(bd)])
   }
-
+  
   return {
     uid: raw.uid,
     elem,
@@ -128,6 +130,8 @@ async function simpleTeamDamageRes (raw, rolesData) {
     total,
     pie_data: JSON.stringify(pieData),
     pie_color: JSON.stringify(pieColor),
+    pie_data2: pieData,
+    pie_color2: pieColor,
     avatars,
     actions: raw.combo_intro.split(','),
     damages,
@@ -155,6 +159,11 @@ function getWeapon (icon) {
     return false;
   }
   return `${miaoType[type]}/${name}`;
+}
+
+function getFace (role) {
+  let miaoPath = `${cwd}/plugins/miao-plugin/resources/meta/character/${role}/imgs/`;
+  return fs.existsSync(`${miaoPath}face-q.webp`) ? miaoPath += 'face-q.webp' : miaoPath += 'face.webp';
 }
 
 export default simpleTeamDamageRes

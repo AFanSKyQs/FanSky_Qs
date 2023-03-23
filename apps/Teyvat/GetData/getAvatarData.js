@@ -30,11 +30,10 @@ async function getAvatarData(Json, uid, char = '全部', e) {
     if (Date.now() <= nextQueryTime) {
         _tip = 'warning'
         _time = nextQueryTime
-        console.info(`UID ${uid} 的角色展柜数据刷新冷却还有 ${moment(nextQueryTime).diff(moment(), 'seconds')} 秒！`)
-        await e.reply(`UID ${uid} 的角色展柜数据刷新冷却还有 ${moment(nextQueryTime).diff(moment(), 'seconds')} 秒！`)
-        return true
+        logger.mark(`UID ${uid} 的角色展柜数据刷新冷却还有 ${moment(nextQueryTime).diff(moment(), 'seconds')} 秒！`)
+        return { error: `UID ${uid} 的角色展柜数据刷新冷却还有 ${moment(nextQueryTime).diff(moment(), 'seconds')} 秒！` };
     } else {
-        console.info(`UID ${uid} 的角色展柜数据正在刷新！`)
+        logger.mark(`UID ${uid} 的角色展柜数据正在刷新！`)
         const newData = await RequestEnka(uid)
         _time = Date.now()
         // 没有缓存 & 本次刷新失败，返回错误信息
@@ -53,7 +52,7 @@ async function getAvatarData(Json, uid, char = '全部', e) {
             for (const newKey in newData.avatarInfoList) {
                 let newAvatar = newData.avatarInfoList[newKey]
                 if ([10000005, 10000007].includes(newAvatar.avatarId)) {
-                    console.info('旅行者面板查询暂未支持！')
+                    logger.error('旅行者面板查询暂未支持！')
                     continue
                 }
                 let tmp = await transFromEnka(Json, newAvatar, now);
@@ -70,11 +69,11 @@ async function getAvatarData(Json, uid, char = '全部', e) {
                         }
                     })
                     if (cacheDmg && avatarsCache[tmp.id] === nowStat) {
-                        console.log(`UID${uid} 的 ${tmp.name} 伤害计算结果无需刷新`)
+                        logger.mark(`UID${uid} 的 ${tmp.name} 伤害计算结果无需刷新`)
                         tmp.damage = cacheDmg
                         gotDmg = true
                     } else {
-                        console.log(`UID${uid} 的 ${tmp.name} 数据变化了`)
+                        logger.mark(`UID${uid} 的 ${tmp.name} 数据变化了`)
                         // console.log(avatarsCache[tmp.id])
                         // console.log(nowStat)
                     }
@@ -91,13 +90,13 @@ async function getAvatarData(Json, uid, char = '全部', e) {
                 _.each(wait4Dmg, (a, aI) => {
                     _names[aI] = a.name
                 })
-                console.log(`正在为 UID ${uid} 的 ${_names.join('/')} 重新请求伤害计算接口`)
+                logger.mark(`正在为 UID ${uid} 的 ${_names.join('/')} 重新请求伤害计算接口`)
                 const wtf = Object.values(wait4Dmg).map(x => ({...x}))
                 const teyvatBody = await transToTeyvatRequest(wtf, uid)
                 const teyvatRaw = await getTeyvatData(teyvatBody)
                 if (teyvatRaw.code !== 200 || _.size(wait4Dmg) !== teyvatRaw.result.length) {
-                    console.log(`UID ${uid} 的 ${_.size(wait4Dmg)} 位角色伤害计算请求失败！\n>>>> [提瓦特返回] ${teyvatRaw}`)
-                    await e.reply(`UID ${uid} 的 ${_.size(wait4Dmg)} 位角色伤害计算请求失败！`)
+                    logger.mark(`UID ${uid} 的 ${_.size(wait4Dmg)} 位角色伤害计算请求失败！\n>>>> [提瓦特返回] ${teyvatRaw}`)
+                    return { error: `UID ${uid} 的 ${_.size(wait4Dmg)} 位角色伤害计算请求失败！` };
                 } else {
                     for (const dmgIdx in teyvatRaw.result) {
                         let aIdx = parseInt(_.keys(wait4Dmg)[dmgIdx])
@@ -121,7 +120,7 @@ async function getAvatarData(Json, uid, char = '全部', e) {
         } else {
             // 有缓存 & 本次刷新失败，打印错误信息
             _tip = 'error'
-            console.log(newData.error)
+            logger.error(newData.error)
         }
     }
 

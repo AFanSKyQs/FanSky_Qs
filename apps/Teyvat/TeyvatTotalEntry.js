@@ -14,7 +14,7 @@ async function getTeam (uid, chars = [], showDetail = false,e) {
   let Json = await ReturnConfig()
   // 获取面板数据
   const data = await getAvatarData(Json, uid, '全部',e)
-  if (data.error) return data.error
+  if (data.error) return { error: data.error }
 
   let extract
   if (chars.length) {
