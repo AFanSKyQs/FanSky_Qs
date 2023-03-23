@@ -67,7 +67,7 @@ export class BotEntry extends plugin {
             priority: 3141,
             rule: [
                 {
-                    reg: /^#队伍伤害(\d+)?(.*)$/,
+                    reg: /^#队伍伤害(详情|过程|全图)?(\d+)?(.*)$/,
                     fnc: 'TeyvatEnTry'
                 },
                 {
@@ -95,13 +95,14 @@ export class BotEntry extends plugin {
             //e.reply('>>>[FanSky_Qs]正在施工中~')
             //return true
         //}
-        const regexTeam = /^#队伍伤害(\d+)?(.*)$/;
+        const regexTeam = /^#队伍伤害(详情|过程|全图)?(\d+)?(.*)$/;
         const regexALevel = /^#单人评级(\d+)?(.*)$/;
-        let uid, roleList;
+        let uid, roleList, detail;
         if (e.msg.includes("#队伍伤害")) {
             const matchTeam = e.msg.match(regexTeam);
-            uid = matchTeam[1] ? matchTeam[1] : await this.GetNowUid(e);
-            roleList = matchTeam[2];
+            uid = matchTeam[2] ? matchTeam[2] : await this.GetNowUid(e);
+            roleList = matchTeam[3];
+            detail = !!matchTeam[1];
         } else if (e.msg.includes("#单人评级")) {
             const matchALevel = e.msg.match(regexALevel);
             uid = matchALevel[1] ? matchALevel[1] : await this.GetNowUid(e);
@@ -115,17 +116,13 @@ export class BotEntry extends plugin {
             return true
         }
         let res = await this.TeamDamage(e, uid, roleList);
-        let detail = ['详情', '过程', '全图'];
-        let show = true;
-        _.each(detail, v => {
-            if (e.msg.includes(v)) {
-                show = true;
-                e.msg.replace(v, '');
-            }
-        });
         if (!res) {
             e.reply("获取失败:" + uid)
             return true
+        }
+        if (res.error) {
+            e.reply(res.error);
+            return true;
         }
         try {
             if (res.includes("未发现")) {
@@ -143,25 +140,25 @@ export class BotEntry extends plugin {
             }
             await fs.writeFileSync(cachePath, JSON.stringify(res))
             logger.info(logger.cyan("==>[FanSky_Qs]小助手 请求完成!"))
-            let ScreenData=await this.screenData(e,res,show)
+            let ScreenData=await this.screenData(e,res,detail)
             let img = await puppeteer.screenshot('FanSkyTeyvat', ScreenData)
             await e.reply(img)
             return true
         }
     }
-    async screenData(e,data,show) {
+    async screenData(e,data,detail) {
         let Package = `${cwd}/plugins/FanSky_Qs/package.json`
         let YunzaiPath = `${cwd}/package.json`
         let Version = JSON.parse(fs.readFileSync(Package));
         let Yunzai = JSON.parse(fs.readFileSync(YunzaiPath));
         return {
-            detail:show,
+            detail:detail,
             YunzaiName: Yunzai.name,
             YunzaiVersion: Yunzai.version,
             data: data,
             version: `${Version.version}`,
             saveId: e.user_id,
-            cwd: cwd,
+            miaoRes: `${cwd}/plugins/miao-plugin/resources/`,
             tplFile: `${cwd}/plugins/FanSky_Qs/resources/Teyvat/html.html`,
             /** 绝对路径 */
             pluResPath: `${cwd}/plugins//FanSky_Qs/resources/Teyvat/`,
@@ -169,7 +166,7 @@ export class BotEntry extends plugin {
     }
     async TeamDamage(e, uid, roleList) {
         let chars = roleList.split(/ |,|，|、|。|-/g) || [];
-        console.log(chars)
+        chars = _.compact(chars);
         if (!_.isEmpty(chars)) {
             let err_chars = _.filter(chars, v => !gsCfg.getRole(v));
             if (!_.isEmpty(err_chars)) return {error: `无法识别${err_chars.join(',')}，请检查输入是否有误`};

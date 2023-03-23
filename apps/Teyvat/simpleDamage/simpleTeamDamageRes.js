@@ -1,5 +1,7 @@
 /* eslint-disable camelcase */
-import _ from 'lodash'
+import _ from 'lodash';
+import YAML from 'yaml';
+import gsCfg from '../../../../genshin/model/gsCfg.js';
 
 /**
  * 转换队伍伤害计算请求数据为精简格式
@@ -26,7 +28,7 @@ async function simpleTeamDamageRes (raw, rolesData) {
   _.each(raw.role_list, role => {
     let panelData = rolesData[role.role]
 
-    let relicSet = _.pickBy(panelData.relicSet, i => i >= 2)
+    let relicSet = _.pickBy(panelData.relicSet, i => i >= 2);
     let relics = _.map(_.filter(panelData.relics, r => _.keys(relicSet).includes(r.setName)), v => _.nth(v.icon.split('_'), -2))
     relics = _.countBy(relics, v => v)
     let sets = {}
@@ -43,6 +45,7 @@ async function simpleTeamDamageRes (raw, rolesData) {
       })
     })
 
+    let weaponPath = getWeapon(panelData.weapon.icon) || '';
     avatars[role.role] = {
       rarity: role.role_star,
       icon: panelData.icon,
@@ -54,8 +57,10 @@ async function simpleTeamDamageRes (raw, rolesData) {
         icon: panelData.weapon.icon,
         level: panelData.weapon.level,
         rarity: panelData.weapon.rarity,
-        affix: panelData.weapon.affix
+        affix: panelData.weapon.affix,
+        imgPath: weaponPath
       },
+      relicSet: relicSet,
       sets,
       cp: _.round(panelData.fightProp['暴击率'], 1),
       cd: _.round(panelData.fightProp['暴击伤害'], 1),
@@ -128,6 +133,28 @@ async function simpleTeamDamageRes (raw, rolesData) {
     damages,
     buffs
   }
+}
+
+function getWeapon (icon) {
+  const weaponCfg = gsCfg.getdefSet('weapon', 'data');
+  let name = _.findKey(weaponCfg['Icon'], v => v === icon);
+  if (!name) {
+    return false;
+  }
+
+  const miaoType = {
+    单手剑: 'sword',
+    双手剑: 'claymore',
+    长柄武器: 'polearm',
+    法器: 'catalyst',
+    弓: 'bow'
+  };
+
+  let type = weaponCfg['Type'][name] || false;
+  if (!type) {
+    return false;
+  }
+  return `${miaoType[type]}/${name}`;
 }
 
 export default simpleTeamDamageRes

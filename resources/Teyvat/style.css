@@ -67,59 +67,59 @@ body {
 }
 
 #container.火 {
-    background-image: url(./imgs/bg-pyro.jpg);
+    background-image: url(../../../miao-plugin/resources/common/bg/bg-pyro.jpg);
 }
 
 div.Avatars>div.avatar>div.detail>div.talent.火>div {
-    background-image: url(./imgs/talent-pyro.png);
+    background-image: url(../../../miao-plugin/resources/common/bg/talent-pyro.png);
 }
 
 #container.水 {
-    background-image: url(./imgs/bg-hydro.jpg);
+    background-image: url(../../../miao-plugin/resources/common/bg/bg-hydro.jpg);
 }
 
 div.Avatars>div.avatar>div.detail>div.talent.水>div {
-    background-image: url(./imgs/talent-hydro.png);
+    background-image: url(../../../miao-plugin/resources/common/bg/talent-hydro.png);
 }
 
 #container.风 {
-    background-image: url(./imgs/bg-anemo.jpg);
+    background-image: url(../../../miao-plugin/resources/common/bg/bg-anemo.jpg);
 }
 
 div.Avatars>div.avatar>div.detail>div.talent.风>div {
-    background-image: url(./imgs/talent-anemo.png);
+    background-image: url(../../../miao-plugin/resources/common/bg/talent-anemo.png);
 }
 
 #container.雷 {
-    background-image: url(./imgs/bg-electro.jpg);
+    background-image: url(../../../miao-plugin/resources/common/bg/bg-electro.jpg);
 }
 
 div.Avatars>div.avatar>div.detail>div.talent.雷>div {
-    background-image: url(./imgs/talent-electro.png);
+    background-image: url(../../../miao-plugin/resources/common/bg/talent-electro.png);
 }
 
 #container.草 {
-    background-image: url(./imgs/bg-dendro.jpg);
+    background-image: url(../../../miao-plugin/resources/common/bg/bg-dendro.jpg);
 }
 
 div.Avatars>div.avatar>div.detail>div.talent.草>div {
-    background-image: url(./imgs/talent-dendro.png);
+    background-image: url(../../../miao-plugin/resources/common/bg/talent-dendro.png);
 }
 
 #container.冰 {
-    background-image: url(./imgs/bg-cryo.jpg);
+    background-image: url(../../../miao-plugin/resources/common/bg/bg-cryo.jpg);
 }
 
 div.Avatars>div.avatar>div.detail>div.talent.冰>div {
-    background-image: url(./imgs/talent-cryo.png);
+    background-image: url(../../../miao-plugin/resources/common/bg/talent-cryo.png);
 }
 
 #container.岩 {
-    background-image: url(./imgs/bg-geo.jpg);
+    background-image: url(../../../miao-plugin/resources/common/bg/bg-geo.jpg);
 }
 
 div.Avatars>div.avatar>div.detail>div.talent.岩>div {
-    background-image: url(./imgs/talent-geo.png);
+    background-image: url(../../../miao-plugin/resources/common/bg/talent-geo.png);
 }
 
 div.TopLeftPanel {

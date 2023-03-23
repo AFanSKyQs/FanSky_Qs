@@ -25,18 +25,17 @@
         {{each data["avatars"] a}}
         <div class="avatar">
 <!--            <img class="char r{{ a['rarity'] }}" src="./{{ a['name'] }}/{{ a['icon'] }}.png">-->
-            <img class="char r{{ a['rarity'] }}" src="{{cwd}}/plugins/miao-plugin/resources/meta/character/{{ a['name'] }}/imgs/face-q.webp">
+            <img class="char r{{ a['rarity'] }}" src="{{miaoRes}}meta/character/{{ a['name'] }}/imgs/face-q.webp">
             <div class="char-con c{{ a['cons'] }}"></div>
             <div class="char-lvl">{{ a["level"] }}</div>
 <!--            <img class="weapon r{{ a['weapon']['rarity'] }}" src="./weapon/{{ a['weapon']['icon'] }}.png">-->
-            <img class="weapon r{{ a['weapon']['rarity'] }}" src="{{pluResPath}}imgs/load/LoadWeapon.webp">
+            <img class="weapon r{{ a['weapon']['rarity'] }}" src="{{miaoRes}}meta/weapon/{{ a['weapon']['imgPath'] }}/icon.webp">
 
             <div class="weapon-aff a{{ a['weapon']['affix'] }}"></div>
             <div class="weapon-lvl">{{ a['weapon']['level'] }}</div>
             <div class="arti">
-                {{each a["sets"] item}}
-<!--                <img class="arti s{{ item[0] }}" src="./artifacts/UI_RelicIcon_{{ item[1] }}_4.png" height="100%">-->
-                <img class="arti s{{ item[0] }}" src="{{pluResPath}}imgs/load/LoadArtifact.webp" height="65%">
+                {{each a["relicSet"] val key}}
+                <img class="arti s{{ val }}" src="{{miaoRes}}meta/artifact/imgs/{{ key }}/1.webp" height="100%" width="100%">
                 {{/each}}
             </div>
             <div class="detail">
@@ -53,15 +52,15 @@
                     {{each a["skills"] skill}}
                     <div>
                         {{ if skill['icon'].indexOf("_A_") != -1 }}
-                        <img src="{{cwd}}/plugins/miao-plugin/resources/meta/character/{{ a['name'] }}/icons/talent-a.webp">
+                        <img src="{{miaoRes}}meta/character/{{ a['name'] }}/icons/talent-a.webp">
                         <span class="{{ skill['style'] }}">{{ skill["level"] }}</span>
                         {{/if}}
                         {{ if skill['icon'].indexOf("_S_") != -1 }}
-                        <img src="{{cwd}}/plugins/miao-plugin/resources/meta/character/{{ a['name'] }}/icons/talent-e.webp">
+                        <img src="{{miaoRes}}meta/character/{{ a['name'] }}/icons/talent-e.webp">
                         <span class="{{ skill['style'] }}">{{ skill["level"] }}</span>
                         {{/if}}
                         {{ if skill['icon'].indexOf("_E_") != -1 }}
-                        <img src="{{cwd}}/plugins/miao-plugin/resources/meta/character/{{ a['name'] }}/icons/talent-q.webp">
+                        <img src="{{miaoRes}}meta/character/{{ a['name'] }}/icons/talent-q.webp">
                         <span class="{{ skill['style'] }}">{{ skill["level"] }}</span>
                         {{/if}}
                     </div>
