@@ -174,7 +174,6 @@ export class BotEntry extends plugin {
         }
         if (!roleList) {
             e.reply("尚未检测到角色，默认计算展柜前四位角色...\n具体队伍请输入对应角色名，如：\n#队伍伤害钟离，阿贝多，可莉\n#队伍伤害117556563钟离，阿贝多，可莉");
-            roleList = [];
         }
         let res = await this.TeamDamage(e, uid, roleList);
         if (!res) {
