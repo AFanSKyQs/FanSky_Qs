@@ -8,6 +8,7 @@ import cfg from '../../../../lib/config/config.js'
 import {getTeam} from './TeyvatTotalEntry.js'
 import _ from 'lodash'
 import gsCfg from '../../../genshin/model/gsCfg.js'
+import {getHelpBg} from "../../models/getTuImg.js";
 
 let cwd = process.cwd().replace(/\\/g, '/')
 let ONE_PATH = `${process.cwd()}/plugins/FanSky_Qs/config/TeyvatConfig`
@@ -95,7 +96,7 @@ export class BotEntry extends plugin {
         }
         let UidRolesDataAvatars = await this.getCache(e, uid, 'rolesData')
         if (!UidRolesDataAvatars) return true
-        let LastUpdateTime = UidRolesDataAvatars.next - 80*1000
+        let LastUpdateTime = UidRolesDataAvatars.next - 80 * 1000
         let date = new Date(LastUpdateTime).toLocaleString()
         let Package = `${cwd}/plugins/FanSky_Qs/package.json`
         let YunzaiPath = `${cwd}/package.json`
@@ -110,7 +111,9 @@ export class BotEntry extends plugin {
     async getRolesScreenData(BotInfo, PluginVersion, UidRolesDataAvatars, uid, e, LastUpdateTime) {
         let Card = e.sender.nickname || e.sender.card
         let BotName = BotInfo.name.replace(/( |^)[a-z]/g, (L) => L.toUpperCase());
+        let AcgPath = await getHelpBg()
         return {
+            acgBg: AcgPath,
             uid: uid,
             BotVersion: BotInfo.version,
             BotName: BotName,
@@ -212,7 +215,17 @@ export class BotEntry extends plugin {
         let YunzaiPath = `${cwd}/package.json`
         let Version = JSON.parse(fs.readFileSync(Package));
         let Yunzai = JSON.parse(fs.readFileSync(YunzaiPath));
+        const RoleData = await JSON.parse(data["pie_data"]);
+        const DamageMap = await RoleData.map((item) => item.damage);
+        const total = await DamageMap.reduce((prev, cur) => prev + cur);
+        const percent = await DamageMap.map((item) => (item / total).toFixed(4));
+        const RoleColor = await JSON.parse(data["pie_color"]);
+        const NameChar = await RoleData.map((item) => item.char);
+        const Result = {percent, RoleColor, NameChar};
+        let AcgBg=await getHelpBg()
         return {
+            AcgBg:AcgBg,
+            Bing: Result,
             detail: detail,
             YunzaiName: Yunzai.name,
             YunzaiVersion: Yunzai.version,

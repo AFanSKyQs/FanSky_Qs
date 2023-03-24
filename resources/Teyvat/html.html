@@ -1,208 +1,282 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-        <!-- <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
-        <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
-        <!-- <title>Document</title> -->
-        <link rel="stylesheet" href="{{pluResPath}}style.css">
-        <link rel="preload" href="https://unpkg.com/@antv/g2plot@latest/dist/g2plot.js" as="script" />
-    </head>
-    <body>
-        <div id="container" class="{{ data['elem'] }}">
-            <div class="TopLeftPanel">
-                <div class="UID">{{ data["uid"] }}</div>
-                <div class="rank">
-                    <div class="title">{{ data["rank"] }}</div>
-                    <div class="dps">{{ data["dps"] }}</div>
-                    <div class="time">{{ data["tm"] }}</div>
-                    <div class="total">{{ data["total"] }}</div>
-                </div>
-                <!-- <div id="pie"></div> -->
-                <p>
-                    <canvas id="canvas_circle" width="350" height="210"
-                            style="border: 2px solid #dcdeeb36;margin-top: 80px;margin-left: -10px;">
-                        浏览器不支持canvas
-                    </canvas>
-                </p>
-            </div>
-            <div class="Avatars">
-                {{each data["avatars"] a}}
-                <div class="avatar">
-                    <!--            <img class="char r{{ a['rarity'] }}" src="./{{ a['name'] }}/{{ a['icon'] }}.png">-->
-                    <img class="char r{{ a['rarity'] }}" src="{{ a.face }}">
-                    <div class="char-con c{{ a['cons'] }}"></div>
-                    <div class="char-lvl">{{ a["level"] }}</div>
-                    <!--            <img class="weapon r{{ a['weapon']['rarity'] }}" src="./weapon/{{ a['weapon']['icon'] }}.png">-->
-                    <img class="weapon r{{ a['weapon']['rarity'] }}"
-                        src="{{miaoRes}}meta/weapon/{{ a['weapon']['imgPath'] }}/icon.webp">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <!-- <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <!-- <title>Document</title> -->
+    <link rel="stylesheet" href="{{pluResPath}}style.css">
+    <link rel="preload" href="https://unpkg.com/@antv/g2plot@latest/dist/g2plot.js" as="script"/>
+     <style>
+        #container.火 {
+            background-image: url({{AcgBg}});
+            background-position: inherit;
+            background-repeat: repeat-y;
+            background-size: 960px;
+            position: absolute;
+            top: 0;
+        }
 
-                    <div class="weapon-aff a{{ a['weapon']['affix'] }}"></div>
-                    <div class="weapon-lvl">{{ a['weapon']['level'] }}</div>
-                    <div class="arti">
-                        {{each a["relicSet"] val key}}
-                        <img class="arti s{{ val }}" src="{{miaoRes}}meta/artifact/imgs/{{ key }}/1.webp" height="100%"
-                            width="100%">
-                        {{/each}}
-                    </div>
-                    <div class="detail">
-                        <div class="cp">{{ a["cp"] }}%</div>
-                        <div class="cd">{{ a["cd"] }}%</div>
-                        <div class="prop">
-                            <div class="value">{{ a["key_value"] }}</div>
-                            <div class="name">{{ a["key_prop"] }}</div>
-                        </div>
-                        <div class="recharge">{{ a["recharge"]["pct"] }}</div>
-                        <div class="same">{{ a["recharge"]["same"] }}</div>
-                        <div class="diff">{{ a["recharge"]["diff"] }}</div>
-                        <div class="talent {{ a['elem'] }}">
-                            {{each a["skills"] skill}}
-                            <div>
-                                {{ if skill['icon'].indexOf("_A_") != -1 }}
-                                <img src="{{miaoRes}}meta/character/{{ a['name'] }}/icons/talent-a.webp">
-                                <span class="{{ skill['style'] }}">{{ skill["level"] }}</span>
-                                {{/if}}
-                                {{ if skill['icon'].indexOf("_S_") != -1 }}
-                                <img src="{{miaoRes}}meta/character/{{ a['name'] }}/icons/talent-e.webp">
-                                <span class="{{ skill['style'] }}">{{ skill["level"] }}</span>
-                                {{/if}}
-                                {{ if skill['icon'].indexOf("_E_") != -1 }}
-                                <img src="{{miaoRes}}meta/character/{{ a['name'] }}/icons/talent-q.webp">
-                                <span class="{{ skill['style'] }}">{{ skill["level"] }}</span>
-                                {{/if}}
-                            </div>
-                            {{/each}}
-                        </div>
-                    </div>
-                </div>
+        div.Avatars > div.avatar > div.detail > div.talent.火 > div {
+            background-image: url({{cwd}}/plugins//miao-plugin/resources/common/bg/talent-pyro.png);
+        }
+
+        #container.水 {
+            background-image: url({{AcgBg}});
+            background-repeat: repeat-y;
+            background-position: inherit;
+            background-size: 960px;
+            position: absolute;
+            top: 0;
+        }
+
+        div.Avatars > div.avatar > div.detail > div.talent.水 > div {
+            background-image: url({{cwd}}/plugins//miao-plugin/resources/common/bg/talent-hydro.png);
+        }
+
+        #container.风 {
+            background-image: url({{AcgBg}});
+            background-repeat: repeat-y;
+            background-position: inherit;
+            background-size: 960px;
+            position: absolute;
+            top: 0;
+        }
+
+        div.Avatars > div.avatar > div.detail > div.talent.风 > div {
+            background-image: url({{cwd}}/plugins//miao-plugin/resources/common/bg/talent-anemo.png);
+        }
+
+        #container.雷 {
+            background-image: url({{AcgBg}});
+            background-repeat: repeat-y;
+            background-position: inherit;
+            background-size: 960px;
+            position: absolute;
+            top: 0;
+        }
+
+        div.Avatars > div.avatar > div.detail > div.talent.雷 > div {
+            background-image: url({{cwd}}/plugins//miao-plugin/resources/common/bg/talent-electro.png);
+        }
+
+        #container.草 {
+            background-image: url({{AcgBg}});
+            background-repeat: repeat-y;
+            background-position: inherit;
+            background-size: 960px;
+            position: absolute;
+            top: 0;
+        }
+
+        div.Avatars > div.avatar > div.detail > div.talent.草 > div {
+            background-image: url({{cwd}}/plugins//miao-plugin/resources/common/bg/talent-dendro.png);
+        }
+
+        #container.冰 {
+            background-image: url({{AcgBg}});
+            background-repeat: repeat-y;
+            background-position: inherit;
+            background-size: 960px;
+            position: absolute;
+            top: 0;
+        }
+
+        div.Avatars > div.avatar > div.detail > div.talent.冰 > div {
+            background-image: url({{cwd}}/plugins//miao-plugin/resources/common/bg/talent-cryo.png);
+        }
+
+        #container.岩 {
+            background-image: url({{AcgBg}});
+            background-repeat: repeat-y;
+            background-position: inherit;
+            background-size: 960px;
+            position: absolute;
+            top: 0;
+        }
+        div.Avatars > div.avatar > div.detail > div.talent.岩 > div {
+            background-image: url({{cwd}}/plugins//miao-plugin/resources/common/bg/talent-geo.png);
+        }
+    </style>
+</head>
+<body>
+<div id="container" class="{{ data['elem'] }}">
+    <div class="TopLeftPanel">
+        <div class="UID">{{ data["uid"] }}</div>
+        <div class="rank">
+            <div class="title">{{ data["rank"] }}</div>
+            <div class="dps">{{ data["dps"] }}</div>
+            <div class="time">{{ data["tm"] }}</div>
+            <div class="total">{{ data["total"] }}</div>
+        </div>
+        <!-- <div id="pie"></div> -->
+        <p>
+            <canvas id="canvas_circle" width="400" height="250"
+                    style="margin-top: 30px;margin-left: -40px;">
+                浏览器不支持canvas
+            </canvas>
+        </p>
+    </div>
+    <div class="Avatars">
+        {{each data["avatars"] a}}
+        <div class="avatar">
+            <!--            <img class="char r{{ a['rarity'] }}" src="./{{ a['name'] }}/{{ a['icon'] }}.png">-->
+            <img class="char r{{ a['rarity'] }}" src="{{ a.face }}">
+            <div class="char-con c{{ a['cons'] }}"></div>
+            <div class="char-lvl">{{ a["level"] }}</div>
+            <!--            <img class="weapon r{{ a['weapon']['rarity'] }}" src="./weapon/{{ a['weapon']['icon'] }}.png">-->
+            <img class="weapon r{{ a['weapon']['rarity'] }}"
+                 src="{{miaoRes}}meta/weapon/{{ a['weapon']['imgPath'] }}/icon.webp">
+
+            <div class="weapon-aff a{{ a['weapon']['affix'] }}"></div>
+            <div class="weapon-lvl">{{ a['weapon']['level'] }}</div>
+            <div class="arti">
+                {{each a["relicSet"] val key}}
+                <img class="arti s{{ val }}" src="{{miaoRes}}meta/artifact/imgs/{{ key }}/1.webp" height="100%"
+                     width="100%">
                 {{/each}}
             </div>
-            <div class="Actions">
-                <div class="title"></div>
-                <div class="act">
-                    {{each data["actions"] action}}
-                    <div>{{ action }}</div>
+            <div class="detail">
+                <div class="cp">{{ a["cp"] }}%</div>
+                <div class="cd">{{ a["cd"] }}%</div>
+                <div class="prop">
+                    <div class="value">{{ a["key_value"] }}</div>
+                    <div class="name">{{ a["key_prop"] }}</div>
+                </div>
+                <div class="recharge">{{ a["recharge"]["pct"] }}</div>
+                <div class="same">{{ a["recharge"]["same"] }}</div>
+                <div class="diff">{{ a["recharge"]["diff"] }}</div>
+                <div class="talent {{ a['elem'] }}">
+                    {{each a["skills"] skill}}
+                    <div>
+                        {{ if skill['icon'].indexOf("_A_") != -1 }}
+                        <img src="{{miaoRes}}meta/character/{{ a['name'] }}/icons/talent-a.webp">
+                        <span class="{{ skill['style'] }}">{{ skill["level"] }}</span>
+                        {{/if}}
+                        {{ if skill['icon'].indexOf("_S_") != -1 }}
+                        <img src="{{miaoRes}}meta/character/{{ a['name'] }}/icons/talent-e.webp">
+                        <span class="{{ skill['style'] }}">{{ skill["level"] }}</span>
+                        {{/if}}
+                        {{ if skill['icon'].indexOf("_E_") != -1 }}
+                        <img src="{{miaoRes}}meta/character/{{ a['name'] }}/icons/talent-q.webp">
+                        <span class="{{ skill['style'] }}">{{ skill["level"] }}</span>
+                        {{/if}}
+                    </div>
                     {{/each}}
                 </div>
             </div>
-            <ul class="Buffs">
-                <li class="title"></li>
-                {{each data["buffs"] item}}
-                <li class="buff">
-                    <div>{{ item[0] }}</div>
-                    <div>{{ item[1] }}</div>
-                    <div>{{ item[2] }}</div>
-                </li>
-                {{/each}}
-            </ul>
-            {{ if detail }}
-            <ul class="Damages">
-                <li class="title"></li>
-                <li class="head">
-                    <!-- use css to fill this -->
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </li>
-                {{each data["damages"] damage}}
-                <li class="dmg">
-                    <div>{{ damage[0] }}</div>
-                    <div>{{ damage[1] }}</div>
-                    <div>{{ damage[2] }}</div>
-                    <div>{{ damage[3] }}</div>
-                    <div>{{ damage[4] }}</div>
-                </li>
-                {{/each}}
-            </ul>
-            {{/if}}
-            <div class="copyright">
-                FanSky_Qs × Data from Teyvat × Prototype by Nonebot-plugin-gspanel
-            </div>
-            <!--    <div class="copyright">-->
-            <!--        <span style="color: #ffffff; opacity: 0.68; text-shadow: 3px 5px 4px #333333ad; font-size: 20px; width: 960px; text-align: center; padding-top: 60px; padding-bottom: 20px; content: {{dynamicContent}};">Data from Teyvat × Powered by NoneBot2 × Inspired by Miao-Plugin</span>-->
-            <!--    </div>-->
         </div>
-    </body>
-    <!-- <script type="text/javascript" src="https://unpkg.com/@antv/g2plot@latest/dist/g2plot.js"></script> -->
-    <!-- <script>
-        document.getElementById("pie").innerHTML = RoleColor;
-        // let data = `{{ data["pie_data"] }}`;
-        let _color = `{{ data["pie_color"] }}`;
-        let data = [
-            {char: '海森', damage: 55},
-            {char: '钟离', damage: 10},
-            {char: '雷神', damage: 35}
-        ];
-        const pie = new G2Plot.Pie(document.getElementById('pie'), {
-            data,
-            angleField: 'damage',
-            colorField: 'char', 
-            color: ["#ff0000", "#00ff00", "#0000ff"],
-            label: {
-                visible: true,
-                type: 'inner',
-                // formatter: (text, item) => `${item._origin.char}\n${item._origin.damage}`
-            },
-            legend: {
-                visible: false
-            }
-        });
-        pie.render();
-    </script> -->
-    <script>
-        function drawCircle(canvasId, data_arr, color_arr, text_arr) {
-            const c = document.getElementById(canvasId);
-            const ctx = c.getContext("2d");
-            const radius = c.height / 2 - 20; //半径
-            const ox = radius + 20, oy = radius + 20; //圆心
-            const width = 30, height = 10; //图例宽和高
-            const posX = ox * 2 + 20, posY = 30;   //
-            const textX = posX + width + 5, textY = posY + 10;
-            let startAngle = 0; //起始弧度
-            let endAngle = 0;   //结束弧度
-            for (let i = 0; i < data_arr.length; i++) {//绘制饼图
-                endAngle = endAngle + data_arr[i] * Math.PI * 2; //结束弧度
-                ctx.fillStyle = color_arr[i];
-                ctx.beginPath();
-                ctx.moveTo(ox, oy); //移动到到圆心
-                ctx.arc(ox, oy, radius, startAngle, endAngle, false);
-                ctx.closePath();
-                ctx.fill();
-                startAngle = endAngle; //设置起始弧度
-                ctx.fillStyle = color_arr[i];//绘制比例图及文字
-                ctx.fillRect(posX, posY + 20 * i, width, height);
-                ctx.moveTo(posX, posY + 20 * i);
-                ctx.font = 'bold 12px 微软雅黑';    //斜体 30像素 微软雅黑字体
-                ctx.fillStyle = color_arr[i]; //"#000000";
-                const percent = text_arr[i] + "：" + 100 * data_arr[i] + "%";
-                ctx.fillText(percent, textX, textY + 20 * i);
-            }
+        {{/each}}
+    </div>
+    <br>
+    <hr>
+    <div style="background-color: #1179b11a;backdrop-filter: blur(5px);">
+        <p style="color: #0bb199;font-size: 30px;font-weight: bold">【剩余充能】</p>
+        {{each data["avatars"] a}}
+        <div style="width: 230px;height:230px; display: inline-block;">
+            <svg viewBox="0 0 25 25">
+                <circle cx="12.5" cy="12.5" r="10" stroke="#ccc" stroke-width="2.5" fill="none"/>
+                <circle id="{{a['name']}}" cx="12.5" cy="12.5" r="10" stroke="#50b590c7" stroke-width="2.5" fill="none"
+                        stroke-dasharray="0, 62.8" stroke-dashoffset="0" transform="rotate(-90 12.5 12.5)"/>
+                <text x="12.5" y="13.75" text-anchor="middle" font-size="2.5" font-weight="bold" fill="#99FF88"
+                      text-shadow="0 0 5px #9370DB">{{a["name"]}}:{{ a["recharge"]["pct"] }}
+                </text>
+            </svg>
+            <script>
+                document.getElementById("{{a['name']}}").setAttribute("stroke-dasharray", `${(50 + (parseInt("{{ a['recharge']['pct'] }}".substring(0, "{{ a['recharge']['pct'] }}".length - 1))) / 2) / 100 * (2 * Math.PI * 10)}, ${(2 * Math.PI * 10)}`);
+                document.getElementById("{{a['name']}}").setAttribute("stroke-dashoffset", (2 * Math.PI * 10) - (50 + (parseInt("{{ a['recharge']['pct'] }}".substring(0, "{{ a['recharge']['pct'] }}".length - 1))) / 2) / 100 * (2 * Math.PI * 10));
+            </script>
+        </div>
+        {{/each}}
+    </div>
+    <hr>
+    <div class="Actions">
+        <div class="title"></div>
+        <div class="act">
+            {{each data["actions"] action}}
+            <div>{{ action }}</div>
+            {{/each}}
+        </div>
+    </div>
+    <ul class="Buffs">
+        <li class="title"></li>
+        {{each data["buffs"] item}}
+        <li class="buff">
+            <div>{{ item[0] }}</div>
+            <div>{{ item[1] }}</div>
+            <div>{{ item[2] }}</div>
+        </li>
+        {{/each}}
+    </ul>
+    {{ if detail }}
+    <ul class="Damages">
+        <li class="title"></li>
+        <li class="head">
+            <!-- use css to fill this -->
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </li>
+        {{each data["damages"] damage}}
+        <li class="dmg">
+            <div>{{ damage[0] }}</div>
+            <div>{{ damage[1] }}</div>
+            <div>{{ damage[2] }}</div>
+            <div>{{ damage[3] }}</div>
+            <div>{{ damage[4] }}</div>
+        </li>
+        {{/each}}
+    </ul>
+    {{/if}}
+    <div class="copyright">
+        FanSky_Qs × Data from Teyvat × Prototype by Nonebot-plugin-gspanel
+    </div>
+</div>
+</body>
+<meta charset="gbk">
+<script>
+    function drawCircle(canvasId, data_arr, color_arr, text_arr) {
+        const c = document.getElementById(canvasId);
+        const ctx = c.getContext("2d");
+        const radius = c.height / 2 - 20; //半径
+        const ox = radius + 20, oy = radius + 20; //圆心
+        const width = 30, height = 10; //图例宽和高
+        const posX = ox * 2 + 20, posY = 30;   //
+        const textX = posX + width + 5, textY = posY + 10;
+        let startAngle = 0; //起始弧度
+        let endAngle = 0;   //结束弧度
+        for (let i = 0; i < data_arr.length; i++) {//绘制饼图
+            endAngle = endAngle + data_arr[i] * Math.PI * 2; //结束弧度
+            ctx.fillStyle = color_arr[i];
+            ctx.beginPath();
+            ctx.moveTo(ox, oy); //移动到到圆心
+            ctx.arc(ox, oy, radius, startAngle, endAngle, false);
+            ctx.closePath();
+            ctx.fill();
+            startAngle = endAngle; //设置起始弧度
+            ctx.fillStyle = color_arr[i];//绘制比例图及文字
+            ctx.fillRect(posX - 30, posY + 20 * i, width, height);
+            ctx.moveTo(posX - 30, posY + 20 * i);
+            ctx.font = 'bold 12px 微软雅黑';    //斜体 30像素 微软雅黑字体
+            ctx.fillStyle = color_arr[i]; //"#000000";
+            const percent = text_arr[i] + "：" + 100 * data_arr[i] + "%";
+            ctx.fillText(percent, textX - 30, textY + 20 * i);
         }
+    }
 
-        async function init() {
-            let RoleData = `{{data["pie_data"]}}`;
-            // let RoleColor = `{{data["pie_color"]}}`;
-            // RoleColor = RoleColor.replace('[', '');
-            // RoleColor = RoleColor.replace(']', '');
-            // RoleColor = RoleColor.split(',');
-            // const DamageMap = RoleData.map((item) => item.damage);
-            // const total = `{{data["total"]}}`.replace('W', '');
-            // const total = await DamageMap.reduce((prev, cur) => prev + cur);
-            // const percent = await DamageMap.map((item) => (item / total).toFixed(4));
-            // const NameChar = await RoleData.map((item) => item.char);
-        
-            const percent = [0.2, 0.3, 0.1, 0.4];
-            const RoleColor = ["#ff0000", "#00ff00", "#0000ff", "#0f00f0"];
-            const NameChar = ["角色1", "角色2", "角色3", "角色4"];
-            console.log(percent);
-            console.log(RoleColor);
-            console.log(NameChar);
-            drawCircle("canvas_circle", percent, RoleColor, NameChar);
-        }
+    async function init() {
+        const percent = `{{Bing.percent}}`
+        const Color = `{{Bing.RoleColor}}`
+        const Char = `{{Bing.NameChar}}`
+        const PercentArr = JSON.parse(percent.replace(/&#34;/g, '"'));
+        const ColorArr = JSON.parse(Color.replace(/&#34;/g, '"'));
+        const NameArr = JSON.parse(Char.replace(/&#34;/g, '"'));
+        drawCircle("canvas_circle", PercentArr, ColorArr, NameArr);
+    }
 
-        window.onload = await init;
-    </script>
+    window.onload = init;
+</script>
 </html>

@@ -5,22 +5,27 @@
     <title>图片展示</title>
     <style>
         body {
-            background-image: url("../imgs/bg-hydro.jpg");
-            background-size: cover;
+            background-image: url({{acgBg}});
+            width: 960px;
+            margin: 0 auto;
+            border-radius: 10px;
+            height: auto;
+            min-height: 720px;
+            font-family: "PanelFont";
             background-repeat: no-repeat;
-            background-position: center center;
+            background-position: inherit;
+            background-size: 960px;
+            position: absolute;
+            top: 0;
         }
 
         #container {
-            background-image: url("../imgs/bg-hydro.jpg");
-            width: 960px;
             margin: 0 auto;
             padding: 20px;
             left: 0;
-            background-color: #4d68b152;
+            background-color: #b14d4d08;
             border-radius: 10px;
             box-shadow: 0 0 20px #ffc107;
-
             height: auto;
             min-height: 720px;
             font-family: "PanelFont";
@@ -37,14 +42,16 @@
         }
 
         #header h1 {
-            font-family: cursive;
-            font-size: 36px;
+            font-weight: 200;
+            font-family: fantasy;
+            font-size: 35px;
             margin-bottom: 10px;
         }
 
         #header p {
-            font-size: 25px;
+            font-size: 30px;
             font-weight: 600;
+            font-family: fangsong;
         }
 
         #avatar {
@@ -52,9 +59,7 @@
             height: 150px;
             border-radius: 50%;
             overflow: hidden;
-            margin: 0 auto;
-            margin-top: 50px;
-            margin-bottom: 30px;
+            margin: 50px auto 30px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
         }
 
@@ -104,6 +109,24 @@
             justify-content: space-between;
             border: 14px solid #6f848c9e;
             border-radius: 10px;
+            background-color: #b6e3d87d;
+            backdrop-filter: blur(3px)
+        }
+
+        .text-uid {
+            width: 380px;
+            display: block;
+            border-radius: 30px;
+            background-color: #1179b185;
+            backdrop-filter: blur(4px);
+            margin-left: 260px;
+        }
+
+        .text-tips {
+            display: block;
+            border-radius: 100px;
+            background-color: #1179b11a;
+            backdrop-filter: blur(5px);
         }
     </style>
 </head>
@@ -111,36 +134,55 @@
 <div id="container">
     <div id="header">
         <div id="avatar">
-        <img src="{{user_img}}" alt="avatar">
-    </div>
-    <div id="name">
-        <p>{{NickName}}</p>
-    </div>
-        <h1>#队伍面板{{uid}}</h1>
-        <p>>>>你可以使用<span style="color: #93189c;font-weight: bold">#队伍伤害钟离 阿贝多、...</span><br>>>>或者<span
-        style="color: #18229c;font-weight: bold">#队伍伤害123456789钟离、阿贝多、...</span>命令来查看队伍伤害</p>
-<!--        <p style="color: #00b2ff">使用[#队伍伤害+任意几个角色]即可查看队伍伤害</p>-->
-<!--        <p style="color: #00b2ff">#队伍伤害钟离 阿贝多 魈</p>-->
+            <img src="{{user_img}}" alt="avatar">
+        </div>
+        <div id="name">
+            <p>{{NickName}}</p>
+        </div>
+
+        <div class="text-uid">
+            <h1>#队伍面板<span style="font-family: fantasy;
+    color: #4830c9cf;">{{uid}}</span></h1>
+        </div>
+        <div class="text-tips">
+            <p>你可以使用<span style="color: #93189c;font-weight: bold">#队伍伤害钟离 阿贝多、...</span><br>或者<span
+                    style="color: #18229c;font-weight: bold">#队伍伤害123456789钟离、阿贝多、...</span><br>来查看队伍伤害
+            </p>
+        </div>
+
     </div>
     <div id="gallery">
         <div class="image-row">
             {{each RolesInfo RoleInfo}}
             <div class="image-container">
-                <img src="{{cwd}}/plugins/miao-plugin/resources/meta/character/{{RoleInfo.name}}/imgs/face-q.webp"
+                <img src="{{cwd}}/plugins/miao-plugin/resources/meta/character/{{ RoleInfo['name'] }}/imgs/face-q.webp"
                      alt="Roles">
-                <p style="color: #994646;
+                <p style="color: #F4511E;
     font-weight: bold;
-    font-size: 20px;margin-top: 0;"
-                >Lv.{{RoleInfo.level}}<br>{{RoleInfo.name}}</p>
+    font-size: 22px;margin-top: 0;"
+                >Lv.{{RoleInfo.level}}<br>
+                <p style="font-family: cursive;
+    color: #37474F;
+    font-weight: 999;
+    font-size: 28px;
+    margin-top: -18px;"
+                >{{RoleInfo.name}}</p>
             </div>
             {{/each}}
         </div>
     </div>
     <div>
-        <span style="color: #1a731b;font-weight: bold;font-size:20px">○数据最后更新时间：{{LastUpdateTime}}</span>
+        <span style="font-family: fangsong;
+    color: #3a007a;
+    font-weight: bold;
+    font-size: 25px;">○数据最后更新时间：{{LastUpdateTime}}</span>
     </div>
     <div id="footer">
-        <p style="font-size: 25px;color: #18369e;font-weight: bold;">{{BotName}} {{BotVersion}} × FanSky_Qs {{PluginVersion}}</p>
+        <p style="font-size: 25px;color: #202ed7d9;font-weight: bold;backdrop-filter: blur(10px);">{{BotName}} <span
+                style="font-size: 25px;color: #5e4b1f;font-weight: bold;backdrop-filter: blur(10px);">{{BotVersion}}</span>
+            × FanSky_Qs
+            <span style="font-size: 25px;color: #5e4b1f;font-weight: bold;backdrop-filter: blur(10px);">{{PluginVersion}}</span>
+        </p>
     </div>
 </div>
 </body>

@@ -66,62 +66,6 @@ body {
     left: 0;
 }
 
-#container.火 {
-    background-image: url(../../../miao-plugin/resources/common/bg/bg-pyro.jpg);
-}
-
-div.Avatars>div.avatar>div.detail>div.talent.火>div {
-    background-image: url(../../../miao-plugin/resources/common/bg/talent-pyro.png);
-}
-
-#container.水 {
-    background-image: url(../../../miao-plugin/resources/common/bg/bg-hydro.jpg);
-}
-
-div.Avatars>div.avatar>div.detail>div.talent.水>div {
-    background-image: url(../../../miao-plugin/resources/common/bg/talent-hydro.png);
-}
-
-#container.风 {
-    background-image: url(../../../miao-plugin/resources/common/bg/bg-anemo.jpg);
-}
-
-div.Avatars>div.avatar>div.detail>div.talent.风>div {
-    background-image: url(../../../miao-plugin/resources/common/bg/talent-anemo.png);
-}
-
-#container.雷 {
-    background-image: url(../../../miao-plugin/resources/common/bg/bg-electro.jpg);
-}
-
-div.Avatars>div.avatar>div.detail>div.talent.雷>div {
-    background-image: url(../../../miao-plugin/resources/common/bg/talent-electro.png);
-}
-
-#container.草 {
-    background-image: url(../../../miao-plugin/resources/common/bg/bg-dendro.jpg);
-}
-
-div.Avatars>div.avatar>div.detail>div.talent.草>div {
-    background-image: url(../../../miao-plugin/resources/common/bg/talent-dendro.png);
-}
-
-#container.冰 {
-    background-image: url(../../../miao-plugin/resources/common/bg/bg-cryo.jpg);
-}
-
-div.Avatars>div.avatar>div.detail>div.talent.冰>div {
-    background-image: url(../../../miao-plugin/resources/common/bg/talent-cryo.png);
-}
-
-#container.岩 {
-    background-image: url(../../../miao-plugin/resources/common/bg/bg-geo.jpg);
-}
-
-div.Avatars>div.avatar>div.detail>div.talent.岩>div {
-    background-image: url(../../../miao-plugin/resources/common/bg/talent-geo.png);
-}
-
 div.TopLeftPanel {
     position: relative;
     top: 20px;
@@ -130,7 +74,7 @@ div.TopLeftPanel {
     height: 543px;
 }
 
-div.TopLeftPanel>div.UID {
+div.TopLeftPanel > div.UID {
     position: relative;
     top: 10px;
     left: 10px;
@@ -140,14 +84,14 @@ div.TopLeftPanel>div.UID {
     height: 30px;
     line-height: 30px;
     text-shadow: 0 0 3px #d3bc8e, 2px 2px 4px rgb(0 0 0 / 70%);
-    color: rgba(255 255 255 / .68);
+    color: rgb(255 189 4 / 82%);
 }
 
-div.TopLeftPanel>div.UID::before {
+div.TopLeftPanel > div.UID::before {
     content: "#队伍伤害 UID";
 }
 
-div.TopLeftPanel>div.rank {
+div.TopLeftPanel > div.rank {
     color: #ffffff;
     text-shadow: 0px 15px 7px rgb(0 0 0 / 68%);
     border-radius: 15px;
@@ -159,46 +103,46 @@ div.TopLeftPanel>div.rank {
     justify-content: space-between;
 }
 
-div.TopLeftPanel>div.rank>div {
+div.TopLeftPanel > div.rank > div {
     width: 60%;
     height: 91px;
     font-family: "PanelNumFont";
     font-size: 42px;
     font-weight: 700;
-    color: var(--artiMark1);
+    color: #673AB7;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
-div.TopLeftPanel>div.rank>div:nth-child(odd) {
+div.TopLeftPanel > div.rank > div:nth-child(odd) {
     width: 40%;
 }
 
-div.TopLeftPanel>div.rank>div::after {
+div.TopLeftPanel > div.rank > div::after {
     content: "伤害评级";
-    color: var(--ambrLight);
+    color: rgb(211 60 15 / 92%);
     font-family: "PanelFont";
-    font-size: 18px;
-    font-weight: 400;
+    font-size: 25px;
+    font-weight: bold;
 }
 
-div.TopLeftPanel>div.rank>div.dps::after {
+div.TopLeftPanel > div.rank > div.dps::after {
     content: "DPS";
     font-style: italic;
 }
 
-div.TopLeftPanel>div.rank>div.time::after {
+div.TopLeftPanel > div.rank > div.time::after {
     content: "输出轴长";
 }
 
-div.TopLeftPanel>div.rank>div.total::after {
+div.TopLeftPanel > div.rank > div.total::after {
     content: "输出总伤";
 }
 
-div.TopLeftPanel>div#pie {
-     background-color: #2e353e;
+div.TopLeftPanel > div#pie {
+    background-color: #2e353e;
     border-radius: 15px;
     position: relative;
     top: 51px;
@@ -210,7 +154,7 @@ div.TopLeftPanel>div#pie {
     align-items: center;
 }
 
-div.TopLeftPanel>div#pie::after {
+div.TopLeftPanel > div#pie::after {
     position: absolute;
     bottom: 150px;
     content: "资源文件等还在调整完善中";
@@ -237,7 +181,7 @@ div.Avatars {
     gap: 15px;
 }
 
-div.Avatars>div.avatar {
+div.Avatars > div.avatar {
     color: #ffffff;
     background-color: var(--artiBg);
     align-items: center;
@@ -249,7 +193,7 @@ div.Avatars>div.avatar {
     border: none;
 }
 
-div.Avatars>div.avatar>img.char {
+div.Avatars > div.avatar > img.char {
     width: 64px;
     height: 64px;
     border-top-left-radius: 15px;
@@ -259,7 +203,7 @@ div.Avatars>div.avatar>img.char {
     top: 0px;
 }
 
-div.Avatars>div.avatar>div.char-con {
+div.Avatars > div.avatar > div.char-con {
     height: 32px;
     min-height: 32px;
     width: 44px;
@@ -272,59 +216,59 @@ div.Avatars>div.avatar>div.char-con {
     left: -54px;
 }
 
-div.Avatars>div.avatar>div.char-con::after {
+div.Avatars > div.avatar > div.char-con::after {
     content: "0";
 }
 
-div.Avatars>div.avatar>div.char-con.c1 {
+div.Avatars > div.avatar > div.char-con.c1 {
     background: var(--charCons1);
 }
 
-div.Avatars>div.avatar>div.char-con.c1::after {
+div.Avatars > div.avatar > div.char-con.c1::after {
     content: "1";
 }
 
-div.Avatars>div.avatar>div.char-con.c2 {
+div.Avatars > div.avatar > div.char-con.c2 {
     background: var(--charCons2);
 }
 
-div.Avatars>div.avatar>div.char-con.c2::after {
+div.Avatars > div.avatar > div.char-con.c2::after {
     content: "2";
 }
 
-div.Avatars>div.avatar>div.char-con.c3 {
+div.Avatars > div.avatar > div.char-con.c3 {
     background: var(--charCons3);
 }
 
-div.Avatars>div.avatar>div.char-con.c3::after {
+div.Avatars > div.avatar > div.char-con.c3::after {
     content: "3";
 }
 
-div.Avatars>div.avatar>div.char-con.c4 {
+div.Avatars > div.avatar > div.char-con.c4 {
     background: var(--charCons4);
 }
 
-div.Avatars>div.avatar>div.char-con.c4::after {
+div.Avatars > div.avatar > div.char-con.c4::after {
     content: "4";
 }
 
-div.Avatars>div.avatar>div.char-con.c5 {
+div.Avatars > div.avatar > div.char-con.c5 {
     background: var(--charCons5);
 }
 
-div.Avatars>div.avatar>div.char-con.c5::after {
+div.Avatars > div.avatar > div.char-con.c5::after {
     content: "5";
 }
 
-div.Avatars>div.avatar>div.char-con.c6 {
+div.Avatars > div.avatar > div.char-con.c6 {
     background: var(--charCons6);
 }
 
-div.Avatars>div.avatar>div.char-con.c6::after {
+div.Avatars > div.avatar > div.char-con.c6::after {
     content: "6";
 }
 
-div.Avatars>div.avatar>div.char-lvl {
+div.Avatars > div.avatar > div.char-lvl {
     height: 32px;
     min-height: 32px;
     width: 44px;
@@ -336,7 +280,7 @@ div.Avatars>div.avatar>div.char-lvl {
     left: -54px;
 }
 
-div.Avatars>div.avatar>img.weapon {
+div.Avatars > div.avatar > img.weapon {
     width: 64px;
     height: 64px;
     position: relative;
@@ -344,7 +288,7 @@ div.Avatars>div.avatar>img.weapon {
     left: 0;
 }
 
-div.Avatars>div.avatar>div.weapon-aff {
+div.Avatars > div.avatar > div.weapon-aff {
     height: 32px;
     min-height: 32px;
     width: 44px;
@@ -357,43 +301,43 @@ div.Avatars>div.avatar>div.weapon-aff {
     left: 54px;
 }
 
-div.Avatars>div.avatar>div.weapon-aff::after {
+div.Avatars > div.avatar > div.weapon-aff::after {
     content: "1";
 }
 
-div.Avatars>div.avatar>div.weapon-aff.a2 {
+div.Avatars > div.avatar > div.weapon-aff.a2 {
     background: var(--weaponAffix2);
 }
 
-div.Avatars>div.avatar>div.weapon-aff.a2::after {
+div.Avatars > div.avatar > div.weapon-aff.a2::after {
     content: "2";
 }
 
-div.Avatars>div.avatar>div.weapon-aff.a3 {
+div.Avatars > div.avatar > div.weapon-aff.a3 {
     background: var(--weaponAffix3);
 }
 
-div.Avatars>div.avatar>div.weapon-aff.a3::after {
+div.Avatars > div.avatar > div.weapon-aff.a3::after {
     content: "3";
 }
 
-div.Avatars>div.avatar>div.weapon-aff.a4 {
+div.Avatars > div.avatar > div.weapon-aff.a4 {
     background: var(--weaponAffix4);
 }
 
-div.Avatars>div.avatar>div.weapon-aff.a4::after {
+div.Avatars > div.avatar > div.weapon-aff.a4::after {
     content: "4";
 }
 
-div.Avatars>div.avatar>div.weapon-aff.a5 {
+div.Avatars > div.avatar > div.weapon-aff.a5 {
     background: var(--weaponAffix5);
 }
 
-div.Avatars>div.avatar>div.weapon-aff.a5::after {
+div.Avatars > div.avatar > div.weapon-aff.a5::after {
     content: "5";
 }
 
-div.Avatars>div.avatar>div.weapon-lvl {
+div.Avatars > div.avatar > div.weapon-lvl {
     height: 32px;
     min-height: 32px;
     width: 44px;
@@ -405,10 +349,10 @@ div.Avatars>div.avatar>div.weapon-lvl {
     left: 54px;
 }
 
-div.Avatars>div.avatar>div.weapon-aff,
-div.Avatars>div.avatar>div.weapon-lvl,
-div.Avatars>div.avatar>div.char-con,
-div.Avatars>div.avatar>div.char-lvl {
+div.Avatars > div.avatar > div.weapon-aff,
+div.Avatars > div.avatar > div.weapon-lvl,
+div.Avatars > div.avatar > div.char-con,
+div.Avatars > div.avatar > div.char-lvl {
     font-family: "PanelNumFont";
     font-size: 16px;
     display: flex;
@@ -416,20 +360,20 @@ div.Avatars>div.avatar>div.char-lvl {
     justify-content: center;
 }
 
-div.Avatars>div.avatar>div.char-lvl::before,
-div.Avatars>div.avatar>div.weapon-lvl::before {
+div.Avatars > div.avatar > div.char-lvl::before,
+div.Avatars > div.avatar > div.weapon-lvl::before {
     content: "Lv";
 }
 
-div.Avatars>div.avatar>div.char-con::before {
+div.Avatars > div.avatar > div.char-con::before {
     content: "C";
 }
 
-div.Avatars>div.avatar>div.weapon-aff::before {
+div.Avatars > div.avatar > div.weapon-aff::before {
     content: "R";
 }
 
-div.Avatars>div.avatar>div.arti {
+div.Avatars > div.avatar > div.arti {
     width: 64px;
     height: 64px;
     min-height: 64px;
@@ -441,13 +385,13 @@ div.Avatars>div.avatar>div.arti {
     left: 108px;
 }
 
-div.Avatars>div.avatar>div.arti:not(:has(img)) {
+div.Avatars > div.avatar > div.arti:not(:has(img)) {
     background: url('data:image/webp;base64,UklGRpoFAABXRUJQVlA4TI0FAAAvHcAJEA0ojCQZqhk/K/+ACSKi/xMAq0x5TQEKUCXFpOo6xoaccQcshJUCYP9Ur3wLMFDQto3k+48/5a0clLaNJAcNFy68/yb6PwHwER3ViXQYRQNoRIpQtxAlsAGgbWt7Iil7Y2XtzkyPD+7u7nDMMdynu/4uuEPTSOtYeRK8a+4AYttGghxqLv03HPxaYttIkiQxMnv9N/feypAr27ZpW23vfXBt27Zt3xve8PEnbdsKbdvvnQkAAfDLle+rPbIu0LjOscbvPQISd9evPX5PTu1Z9qapxLexxAyXrRPqIl0conmSwnpp0WQnlP0UrParLa3YiAUfqTE1BWte26prQTLT3zd1RhdKUEqDRDCqokJ1a8Jk+LfJDUw9Wf7GgoDDFa/O38ZcFCQS2fQJ/7FBeWl7PR8DZazoi/mL7nw09Se/jbYQJnD8Ev94avj0bnxap1+L8A/9Ea/SqD9FU0y0CTbSeJr4QH+QvT7zU9TXSLeeSA4WfEgohJCI+LeZhip9d8keIOa/8RpbOy05ojg8yIUFG4APCQaBHFGOZJ5EnSaD9F9BAkeizAQkoQshTPhYUAqGMmFDRjACpVAmXqJ2kimHzJ9JTfpfIvaX0FQ9AZEzLCEfLc87AUygVIVHBGLEBmswHGa0QtVPkET/vY8Q+oJ5KDIN2vCFDb7VavlRfuE8MPQFe2ChDL5nucY2MZai5EcjtDbdTyFES3lsh0EJNqIXc9/SDt9DDrthqHjIEUcYKUeKzdSvZuRHE1RpsMD38QshADR4ozP6VXnB0Aq2KCIT/JaOGFz4VlaMU1Gm6jvxySou8YKwhy5coQ3tQxtzrc8Qqxp043MEqK3y90Cp9x8HKQgohsgtUgQAgJrf3sLT9BjUIC0GJYDYaBgRhsOBEnM+zY2WcJWCBim0EnCcj/rzohwHAKB/84pJLEU8CnqYEAZrLYhHeDBGkBfEICCiK/7H4wHHhgUNCLuSO+fnHogAKglzKbQ32cYGBf/RWLSMO+OO+Hc0j0qIC+Vg8Cvryo9n+K/4D28wUxSRVdZ4xe817Yxj0rbPysRSbS8x+Sou2mLBmG18bjRiHobQR/ROXHAHER5zqikaRb/SF7LIDGfkIcRuRifLnD6pCmUlcuqTRSUKi6EiNoqjVNgICz8giKIKKtjRqopRjOxkCydmHz4yMctfsqZKfPydg86kjTO2i5FxSRSFCSEqUYtMJVcdBI698oV2cpherEc9LLjD8vRCPeZx59x/yJkhnsjdX2DYNu3JmlOECCCGKMIiu6fqCVZdJVU4Ulgeq1UZFAiJSMlRwBM+X83B/93PtwoAgB19WwEcT7hQWChk2MrcySvE+5WhptWqyAeUBgAIqADu8uJ39gHfj/bT0dSvxqCQIPALQ9h7AvUO/8AdGtgjQQAAACuMsXbKS3QBPzT6Mv9zDzoFCuJweIIoC1x1dv5uzYNCQIM4AAD4IiVWTUPJ1P8IeMWFBzy0VxZCRQUZ0jHUrPF/CAAmKAACoiDEqKW4Qjnw0ze7Z/e40QDFAhxoRApoG59B4Bu8wRoQALFM8TapVLL4Jv1nAJfMZTK42XUvp6igQSSAcLiwbhmNLLINMvRKCPekHsnb1793RxMAv8qJTVI/Tcc4dSXJ5YSfWoFRWdXRBwRFoHr8+qwPWXlkdBEw6LjUbzPrJS1pD42akTYeGK5w1Ef99ECvOfzYTTCLgYC9dnuNduWqjFrAHN6Co6j+yB259wx4sAIGH2+nV6VztMjBg0IVHI9KqqUPgEQhQbrE3sOEA44UXoq/9RSVx8kAaJK350xX/lHYeMe/Pzgv954BST+Yc/e4QgK4Llf6uwdA8vW26ZzskKh3FcAiDpuqXayyWJKqxRg1+RPMAiPJX4xNJo8wpbHR/7wBAAA=') center center no-repeat;
     background-size: 45% 60%;
     background-color: #818486;
 }
 
-div.Avatars>div.avatar>div.arti:has(img.s4)::after {
+div.Avatars > div.avatar > div.arti:has(img.s4)::after {
     content: "4";
     font-family: "PanelNumFont";
     position: relative;
@@ -456,7 +400,7 @@ div.Avatars>div.avatar>div.arti:has(img.s4)::after {
     text-shadow: 0 0 3px var(--ambrLight);
 }
 
-div.Avatars>div.avatar>div.arti>img.s2 {
+div.Avatars > div.avatar > div.arti > img.s2 {
     width: 64px;
     height: 64px;
     position: absolute;
@@ -464,41 +408,41 @@ div.Avatars>div.avatar>div.arti>img.s2 {
     transform-origin: left top;
 }
 
-div.Avatars>div.avatar>div.arti>img.s2:first-child:last-child {
+div.Avatars > div.avatar > div.arti > img.s2:first-child:last-child {
     transform: unset;
 }
 
-div.Avatars>div.avatar>div.arti>img.s2:last-child {
+div.Avatars > div.avatar > div.arti > img.s2:last-child {
     transform-origin: right bottom;
 }
 
-div.Avatars>div.avatar>img.r5 {
+div.Avatars > div.avatar > img.r5 {
     background-color: var(--itemRarity5);
 }
 
 /* div.Avatars>div.avatar>img.icon.r5 {
     background-color: var(--charRarity5);
 } */
-div.Avatars>div.avatar>img.r4 {
+div.Avatars > div.avatar > img.r4 {
     background-color: var(--itemRarity4);
 }
 
 /* div.Avatars>div.avatar>img.icon.r4 {
     background-color: var(--charRarity4);
 } */
-div.Avatars>div.avatar>img.r3 {
+div.Avatars > div.avatar > img.r3 {
     background-color: var(--itemRarity3);
 }
 
-div.Avatars>div.avatar>img.r2 {
+div.Avatars > div.avatar > img.r2 {
     background-color: var(--itemRarity2);
 }
 
-div.Avatars>div.avatar>img.r1 {
+div.Avatars > div.avatar > img.r1 {
     background-color: var(--itemRarity1);
 }
 
-div.Avatars>div.avatar>div.detail {
+div.Avatars > div.avatar > div.detail {
     width: 250px;
     min-height: 200px;
     font-size: 20px;
@@ -513,12 +457,12 @@ div.Avatars>div.avatar>div.detail {
     align-items: center;
 }
 
-div.Avatars>div.avatar>div.detail>div.cp,
-div.Avatars>div.avatar>div.detail>div.cd,
-div.Avatars>div.avatar>div.detail>div.prop,
-div.Avatars>div.avatar>div.detail>div.recharge,
-div.Avatars>div.avatar>div.detail>div.same,
-div.Avatars>div.avatar>div.detail>div.diff {
+div.Avatars > div.avatar > div.detail > div.cp,
+div.Avatars > div.avatar > div.detail > div.cd,
+div.Avatars > div.avatar > div.detail > div.prop,
+div.Avatars > div.avatar > div.detail > div.recharge,
+div.Avatars > div.avatar > div.detail > div.same,
+div.Avatars > div.avatar > div.detail > div.diff {
     /* background-color: aliceblue; */
     width: 33.33%;
     height: 50px;
@@ -530,38 +474,38 @@ div.Avatars>div.avatar>div.detail>div.diff {
     align-items: center;
 }
 
-div.Avatars>div.avatar>div.detail>div.cp::after,
-div.Avatars>div.avatar>div.detail>div.cd::after,
-div.Avatars>div.avatar>div.detail>div.prop>div.name,
-div.Avatars>div.avatar>div.detail>div.recharge::after,
-div.Avatars>div.avatar>div.detail>div.same::after,
-div.Avatars>div.avatar>div.detail>div.diff::after {
+div.Avatars > div.avatar > div.detail > div.cp::after,
+div.Avatars > div.avatar > div.detail > div.cd::after,
+div.Avatars > div.avatar > div.detail > div.prop > div.name,
+div.Avatars > div.avatar > div.detail > div.recharge::after,
+div.Avatars > div.avatar > div.detail > div.same::after,
+div.Avatars > div.avatar > div.detail > div.diff::after {
     font-family: "PanelFont";
     font-size: 15px;
     color: var(--ambrLight);
 }
 
-div.Avatars>div.avatar>div.detail>div.cp::after {
+div.Avatars > div.avatar > div.detail > div.cp::after {
     content: "暴击";
 }
 
-div.Avatars>div.avatar>div.detail>div.cd::after {
+div.Avatars > div.avatar > div.detail > div.cd::after {
     content: "暴伤";
 }
 
-div.Avatars>div.avatar>div.detail>div.recharge::after {
+div.Avatars > div.avatar > div.detail > div.recharge::after {
     content: "循环";
 }
 
-div.Avatars>div.avatar>div.detail>div.same::after {
+div.Avatars > div.avatar > div.detail > div.same::after {
     content: "同色球";
 }
 
-div.Avatars>div.avatar>div.detail>div.diff::after {
+div.Avatars > div.avatar > div.detail > div.diff::after {
     content: "异色球";
 }
 
-div.Avatars>div.avatar>div.detail>div.talent {
+div.Avatars > div.avatar > div.detail > div.talent {
     width: 100%;
     min-height: 80px;
     display: flex;
@@ -569,7 +513,7 @@ div.Avatars>div.avatar>div.detail>div.talent {
     align-items: center;
 }
 
-div.Avatars>div.avatar>div.detail>div.talent>div {
+div.Avatars > div.avatar > div.detail > div.talent > div {
     background-position: 50% 50%;
     background-size: cover;
     width: 61px;
@@ -581,7 +525,7 @@ div.Avatars>div.avatar>div.detail>div.talent>div {
     flex-direction: row;
 }
 
-div.Avatars>div.avatar>div.detail>div.talent>div>img {
+div.Avatars > div.avatar > div.detail > div.talent > div > img {
     width: 32px;
     height: 32px;
     position: relative;
@@ -589,7 +533,7 @@ div.Avatars>div.avatar>div.detail>div.talent>div>img {
     left: 15px;
 }
 
-div.Avatars>div.avatar>div.detail>div.talent>div>span {
+div.Avatars > div.avatar > div.detail > div.talent > div > span {
     margin-left: 25px;
     width: 30px;
     min-width: 30px;
@@ -603,7 +547,7 @@ div.Avatars>div.avatar>div.detail>div.talent>div>span {
     justify-content: center;
 }
 
-div.Avatars>div.avatar>div.detail>div.talent>div>span.extra {
+div.Avatars > div.avatar > div.detail > div.talent > div > span.extra {
     color: #000000;
     background-color: #45deff;
 }
@@ -616,7 +560,7 @@ ul.Buffs {
     width: 920px;
     border-radius: 15px;
     color: #ffffff;
-    background-color: var(--tableBg);
+    background-color: #332e3ed6;;
     box-shadow: 0px 15px 15px rgb(0 0 0 / 40%);
     position: relative;
     top: 50px;
@@ -632,9 +576,9 @@ ul.Buffs {
     padding-inline-start: unset;
 }
 
-div.Actions>div.title,
-ul.Damages>li.title,
-ul.Buffs>li.title {
+div.Actions > div.title,
+ul.Damages > li.title,
+ul.Buffs > li.title {
     height: 50px;
     color: #ffffff;
     font-size: 25px;
@@ -644,9 +588,9 @@ ul.Buffs>li.title {
     align-items: center;
 }
 
-div.Actions>div.title::after,
-ul.Damages>li.title::after,
-ul.Buffs>li.title::after {
+div.Actions > div.title::after,
+ul.Damages > li.title::after,
+ul.Buffs > li.title::after {
     font-size: 18px;
     font-weight: 400;
     opacity: 0.68;
@@ -654,15 +598,15 @@ ul.Buffs>li.title::after {
     padding-left: 20px;
 }
 
-div.Actions>div.title::before {
+div.Actions > div.title::before {
     content: "操作手法";
 }
 
-div.Actions>div.title::after {
+div.Actions > div.title::after {
     content: "默认手法可能并非最优，如需自定义操作手法请使用微信小程序";
 }
 
-div.Actions>div.act {
+div.Actions > div.act {
     max-width: 98%;
     padding: 0 1% 1%;
     display: flex;
@@ -672,13 +616,13 @@ div.Actions>div.act {
     align-items: center;
 }
 
-div.Actions>div.act>div {
+div.Actions > div.act > div {
     min-width: 30px;
     height: 30px;
     margin: 0.4em;
     padding: 0 0.3em;
     color: var(--ambrDeep);
-    background-color: var(--ambrLight);
+    background-color: rgb(164 241 137);
     font-size: 20px;
     border-radius: 5px;
     display: flex;
@@ -687,8 +631,8 @@ div.Actions>div.act>div {
     position: relative;
 }
 
-ul.Damages>li,
-ul.Buffs>li {
+ul.Damages > li,
+ul.Buffs > li {
     color: rgb(214 113 211);
     height: auto;
     min-height: 40px;
@@ -701,13 +645,13 @@ ul.Buffs>li {
     border-bottom: 2px solid rgba(255 255 255 / 20%);
 }
 
-ul.Damages>li:last-child,
-ul.Buffs>li:last-child {
+ul.Damages > li:last-child,
+ul.Buffs > li:last-child {
     border-bottom: none;
 }
 
-ul.Damages>li>div,
-ul.Buffs>li>div {
+ul.Damages > li > div,
+ul.Buffs > li > div {
     height: auto;
     min-height: 25px;
     padding: 0.4em;
@@ -717,44 +661,44 @@ ul.Buffs>li>div {
     justify-content: center;
 }
 
-ul.Damages>li:nth-child(2),
-ul.Damages>li>div:nth-child(1),
-ul.Damages>li>div:nth-child(2),
-ul.Buffs>li>div:nth-child(1),
-ul.Buffs>li>div:nth-child(2) {
+ul.Damages > li:nth-child(2),
+ul.Damages > li > div:nth-child(1),
+ul.Damages > li > div:nth-child(2),
+ul.Buffs > li > div:nth-child(1),
+ul.Buffs > li > div:nth-child(2) {
     color: #ffffff;
 }
 
-ul.Damages>li.title::before {
+ul.Damages > li.title::before {
     content: "伤害过程";
 }
 
-ul.Damages>li.title::after {
+ul.Damages > li.title::after {
     content: "伤害以 90 级怪物为基准，最终输出总伤和 DPS 为 1.25 倍期望伤害（实战对群）";
 }
 
-ul.Damages>li>div:not(:last-child),
-ul.Buffs>li>div:not(:last-child) {
+ul.Damages > li > div:not(:last-child),
+ul.Buffs > li > div:not(:last-child) {
     border-right: 2px solid rgba(255 255 255 / 20%);
 }
 
-ul.Damages>li:not(.title)>div:first-child,
-ul.Buffs>li:not(.title)>div:first-child {
+ul.Damages > li:not(.title) > div:first-child,
+ul.Buffs > li:not(.title) > div:first-child {
     max-width: 6%;
     justify-content: flex-end;
 }
 
-ul.Damages>li.head>div:first-child::after {
+ul.Damages > li.head > div:first-child::after {
     content: "时间";
 }
 
-ul.Damages>li:not(.title):not(.head)>div:first-child::after,
-ul.Buffs>li:not(.title)>div:first-child::after {
+ul.Damages > li:not(.title):not(.head) > div:first-child::after,
+ul.Buffs > li:not(.title) > div:first-child::after {
     content: "s";
 }
 
-ul.Damages>li:not(.title)>div:nth-child(2),
-ul.Buffs>li:not(.title)>div:nth-child(2) {
+ul.Damages > li:not(.title) > div:nth-child(2),
+ul.Buffs > li:not(.title) > div:nth-child(2) {
     width: auto;
     min-width: 35%;
     max-width: 40%;
@@ -764,42 +708,43 @@ ul.Buffs>li:not(.title)>div:nth-child(2) {
     padding-right: 20px;
 }
 
-ul.Damages>li.head>div:nth-child(2)::after {
+ul.Damages > li.head > div:nth-child(2)::after {
     content: "动作";
 }
 
-ul.Damages>li.head>div:nth-child(3)::after {
+ul.Damages > li.head > div:nth-child(3)::after {
     content: "暴击伤害";
 }
 
-ul.Damages>li.head>div:nth-child(4)::after {
+ul.Damages > li.head > div:nth-child(4)::after {
     content: "未暴击伤害";
 }
 
-ul.Damages>li.head>div:nth-child(5)::after {
+ul.Damages > li.head > div:nth-child(5)::after {
     content: "期望伤害";
 }
 
-ul.Buffs>li.title::before {
+ul.Buffs > li.title::before {
     content: "Buff 情况";
 }
 
-ul.Buffs>li.title::after {
+ul.Buffs > li.title::after {
     content: "部分 Buff 描述可能异常但通常影响较小，若伤害偏差超过 10% 可认为计算错误";
 }
 
-ul.Buffs>li:not(.title)>div:nth-child(2) {
+ul.Buffs > li:not(.title) > div:nth-child(2) {
     min-width: 25%;
     max-width: 30%;
 }
 
 div.copyright {
-    color: #ffffff;
-    opacity: 0.68;
+    color: #c4d5cc;
+    opacity: 0.95;
     text-shadow: 3px 5px 4px #333333ad;
-    font-size: 20px;
+    font-size: 25px;
     width: 960px;
     text-align: center;
     padding-top: 60px;
     padding-bottom: 20px;
+    font-weight: bold;
 }
