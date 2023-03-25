@@ -90,7 +90,7 @@ async function getAvatarData(Json, uid, char = '全部', e) {
                 _.each(wait4Dmg, (a, aI) => {
                     _names[aI] = a.name
                 })
-                logger.mark(`正在为 UID ${uid} 的 ${_names.join('/')} 重新请求伤害计算接口`)
+                logger.mark(`正在为 UID ${uid} 的 ${_names.join('/')} 重新请求伤害计算接口`, true, {recallMsg: 25})
                 const wtf = Object.values(wait4Dmg).map(x => ({...x}))
                 const teyvatBody = await transToTeyvatRequest(wtf, uid)
                 const teyvatRaw = await getTeyvatData(teyvatBody)

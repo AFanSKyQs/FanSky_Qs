@@ -5,7 +5,7 @@ let cwd = process.cwd().replace(/\\/g, '/')
 
 export async function screenData(e) {
     // let BgImgPath=`${cwd}/plugins/FanSky_Qs/resources/help/img/bg`
-    let NameList=['艾尔海森','八重神子','迪希雅','甘雨','柯莱','可莉','流浪者','纳西妲','妮露','赛诺','提纳里','夜兰']
+    let NameList = ['艾尔海森', '八重神子', '迪希雅', '甘雨', '柯莱', '可莉', '流浪者', '纳西妲', '妮露', '赛诺', '提纳里', '夜兰']
     let Package = `${cwd}/plugins/FanSky_Qs/package.json`
     let YunzaiPath = `${cwd}/package.json`
     let Version = JSON.parse(fs.readFileSync(Package));
@@ -14,7 +14,7 @@ export async function screenData(e) {
     let headImg = (NameList[Math.floor(Math.random() * NameList.length)])
     // let RandomBgImg
     // fs.readdir(BgImgPath, (err, files) => {if (err) throw err;RandomBgImg = files[Math.floor(Math.random() * files.length)];console.log("随机名字："+RandomBgImg); });
-    let AcgPath=await getHelpBg()
+    let AcgPath = await getHelpBg()
     return {
         acgBg: AcgPath,
         YunzaiName: Yunzai.name,
@@ -40,6 +40,10 @@ export async function helpData() {
                         "icon": "队伍伤害",
                         "title": "#队伍伤害xx xx...",
                         "desc": "#队伍伤害uid xx xx xx"
+                    }, {
+                        "icon": "队伍伤害",
+                        "title": "#队伍面板",
+                        "desc": "查看已经缓存的角色数据，可直接组合调用队伍伤害"
                     },
                     {
                         "icon": "team",
@@ -96,6 +100,11 @@ export async function helpData() {
                 "list": [
                     {
                         "icon": "OpenAI",
+                        "title": "#key剩余查看",
+                        "desc": "查询OpenAI的key使用情况"
+                    },
+                    {
+                        "icon": "OpenAI",
                         "title": "模型列表",
                         "desc": "查看当前已有模型列表"
                     },
@@ -116,6 +125,10 @@ export async function helpData() {
                         "icon": "OpenAI",
                         "title": "#设置模型key sk-xxxxxx",
                         "desc": "设置OpenAI的key"
+                    }, {
+                        "icon": "OpenAI",
+                        "title": "#设置模型转合并100",
+                        "desc": "设置OpenAI的回复高于多少字数时转合并消息回复(默认100字)"
                     },
                     {
                         "icon": "OpenAI",
@@ -145,7 +158,7 @@ export async function helpData() {
                         "icon": "sign",
                         "title": "打卡总计",
                         "desc": "统计今日已经打卡和系统总打卡用户"
-                    },{
+                    }, {
                         "icon": "点赞",
                         "title": "#开启fan点赞",
                         "desc": "设置点赞功能开启"

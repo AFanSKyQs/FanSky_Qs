@@ -176,7 +176,7 @@ export class BotEntry extends plugin {
             return true
         }
         if (!roleList) {
-            e.reply("尚未检测到角色，默认计算展柜前四位角色...\n具体队伍请输入对应角色名，如：\n#队伍伤害钟离，阿贝多，可莉\n#队伍伤害117556563钟离，阿贝多，可莉");
+            e.reply("尚未检测到角色，默认计算展柜前四位角色...\n具体队伍请输入对应角色名，如：\n#队伍伤害钟离，阿贝多，可莉\n#队伍伤害117556563钟离，阿贝多，可莉", true, {recallMsg: 10});
         }
         let res = await this.TeamDamage(e, uid, roleList);
         if (!res) {
@@ -250,7 +250,7 @@ export class BotEntry extends plugin {
         }
         logger.info(logger.cyan(`==>[FanSky_Qs]小助手 uid：${uid}  | 角色列表：`))
         logger.info(logger.cyan(chars))
-        e.reply(`正在获取UID:[${uid}][${chars}]队伍伤害，请稍等...`)
+        e.reply(`正在获取UID:[${uid}][${chars}]队伍伤害，请稍等...`, true, {recallMsg: 15})
         return await getTeam(uid, chars, true, e);
     }
 

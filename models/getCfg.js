@@ -1,11 +1,19 @@
 import fs from "fs";
-
+let cwd = process.cwd().replace(/\\/g, "/")
 const getCfg = function(yunPath,getName){
     const fileURL = `${yunPath}/plugins/FanSky_Qs/config/${getName}.json`;
     const fileURL_ = fileURL.replace(/\\/g, "/");
     const fileContents = fs.readFileSync(fileURL_, 'utf8');
     return JSON.parse(fileContents);
 };
+export async function getOpenAIConfig() {
+    const fileURL = `${cwd}/plugins/FanSky_Qs/config/OpenAI.json`;
+    if (!fs.existsSync(fileURL)) {
+        return {error: "OpenAI配置文件不存在"}
+    }
+    const fileContents = fs.readFileSync(fileURL, 'utf8');
+    return JSON.parse(fileContents);
+}
 export default getCfg;
 
 // 已弃用方法：yaml

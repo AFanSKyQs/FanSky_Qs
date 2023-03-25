@@ -9,10 +9,12 @@ import {
     ChangeAIModel,
     ChangeAIModelMode,
     ChangeAISignMode,
-    OnOFF,
+    OnOFF, SetMaxToMakeMsg,
     SetOpenAIKey,
     SetPersona
 } from "./ChangeAIModel.js";
+import {OpenAIQuota} from "./OpenAIQuota.js";
+import {getOpenAIConfig} from "../../models/getCfg.js";
 
 export class OpenAIEntry extends plugin {
     constructor() {
@@ -66,6 +68,12 @@ export class OpenAIEntry extends plugin {
                 }, {
                     reg: /#?(设置|更改|修改)(OpenAI|AI|模型|对话)(开启|打开|启用|关闭|不启用)$/,
                     fnc: 'OnOFF'
+                }, {
+                    reg: /#(OpenAI|模型|语言模型|OpenAI模型|key)(额度|余额|剩余|使用)查询/,
+                    fnc: 'OpenAIQuota'
+                },{
+                    reg: /#设置(OpenAI|模型|语言模型|OpenAI模型)转合并(\d+)/,
+                    fnc: 'SetMaxToMakeMsg'
                 }
                 // {
                 //     reg: /#对话列表|#聊天列表|#会话列表/,
@@ -74,64 +82,73 @@ export class OpenAIEntry extends plugin {
             ]
         })
     };
+    async SetMaxToMakeMsg(e) {
+        let Static = await SetMaxToMakeMsg(e)
+        if (!Static || Static === false) return false
+    }
+    async OpenAIQuota(e) {
+        let OpenAIConfig = await getOpenAIConfig()
+        let Static = await OpenAIQuota(e, OpenAIConfig)
+        if (!Static || Static === false) return false
+    }
 
     async OpenAPModelList(e) {
-       let Static= await OpenAPModelList(e)
-        if (!Static || Static===false) return false
+        let Static = await OpenAPModelList(e)
+        if (!Static || Static === false) return false
     }
 
     async UseModel(e) {
-        let Static= await UseModel(e)
-        if (!Static || Static===false) return false
+        let Static = await UseModel(e)
+        if (!Static || Static === false) return false
     }
 
     async DelAll(e) {
-        let Static= await DelAllConversation(e)
-        if (!Static || Static===false) return false
+        let Static = await DelAllConversation(e)
+        if (!Static || Static === false) return false
     }
 
     async Reset(e) {
-       let Static= await ResetConversation(e)
-        if (!Static || Static===false) return false
+        let Static = await ResetConversation(e)
+        if (!Static || Static === false) return false
     }
 
     async SayHelloToAI(e) {
-       let Static= await SayHelloToAI(e)
-        if (!Static || Static===false) return false
+        let Static = await SayHelloToAI(e)
+        if (!Static || Static === false) return false
     }
 
     async OnOFF(e) {
-       let Static= await OnOFF(e)
-        if (!Static || Static===false) return false
+        let Static = await OnOFF(e)
+        if (!Static || Static === false) return false
     }
 
     async SetOpenAIKey(e) {
-       let Static= await SetOpenAIKey(e)
-        if (!Static || Static===false) return false
+        let Static = await SetOpenAIKey(e)
+        if (!Static || Static === false) return false
     }
 
     async ChangeAISignMode(e) {
-         let Static= await ChangeAISignMode(e)
-        if (!Static || Static===false) return false
+        let Static = await ChangeAISignMode(e)
+        if (!Static || Static === false) return false
     }
 
     async ChangeAIModelMode(e) {
-       let Static= await ChangeAIModelMode(e)
-        if (!Static || Static===false) return false
+        let Static = await ChangeAIModelMode(e)
+        if (!Static || Static === false) return false
     }
 
     async addBlackList(e) {
-       let Static= await addBlackList(e)
-        if (!Static || Static===false) return false
+        let Static = await addBlackList(e)
+        if (!Static || Static === false) return false
     }
 
     async SetPersona(e) {
-        let Static= await SetPersona(e)
-        if (!Static || Static===false) return false
+        let Static = await SetPersona(e)
+        if (!Static || Static === false) return false
     }
 
     async ChangeAIModel(e) {
-        let Static=await ChangeAIModel(e)
-        if (!Static || Static===false) return false
+        let Static = await ChangeAIModel(e)
+        if (!Static || Static === false) return false
     }
 }

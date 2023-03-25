@@ -2,10 +2,12 @@
 import common from '../../../../lib/common/common.js'
 import axios from 'axios'
 import fs from 'fs'
+import {getOpenAIConfig} from "../../models/getCfg.js";
 
 let Moudel1List = []
 let MoudelStatus = []
 let Moudel1Num = []
+
 export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
     let msg = e.msg
     Bot.logger.info('处理插件：FanSky_Qs-OpenAI模型1:' + `\n群：${e.group_id}\n` + 'QQ:' + `${e.user_id}\n` + `消息：${msg}`)
@@ -69,33 +71,7 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
                 port: 7890
             },
         }).then(async function (response) {
-            console.log(response.data.choices[0])
-            let result = response.data.choices[0].message.content
-            let SendResult, MsgList
-            if (GetResult === '不限') {
-                if (response.data.choices[0].message.content.length > 150) {
-                    let NowTime = (new Date(Date.now())).toLocaleString()
-                    MsgList = [`${result}`, `${NowTime}`]
-                    SendResult = await common.makeForwardMsg(e, MsgList, `FanSky_Qs-OpenAI | ${NowTime}`)
-                    await e.reply(SendResult)
-                } else {
-                    SendResult = `距重置：${10 - Moudel1Num[e.user_id]} | ${response.data.choices[0].message.content.length}字\n` + result
-                    e.reply(SendResult, true)
-                }
-            } else {
-                SendResult = `魔晶：${GetResult} | 重置：${10 - Moudel1Num[e.user_id]} | ${response.data.choices[0].message.content.length}字\n` + result
-                e.reply(SendResult, true)
-            }
-            Moudel1List[e.user_id].messages.push({role: 'assistant', content: result})
-            delete MoudelStatus[e.user_id]
-            if (Moudel1Num[e.user_id] >= 10 && !e.isMaster) {
-                delete Moudel1List[e.user_id]
-                delete Moudel1Num[e.user_id]
-            }
-            if (Json.ModelMode === 1) {
-                delete Moudel1List[e.user_id]
-                delete Moudel1Num[e.user_id]
-            }
+            await SendResMsg(e, response, Json, GetResult)
         }).catch(async function () {
             try {
                 await axios({
@@ -104,38 +80,19 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
                         Authorization: 'Bearer ' + OpenAI_Key
                     }, data: JSON.stringify(Moudel1List[e.user_id])
                 }).then(async (response) => {
-                    console.log(response.data.choices[0])
-                    let result = response.data.choices[0].message.content
-                    let SendResult, MsgList
-                    if (GetResult === '不限') {
-                        if (response.data.choices[0].message.content.length > 150) {
-                            let NowTime = (new Date(Date.now())).toLocaleString()
-                            MsgList = [`${result}`, `${NowTime}`]
-                            SendResult = await common.makeForwardMsg(e, MsgList, `FanSky_Qs-OpenAI | ${NowTime}`)
-                            await e.reply(SendResult)
-                        } else {
-                            SendResult = `距重置：${10 - Moudel1Num[e.user_id]} | ${response.data.choices[0].message.content.length}字\n` + result
-                            e.reply(SendResult, true)
-                        }
-                    } else {
-                        SendResult = `魔晶：${GetResult} | 重置：${10 - Moudel1Num[e.user_id]} | ${response.data.choices[0].message.content.length}字\n` + result
-                        e.reply(SendResult, true)
-                    }
-                    Moudel1List[e.user_id].messages.push({role: 'assistant', content: result})
-                    delete MoudelStatus[e.user_id]
-                    if (Moudel1Num[e.user_id] >= 10 && !e.isMaster) {
-                        delete Moudel1List[e.user_id]
-                        delete Moudel1Num[e.user_id]
-                    }
-                    if (Json.ModelMode === 1) {
-                        delete Moudel1List[e.user_id]
-                        delete Moudel1Num[e.user_id]
-                    }
+                    await SendResMsg(e, response, Json, GetResult)
                 }).catch(async function (error) {
                     delete Moudel1List[e.user_id]
                     delete MoudelStatus[e.user_id]
                     Bot.logger.info(error)
-                    e.reply('[Clash设置未生效]或[机场不可用(如:一元)]喵\n请查看控制台错误信息~')
+                    let OpenAIConfig = await getOpenAIConfig()
+                    if (OpenAIConfig.error) {
+                        e.reply("没有找到配置文件")
+                        return false
+                    }
+                    let OpenAIQuota = await axios.get(`https://v1.apigpt.cn/key/?key=${OpenAIConfig.OpenAI_Key.trim()}`)
+                    let ExpiresTime = new Date(OpenAIQuota.data.expires_at * 1000).toLocaleString()
+                    e.reply(`可能[Clash设置未生效][机场不可用(如一元机场)]喵\nKey:${OpenAIQuota.data.msg}\n可用：${OpenAIQuota.data.total_available}\n到期：${ExpiresTime}\n其余信息请控制查看~`)
                 })
             } catch (err) {
                 console.log(err)
@@ -146,6 +103,46 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
         e.reply('运行有问题~,请联系开发人员(3141865879)')
         console.log(err)
     }
+}
+
+async function SendResMsg(e, response, Json, GetResult) {
+    console.log(response.data.choices[0])
+    let result = response.data.choices[0].message.content
+    let SendResult, MsgList
+    if (GetResult === '不限') {
+        if (response.data.choices[0].message.content.length > Json.Text_img) {
+            let NowTime = (new Date(Date.now())).toLocaleString()
+            MsgList = [`${result}`, `${NowTime}\n魔晶：${GetResult}\n重置：${10 - Moudel1Num[e.user_id]}\n${response.data.choices[0].message.content.length}字`]
+            let tmpMsg = result.substring(0, 15)
+            SendResult = await common.makeForwardMsg(e, MsgList, `${NowTime} | ${tmpMsg}`)
+            await e.reply(SendResult)
+        } else {
+            SendResult = `距重置：${10 - Moudel1Num[e.user_id]} | ${response.data.choices[0].message.content.length}字\n` + result
+            e.reply(SendResult, true)
+        }
+    } else {
+        if (response.data.choices[0].message.content.length > Json.Text_img) {
+            let NowTime = (new Date(Date.now())).toLocaleString()
+            MsgList = [`${result}`, `${NowTime}\n魔晶：${GetResult}\n重置：${10 - Moudel1Num[e.user_id]}\n${response.data.choices[0].message.content.length}字`]
+            let tmpMsg = result.substring(0, 15)
+            SendResult = await common.makeForwardMsg(e, MsgList, `${NowTime} | ${tmpMsg}`)
+            await e.reply(SendResult)
+        } else {
+            SendResult = `魔晶：${GetResult} | 重置：${10 - Moudel1Num[e.user_id]} | ${response.data.choices[0].message.content.length}字\n` + result
+            e.reply(SendResult, true)
+        }
+    }
+    Moudel1List[e.user_id].messages.push({role: 'assistant', content: result})
+    delete MoudelStatus[e.user_id]
+    if (Moudel1Num[e.user_id] >= 10 && !e.isMaster) {
+        delete Moudel1List[e.user_id]
+        delete Moudel1Num[e.user_id]
+    }
+    if (Json.ModelMode === 1) {
+        delete Moudel1List[e.user_id]
+        delete Moudel1Num[e.user_id]
+    }
+    return false
 }
 
 export async function DelGPT3TurboList() {

@@ -1,11 +1,12 @@
 {
   "name": "FanSky_Qs",
-  "version": "1.3.8",
+  "version": "1.3.9",
   "author": "AFanSKyQs",
   "description": "Yunzai-Bot/Miao-Yunzai插件",
   "type": "module",
   "dependencies": {
     "axios": "*",
-    "markdown-it": "*"
+    "markdown-it": "*",
+    "node-fetch": "^3.3.1"
   }
 }

@@ -26,6 +26,31 @@ export async function OnOFF(e) {
     return true
 }
 
+export async function SetMaxToMakeMsg(e) {
+    if (!e.isMaster) {
+        e.reply("你不能设置我的回复数字格式哇喵！")
+        return true
+    }
+    let path = `${process.cwd()}/plugins/FanSky_Qs/config/OpenAI.json`
+    path = path.replace(/\\/g, '/')
+    let OpenAIJson = JSON.parse(fs.readFileSync(path))
+    if (!OpenAIJson.Text_img) {
+        OpenAIJson.Text_img = 150
+        await fs.writeFileSync(path, JSON.stringify(OpenAIJson))
+        return false
+    }
+    let MaxTextNum=e.msg.match(/#设置(OpenAI|模型|语言模型|OpenAI模型)转合并(\d+)/)[2]
+    OpenAIJson.Text_img = MaxTextNum
+    try{
+        await fs.writeFileSync(path, JSON.stringify(OpenAIJson))
+        e.reply(`设置成功喵~\n当我的消息大于[${MaxTextNum}]字时，将转为合并消息喵~`)
+    }catch (err){
+        e.reply(`好像设置失败了~\n看一下后台吧`)
+        console.log(err)
+    }
+    return true
+}
+
 export async function SetOpenAIKey(e) {
     if (!e.isMaster) {
         e.reply('打咩，只有主人能够设置Key~')

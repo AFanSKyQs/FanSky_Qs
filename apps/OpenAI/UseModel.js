@@ -2,7 +2,6 @@
 import fs from 'fs'
 import getCfg from '../../models/getCfg.js'
 import {ModelGPT3Turbo} from "./ModelGPT3Turbo.js";
-import {ModelTextDavinci003} from "./ModelTextDavinci003.js";
 let yunPath = process.cwd().replace(/\\/g, "/")
 let _path = `${process.cwd()}/resources/FanSky`
 let path = `${process.cwd()}/resources/FanSky/SignIn.json`
@@ -62,7 +61,7 @@ export async function UseModel(e) {
         await ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult)
         // delete MoudelStatus[e.user_id]
     } else if (Json.Model === 2) {
-        await ModelTextDavinci003(e, OpenAI_Key, Json.Model_list[1], Json, GetResult)
+        e.reply("其他模型已被移除，目前仅【1】模型可用：gpt-3.5")
         // delete MoudelStatus[e.user_id]
     }
     return true
