@@ -230,6 +230,7 @@ export class BotEntry extends plugin {
             YunzaiName: Yunzai.name,
             YunzaiVersion: Yunzai.version,
             data: data,
+            cwd: cwd,
             version: `${Version.version}`,
             saveId: e.user_id,
             miaoRes: `${cwd}/plugins/miao-plugin/resources/`,

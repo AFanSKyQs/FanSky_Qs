@@ -19,7 +19,7 @@
         }
 
         div.Avatars > div.avatar > div.detail > div.talent.火 > div {
-            background-image: url({{cwd}}/plugins//miao-plugin/resources/common/bg/talent-pyro.png);
+            background-image: url({{cwd}}/plugins/miao-plugin/resources/common/bg/talent-pyro.png);
         }
 
         #container.水 {
@@ -32,7 +32,7 @@
         }
 
         div.Avatars > div.avatar > div.detail > div.talent.水 > div {
-            background-image: url({{cwd}}/plugins//miao-plugin/resources/common/bg/talent-hydro.png);
+            background-image: url({{cwd}}/plugins/miao-plugin/resources/common/bg/talent-hydro.png);
         }
 
         #container.风 {
@@ -45,7 +45,7 @@
         }
 
         div.Avatars > div.avatar > div.detail > div.talent.风 > div {
-            background-image: url({{cwd}}/plugins//miao-plugin/resources/common/bg/talent-anemo.png);
+            background-image: url({{cwd}}/plugins/miao-plugin/resources/common/bg/talent-anemo.png);
         }
 
         #container.雷 {
@@ -58,7 +58,7 @@
         }
 
         div.Avatars > div.avatar > div.detail > div.talent.雷 > div {
-            background-image: url({{cwd}}/plugins//miao-plugin/resources/common/bg/talent-electro.png);
+            background-image: url({{cwd}}/plugins/miao-plugin/resources/common/bg/talent-electro.png);
         }
 
         #container.草 {
@@ -71,7 +71,7 @@
         }
 
         div.Avatars > div.avatar > div.detail > div.talent.草 > div {
-            background-image: url({{cwd}}/plugins//miao-plugin/resources/common/bg/talent-dendro.png);
+            background-image: url({{cwd}}/plugins/miao-plugin/resources/common/bg/talent-dendro.png);
         }
 
         #container.冰 {
@@ -84,7 +84,7 @@
         }
 
         div.Avatars > div.avatar > div.detail > div.talent.冰 > div {
-            background-image: url({{cwd}}/plugins//miao-plugin/resources/common/bg/talent-cryo.png);
+            background-image: url({{cwd}}/plugins/miao-plugin/resources/common/bg/talent-cryo.png);
         }
 
         #container.岩 {
@@ -96,7 +96,7 @@
             top: 0;
         }
         div.Avatars > div.avatar > div.detail > div.talent.岩 > div {
-            background-image: url({{cwd}}/plugins//miao-plugin/resources/common/bg/talent-geo.png);
+            background-image: url({{cwd}}/plugins/miao-plugin/resources/common/bg/talent-geo.png);
         }
     </style>
 </head>
@@ -104,12 +104,47 @@
 <div id="container" class="{{ data['elem'] }}">
     <div class="TopLeftPanel">
         <div class="UID">{{ data["uid"] }}</div>
+        {{ if data["rank"].indexOf("B") !== -1 }}
         <div class="rank">
-            <div class="title">{{ data["rank"] }}</div>
-            <div class="dps">{{ data["dps"] }}</div>
-            <div class="time">{{ data["tm"] }}</div>
-            <div class="total">{{ data["total"] }}</div>
+            <div class="title" style="color: rgba(255,152,0,0.8);">{{ data["rank"] }}</div>
+            <div class="dps" style="color: rgba(255,152,0,0.8);">{{ data["dps"] }}</div>
+            <div class="time" style="color: rgba(255,152,0,0.8);">{{ data["tm"] }}</div>
+            <div class="total" style="color: rgba(255,152,0,0.8);">{{ data["total"] }}</div>
         </div>
+        {{/if}}
+        {{ if data["rank"].indexOf("A") !== -1 && data["rank"].indexOf("ACE") === -1 }}
+        <div class="rank">
+            <div class="title" style="color: #0400ffab;">{{ data["rank"] }}</div>
+            <div class="dps" style="color: #0400ffab;">{{ data["dps"] }}</div>
+            <div class="time" style="color: #0400ffab;">{{ data["tm"] }}</div>
+            <div class="total" style="color: #0400ffab;">{{ data["total"] }}</div>
+        </div>
+        {{/if}}
+        {{ if data["rank"].indexOf("S") !== -1 }}
+        <div class="rank">
+            <div class="title" style="color: rgba(239,0,255,0.8);">{{ data["rank"] }}</div>
+            <div class="dps" style="color: rgba(239,0,255,0.8);">{{ data["dps"] }}</div>
+            <div class="time" style="color: rgba(239,0,255,0.8);">{{ data["tm"] }}</div>
+            <div class="total" style="color: rgba(239,0,255,0.8);">{{ data["total"] }}</div>
+        </div>
+        {{/if}}
+        {{ if data["rank"].indexOf("ACE") !== -1 }}
+        <div class="rank">
+            <div class="title" style="color: #f90000;">{{ data["rank"] }}</div>
+            <div class="dps" style="color: rgba(249,0,0,0.8);">{{ data["dps"] }}</div>
+            <div class="time" style="color: rgba(249,0,0,0.8);">{{ data["tm"] }}</div>
+            <div class="total" style="color: rgba(249,0,0,0.8);">{{ data["total"] }}</div>
+        </div>
+        {{/if}}
+        {{ if data["rank"].indexOf("A") === -1 && data["rank"].indexOf("B") === -1 && data["rank"].indexOf("S") ===
+        -1 && data["rank"].indexOf("ACE") === -1 }}
+        <div class="rank">
+            <div class="title" style="color: #07c352;">{{ data["rank"] }}</div>
+            <div class="dps" style="color: rgba(7,195,82,0.8);">{{ data["dps"] }}</div>
+            <div class="time" style="color: rgba(7,195,82,0.8);">{{ data["tm"] }}</div>
+            <div class="total" style="color: rgba(7,195,82,0.8);">{{ data["total"] }}</div>
+        </div>
+        {{/if}}
         <!-- <div id="pie"></div> -->
         <p>
             <canvas id="canvas_circle" width="400" height="250"
@@ -170,17 +205,15 @@
         {{/each}}
     </div>
     <br>
-    <hr>
-    <div style="background-color: #1179b11a;backdrop-filter: blur(5px);">
-        <p style="color: #0bb199;font-size: 30px;font-weight: bold">【剩余充能】</p>
+    <div style="background-color: #1179b11a;backdrop-filter: blur(5px);border-radius: 60px">
         {{each data["avatars"] a}}
         <div style="width: 230px;height:230px; display: inline-block;">
             <svg viewBox="0 0 25 25">
                 <circle cx="12.5" cy="12.5" r="10" stroke="#ccc" stroke-width="2.5" fill="none"/>
-                <circle id="{{a['name']}}" cx="12.5" cy="12.5" r="10" stroke="#50b590c7" stroke-width="2.5" fill="none"
+                <circle id="{{a['name']}}" cx="12.5" cy="12.5" r="10" stroke="rgba(29, 198, 237, 0.42)" stroke-width="2.5" fill="none"
                         stroke-dasharray="0, 62.8" stroke-dashoffset="0" transform="rotate(-90 12.5 12.5)"/>
-                <text x="12.5" y="13.75" text-anchor="middle" font-size="2.5" font-weight="bold" fill="#99FF88"
-                      text-shadow="0 0 5px #9370DB">{{a["name"]}}:{{ a["recharge"]["pct"] }}
+                <text x="12.5" y="13.75" text-anchor="middle" font-size="3" font-weight="bold" fill="#5a15e5"
+                      text-shadow="0 0 5px #9370DB">{{ a["name"] }}:{{ a["recharge"]["pct"] }}
                 </text>
             </svg>
             <script>
@@ -190,7 +223,6 @@
         </div>
         {{/each}}
     </div>
-    <hr>
     <div class="Actions">
         <div class="title"></div>
         <div class="act">
