@@ -218,7 +218,7 @@ export class BotEntry extends plugin {
         const RoleData = await JSON.parse(data["pie_data"]);
         const DamageMap = await RoleData.map((item) => item.damage);
         const total = await DamageMap.reduce((prev, cur) => prev + cur);
-        const percent = await DamageMap.map((item) => (item / total).toFixed(4));
+        const percent = await DamageMap.map((item) => (item / total).toFixed(2));
         const RoleColor = await JSON.parse(data["pie_color"]);
         const NameChar = await RoleData.map((item) => item.char);
         const Result = {percent, RoleColor, NameChar};
