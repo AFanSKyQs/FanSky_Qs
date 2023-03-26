@@ -1,11 +1,11 @@
 import fs from 'fs'
-import {ReadOpenAIDefaultConfig} from "./models/OpenAI/ReadOpenAIDefaultConfig.js";
+import {StarRunCheckConfig} from "./tools/StarRunCheckConfig.js";
 
 Bot.logger.info('-------------^_^--------------')
 Bot.logger.info(`----FanSky_Qs插件初始化中------`)
 
 const files = fs.readdirSync('./plugins/FanSky_Qs/apps').filter(file => file.endsWith('.js'))
-await ReadOpenAIDefaultConfig()
+await StarRunCheckConfig()
 let ret = []
 files.forEach((file) => {
     ret.push(import(`./apps/${file}`))

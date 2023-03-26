@@ -105,7 +105,7 @@ export async function helpData() {
                 "list": [
                     {
                         "icon": "剩余",
-                        "title": "#key剩余查看",
+                        "title": "#key剩余查询",
                         "desc": "查询OpenAI的key使用情况"
                     },
                     {
@@ -130,6 +130,10 @@ export async function helpData() {
                         "icon": "密钥",
                         "title": "#设置模型key sk-xxxxxx",
                         "desc": "设置OpenAI的key"
+                    },{
+                        "icon": "OpenAI",
+                        "title": "#开启群模型123456 | #关闭..",
+                        "desc": "开启或关闭群123456的OpenAI功能（默认全开）"
                     }, {
                         "icon": "OpenAI",
                         "title": "#设置模型转合并100",

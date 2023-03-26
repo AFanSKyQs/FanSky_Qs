@@ -9,7 +9,7 @@ import {
     ChangeAIModel,
     ChangeAIModelMode,
     ChangeAISignMode,
-    OnOFF, SetMaxToMakeMsg,
+    OnOFF, OpenGroupAI, SetMaxToMakeMsg,
     SetOpenAIKey,
     SetPersona
 } from "./ChangeAIModel.js";
@@ -69,12 +69,16 @@ export class OpenAIEntry extends plugin {
                     reg: /#?(设置|更改|修改)(OpenAI|AI|模型|对话)(开启|打开|启用|关闭|不启用)$/,
                     fnc: 'OnOFF'
                 }, {
-                    reg: /#(OpenAI|模型|语言模型|OpenAI模型|key)(额度|余额|剩余|使用)查询/,
+                    reg: /#(OpenAI|模型|语言模型|OpenAI模型|key)(额度|余额|剩余|使用)(查询|查看|查找)/,
                     fnc: 'OpenAIQuota'
                 },{
                     reg: /#设置(OpenAI|模型|语言模型|OpenAI模型)转合并(\d+)/,
                     fnc: 'SetMaxToMakeMsg'
-                }
+                },
+                {
+                    reg: /#(开启|打开|open|关闭|禁用|关机)群(模型|AI|OpenAI|ai|聊天)(\d+)/,
+                    fnc: 'OpenGroupAI'
+                },
                 // {
                 //     reg: /#对话列表|#聊天列表|#会话列表/,
                 //     fnc: 'Axios_list'
@@ -82,6 +86,10 @@ export class OpenAIEntry extends plugin {
             ]
         })
     };
+    async OpenGroupAI(e) {
+        let Static = await OpenGroupAI(e)
+        if (!Static || Static === false) return false
+    }
     async SetMaxToMakeMsg(e) {
         let Static = await SetMaxToMakeMsg(e)
         if (!Static || Static === false) return false

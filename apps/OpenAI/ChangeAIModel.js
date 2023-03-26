@@ -1,7 +1,8 @@
 import fs from 'fs'
-import getCfg from '../../models/getCfg.js'
+import getCfg, {getOpenAIConfig} from '../../models/getCfg.js'
 
-let yunPath = process.cwd()
+let yunPath = process.cwd().replace(/\\/g, "/")
+let OpenAIPath = `${yunPath}/plugins/FanSky_Qs/config/OpenAI.json`
 
 export async function OnOFF(e) {
     if (!e.isMaster) {
@@ -26,6 +27,38 @@ export async function OnOFF(e) {
     return true
 }
 
+export async function OpenGroupAI(e) {
+    if (!e.isMaster) {
+        e.reply("你不能控制我在哪里聊天噢喵~")
+        return true
+    }
+    // reg: /#(开启|打开|open|关闭|禁用|关机)群(模型|AI|OpenAI|ai|聊天)(\d+)/
+    let GroupNum = e.msg.match(/#(开启|打开|open|关闭|禁用|关机)群(模型|AI|OpenAI|ai|聊天)(\d+)/)[3]
+    let Msg = e.msg
+    let OpenAIConfig = await getOpenAIConfig()
+    if (Msg.includes("开启") || Msg.includes("打开") || Msg.includes("open")) {
+        OpenAIConfig.OpenAIGroup.push(GroupNum)
+        await fs.writeFileSync(OpenAIPath, JSON.stringify(OpenAIConfig))
+        e.reply(`已开启群[${GroupNum}]的OpenAI功能喵~`)
+        return true
+    } else {
+        if (!OpenAIConfig.OpenAIGroup.length) {
+            e.reply(`检测到还没有群配置，[请先设置要开启的群，然后就会只使用开启的群]，即没有设置的群不开启，暂时没有黑名单，只有白名单`)
+        } else {
+            let GroupIndex = OpenAIConfig.OpenAIGroup.indexOf(GroupNum)
+            if (GroupIndex !== -1) {    //存在
+                OpenAIConfig.OpenAIGroup.splice(GroupIndex, 1)
+                await fs.writeFileSync(OpenAIPath, JSON.stringify(OpenAIConfig))
+                e.reply(`已关闭群[${GroupNum}]的OpenAI功能喵~`)
+                return true
+            } else {
+                e.reply(`检测到群[${GroupNum}]并没有开启OpenAI功能喵~，不用关闭`)
+            }
+        }
+    }
+    return true
+}
+
 export async function SetMaxToMakeMsg(e) {
     if (!e.isMaster) {
         e.reply("你不能设置我的回复数字格式哇喵！")
@@ -39,12 +72,12 @@ export async function SetMaxToMakeMsg(e) {
         await fs.writeFileSync(path, JSON.stringify(OpenAIJson))
         return false
     }
-    let MaxTextNum=e.msg.match(/#设置(OpenAI|模型|语言模型|OpenAI模型)转合并(\d+)/)[2]
+    let MaxTextNum = e.msg.match(/#设置(OpenAI|模型|语言模型|OpenAI模型)转合并(\d+)/)[2]
     OpenAIJson.Text_img = MaxTextNum
-    try{
+    try {
         await fs.writeFileSync(path, JSON.stringify(OpenAIJson))
         e.reply(`设置成功喵~\n当我的消息大于[${MaxTextNum}]字时，将转为合并消息喵~`)
-    }catch (err){
+    } catch (err) {
         e.reply(`好像设置失败了~\n看一下后台吧`)
         console.log(err)
     }

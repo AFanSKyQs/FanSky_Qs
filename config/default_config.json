@@ -13,6 +13,7 @@
   "ModelMode": 1,
   "SignMode": "开启",
   "OnOff": "开启",
+  "OpenAIGroup": [],
   "BlackList": [
     123,
     456

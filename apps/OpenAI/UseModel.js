@@ -2,11 +2,14 @@
 import fs from 'fs'
 import getCfg from '../../models/getCfg.js'
 import {ModelGPT3Turbo} from "./ModelGPT3Turbo.js";
+
 let yunPath = process.cwd().replace(/\\/g, "/")
 let _path = `${process.cwd()}/resources/FanSky`
 let path = `${process.cwd()}/resources/FanSky/SignIn.json`
 let path_SignTop = `${process.cwd()}/resources/FanSky/SignTop.json`
+let OpenAIConfig = yunPath + '/plugins/FanSky_Qs/config/OpenAI.json'
 let MoudelStatus = []
+
 export async function UseModel(e) {
     // if (e.message[0].type !== "at") {
     //     return false
@@ -14,6 +17,7 @@ export async function UseModel(e) {
     // if (e.message[1].type !== "text") {
     //     return false
     // }
+
     if (!e.isGroup && !e.isMaster) {
         return false
     }
@@ -26,6 +30,14 @@ export async function UseModel(e) {
         return false
     }
     const Json = await getCfg(yunPath, 'OpenAI')
+    if (!e.isPrivate) {
+        let GroupIndex = Json.OpenAIGroup.indexOf(e.group_id)
+        if (GroupIndex !== -1) {
+        } else if (Json.OpenAIGroup.length === 0) {
+        } else {
+            return false
+        }
+    }
     if (!Json.OnOff) {
         Json.OnOff = "开启"
         await fs.writeFileSync(`${yunPath}/plugins/FanSky_Qs/config/OpenAI.json`, JSON.stringify(Json))
