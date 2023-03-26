@@ -8,14 +8,15 @@
     <!-- <title>Document</title> -->
     <link rel="stylesheet" href="{{pluResPath}}style.css">
     <link rel="preload" href="https://unpkg.com/@antv/g2plot@latest/dist/g2plot.js" as="script"/>
-     <style>
+    <style>
         #container.火 {
-            background-image: url({{AcgBg}});
-            background-position: inherit;
-            background-repeat: repeat-y;
-            background-size: 960px;
-            position: absolute;
-            top: 0;
+            background-image: url({{cwd}}/plugins/miao-plugin/resources/common/bg/bg-pyro.jpg);
+            /*background-image: url({{AcgBg}});*/
+            /*background-position: inherit;*/
+            /*background-repeat: repeat-y;*/
+            /*background-size: 960px;*/
+            /*position: absolute;*/
+            /*top: 0;*/
         }
 
         div.Avatars > div.avatar > div.detail > div.talent.火 > div {
@@ -23,12 +24,13 @@
         }
 
         #container.水 {
-            background-image: url({{AcgBg}});
-            background-repeat: repeat-y;
-            background-position: inherit;
-            background-size: 960px;
-            position: absolute;
-            top: 0;
+            background-image: url({{cwd}}/plugins/miao-plugin/resources/common/bg/bg-hydro.jpg);
+            /*background-image: url({{AcgBg}});*/
+            /*background-repeat: repeat-y;*/
+            /*background-position: inherit;*/
+            /*background-size: 960px;*/
+            /*position: absolute;*/
+            /*top: 0;*/
         }
 
         div.Avatars > div.avatar > div.detail > div.talent.水 > div {
@@ -36,12 +38,13 @@
         }
 
         #container.风 {
-            background-image: url({{AcgBg}});
-            background-repeat: repeat-y;
-            background-position: inherit;
-            background-size: 960px;
-            position: absolute;
-            top: 0;
+            background-image: url({{cwd}}/plugins/miao-plugin/resources/common/bg/bg-anemo.jpg);
+            /*background-image: url({{AcgBg}});*/
+            /*background-repeat: repeat-y;*/
+            /*background-position: inherit;*/
+            /*background-size: 960px;*/
+            /*position: absolute;*/
+            /*top: 0;*/
         }
 
         div.Avatars > div.avatar > div.detail > div.talent.风 > div {
@@ -49,12 +52,13 @@
         }
 
         #container.雷 {
-            background-image: url({{AcgBg}});
-            background-repeat: repeat-y;
-            background-position: inherit;
-            background-size: 960px;
-            position: absolute;
-            top: 0;
+            background-image: url({{cwd}}/plugins/miao-plugin/resources/common/bg/bg-electro.jpg);
+            /*background-image: url({{AcgBg}});*/
+            /*background-repeat: repeat-y;*/
+            /*background-position: inherit;*/
+            /*background-size: 960px;*/
+            /*position: absolute;*/
+            /*top: 0;*/
         }
 
         div.Avatars > div.avatar > div.detail > div.talent.雷 > div {
@@ -62,12 +66,13 @@
         }
 
         #container.草 {
-            background-image: url({{AcgBg}});
-            background-repeat: repeat-y;
-            background-position: inherit;
-            background-size: 960px;
-            position: absolute;
-            top: 0;
+            background-image: url({{cwd}}/plugins/miao-plugin/resources/common/bg/bg-dendro.jpg);
+            /*background-image: url({{AcgBg}});*/
+            /*background-repeat: repeat-y;*/
+            /*background-position: inherit;*/
+            /*background-size: 960px;*/
+            /*position: absolute;*/
+            /*top: 0;*/
         }
 
         div.Avatars > div.avatar > div.detail > div.talent.草 > div {
@@ -75,12 +80,13 @@
         }
 
         #container.冰 {
-            background-image: url({{AcgBg}});
-            background-repeat: repeat-y;
-            background-position: inherit;
-            background-size: 960px;
-            position: absolute;
-            top: 0;
+            background-image: url({{cwd}}/plugins/miao-plugin/resources/common/bg/bg-cryo.jpg);
+            /*background-image: url({{AcgBg}});*/
+            /*background-repeat: repeat-y;*/
+            /*background-position: inherit;*/
+            /*background-size: 960px;*/
+            /*position: absolute;*/
+            /*top: 0;*/
         }
 
         div.Avatars > div.avatar > div.detail > div.talent.冰 > div {
@@ -88,13 +94,15 @@
         }
 
         #container.岩 {
-            background-image: url({{AcgBg}});
-            background-repeat: repeat-y;
-            background-position: inherit;
-            background-size: 960px;
-            position: absolute;
-            top: 0;
+            background-image: url({{cwd}}/plugins/miao-plugin/resources/common/bg/bg-geo.jpg);
+            /*background-image: url({{AcgBg}});*/
+            /*background-repeat: repeat-y;*/
+            /*background-position: inherit;*/
+            /*background-size: 960px;*/
+            /*position: absolute;*/
+            /*top: 0;*/
         }
+
         div.Avatars > div.avatar > div.detail > div.talent.岩 > div {
             background-image: url({{cwd}}/plugins/miao-plugin/resources/common/bg/talent-geo.png);
         }
@@ -106,10 +114,10 @@
         <div class="UID">{{ data["uid"] }}</div>
         {{ if data["rank"].indexOf("B") !== -1 }}
         <div class="rank">
-            <div class="title" style="color: rgba(255,152,0,0.8);">{{ data["rank"] }}</div>
-            <div class="dps" style="color: rgba(255,152,0,0.8);">{{ data["dps"] }}</div>
-            <div class="time" style="color: rgba(255,152,0,0.8);">{{ data["tm"] }}</div>
-            <div class="total" style="color: rgba(255,152,0,0.8);">{{ data["total"] }}</div>
+            <div class="title" style="color: rgba(255,152,0,0.6);">{{ data["rank"] }}</div>
+            <div class="dps" style="color: rgba(255,152,0,0.6);">{{ data["dps"] }}</div>
+            <div class="time" style="color: rgba(255,152,0,0.6);">{{ data["tm"] }}</div>
+            <div class="total" style="color: rgba(255,152,0,0.6);">{{ data["total"] }}</div>
         </div>
         {{/if}}
         {{ if data["rank"].indexOf("A") !== -1 && data["rank"].indexOf("ACE") === -1 }}
@@ -122,27 +130,27 @@
         {{/if}}
         {{ if data["rank"].indexOf("S") !== -1 }}
         <div class="rank">
-            <div class="title" style="color: rgba(239,0,255,0.8);">{{ data["rank"] }}</div>
-            <div class="dps" style="color: rgba(239,0,255,0.8);">{{ data["dps"] }}</div>
-            <div class="time" style="color: rgba(239,0,255,0.8);">{{ data["tm"] }}</div>
-            <div class="total" style="color: rgba(239,0,255,0.8);">{{ data["total"] }}</div>
+            <div class="title" style="color: rgba(239,0,255,0.6);">{{ data["rank"] }}</div>
+            <div class="dps" style="color: rgba(239,0,255,0.6);">{{ data["dps"] }}</div>
+            <div class="time" style="color: rgba(239,0,255,0.6);">{{ data["tm"] }}</div>
+            <div class="total" style="color: rgba(239,0,255,0.6);">{{ data["total"] }}</div>
         </div>
         {{/if}}
         {{ if data["rank"].indexOf("ACE") !== -1 }}
         <div class="rank">
             <div class="title" style="color: #f90000;">{{ data["rank"] }}</div>
-            <div class="dps" style="color: rgba(249,0,0,0.8);">{{ data["dps"] }}</div>
-            <div class="time" style="color: rgba(249,0,0,0.8);">{{ data["tm"] }}</div>
-            <div class="total" style="color: rgba(249,0,0,0.8);">{{ data["total"] }}</div>
+            <div class="dps" style="color: rgba(249,0,0,0.6);">{{ data["dps"] }}</div>
+            <div class="time" style="color: rgba(249,0,0,0.6);">{{ data["tm"] }}</div>
+            <div class="total" style="color: rgba(249,0,0,0.6);">{{ data["total"] }}</div>
         </div>
         {{/if}}
         {{ if data["rank"].indexOf("A") === -1 && data["rank"].indexOf("B") === -1 && data["rank"].indexOf("S") ===
         -1 && data["rank"].indexOf("ACE") === -1 }}
         <div class="rank">
             <div class="title" style="color: #07c352;">{{ data["rank"] }}</div>
-            <div class="dps" style="color: rgba(7,195,82,0.8);">{{ data["dps"] }}</div>
-            <div class="time" style="color: rgba(7,195,82,0.8);">{{ data["tm"] }}</div>
-            <div class="total" style="color: rgba(7,195,82,0.8);">{{ data["total"] }}</div>
+            <div class="dps" style="color: rgba(7,195,82,0.6);">{{ data["dps"] }}</div>
+            <div class="time" style="color: rgba(7,195,82,0.6);">{{ data["tm"] }}</div>
+            <div class="total" style="color: rgba(7,195,82,0.6);">{{ data["total"] }}</div>
         </div>
         {{/if}}
         <!-- <div id="pie"></div> -->
@@ -210,7 +218,8 @@
         <div style="width: 230px;height:230px; display: inline-block;">
             <svg viewBox="0 0 25 25">
                 <circle cx="12.5" cy="12.5" r="10" stroke="#ccc" stroke-width="2.5" fill="none"/>
-                <circle id="{{a['name']}}" cx="12.5" cy="12.5" r="10" stroke="rgba(29, 198, 237, 0.42)" stroke-width="2.5" fill="none"
+                <circle id="{{a['name']}}" cx="12.5" cy="12.5" r="10" stroke="rgba(29, 198, 237, 0.42)"
+                        stroke-width="2.5" fill="none"
                         stroke-dasharray="0, 62.8" stroke-dashoffset="0" transform="rotate(-90 12.5 12.5)"/>
                 <text x="12.5" y="13.75" text-anchor="middle" font-size="3" font-weight="bold" fill="#5a15e5"
                       text-shadow="0 0 5px #9370DB">{{ a["name"] }}:{{ a["recharge"]["pct"] }}

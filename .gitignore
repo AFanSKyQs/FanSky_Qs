@@ -3,6 +3,7 @@ node_modules/
 .idea/
 config/TeyvatConfig/
 resources/cache/
+resources/SmallFunction/AT_Xiaozuo7_CxkEmo/CxkImg
 config/OpenAI.json
 package-lock.json
 
