@@ -46,11 +46,11 @@ export async function helpData() {
                         "desc": "查看已经缓存的角色数据，可直接组合调用队伍伤害"
                     },
                     {
-                        "icon": "team",
+                        "icon": "排行榜",
                         "title": "#成就排行",
                         "desc": "官 & B服成就排行"
                     }, {
-                        "icon": "问号",
+                        "icon": "排行榜",
                         "title": "#宝箱排行",
                         "desc": "官 & B服宝箱排行"
                     }
@@ -60,11 +60,11 @@ export async function helpData() {
                 "group": "【打卡-魔晶系统】[正在开发小游戏]",
                 "list": [
                     {
-                        "icon": "sign",
+                        "icon": "最大",
                         "title": "打卡、冒泡",
                         "desc": "记录你的每一天信息"
                     }, {
-                        "icon": "role",
+                        "icon": "首次打卡时间",
                         "title": "首次打卡时间",
                         "desc": "你的首次打卡时间"
                     }
@@ -73,6 +73,11 @@ export async function helpData() {
             {
                 "group": "单功能菜单",
                 "list": [
+                    {
+                        "icon": "鸡哥",
+                        "title": "鸡哥 | 小黑子",
+                        "desc": "纯路人表情包"
+                    },
                     {
                         "icon": "丁真",
                         "title": "一眼丁真",
@@ -99,7 +104,7 @@ export async function helpData() {
                 "group": "OpenAI功能：艾特机器人即可开始聊天",
                 "list": [
                     {
-                        "icon": "OpenAI",
+                        "icon": "剩余",
                         "title": "#key剩余查看",
                         "desc": "查询OpenAI的key使用情况"
                     },
@@ -109,11 +114,11 @@ export async function helpData() {
                         "desc": "查看当前已有模型列表"
                     },
                     {
-                        "icon": "OpenAI",
+                        "icon": "重置记忆",
                         "title": "#重置对话",
                         "desc": "重新开始你的记忆"
                     }, {
-                        "icon": "OpenAI",
+                        "icon": "人设",
                         "title": "设置模型人设xxx",
                         "desc": "将OpenAI模型人设设置为xxx(每个人独立的)"
                     },
@@ -122,7 +127,7 @@ export async function helpData() {
                 "group": "主人命令",
                 "list": [
                     {
-                        "icon": "OpenAI",
+                        "icon": "密钥",
                         "title": "#设置模型key sk-xxxxxx",
                         "desc": "设置OpenAI的key"
                     }, {
@@ -131,19 +136,19 @@ export async function helpData() {
                         "desc": "设置OpenAI的回复高于多少字数时转合并消息回复(默认100字)"
                     },
                     {
-                        "icon": "OpenAI",
+                        "icon": "开关",
                         "title": "设置OpenAI开启",
                         "desc": "OpenAI总开关[开启、关闭]"
                     }, {
-                        "icon": "OpenAI",
+                        "icon": "回收站",
                         "title": "#清空全部",
                         "desc": "清除所有人的对话记录"
                     }, {
-                        "icon": "OpenAI",
+                        "icon": "人设",
                         "title": "设置模型人设xxx",
                         "desc": "设置OpenAI的全局人设[xxx]"
                     }, {
-                        "icon": "OpenAI",
+                        "icon": "拉黑",
                         "title": "拉黑模型使用[QQ]",
                         "desc": "拉黑某人使用，如：拉黑模型使用3141865879"
                     }, {
@@ -151,7 +156,7 @@ export async function helpData() {
                         "title": "更换语言模型1",
                         "desc": "更换OpenAI的语言模型[1、2]"
                     }, {
-                        "icon": "OpenAI",
+                        "icon": "最大",
                         "title": "设置模型打卡开启",
                         "desc": "OpenAI的使用绑定魔晶[开启、关闭]"
                     }, {
