@@ -143,13 +143,13 @@ div.TopLeftPanel > div.rank > div.total::after {
 }
 
 div.TopLeftPanel > div#pie {
-    background-color: #2e353e;
-    border-radius: 15px;
+    background-color: rgb(62 46 46 / 68%);
+    border-radius: 20px;
     position: relative;
     top: 51px;
     left: 22px;
-    width: 280px;
-    height: 280px;
+    width: 270px;
+    height: 270px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -157,8 +157,8 @@ div.TopLeftPanel > div#pie {
 
 div.TopLeftPanel > div#pie::after {
     position: absolute;
-    bottom: 150px;
-    content: "资源文件等还在调整完善中";
+    bottom: 10px;
+    content: "输出比例";
     font-size: 20px;
     color: var(--ambrLight);
 }
@@ -471,7 +471,7 @@ div.Avatars > div.avatar > div.detail > div.diff {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    background-color: #3d9f706b;
+    /*background-color: #3d9f706b;*/
     border-radius: 25px;
     align-items: center;
     backdrop-filter: blur(5px);

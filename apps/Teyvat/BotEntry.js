@@ -103,7 +103,7 @@ export class BotEntry extends plugin {
         let PluginVersion = JSON.parse(fs.readFileSync(Package));
         let BotInfo = JSON.parse(fs.readFileSync(YunzaiPath));
         let ScreenData = await this.getRolesScreenData(BotInfo, PluginVersion.version, UidRolesDataAvatars, uid, e, date)
-        let img = await puppeteer.screenshot('FanSkyTeyvatTeamScreen',ScreenData)
+        let img = await puppeteer.screenshot('FanSkyTeyvatTeamScreen', ScreenData)
         await e.reply(img)
         return true
     }
@@ -222,10 +222,20 @@ export class BotEntry extends plugin {
         const RoleColor = await JSON.parse(data["pie_color"]);
         const NameChar = await RoleData.map((item) => item.char);
         const Result = {percent, RoleColor, NameChar};
-        let AcgBg=await getHelpBg()
+        const Result2 = RoleData.reduce((acc, d, i) => {
+            acc[d.char] = {
+                name: d.char,
+                damage: d.damage,
+                color: RoleColor[i]
+            };
+            return acc;
+        }, {});
+        let AcgBg = await getHelpBg()
         return {
+            result: Result2,
+            RoleData: RoleData,
             quality: 100,
-            AcgBg:AcgBg,
+            AcgBg: AcgBg,
             Bing: Result,
             detail: detail,
             YunzaiName: Yunzai.name,

@@ -114,52 +114,52 @@
         <div class="UID">{{ data["uid"] }}</div>
         {{ if data["rank"].indexOf("B") !== -1 }}
         <div class="rank">
-            <div class="title" style="color: rgba(255,152,0,0.6);">{{ data["rank"] }}</div>
-            <div class="dps" style="color: rgba(255,152,0,0.6);">{{ data["dps"] }}</div>
-            <div class="time" style="color: rgba(255,152,0,0.6);">{{ data["tm"] }}</div>
-            <div class="total" style="color: rgba(255,152,0,0.6);">{{ data["total"] }}</div>
+            <div class="title" style="color: rgba(255,152,0,1);">{{ data["rank"] }}</div>
+            <div class="dps" style="color: rgba(255,152,0,0.7);">{{ data["dps"] }}</div>
+            <div class="time" style="color: rgba(255,152,0,0.7);">{{ data["tm"] }}</div>
+            <div class="total" style="color: rgba(255,152,0,0.7);">{{ data["total"] }}</div>
         </div>
         {{/if}}
         {{ if data["rank"].indexOf("A") !== -1 && data["rank"].indexOf("ACE") === -1 }}
         <div class="rank">
-            <div class="title" style="color: #0400ffab;">{{ data["rank"] }}</div>
-            <div class="dps" style="color: #0400ffab;">{{ data["dps"] }}</div>
-            <div class="time" style="color: #0400ffab;">{{ data["tm"] }}</div>
-            <div class="total" style="color: #0400ffab;">{{ data["total"] }}</div>
+            <div class="title" style="color: rgba(9,42,150,1);">{{ data["rank"] }}</div>
+            <div class="dps" style="color: rgba(9,42,150,0.7);">{{ data["dps"] }}</div>
+            <div class="time" style="color: rgba(9,42,150,0.7);">{{ data["tm"] }}</div>
+            <div class="total" style="color: rgba(9,42,150,0.7);">{{ data["total"] }}</div>
         </div>
         {{/if}}
         {{ if data["rank"].indexOf("S") !== -1 }}
         <div class="rank">
-            <div class="title" style="color: rgba(239,0,255,0.6);">{{ data["rank"] }}</div>
-            <div class="dps" style="color: rgba(239,0,255,0.6);">{{ data["dps"] }}</div>
-            <div class="time" style="color: rgba(239,0,255,0.6);">{{ data["tm"] }}</div>
-            <div class="total" style="color: rgba(239,0,255,0.6);">{{ data["total"] }}</div>
+            <div class="title" style="color: rgba(239,0,255,1);">{{ data["rank"] }}</div>
+            <div class="dps" style="color: rgba(239,0,255,0.7);">{{ data["dps"] }}</div>
+            <div class="time" style="color: rgba(239,0,255,0.7);">{{ data["tm"] }}</div>
+            <div class="total" style="color: rgba(239,0,255,0.7);">{{ data["total"] }}</div>
         </div>
         {{/if}}
         {{ if data["rank"].indexOf("ACE") !== -1 }}
         <div class="rank">
-            <div class="title" style="color: #f90000;">{{ data["rank"] }}</div>
-            <div class="dps" style="color: rgba(249,0,0,0.6);">{{ data["dps"] }}</div>
-            <div class="time" style="color: rgba(249,0,0,0.6);">{{ data["tm"] }}</div>
-            <div class="total" style="color: rgba(249,0,0,0.6);">{{ data["total"] }}</div>
+            <div class="title" style="color: rgba(249,0,0,1);">{{ data["rank"] }}</div>
+            <div class="dps" style="color: rgba(249,0,0,0.7);">{{ data["dps"] }}</div>
+            <div class="time" style="color: rgba(249,0,0,0.7);">{{ data["tm"] }}</div>
+            <div class="total" style="color: rgba(249,0,0,0.7);">{{ data["total"] }}</div>
         </div>
         {{/if}}
         {{ if data["rank"].indexOf("A") === -1 && data["rank"].indexOf("B") === -1 && data["rank"].indexOf("S") ===
         -1 && data["rank"].indexOf("ACE") === -1 }}
         <div class="rank">
-            <div class="title" style="color: #07c352;">{{ data["rank"] }}</div>
+            <div class="title" style="color: rgba(7,195,82,1);">{{ data["rank"] }}</div>
             <div class="dps" style="color: rgba(7,195,82,0.6);">{{ data["dps"] }}</div>
             <div class="time" style="color: rgba(7,195,82,0.6);">{{ data["tm"] }}</div>
             <div class="total" style="color: rgba(7,195,82,0.6);">{{ data["total"] }}</div>
         </div>
         {{/if}}
-        <!-- <div id="pie"></div> -->
-        <p>
-            <canvas id="canvas_circle" width="400" height="250"
-                    style="margin-top: 30px;margin-left: -40px;">
-                浏览器不支持canvas
-            </canvas>
-        </p>
+         <div id="pie"></div>
+<!--        <p>-->
+<!--            <canvas id="canvas_circle" width="400" height="250"-->
+<!--                    style="margin-top: 30px;margin-left: -40px;">-->
+<!--                浏览器不支持canvas-->
+<!--            </canvas>-->
+<!--        </p>-->
     </div>
     <div class="Avatars">
         {{each data["avatars"] a}}
@@ -187,7 +187,23 @@
                     <div class="value">{{ a["key_value"] }}</div>
                     <div class="name">{{ a["key_prop"] }}</div>
                 </div>
-                <div class="recharge">{{ a["recharge"]["pct"] }}</div>
+                <!--                <div class="recharge">{{ a["recharge"]["pct"] }}</div>-->
+                <div style="width: 33.33%;height: 50px;font-family: PanelNumFont; position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                    <svg viewBox="0 0 25 25">
+                        <circle cx="12.5" cy="12.5" r="10" stroke="#ccc" stroke-width="5" fill="none"/>
+                        <circle id="{{a['name']}}" cx="12.5" cy="12.5" r="10" stroke="{{ result[a['name']]['color'] }}"
+                                stroke-width="5" fill="none"
+                                stroke-dasharray="0, 62.8" stroke-dashoffset="0" transform="rotate(-90 12.5 12.5)"/>
+                        <text x="12.5" y="13.75" text-anchor="middle" font-size="8" font-weight="bold" fill="{{ result[a['name']]['color'] }}"
+                              text-shadow="0 0 5px #9370DB">{{ a["recharge"]["pct"] }}
+                        </text>
+                    </svg>
+                    <div style="color: #4ce878"></div>
+                    <script>
+                        document.getElementById("{{a['name']}}").setAttribute("stroke-dasharray", `${(50 + (parseInt("{{ a['recharge']['pct'] }}".substring(0, "{{ a['recharge']['pct'] }}".length - 1))) / 2) / 100 * (2 * Math.PI * 10)}, ${(2 * Math.PI * 10)}`);
+                        document.getElementById("{{a['name']}}").setAttribute("stroke-dashoffset", (2 * Math.PI * 10) - (50 + (parseInt("{{ a['recharge']['pct'] }}".substring(0, "{{ a['recharge']['pct'] }}".length - 1))) / 2) / 100 * (2 * Math.PI * 10));
+                    </script>
+                </div>
                 <div class="same">{{ a["recharge"]["same"] }}</div>
                 <div class="diff">{{ a["recharge"]["diff"] }}</div>
                 <div class="talent {{ a['elem'] }}">
@@ -212,26 +228,26 @@
         </div>
         {{/each}}
     </div>
-    <br>
-    <div style="background-color: #1179b11a;backdrop-filter: blur(5px);border-radius: 60px">
-        {{each data["avatars"] a}}
-        <div style="width: 230px;height:230px; display: inline-block;">
-            <svg viewBox="0 0 25 25">
-                <circle cx="12.5" cy="12.5" r="10" stroke="#ccc" stroke-width="2.5" fill="none"/>
-                <circle id="{{a['name']}}" cx="12.5" cy="12.5" r="10" stroke="rgba(29, 198, 237, 0.42)"
-                        stroke-width="2.5" fill="none"
-                        stroke-dasharray="0, 62.8" stroke-dashoffset="0" transform="rotate(-90 12.5 12.5)"/>
-                <text x="12.5" y="13.75" text-anchor="middle" font-size="3" font-weight="bold" fill="#5a15e5"
-                      text-shadow="0 0 5px #9370DB">{{ a["name"] }}:{{ a["recharge"]["pct"] }}
-                </text>
-            </svg>
-            <script>
-                document.getElementById("{{a['name']}}").setAttribute("stroke-dasharray", `${(50 + (parseInt("{{ a['recharge']['pct'] }}".substring(0, "{{ a['recharge']['pct'] }}".length - 1))) / 2) / 100 * (2 * Math.PI * 10)}, ${(2 * Math.PI * 10)}`);
-                document.getElementById("{{a['name']}}").setAttribute("stroke-dashoffset", (2 * Math.PI * 10) - (50 + (parseInt("{{ a['recharge']['pct'] }}".substring(0, "{{ a['recharge']['pct'] }}".length - 1))) / 2) / 100 * (2 * Math.PI * 10));
-            </script>
-        </div>
-        {{/each}}
-    </div>
+<!--    <br>-->
+<!--    <div style="background-color: #1179b11a;backdrop-filter: blur(5px);border-radius: 60px">-->
+<!--        {{each data["avatars"] a}}-->
+<!--        <div style="width: 230px;height:230px; display: inline-block;">-->
+<!--            <svg viewBox="0 0 25 25">-->
+<!--                <circle cx="12.5" cy="12.5" r="10" stroke="#ccc" stroke-width="2.5" fill="none"/>-->
+<!--                <circle id="{{a['name']}}" cx="12.5" cy="12.5" r="10" stroke="rgba(29, 198, 237, 0.42)"-->
+<!--                        stroke-width="2.5" fill="none"-->
+<!--                        stroke-dasharray="0, 62.8" stroke-dashoffset="0" transform="rotate(-90 12.5 12.5)"/>-->
+<!--                <text x="12.5" y="13.75" text-anchor="middle" font-size="3" font-weight="bold" fill="#5a15e5"-->
+<!--                      text-shadow="0 0 5px #9370DB">{{ a["name"] }}:{{ a["recharge"]["pct"] }}-->
+<!--                </text>-->
+<!--            </svg>-->
+<!--            <script>-->
+<!--                document.getElementById("{{a['name']}}").setAttribute("stroke-dasharray", `${(50 + (parseInt("{{ a['recharge']['pct'] }}".substring(0, "{{ a['recharge']['pct'] }}".length - 1))) / 2) / 100 * (2 * Math.PI * 10)}, ${(2 * Math.PI * 10)}`);-->
+<!--                document.getElementById("{{a['name']}}").setAttribute("stroke-dashoffset", (2 * Math.PI * 10) - (50 + (parseInt("{{ a['recharge']['pct'] }}".substring(0, "{{ a['recharge']['pct'] }}".length - 1))) / 2) / 100 * (2 * Math.PI * 10));-->
+<!--            </script>-->
+<!--        </div>-->
+<!--        {{/each}}-->
+<!--    </div>-->
     <div class="Actions">
         <div class="title"></div>
         <div class="act">
@@ -277,47 +293,82 @@
     </div>
 </div>
 </body>
-<meta charset="gbk">
+<!--<meta charset="gbk">-->
+<!--<script>-->
+<!--    function drawCircle(canvasId, data_arr, color_arr, text_arr) {-->
+<!--        const c = document.getElementById(canvasId);-->
+<!--        const ctx = c.getContext("2d");-->
+<!--        const radius = c.height / 2 - 20; //半径-->
+<!--        const ox = radius + 20, oy = radius + 20; //圆心-->
+<!--        const width = 30, height = 10; //图例宽和高-->
+<!--        const posX = ox * 2 + 20, posY = 30;   //-->
+<!--        const textX = posX + width + 5, textY = posY + 10;-->
+<!--        let startAngle = 0; //起始弧度-->
+<!--        let endAngle = 0;   //结束弧度-->
+<!--        for (let i = 0; i < data_arr.length; i++) {//绘制饼图-->
+<!--            endAngle = endAngle + data_arr[i] * Math.PI * 2; //结束弧度-->
+<!--            ctx.fillStyle = color_arr[i];-->
+<!--            ctx.beginPath();-->
+<!--            ctx.moveTo(ox, oy); //移动到到圆心-->
+<!--            ctx.arc(ox, oy, radius, startAngle, endAngle, false);-->
+<!--            ctx.closePath();-->
+<!--            ctx.fill();-->
+<!--            startAngle = endAngle; //设置起始弧度-->
+<!--            ctx.fillStyle = color_arr[i];//绘制比例图及文字-->
+<!--            ctx.fillRect(posX - 50, posY + 20 * i, width, height);-->
+<!--            ctx.moveTo(posX - 50, posY + 20 * i);-->
+<!--            ctx.font = 'bold 20px 微软雅黑';    //斜体 30像素 微软雅黑字体-->
+<!--            ctx.fillStyle = color_arr[i]; //"#000000";-->
+<!--            const percent = text_arr[i] + "：" + 100 * data_arr[i] + "%";-->
+<!--            ctx.fillText(percent, textX - 50, textY + 20 * i);-->
+<!--        }-->
+<!--    }-->
+
+<!--    async function init() {-->
+<!--        const percent = `{{Bing.percent}}`-->
+<!--        const Color = `{{Bing.RoleColor}}`-->
+<!--        const Char = `{{Bing.NameChar}}`-->
+<!--        const PercentArr = JSON.parse(percent.replace(/&#34;/g, '"'));-->
+<!--        const ColorArr = JSON.parse(Color.replace(/&#34;/g, '"'));-->
+<!--        const NameArr = JSON.parse(Char.replace(/&#34;/g, '"'));-->
+<!--        drawCircle("canvas_circle", PercentArr, ColorArr, NameArr);-->
+<!--    }-->
+
+<!--    window.onload = init;-->
+<!--</script>-->
+<script type="text/javascript" src="{{pluResPath}}g2plot.min.js"></script>
 <script>
-    function drawCircle(canvasId, data_arr, color_arr, text_arr) {
-        const c = document.getElementById(canvasId);
-        const ctx = c.getContext("2d");
-        const radius = c.height / 2 - 20; //半径
-        const ox = radius + 20, oy = radius + 20; //圆心
-        const width = 30, height = 10; //图例宽和高
-        const posX = ox * 2 + 20, posY = 30;   //
-        const textX = posX + width + 5, textY = posY + 10;
-        let startAngle = 0; //起始弧度
-        let endAngle = 0;   //结束弧度
-        for (let i = 0; i < data_arr.length; i++) {//绘制饼图
-            endAngle = endAngle + data_arr[i] * Math.PI * 2; //结束弧度
-            ctx.fillStyle = color_arr[i];
-            ctx.beginPath();
-            ctx.moveTo(ox, oy); //移动到到圆心
-            ctx.arc(ox, oy, radius, startAngle, endAngle, false);
-            ctx.closePath();
-            ctx.fill();
-            startAngle = endAngle; //设置起始弧度
-            ctx.fillStyle = color_arr[i];//绘制比例图及文字
-            ctx.fillRect(posX - 50, posY + 20 * i, width, height);
-            ctx.moveTo(posX - 50, posY + 20 * i);
-            ctx.font = 'bold 20px 微软雅黑';    //斜体 30像素 微软雅黑字体
-            ctx.fillStyle = color_arr[i]; //"#000000";
-            const percent = text_arr[i] + "：" + 100 * data_arr[i] + "%";
-            ctx.fillText(percent, textX - 50, textY + 20 * i);
-        }
-    }
-
-    async function init() {
-        const percent = `{{Bing.percent}}`
-        const Color = `{{Bing.RoleColor}}`
-        const Char = `{{Bing.NameChar}}`
-        const PercentArr = JSON.parse(percent.replace(/&#34;/g, '"'));
-        const ColorArr = JSON.parse(Color.replace(/&#34;/g, '"'));
-        const NameArr = JSON.parse(Char.replace(/&#34;/g, '"'));
-        drawCircle("canvas_circle", PercentArr, ColorArr, NameArr);
-    }
-
-    window.onload = init;
+    const {Pie} = G2Plot;
+    const Color = `{{Bing.RoleColor}}`
+    const ColorArr = JSON.parse(Color.replace(/&#34;/g, '"'));
+    // const NameArr =
+    let data = `{{RoleData}}`
+    data=JSON.parse(data.replace(/&#34;/g, '"'));
+    const piePlot = new Pie("pie", {
+        renderer: "svg",
+        animation: false,
+        data: data,
+        padding: [-10, 0, 20, 0],
+        angleField: "damage",
+        colorField: "char",
+        radius: 0.8,
+        color: ColorArr,
+        label: {
+            type: "inner",
+            autoRotate: false,
+            style: {
+                textAlign: "center",
+                fill: "#000",
+                fontSize: 20,
+                fontFamily: "PanelNumFont",
+            },
+            formatter: ({char, damage, percent}) => {
+                percent = (percent * 100).toFixed(0);
+                return percent > 6 ? `${char}\n${damage}W` : "";
+            },
+        },
+        legend: false,
+    });
+    piePlot.render();
 </script>
 </html>
