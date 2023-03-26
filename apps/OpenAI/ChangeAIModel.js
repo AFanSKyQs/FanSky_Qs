@@ -45,8 +45,8 @@ export async function OpenGroupAI(e) {
         if (!OpenAIConfig.OpenAIGroup.length) {
             e.reply(`检测到还没有群配置，[请先设置要开启的群，然后就会只使用开启的群]，即没有设置的群不开启，暂时没有黑名单，只有白名单`)
         } else {
-            let GroupIndex = OpenAIConfig.OpenAIGroup.indexOf(GroupNum)
-            if (GroupIndex !== -1) {    //存在
+            let GroupIndex = OpenAIConfig.OpenAIGroup.indexOf(GroupNum.toString())
+            if (GroupIndex !== -1) {
                 OpenAIConfig.OpenAIGroup.splice(GroupIndex, 1)
                 await fs.writeFileSync(OpenAIPath, JSON.stringify(OpenAIConfig))
                 e.reply(`已关闭群[${GroupNum}]的OpenAI功能喵~`)

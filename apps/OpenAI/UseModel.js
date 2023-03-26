@@ -31,7 +31,8 @@ export async function UseModel(e) {
     }
     const Json = await getCfg(yunPath, 'OpenAI')
     if (!e.isPrivate) {
-        let GroupIndex = Json.OpenAIGroup.indexOf(e.group_id)
+        let GroupIndex = Json.OpenAIGroup.indexOf((e.group_id).toString())
+        console.log(GroupIndex)
         if (GroupIndex !== -1) {
         } else if (Json.OpenAIGroup.length === 0) {
         } else {
