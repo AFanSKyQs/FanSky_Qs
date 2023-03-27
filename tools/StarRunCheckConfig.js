@@ -1,10 +1,13 @@
 import fs from 'fs'
 import {isFileExist} from '../models/isFileExist.js'
 import cfg from '../../../lib/config/config.js'
+import axios from "axios";
 
 let cwd = process.cwd().replace(/\\/g, '/')
 let ConfigPath = `${cwd}/plugins/FanSky_Qs/config/OpenAI.json`
 let defaultConfigPath = `${cwd}/plugins/FanSky_Qs/config/default_config.json`
+let TeyvatPath = `${cwd}/plugins/FanSky_Qs/config/TeyvatConfig/TeyvatUrlJson.json`
+let TeyvatFolderPath = `${cwd}/plugins/FanSky_Qs/config/TeyvatConfig`
 
 export async function StarRunCheckConfig() {
     let IsExist = await CheckConfigExist()
@@ -15,7 +18,72 @@ export async function StarRunCheckConfig() {
         await CheckOpenAIOFF()
         await CheckSignMode()
         await CheckOpenGroup()
-        logger.info(logger.cyan("配置文件检查完毕,欢迎使用，祝您使用愉快喵~"))
+
+    }
+    logger.info(logger.magenta("配置文件检查完毕,欢迎使用，祝您使用愉快喵qwq~"))
+    logger.info(logger.magenta('[FanSky_Qs]>>将在10s后开始请求队伍伤害所需JSON'))
+    setTimeout(async () => {
+        await CheckTeyvatDownload()
+    }, 10000)
+
+}
+
+async function CheckTeyvatDownload() {
+
+    if (!fs.existsSync(TeyvatFolderPath)) {
+        fs.mkdirSync(TeyvatFolderPath)
+    }
+    if (!await isFileExist(TeyvatPath)) {
+        fs.writeFileSync(TeyvatPath, '{}')
+        logger.info(logger.magenta('[FanSky_Qs]>>已创建TeyvatUrlJson.json资源文件'))
+    }
+    logger.info(logger.magenta('[FanSky_Qs]>>开始检查获取所需JSON资源'))
+    await GetJson(TeyvatPath)
+    logger.info(logger.magenta('[FanSky_Qs]>>已写入CHAR_DATA、HASH_TRANS、CALC_RULES、RELIC_APPEND配置项 '))
+}
+
+async function GetJson(PATH) {
+    let DATA_JSON = JSON.parse(fs.readFileSync(PATH))
+    try {
+        let CHAR_DATA = await LocalUpdateJson('https://cdn.monsterx.cn/bot/gspanel/char-data.json')
+        if (!CHAR_DATA) {
+            logger.info(logger.red('CHAR_DATA请求失败'))
+        }
+        let HASH_TRANS = await LocalUpdateJson('https://cdn.monsterx.cn/bot/gspanel/hash-trans.json')
+        if (!HASH_TRANS) {
+            logger.info(logger.red('HASH_TRANS请求失败'))
+        }
+        let CALC_RULES = await LocalUpdateJson('https://cdn.monsterx.cn/bot/gspanel/calc-rule.json')
+        if (!CALC_RULES) {
+            logger.info(logger.red('CALC_RULES请求失败'))
+        }
+        let RELIC_APPEND = await LocalUpdateJson('https://cdn.monsterx.cn/bot/gspanel/relic-append.json')
+        if (!RELIC_APPEND) {
+            logger.info(logger.red('RELIC_APPEND请求失败'))
+        }
+        DATA_JSON.CHAR_DATA = CHAR_DATA
+        DATA_JSON.HASH_TRANS = HASH_TRANS
+        DATA_JSON.CALC_RULES = CALC_RULES
+        DATA_JSON.RELIC_APPEND = RELIC_APPEND
+        fs.writeFileSync(PATH, JSON.stringify(DATA_JSON))
+    } catch (err) {
+        let list = cfg.masterQQ
+        for (let userId of list) {
+            await Bot.pickFriend(userId).sendMsg('>>>FanSky_Qs写入配置项失败，请检查错误信息！')
+        }
+        logger.info(logger.red('FanSky_Qs写入配置项失败，请检查错误信息！'))
+        console.log(err)
+    }
+}
+
+async function LocalUpdateJson(URL) {
+    try {
+        const res = await axios.get(URL)
+        return res.data
+    } catch (error) {
+        logger.info(logger.red(`${URL}请求失败...`))
+        console.error(error)
+        return null
     }
 }
 
@@ -48,6 +116,7 @@ async function CheckConfigExist() {
         return {True: "false"}
     }
 }
+
 async function CheckKey() {
     let ConfigJson = await ReadConfig()
     if (ConfigJson.OpenAI_Key === "这里填入你的OpenAI密钥即可") {
@@ -56,6 +125,7 @@ async function CheckKey() {
         logger.info(logger.cyan(`[FanSky_Qs]OpenAI密钥检查成功:${ConfigJson.OpenAI_Key}`))
     }
 }
+
 async function CheckthuMUpOFF() {
     let ConfigJson = await ReadConfig()
     if (!ConfigJson.thuMUpOFF) {
@@ -66,6 +136,7 @@ async function CheckthuMUpOFF() {
         logger.info(logger.cyan(`[FanSky_Qs]thuMUpOFF检查成功，点赞状态：${ConfigJson.thuMUpOFF}`))
     }
 }
+
 async function CheckOpenAIOFF() {
     let ConfigJson = await ReadConfig()
     if (!ConfigJson.OnOff) {
@@ -76,6 +147,7 @@ async function CheckOpenAIOFF() {
         logger.info(logger.cyan(`[FanSky_Qs]OpenAI开关检查成功，OpenAI状态：${ConfigJson.OnOff}`))
     }
 }
+
 async function CheckSignMode() {
     let ConfigJson = await ReadConfig()
     if (!ConfigJson.SignMode) {

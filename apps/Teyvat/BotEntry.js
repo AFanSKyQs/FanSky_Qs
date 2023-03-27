@@ -1,64 +1,16 @@
 /* eslint-disable camelcase */
 import puppeteer from '../../../../lib/puppeteer/puppeteer.js'
 import {getUrlJson} from '../../models/getUrlJson.js'
-import {isFileExist} from '../../models/isFileExist.js'
 import plugin from '../../../../lib/plugins/plugin.js'
 import fs from 'fs'
-import cfg from '../../../../lib/config/config.js'
 import {getTeam} from './TeyvatTotalEntry.js'
 import _ from 'lodash'
 import gsCfg from '../../../genshin/model/gsCfg.js'
 import {getHelpBg} from "../../models/getTuImg.js";
 
 let cwd = process.cwd().replace(/\\/g, '/')
-let ONE_PATH = `${process.cwd()}/plugins/FanSky_Qs/config/TeyvatConfig`
 let DATA_PATH = `${process.cwd()}/plugins/FanSky_Qs/config/TeyvatConfig/TeyvatUrlJson.json`
 let CachePath = `${process.cwd()}/plugins/FanSky_Qs/resources/cache`
-
-if (!fs.existsSync(ONE_PATH)) {
-    Bot.logger.info('>>>已创建TeyvatConfig文件夹')
-    fs.mkdirSync(ONE_PATH)
-}
-if (!await isFileExist(DATA_PATH)) {
-    fs.writeFileSync(DATA_PATH, '{}')
-    logger.info(logger.magenta('>>>已创建TeyvatUrlJson.json配置文件'))
-    logger.info(logger.magenta('>>>将在15s后初次写入必须JSON配置项'))
-}
-setTimeout(async () => {
-    await FirstUpdataJSON()
-}, 15000)
-
-async function FirstUpdataJSON() {
-    let PATH = DATA_PATH.replace(/\\/g, '/')
-    let DATA_JSON = JSON.parse(fs.readFileSync(PATH))
-    if (!DATA_JSON.CHAR_DATA || !DATA_JSON.HASH_TRANS || !DATA_JSON.CALC_RULES || !DATA_JSON.RELIC_APPEND) {
-        const teyvatEntry = new BotEntry()
-        let E = await teyvatEntry.getE()
-        try {
-            let WriteCHAR_DATAJson = await getUrlJson('https://cdn.monsterx.cn/bot/gspanel/char-data.json', E)
-            let WriteHASH_TRANSJson = await getUrlJson('https://cdn.monsterx.cn/bot/gspanel/hash-trans.json', E)
-            let WriteCALC_RULESJson = await getUrlJson('https://cdn.monsterx.cn/bot/gspanel/calc-rule.json', E)
-            let WriteRELIC_APPENDJson = await getUrlJson('https://cdn.monsterx.cn/bot/gspanel/relic-append.json', E)
-            DATA_JSON.CHAR_DATA = WriteCHAR_DATAJson
-            DATA_JSON.HASH_TRANS = WriteHASH_TRANSJson
-            DATA_JSON.CALC_RULES = WriteCALC_RULESJson
-            DATA_JSON.RELIC_APPEND = WriteRELIC_APPENDJson
-            fs.writeFileSync(PATH, JSON.stringify(DATA_JSON))
-            logger.info(logger.magenta('>>>已写入CHAR_DATA、HASH_TRANS、CALC_RULES、RELIC_APPEND配置项 '))
-            let list = cfg.masterQQ
-            for (let userId of list) {
-                await Bot.pickFriend(userId).sendMsg('>>>FanSky_Qs已写入提瓦特小助手JSON,若为空或失效请发送【#更新小助手配置】！')
-            }
-        } catch (err) {
-            let list = cfg.masterQQ
-            for (let userId of list) {
-                await Bot.pickFriend(userId).sendMsg('>>>FanSky_Qs写入配置项失败，请检查错误信息！')
-            }
-            logger.info(logger.red('FanSky_Qs写入配置项失败，请检查错误信息！'))
-            console.log(err)
-        }
-    }
-}
 
 export class BotEntry extends plugin {
     constructor() {

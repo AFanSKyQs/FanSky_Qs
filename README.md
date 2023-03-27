@@ -29,7 +29,7 @@
 <div align="center">
   <h2>Yunzai-Bot/Miao-Yunzai</h2>
 
-`提瓦特小助手伤害系统(正在开发)`、`GPT各模型记忆聊天`、`切换多模型`、`设置模型人设`、`设置模型打卡绑定`、`设置模型模式`、`发病文学`、`接入AI问候`、`电影票房`、`打卡、冒泡`、`QQ名片点赞`、`拉黑语言模型使用者`、`表情包丁真`等后续功能持续围绕 `【打卡-魔晶系统】` 开发中....
+`提瓦特小助手伤害系统(可以优化)`、`OpenAI-GPT最新Free模型记忆聊天`、`切换多模型`、`设置模型人设`、`设置模型打卡绑定`、`设置模型模式`、`发病文学`、`接入AI问候`、`电影票房`、`打卡、冒泡`、`QQ名片点赞`、`拉黑语言模型使用者`、`表情包丁真`等后续功能持续围绕 `【打卡-魔晶系统】` 开发中....
   
   </div>
 
@@ -41,9 +41,9 @@
 <br>
 
 * ## 开发中
-   - ⊚ `提瓦特小助手伤害计算评级系统`
+   - ⊚ `提瓦特小助手其他功能[资源依赖@yoimiya-kokomi(miao-plugin)]`
    - ⊚ 打卡-魔晶系统-`卡牌系统`
-   - ⊚ `宝箱成就排行图片渲染`
+   - ⊚ `宝箱成就排行渲染调整`
    - ⊚ 欢迎加入开发qwq喵~
    - <h2> 发送 #fans帮助 查看更多功能(累鸟🐦...) </h2>
 
@@ -92,10 +92,10 @@ pnpm install
 <div align="left">
   <h3>🔥一、提瓦特小助手系统</h3>
   
-| 功能名称  | 功能指令 |功能示例说明 |
-| :-------------: | :-------------: |:-------------: |
-| 正在开发 | `正在开发`|正在开发|
-    
+|                                  功能名称                                  |                     功能指令                     | 功能示例说明 |
+|:----------------------------------------------------------------------:|:--------------------------------------------:|:------:|
+|                队伍伤害<br>默认使用`#绑定xxxx`绑定的uid来查询<br>默认展柜前4                | `#队伍伤害`<br>`#队伍伤害117556563`<br>`#队伍伤害钟离 阿贝多` | 请安装查看喵 |
+  | 队伍面板<br>默认使用`#绑定xxxx`绑定的uid来查询<br>每次请求队伍伤害会自动更新展柜角色到里面去<br>正在想办法联动喵喵面板 | `#队伍面板`<br>`#队伍面板117556563` | 请安装查看喵 |  
  </div>
  
  ##
@@ -179,13 +179,14 @@ pnpm install
   喵喵喵喵喵喵，咕咕咕咕咕咕，这是个连帮助都还没写好的累鸟......
 
 ## 五、致谢 [数据/方法/API等]
-  - [@monsterxcn(原型及接口！)](https://github.com/monsterxcn)
-  - [@yoimiya-kokomi](https://github.com/yoimiya-kokomi)
-  - [@MiniGrayGay](https://github.com/MiniGrayGay)
+  - [@yoimiya-kokomi(资源、数据、...)](https://github.com/yoimiya-kokomi)
+  - [@monsterxcn(原型、接口...)](https://github.com/monsterxcn)
+  - [@MiniGrayGay(Enka_API)](https://github.com/MiniGrayGay)
   - Enka: https://enka.network/
   - Wechat: #小程序://提瓦特小助手/ysMJOWO6fzx0MsD
   - [Gitee-nonebot-plugin-gspanel](https://gitee.com/work-for-myself/nonebot-plugin-gspanel)
   - [Github-nonebot-plugin-gspanel](https://github.com/monsterxcn/nonebot-plugin-gspanel)
+  - [Gitee-Yunzai-Bot](https://gitee.com/Le-niao/Yunzai-Bot)
   - [Gitee-Miao-Yunzai](https://gitee.com/yoimiya-kokomi/Miao-Yunzai)
   - [Github-Miao-Yunzai](https://github.com/yoimiya-kokomi/Miao-Yunzai)
 
