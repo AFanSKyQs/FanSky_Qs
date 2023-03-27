@@ -1,5 +1,6 @@
 import {CardList, FirstSignTime, SingleTest} from "./SignIn.js";
 import plugin from "../../../../lib/plugins/plugin.js";
+import {runGetIdiomEmoji} from "./EmojiToIdiom.js";
 export class MagicCrystalIndex extends plugin {
     constructor() {
         super({
@@ -28,9 +29,19 @@ export class MagicCrystalIndex extends plugin {
                 {
                 reg: /^#?(打卡|冒泡)(用户|统计|记录|总计)$/,
                     fnc: 'CardList',
+                },
+                {
+                reg: /^#?emoji猜成语$/,
+                    fnc: 'runGetIdiomEmoji',
                 }
             ]
         })
+    }
+    async runGetIdiomEmoji(e){
+        let Static=await runGetIdiomEmoji(e)
+        if(!Static || Static===false){
+            return false
+        }
     }
     async MagicCrystalSign(e) {
         let Static= await SingleTest(e)

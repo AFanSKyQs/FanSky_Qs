@@ -67,16 +67,23 @@ export class MonitorTask extends plugin {
             if (GithubStaticJson.sha !== Json.sha) {
                 GithubStaticJson = Json
                 fs.writeFileSync(GithubStatic, JSON.stringify(GithubStaticJson))
-                console.log('已更新GithubStatic.json')
+                logger.info(logger.magenta('>>>已更新GithubStatic.json'))
                 let UTC_Date = Json.commit.committer.date
                 const cnTime = new Date(UTC_Date).toLocaleString('zh-CN', {timeZone: 'Asia/Shanghai', hour12: false})
                 if (Bot.uin === 2374221304) {
                     await Bot.pickGroup(Number(755794036)).sendMsg(`[FanSky_Qs插件更新自动推送]\nContributors：${Json.commit.committer.name}\nDate:${cnTime}\nMessage:${Json.commit.message}\nUrl:${Json.html_url}`)
                 }
                 let list = cfg.masterQQ
+                let SendNum=0
                 for (let userId of list) {
-                    await Bot.pickFriend(userId).sendMsg(`FanSky_Qs插件已更新:\nContributors：${Json.commit.committer.name}\nDate:${cnTime}\nMessage:${Json.commit.message}\nUrl:${Json.html_url}`)
+                    if (SendNum >= 2) {
+                        break;
+                    }
+                    if (userId.length > 11) continue
+                    await Bot.pickFriend(userId).sendMsg(`[FanSky_Qs插件更新]:\nContributors：${Json.commit.committer.name}\nDate:${cnTime}\nMessage:${Json.commit.message}\nUrl:${Json.html_url}`)
+                    await new Promise(resolve => setTimeout(resolve, 5000));
                     await common.sleep(3000)
+                    SendNum++
                 }
             }
         } catch (error) {

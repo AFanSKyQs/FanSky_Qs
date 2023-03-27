@@ -68,8 +68,14 @@ async function GetJson(PATH) {
         fs.writeFileSync(PATH, JSON.stringify(DATA_JSON))
     } catch (err) {
         let list = cfg.masterQQ
+        let SendNum=0
         for (let userId of list) {
+            if (SendNum >= 2) {
+                        break;
+                    }
+            if (userId.length > 11) continue
             await Bot.pickFriend(userId).sendMsg('>>>FanSky_Qs写入配置项失败，请检查错误信息！')
+            SendNum++
         }
         logger.info(logger.red('FanSky_Qs写入配置项失败，请检查错误信息！'))
         console.log(err)
@@ -108,8 +114,14 @@ async function CheckConfigExist() {
         logger.info(logger.cyan('首次启动本插件喵~，欢迎使用，已创建OpenAI.json'))
         logger.info(logger.cyan('食用请根据机器人提示进行设置喵~'))
         let list = cfg.masterQQ
+        let SendNum=0
         for (let userId of list) {
+            if (SendNum >= 2) {
+                        break;
+                    }
+            if (userId.length > 11) continue
             await Bot.pickFriend(userId).sendMsg('[首次启动提示]：如果要使用OpenAI功能请发送\n#设置模型key sk-xxxxxxx\n然后Clash打开开关即可(非内陆节点均可)。')
+            SendNum++
         }
         return {False: "true"}
     } else {
