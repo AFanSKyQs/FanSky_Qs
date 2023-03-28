@@ -2,7 +2,6 @@
 export async function getEmoji(){
         return EmojiList[Math.floor(Math.random() * EmojiList.length)]
 }
-
 export async function getComplaint(){
         return ComplaintList[Math.floor(Math.random() * ComplaintList.length)]
 }

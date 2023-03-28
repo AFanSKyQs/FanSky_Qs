@@ -34,7 +34,8 @@ export class OpenAIEntry extends plugin {
                 },
                 {
                     reg: /.*/i,
-                    fnc: 'UseModel'
+                    fnc: 'UseModel',
+                    log:false
                 }, {
                     reg: /#?(对话|语言)?模型列表/,
                     fnc: 'OpenAPModelList'

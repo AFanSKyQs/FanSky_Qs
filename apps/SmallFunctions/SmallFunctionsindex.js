@@ -28,6 +28,7 @@ export class SmallFunctionsindex extends plugin {
                 },{
                     reg: /.*/i,
                     fnc: 'Complaint',
+                    log:false
                 }, {
                     reg: /#(发病|发电|发癫|发疯)/,
                     fnc: 'Complaint'

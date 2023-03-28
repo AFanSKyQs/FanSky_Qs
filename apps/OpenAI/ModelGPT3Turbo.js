@@ -25,8 +25,8 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
         }
         let singleModelConfig = JSON.parse(fs.readFileSync(singleModel))
         try {
-            if (singleModelConfig[e.user_id].Persona) {
-                Persona = singleModelConfig[e.user_id].Persona
+            if (singleModelConfig[e.user_id]) {
+                Persona = singleModelConfig[e.user_id]
             }
         } catch (err) {
             Persona = Json.Persona
