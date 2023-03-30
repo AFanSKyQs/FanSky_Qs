@@ -1,12 +1,17 @@
 {
   "name": "FanSky_Qs",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "author": "AFanSKyQs",
   "description": "Yunzai-Bot/Miao-Yunzai插件",
   "type": "module",
   "dependencies": {
     "axios": "*",
+    "lodash": "^4.17.21",
     "markdown-it": "*",
     "node-fetch": "^3.3.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "pug": "^3.0.2"
   }
 }

@@ -24,7 +24,7 @@ export class MonitorTask extends plugin {
         })
         this.task = {
             name: 'FanSky_Qs仓库更新检测',
-            cron: '0 0/2 * * * ? ',
+            cron: '0 0/6 * * * ? ',
             fnc: () => {
                 this.MonitorTask()
             }
@@ -49,7 +49,7 @@ export class MonitorTask extends plugin {
         if(!BotNumStaticJson["TimeTmp"]){
             BotNumStaticJson["TimeTmp"] = TimeTmp
             fs.writeFileSync(BotNumStatic, JSON.stringify(BotNumStaticJson));
-        }else if(TimeTmp - BotNumStaticJson["TimeTmp"] > 117777){
+        }else if(TimeTmp - BotNumStaticJson["TimeTmp"] > 233333){
             BotNumStaticJson["TimeTmp"] = TimeTmp
             fs.writeFileSync(BotNumStatic, JSON.stringify(BotNumStaticJson));
         }else{

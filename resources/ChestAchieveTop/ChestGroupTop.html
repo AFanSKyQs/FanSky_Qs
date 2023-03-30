@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fontawesome-iconpicker/1.3.1/css/fontawesome-iconpicker.css"
+          rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <div class="row row--top-40">
+        <div class="col-md-12">
+            <h2 class="row__title">#宝箱排行榜</h2>
+        </div>
+    </div>
+    <div class="row row--top-20">
+        <div class="col-md-12">
+            <div class="table-container">
+                <table class="table">
+                    <thead class="table__thead">
+                    <tr>
+                        <th class="table__th">群排名</th>
+                        <!--                        <th class="table__th"><input id="selectAll" type="checkbox" class="table__select-row"> 1</th>-->
+                        <th class="table__th">User</th>
+                        <th class="table__th">总数</th>
+                        <th class="table__th">华丽 / 珍贵 / 精致 / 普通</th>
+                        <th class="table__th">得分</th>
+                        <!--                        <th class="table__th">得分</th>-->
+                        <th class="table__th">全服总排名</th>
+                        <th class="table__th"></th>
+                    </tr>
+                    </thead>
+                    <tbody class="table__tbody">
+                    {{each rankedData members }}
+                    <tr class="table-row table-row--chris">
+                        <td class="table-row__td">
+                            <div class="table__select-row">{{members.rank}}</div>
+                        </td>
+                        <td class="table-row__td">
+                            <div class="table-row__img"
+                                 style="background-image: url('https://q1.qlogo.cn/g?b=qq&nk={{ members.qq }}&s=160')"></div>
+                            <div class="table-row__info">
+                                <p class="table-row__name">{{members.uid}}</p>
+                                <span class="table-row__small">{{members.nickname}}</span>
+                            </div>
+                        </td>
+                        <td data-column="总计" class="table-row__td">
+                            <div class="">
+                                <p class="table-row__policy">{{members.total_box}}</p>
+                                <!--                                <span class="table-row__small">Basic Policy</span>-->
+                            </div>
+                        </td>
+                        <td data-column="华丽 / 珍贵 / 精致 / 普通" class="table-row__td">
+                            <p class="table-row__p-status status--green status">{{members.luxurious}} / {{members.precious}} / {{members.exquisite}} / {{members.common}}</p>
+                        </td>
+                        <!--                        <td data-column="Destination" class="table-row__td">-->
+                        <!--                            Huston, US-->
+                        <!--                        </td>-->
+<!--                        <td data-column="得分" class="table-row__td">-->
+                        <td data-column="得分" class="table-row__td">
+                            <p class="table-row__status status--green status">{{members.grade}}</p>
+                        </td>
+                        <td data-column="全服排名" class="table-row__td">
+                            <p class="table-row__progress status--blue status">{{members.total_index}}</p>
+                        </td>
+                        </td>
+                    </tr>
+                    {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i');
+
+    * {
+        margin: 0;
+        padding: 0;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    html, body {
+        display: table;
+        height: 100%;
+        width: 100%;
+        color: #252a3b;
+        background-color: #fbf0ec;
+        /*transform: scale(2) translate(-50%, -50%);*/
+
+    }
+
+    .row__title {
+        color: #53646f;
+        font-weight: 400;
+        font-size: 20px;
+        margin: 0;
+    }
+
+    .row--top-40 {
+        margin-top: 40px;
+    }
+
+    .row--top-20 {
+        margin-top: 20px;
+    }
+
+    .table__th {
+        color: #9eabb4;
+        font-weight: 500;
+        font-size: 12px;
+        text-transform: uppercase;
+        cursor: pointer;
+        border: 0 !important;
+        padding: 15px 8px !important;
+    }
+
+    .table-row {
+        border-bottom: 1px solid #e4e9ea;
+        background-color: #9adcdf54;
+
+    }
+
+    .table__th:hover {
+        color: #01b9d1;
+    }
+
+    .table-row__td {
+        padding: 12px 8px !important;
+        vertical-align: middle !important;
+        color: #53646f;
+        font-size: 13px;
+        font-weight: 400;
+        position: relative;
+        line-height: 18px !important;
+        border: 0 !important;
+    }
+
+    .table-row__img {
+        width: 36px;
+        height: 36px;
+        display: inline-block;
+        border-radius: 50%;
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        vertical-align: middle;
+    }
+
+    /*.table-row--chris .table-row__img {*/
+    /*    background-image: url('https://images.pexels.com/photos/428333/pexels-photo-428333.jpeg?w=1260&h=750&auto=compress&cs=tinysrgb');*/
+    /*}*/
+    .table-row__info {
+        display: inline-block;
+        padding-left: 12px;
+        vertical-align: middle;
+    }
+
+    .table-row__name {
+        color: #53646f;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 18px;
+        margin-bottom: 0px;
+    }
+
+    .table-row__small {
+        color: #9eabb4;
+        font-weight: 300;
+        font-size: 12px;
+    }
+
+    .table-row__policy {
+        color: #6a1fb5;
+        font-size: 13px;
+        font-weight: 400;
+        line-height: 18px;
+        margin-bottom: 0px;
+    }
+
+    .table-row__p-status {
+        margin-bottom: 0;
+        font-size: 13px;
+        vertical-align: middle;
+        display: inline-block;
+        color: #9eabb4;
+    }
+
+
+    .table-row__status {
+        margin-bottom: 0;
+        font-size: 13px;
+        vertical-align: middle;
+        display: inline-block;
+        color: #9eabb4;
+    }
+
+
+    .table-row__progress {
+        margin-bottom: 0;
+        font-size: 13px;
+        vertical-align: middle;
+        display: inline-block;
+        color: #9eabb4;
+    }
+
+    .status:before {
+        content: '';
+        margin-bottom: 0;
+        width: 9px;
+        height: 9px;
+        display: inline-block;
+        margin-right: 7px;
+        border-radius: 50%;
+    }
+
+    .status--blue:before {
+        background-color: #3fd2ea;
+    }
+
+    .status--blue {
+        color: #3fd2ea;
+    }
+
+    .status--green {
+        color: #d49e31;
+    }
+
+    .status--green:before {
+        background-color: #6cdb56;
+    }
+
+    .table__select-row {
+        appearence: none;
+        -moz-appearance: none;
+        -o-appearance: none;
+        -webkit-appearance: none;
+        width: 30px;
+        height: 30px;
+        margin: 0 0 0 5px !important;
+        vertical-align: middle;
+        border: 6px solid #30b918;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 20px;
+        color: crimson;
+        font-weight: bold;
+    }
+
+    .table__select-row:hover {
+        border-color: #01b9d1;
+    }
+
+    .table__select-row:checked {
+        background-image: url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDI2IDI2IiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCAyNiAyNiIgd2lkdGg9IjE2cHgiIGhlaWdodD0iMTZweCI+CiAgPHBhdGggZD0ibS4zLDE0Yy0wLjItMC4yLTAuMy0wLjUtMC4zLTAuN3MwLjEtMC41IDAuMy0wLjdsMS40LTEuNGMwLjQtMC40IDEtMC40IDEuNCwwbC4xLC4xIDUuNSw1LjljMC4yLDAuMiAwLjUsMC4yIDAuNywwbDEzLjQtMTMuOWgwLjF2LTguODgxNzhlLTE2YzAuNC0wLjQgMS0wLjQgMS40LDBsMS40LDEuNGMwLjQsMC40IDAuNCwxIDAsMS40bDAsMC0xNiwxNi42Yy0wLjIsMC4yLTAuNCwwLjMtMC43LDAuMy0wLjMsMC0wLjUtMC4xLTAuNy0wLjNsLTcuOC04LjQtLjItLjN6IiBmaWxsPSIjMDFiOWQxIi8+Cjwvc3ZnPgo=);
+        background-position: center;
+        background-size: 7px;
+        background-repeat: no-repeat;
+        border-color: #01b9d1;
+    }
+
+    @media screen and (max-width: 991px) {
+        .table__thead {
+            display: none;
+        }
+
+        .table-row {
+            /*scale: 1.2;*/
+            display: inline-block;
+            border: 0;
+            background-color: #9adcdf54;
+            width: calc(33.3% - 13px);
+            margin-right: 10px;
+            margin-bottom: 10px;
+            backdrop-filter: blur(10px);
+            border-radius:10%;
+
+        }
+
+        .table-row__img {
+            width: 42px;
+            height: 42px;
+            margin-bottom: 10px;
+        }
+
+        .table-row__td:before {
+            content: attr(data-column);
+            color: #9eabb4;
+            font-weight: 500;
+            font-size: 12px;
+            text-transform: uppercase;
+            display: block;
+        }
+
+        .table-row__info {
+            display: block;
+            padding-left: 0;
+        }
+
+        .table-row__td {
+            display: block;
+            text-align: center;
+            padding: 4px !important;
+        }
+
+        .table__select-row {
+            display: none;
+        }
+
+    }
+
+
+    @media screen and (max-width: 680px) {
+        .table-row {
+            width: calc(50% - 13px);
+        }
+    }
+
+    @media screen and (max-width: 480px) {
+        .table-row {
+            width: 100%;
+        }
+    }
+</style>
+</html>

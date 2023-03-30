@@ -44,15 +44,24 @@ export async function helpData() {
                         "icon": "队伍伤害",
                         "title": "#队伍面板",
                         "desc": "查看已经缓存的角色数据，可直接组合调用队伍伤害"
-                    },
-                    {
-                        "icon": "排行榜",
-                        "title": "#成就排行",
-                        "desc": "官 & B服成就排行"
-                    }, {
+                    }
+                    , {
                         "icon": "排行榜",
                         "title": "#宝箱排行",
                         "desc": "官 & B服宝箱排行"
+                    }, {
+                        "icon": "排行榜",
+                        "title": "#成就排行",
+                        "desc": "官 & B服宝箱排行"
+                    }, {
+                        "icon": "排行榜",
+                        "title": "#宝箱排行榜",
+                        "desc": "群内宝箱排行榜（需用户通过【#宝箱排行】写入数据）"
+                    },
+                    {
+                        "icon": "排行榜",
+                        "title": "#成就排行榜",
+                        "desc": "群内成就排行榜（需用户通过【#成就排行】写入数据）"
                     }
                 ]
             },
@@ -67,6 +76,10 @@ export async function helpData() {
                         "icon": "首次打卡时间",
                         "title": "首次打卡时间",
                         "desc": "你的首次打卡时间"
+                    }, {
+                        "icon": "最大",
+                        "title": "emoji猜成语",
+                        "desc": "emoji猜成语，获得魔晶奖励"
                     }
                 ]
             },
@@ -110,7 +123,7 @@ export async function helpData() {
                     },
                     {
                         "icon": "OpenAI",
-                        "title": "模型列表",
+                        "title": "语言模型列表",
                         "desc": "查看当前已有模型列表"
                     },
                     {
@@ -130,7 +143,7 @@ export async function helpData() {
                         "icon": "密钥",
                         "title": "#设置模型key sk-xxxxxx",
                         "desc": "设置OpenAI的key"
-                    },{
+                    }, {
                         "icon": "OpenAI",
                         "title": "#开启群模型123456 | #关闭..",
                         "desc": "开启或关闭群123456的OpenAI功能（默认全开）"

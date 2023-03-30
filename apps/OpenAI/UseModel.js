@@ -54,7 +54,7 @@ export async function UseModel(e) {
     }
     const BlackList = Json.BlackList // [123, 456] 黑名单列表
     if (BlackList.includes(e.user_id)) {
-        e.reply('伱被禁止与我聊天了呜呜（；へ：）~', true)
+        // e.reply('伱被禁止与我聊天了呜呜（；へ：）~')
         console.log('\nAI对话黑名单：' + e.user_id)
         return true
     }
