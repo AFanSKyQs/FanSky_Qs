@@ -15,6 +15,7 @@ import {
 } from "./ChangeAIModel.js";
 import {OpenAIQuota} from "./OpenAIQuota.js";
 import {getOpenAIConfig} from "../../models/getCfg.js";
+import {PersonList, UsePerson} from "./UseDefaultPerson.js";
 
 export class OpenAIEntry extends plugin {
     constructor() {
@@ -35,11 +36,13 @@ export class OpenAIEntry extends plugin {
                 {
                     reg: /.*/i,
                     fnc: 'UseModel',
-                    log:false
-                }, {
-                    reg: /#?(对话|语言|OpenAI|chatgpt)模型列表/,
-                    fnc: 'OpenAPModelList'
-                },
+                    log: false
+                }
+                // , {
+                //     reg: /#?(对话|语言|OpenAI|chatgpt)模型列表/,
+                //     fnc: 'OpenAPModelList'
+                // }
+                ,
                 // {
                 //     reg: /#?(早|早上|上午|午|中午|下午|晚|晚上|午夜|半夜|凌晨|深夜)(好！|好!|好呀!|好呀！|好|安|安好梦|好呀|愉快|好喵！|好喵!|好喵)(.*)/,
                 //     fnc: 'SayHelloToAI'
@@ -48,10 +51,11 @@ export class OpenAIEntry extends plugin {
                 //     reg: "^早$",
                 //     fnc: 'SayHelloToAI'
                 // },
+                // {
+                //     reg: /#?(更换|切换|换|换一下)语言模型(.*)/, // (.*)里面接收的是数字，如1或者2等..
+                //     fnc: 'ChangeAIModel'
+                // },
                 {
-                    reg: /#?(更换|切换|换|换一下)语言模型(.*)/, // (.*)里面接收的是数字，如1或者2等..
-                    fnc: 'ChangeAIModel'
-                }, {
                     reg: /#?(拉黑|加黑|禁止|禁用)模型使用(.*)/, // (.*)里面接收的是qq号，即要拉黑的人的qq号
                     fnc: 'addBlackList'
                 }, {
@@ -72,13 +76,19 @@ export class OpenAIEntry extends plugin {
                 }, {
                     reg: /#(OpenAI|模型|语言模型|OpenAI模型|key)(额度|余额|剩余|使用)(查询|查看|查找)/,
                     fnc: 'OpenAIQuota'
-                },{
+                }, {
                     reg: /#设置(OpenAI|模型|语言模型|OpenAI模型)转合并(\d+)/,
                     fnc: 'SetMaxToMakeMsg'
                 },
                 {
                     reg: /#(开启|打开|open|关闭|禁用|关机)群(模型|AI|OpenAI|ai|聊天)(\d+)/,
                     fnc: 'OpenGroupAI'
+                }, {
+                    reg: /#(use|USE|使用)(OpenAI|AI|模型|对话|语言)(人设|设定|预设)(\d+)/,
+                    fnc: 'UsePerson'
+                }, {
+                    reg: /#(OpenAI|AI|模型|对话|语言)(人设|设定|预设)(列表|表单|表|集合)/,
+                    fnc: 'PersonList'
                 },
                 // {
                 //     reg: /#对话列表|#聊天列表|#会话列表/,
@@ -87,14 +97,27 @@ export class OpenAIEntry extends plugin {
             ]
         })
     };
+
+    async PersonList(e) {
+        let Static = await PersonList(e)
+        if (!Static || Static === false) return false
+    }
+
+    async UsePerson(e) {
+        let Static = await UsePerson(e)
+        if (!Static || Static === false) return false
+    }
+
     async OpenGroupAI(e) {
         let Static = await OpenGroupAI(e)
         if (!Static || Static === false) return false
     }
+
     async SetMaxToMakeMsg(e) {
         let Static = await SetMaxToMakeMsg(e)
         if (!Static || Static === false) return false
     }
+
     async OpenAIQuota(e) {
         let OpenAIConfig = await getOpenAIConfig()
         let Static = await OpenAIQuota(e, OpenAIConfig)

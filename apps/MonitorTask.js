@@ -1,13 +1,14 @@
 /* eslint-disable camelcase */
 import plugin from '../../../lib/plugins/plugin.js'
 import fs from 'fs'
+import path from 'path'
 import cfg from '../../../lib/config/config.js'
 import common from '../../../lib/common/common.js'
 import axios from "axios";
 
-let GithubFolder = `${process.cwd()}/plugins/FanSky_Qs/resources/Github`
-let GithubStatic = `${process.cwd()}/plugins/FanSky_Qs/resources/Github/GithubStatic.json`
-let BotNumStatic = `${process.cwd()}/plugins/FanSky_Qs/resources/Github/GithubBotNumStatic.json`
+let cwd=process.cwd().replace(/\\/g,"/")
+let GithubStatic = `${cwd}/plugins/FanSky_Qs/resources/Github/GithubStatic.json`
+let BotNumStatic = `${cwd}/plugins/FanSky_Qs/resources/Github/GithubBotNumStatic.json`
 export class MonitorTask extends plugin {
     constructor() {
         super({
@@ -24,7 +25,7 @@ export class MonitorTask extends plugin {
         })
         this.task = {
             name: 'FanSky_Qs仓库更新检测',
-            cron: '0 0/6 * * * ? ',
+            cron: '0 0/4 * * * ? ',
             fnc: () => {
                 this.MonitorTask()
             }
@@ -32,24 +33,16 @@ export class MonitorTask extends plugin {
     }
 
     async MonitorTask() {
-        if (!fs.existsSync(GithubFolder)) {
-            console.log('>>>>已创建Github文件夹')
-            fs.mkdirSync(GithubFolder)
-        }
-        if (!fs.existsSync(GithubStatic)) {
-            fs.writeFileSync(GithubStatic, '{}')
-            console.log('>>>>已创建GithubStatic.json文件')
-        }
-        if(!fs.existsSync(BotNumStatic)){
-            fs.writeFileSync(BotNumStatic, '{}')
-            console.log('>>>>已创建BotNumStatic.json文件')
-        }
+        const dirPath = path.dirname(BotNumStatic);
+        fs.mkdirSync(dirPath, {recursive: true});
+        if (!fs.existsSync(BotNumStatic)) fs.writeFileSync(BotNumStatic, '{}');
+        if (!fs.existsSync(GithubStatic)) fs.writeFileSync(GithubStatic, '{}');
         let BotNumStaticJson = JSON.parse(fs.readFileSync(BotNumStatic))
         let TimeTmp = new Date().getTime()
         if(!BotNumStaticJson["TimeTmp"]){
             BotNumStaticJson["TimeTmp"] = TimeTmp
             fs.writeFileSync(BotNumStatic, JSON.stringify(BotNumStaticJson));
-        }else if(TimeTmp - BotNumStaticJson["TimeTmp"] > 233333){
+        }else if(TimeTmp - BotNumStaticJson["TimeTmp"] > 180000){
             BotNumStaticJson["TimeTmp"] = TimeTmp
             fs.writeFileSync(BotNumStatic, JSON.stringify(BotNumStaticJson));
         }else{

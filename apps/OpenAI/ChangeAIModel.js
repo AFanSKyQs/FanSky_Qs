@@ -180,32 +180,14 @@ export async function SetPersona(e) {
         e.reply('好短，我不同意这个设定，再想一个更好的嘛！(∩ﾟдﾟ)')
         return true
     }
-    if (e.isMaster) {
-        let path = `${process.cwd()}/plugins/FanSky_Qs/config/OpenAI.json`
-        path = path.replace(/\\/g, '/')
-        let OpenAIJson = JSON.parse(fs.readFileSync(path))
-        OpenAIJson.Persona = Persona
-        await fs.writeFileSync(path, JSON.stringify(OpenAIJson))
-        e.reply(`已将全局模型人设更改为（当别人没有设置人设将使用全局人设）：\n${Persona}`)
-        return true
-    } else {
-        let singleModelFolder = `${process.cwd()}/resources/FanSky`
-        let singleModel = `${process.cwd()}/resources/FanSky/singleModel.json`
-        if (!fs.existsSync(singleModelFolder)) {
-            fs.mkdirSync(singleModelFolder);
-            console.log('>>>已创建FanSky文件夹')
-        }
-        if (!fs.existsSync(singleModel)) {
-            fs.writeFileSync(singleModel, '{}');
-            console.log('>>>已创建singleModel.json文件')
-        }
-        let singleModelConfig = JSON.parse(fs.readFileSync(singleModel))
-        singleModelConfig[e.user_id] = Persona
-        fs.writeFileSync(singleModel, JSON.stringify(singleModelConfig));
-        e.reply(`已将您的模型人设设置为：\n${Persona}`)
-        // e.reply('不行哇，你不能这么做！〣 ( ºΔº ) 〣')
-        return true
-    }
+    await redis.set(`FanSky:OpenAI:Person:${e.user_id}`, JSON.stringify({
+        Person: `${Persona}`,
+        type: `singlePerson`
+    }))
+    let PersonStr = Persona.length > 10 ? `${Persona.slice(0, 10)}...` : Persona
+    logger.info(logger.magenta(`${e.user_id}:-设置人设：${PersonStr}`));
+    e.reply(`已将您的人设设置为：\n${PersonStr}`)
+    return true
 }
 
 export async function ChangeAIModel(e) {

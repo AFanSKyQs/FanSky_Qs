@@ -48,48 +48,48 @@ export class EliminateEveryDay extends plugin {
         const RunPath = await this.ChangePath(Top_path);
         let isExist = await this.isFileExist(RunPath);
 
-        let list = cfg.masterQQ;
+        // let list = cfg.masterQQ;
         if (!isExist) {
-            let SendNum = 0
+            // let SendNum = 0
             console.log("isExist:" + isExist)
-            for (let userId of list) {
-                if (SendNum >= 2) {
-                    break;
-                }
-                if (userId.length > 11) continue
-                await Bot.pickFriend(userId).sendMsg("SignTop已经重置过啦~。")
-                await new Promise(resolve => setTimeout(resolve, 5000));
-                SendNum++
-            }
+            // for (let userId of list) {
+            //     if (SendNum >= 2) {
+            //         break;
+            //     }
+            //     if (userId.length > 11) continue
+            //     await Bot.pickFriend(userId).sendMsg("SignTop已经重置过啦~。")
+            //     await new Promise(resolve => setTimeout(resolve, 5000));
+            //     SendNum++
+            // }
             return true;
         }
         console.log("isExist:" + isExist)
         fs.unlink(RunPath, async (err) => {
             if (err) {
                 console.log(err);
-                let SendNum = 0
-                for (let userId of list) {
-                    if (SendNum >= 2) {
-                        break;
-                    }
-                    if (userId.length > 11) continue
-                    await Bot.pickFriend(userId).sendMsg("SignTop重置失败：\n" + err)
-                    await new Promise(resolve => setTimeout(resolve, 5000));
-                    SendNum++
-                }
+                // let SendNum = 0
+                // for (let userId of list) {
+                //     if (SendNum >= 2) {
+                //         break;
+                //     }
+                //     if (userId.length > 11) continue
+                //     await Bot.pickFriend(userId).sendMsg("SignTop重置失败：\n" + err)
+                //     await new Promise(resolve => setTimeout(resolve, 5000));
+                //     SendNum++
+                // }
                 return true;
             }
             console.log("文件删除成功");
-            let SendNum = 0
-            for (let userId of list) {
-                if (SendNum >= 2) {
-                        break;
-                    }
-                if (userId.length > 11) continue
-                await Bot.pickFriend(userId).sendMsg("不知不觉已经00点啦，新的一天要开心喵~\nSignTop重置成功。")
-                await new Promise(resolve => setTimeout(resolve, 5000));
-                SendNum++
-            }
+            // let SendNum = 0
+            // for (let userId of list) {
+            //     if (SendNum >= 2) {
+            //             break;
+            //         }
+            //     if (userId.length > 11) continue
+            //     await Bot.pickFriend(userId).sendMsg("不知不觉已经00点啦，新的一天要开心喵~\nSignTop重置成功。")
+            //     await new Promise(resolve => setTimeout(resolve, 5000));
+            //     SendNum++
+            // }
         });
     }
 
@@ -100,19 +100,19 @@ export class EliminateEveryDay extends plugin {
     async ClearSignTask() {
         const RunPath = await this.ChangePath(Sign_path);
         let isExist = await this.isFileExist(RunPath);
-        let list = cfg.masterQQ;
+        // let list = cfg.masterQQ;
         if (!isExist) {
             console.log("isExist:" + isExist)
-            let SendNum = 0
-            for (let userId of list) {
-                if (SendNum >= 2) {
-                    break;
-                }
-                if (userId.length > 11) continue
-                await Bot.pickFriend(userId).sendMsg("Sign文件还不存在~。")
-                await new Promise(resolve => setTimeout(resolve, 5000));
-                SendNum++
-            }
+            // let SendNum = 0
+            // for (let userId of list) {
+            //     if (SendNum >= 2) {
+            //         break;
+            //     }
+            //     if (userId.length > 11) continue
+            //     await Bot.pickFriend(userId).sendMsg("Sign文件还不存在~。")
+            //     await new Promise(resolve => setTimeout(resolve, 5000));
+            //     SendNum++
+            // }
             return true;
         }
         let data = JSON.parse(fs.readFileSync(RunPath));
@@ -126,19 +126,19 @@ export class EliminateEveryDay extends plugin {
             Num++;
         }
         fs.writeFileSync(RunPath, JSON.stringify(data));
-        let msg = [
-            `重置打卡状态：${Num}位\n打卡：${SignNum}位。\n当前时间: ` + new Date().toLocaleString()
-        ];
-        let SendNum = 0
-        for (let userId of list) {
-            if (SendNum >= 2) {
-                break;
-            }
-            if (userId.length > 11) continue
-            await Bot.pickFriend(userId).sendMsg(msg)
-            await new Promise(resolve => setTimeout(resolve, 5000));
-            SendNum++
-        }
+        // let msg = [
+        //     `重置打卡状态：${Num}位\n打卡：${SignNum}位。\n当前时间: ` + new Date().toLocaleString()
+        // ];
+        // let SendNum = 0
+        // for (let userId of list) {
+        //     if (SendNum >= 2) {
+        //         break;
+        //     }
+        //     if (userId.length > 11) continue
+        //     await Bot.pickFriend(userId).sendMsg(msg)
+        //     await new Promise(resolve => setTimeout(resolve, 5000));
+        //     SendNum++
+        // }
     }
 
     async ClearSign(e) {

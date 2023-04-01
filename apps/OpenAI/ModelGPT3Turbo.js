@@ -9,28 +9,19 @@ let MoudelStatus = []
 let Moudel1Num = []
 
 export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
-    let msg = e.msg
+    let msg = e.original_msg || e.msg
     Bot.logger.info('处理插件：FanSky_Qs-OpenAI模型1:' + `\n群：${e.group_id}\n` + 'QQ:' + `${e.user_id}\n` + `消息：${msg}`)
-    let Persona = Json.Persona
-    if (!e.isMaster) {
-        let singleModelFolder = `${process.cwd()}/resources/FanSky`
-        let singleModel = `${process.cwd()}/resources/FanSky/singleModel.json`
-        if (!fs.existsSync(singleModelFolder)) {
-            fs.mkdirSync(singleModelFolder);
-            console.log('>>>已创建FanSky文件夹')
-        }
-        if (!fs.existsSync(singleModel)) {
-            fs.writeFileSync(singleModel, '{}');
-            console.log('>>>已创建singleModel.json文件')
-        }
-        let singleModelConfig = JSON.parse(fs.readFileSync(singleModel))
-        try {
-            if (singleModelConfig[e.user_id]) {
-                Persona = singleModelConfig[e.user_id]
-            }
-        } catch (err) {
-            Persona = Json.Persona
-        }
+    let Persona = "你是喵喵喵喵~"
+    let Redis = JSON.parse(await redis.get(`FanSky:OpenAI:Person:Default`))
+    if (Redis) {
+        Persona = Redis.Person
+    } else {
+        e.reply("没有检测到默认人设，请重启或联系开发人员检查问题")
+        return false
+    }
+    if (await redis.get(`FanSky:OpenAI:Person:${e.user_id}`)) {
+        let singlePersona = JSON.parse(await redis.get(`FanSky:OpenAI:Person:${e.user_id}`))
+        Persona = singlePersona.Person
     }
     MoudelStatus[e.user_id] = true
     let DataList = {

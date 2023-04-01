@@ -117,15 +117,26 @@ export async function helpData() {
                 "group": "OpenAI功能：艾特机器人即可开始聊天",
                 "list": [
                     {
+                        "icon": "OpenAI",
+                        "title": "#模型人设列表",
+                        "desc": "查看目前自带的预设人设"
+                    }
+                    , {
+                        "icon": "OpenAI",
+                        "title": "#使用AI人设1",
+                        "desc": "使用预设人设1"
+                    }
+                    , {
                         "icon": "剩余",
                         "title": "#key剩余查询",
                         "desc": "查询OpenAI的key使用情况"
-                    },
-                    {
-                        "icon": "OpenAI",
-                        "title": "语言模型列表",
-                        "desc": "查看当前已有模型列表"
-                    },
+                    }
+                    ,
+                    // {
+                    //     "icon": "OpenAI",
+                    //     "title": "语言模型列表",
+                    //     "desc": "查看当前已有模型列表"
+                    // },
                     {
                         "icon": "重置记忆",
                         "title": "#重置对话",
@@ -133,7 +144,7 @@ export async function helpData() {
                     }, {
                         "icon": "人设",
                         "title": "设置模型人设xxx",
-                        "desc": "将OpenAI模型人设设置为xxx(每个人独立的)"
+                        "desc": "将OpenAI模型人设设置为xxx(每个人独立)"
                     },
                 ]
             }, {
@@ -160,19 +171,20 @@ export async function helpData() {
                         "icon": "回收站",
                         "title": "#清空全部",
                         "desc": "清除所有人的对话记录"
-                    }, {
-                        "icon": "人设",
-                        "title": "设置模型人设xxx",
-                        "desc": "设置OpenAI的全局人设[xxx]"
-                    }, {
+                    }
+                    ,
+                    {
                         "icon": "拉黑",
                         "title": "拉黑模型使用[QQ]",
                         "desc": "拉黑某人使用，如：拉黑模型使用3141865879"
-                    }, {
-                        "icon": "OpenAI",
-                        "title": "更换语言模型1",
-                        "desc": "更换OpenAI的语言模型[1、2]"
-                    }, {
+                    }
+                    ,
+                    // {
+                    //     "icon": "OpenAI",
+                    //     "title": "更换语言模型1",
+                    //     "desc": "更换OpenAI的语言模型[1、2]"
+                    // },
+                    {
                         "icon": "最大",
                         "title": "设置模型打卡开启",
                         "desc": "OpenAI的使用绑定魔晶[开启、关闭]"
