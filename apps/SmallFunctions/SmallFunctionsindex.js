@@ -8,6 +8,7 @@ import {AchievementTop} from "./ChestAndAcheTop/AchieveTop.js";
 import ChestTop from "./ChestAndAcheTop/ChestTop.js";
 import {ChestGroupTop} from "./ChestAndAcheTop/ChestGroupTop.js";
 import plugin from "../../../../lib/plugins/plugin.js";
+import {cx, cxbz, hc, hx} from "./Znb233_Js/Znb233_Cx.js";
 
 let urls_one = "http://api.andeer.top/API/word_pic1.php"
 
@@ -48,9 +49,37 @@ export class SmallFunctionsindex extends plugin {
                 }, {
                     reg: '^#宝箱(排行|排名|查询|统计)(.*)$',
                     fnc: 'ChestGroupTop'
+                }, {
+                    reg: "^#?(抽象帮助|cxbz)",
+                    fnc: "cxbz",
+                }, {
+                    reg: "^#?(抽象|cx)",
+                    fnc: "cx",
+                }, {
+                    reg: "^#?(还抽|hc)",
+                    fnc: "Hc",
+                }, {
+                    reg: "^#?(化学|hx)",
+                    fnc: "Hx",
                 }
             ]
         })
+    }
+
+    async Hx(e) {
+        await hx(e)
+    }
+
+    async Hc(e) {
+        await hc(e)
+    }
+
+    async cx(e) {
+        await cx(e)
+    }
+
+    async cxbz(e) {
+        await cxbz(e)
     }
 
     async achieveTop(e) {
