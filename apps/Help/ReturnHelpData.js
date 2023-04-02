@@ -87,6 +87,20 @@ export async function helpData() {
                 "group": "单功能菜单",
                 "list": [
                     {
+                        "icon": "抽象",
+                        "title": "抽象帮助 | cxbz",
+                        "desc": "将文字转换为多种抽象的东西"
+                    }, {
+                        "icon": "抽象",
+                        "title": "抽象xxxx",
+                        "desc": "将xxx转换为emoji"
+                    },
+                    {
+                        "icon": "化学",
+                        "title": "化学xxx",
+                        "desc": "将xxx转换为化学元素周期表"
+                    },
+                    {
                         "icon": "鸡哥",
                         "title": "鸡哥 | 小黑子",
                         "desc": "纯路人表情包"
