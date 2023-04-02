@@ -2,15 +2,18 @@ import fs from 'fs'
 import {isFileExist} from '../models/isFileExist.js'
 import cfg from '../../../lib/config/config.js'
 import axios from "axios";
+import path from "path";
 
 let cwd = process.cwd().replace(/\\/g, '/')
 let ConfigPath = `${cwd}/plugins/FanSky_Qs/config/OpenAI.json`
 let defaultConfigPath = `${cwd}/plugins/FanSky_Qs/config/default_config.json`
 let TeyvatPath = `${cwd}/plugins/FanSky_Qs/config/TeyvatConfig/TeyvatUrlJson.json`
 let TeyvatFolderPath = `${cwd}/plugins/FanSky_Qs/config/TeyvatConfig`
-
+let GitImg = `${cwd}/plugins/FanSky_Qs/resources/GitImg/UsersImg/User.txt`
 export async function StarRunCheckConfig() {
     let IsExist = await CheckConfigExist()
+    const dirPath = path.dirname(GitImg);
+    fs.mkdirSync(dirPath, {recursive: true});
     if (IsExist.True) {
         await CheckPersona()
         await CheckKey()

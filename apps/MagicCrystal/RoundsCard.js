@@ -16,6 +16,7 @@ export async function RoundsCard(e) {
     }))
     await redis.expire(`FanSky:MagicCrystal:${e.user_id}:Card`, 60 * 60 * 4)
     let img = RoundsCardPath + fs.readdirSync(RoundsCardPath)[Math.floor(Math.random() * fs.readdirSync(RoundsCardPath).length)]
-    await e.reply(segment.image(`file:///${img}`), true)
+    let imgBuffer = fs.readFileSync(img);
+    await e.reply(segment.image(imgBuffer), true)
     return true
 }

@@ -87,6 +87,21 @@ export async function helpData() {
                 "group": "单功能菜单",
                 "list": [
                     {
+                        "icon": "龙图",
+                        "title": "l图 | 龙图 | 加l图 | #更新l图 |有多少l图",
+                        "desc": ""
+                    }, {
+                        "icon": "弔图",
+                        "title": "d图 | 弔图 | 加d图 | #更新d图 |有多少d图",
+                        "desc": ""
+                    },
+                    {
+                        "icon": "化学",
+                        "title": "化学xxx",
+                        "desc": "将xxx转换为化学元素周期表"
+                    },
+
+                    {
                         "icon": "抽象",
                         "title": "抽象帮助 | cxbz",
                         "desc": "将文字转换为多种抽象的东西"

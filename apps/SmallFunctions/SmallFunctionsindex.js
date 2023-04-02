@@ -9,6 +9,9 @@ import ChestTop from "./ChestAndAcheTop/ChestTop.js";
 import {ChestGroupTop} from "./ChestAndAcheTop/ChestGroupTop.js";
 import plugin from "../../../../lib/plugins/plugin.js";
 import {cx, cxbz, hc, hx} from "./Znb233_Js/Znb233_Cx.js";
+import {updateDioTu, updateLongTu} from "../../models/UpdateImg.js";
+import {addDioTuSend, sendDioTu, sendDioTuNum} from "./DioLongTu/DioTu.js";
+import {addLongTuSend, sendLongTu, sendLongTuNum} from "./DioLongTu/LongTu.js";
 
 let urls_one = "http://api.andeer.top/API/word_pic1.php"
 
@@ -61,9 +64,73 @@ export class SmallFunctionsindex extends plugin {
                 }, {
                     reg: "^#?(化学|hx)",
                     fnc: "Hx",
+                }, {
+                    reg: /^#(更新|下载|载入|加载)(d|弔|吊|屌|diao|dio|碉|雕|貂)图$/,
+                    fnc: "updateDioTu"
+                }, {
+                    reg: /^#(更新|下载|载入|加载)(l|long|龙|隆|聋|L|笼|浓|农|弄)图$/,
+                    fnc: "updateLongTu"
+                }, {
+                    reg: '^#?(来点|给点|发|来|要)?(Diao|Dio|dio|D|d|弔|屌|叼|掉|迪奥|雕|貂|碉|鵰|刁|吊|diao)图$',
+                    fnc: 'sendDioTu'
+                }, {
+                    reg: '^#?(加|增加|增|add|加入)(Diao|d|D|Dio|dio|弔|屌|叼|掉|迪奥|雕|貂|碉|鵰|刁|吊|diao)图(.*)',
+                    fnc: 'addDioTuSend'
+                }, {
+                    reg: '^#?(有多少|现在有多少|how|有几个)(Diao|Dio|dio|D|d|弔|屌|叼|掉|迪奥|雕|貂|碉|鵰|刁|吊|diao)图(.*)$',
+                    fnc: 'sendDioTuNum'
+                }, {
+                    reg: '^#?(来点|给点|发|来|要)?(long|龙|nong|聋|隆|l|L)图$',
+                    fnc: 'sendLongTu'
+                }, {
+                    reg: '^#?(加|增加|增|add|加入)(long|龙|nong|聋|隆|l|L)图(.*)',
+                    fnc: 'addLongTuSend'
+                }, {
+                    reg: '^#?(有多少|现在有多少|how|有几个)(long|龙|nong|聋|隆|l|L)图(.*)$',
+                    fnc: 'sendLongTuNum'
                 }
             ]
         })
+    }
+
+    async sendLongTuNum(e) {
+        await sendLongTuNum(e)
+        return true
+    }
+
+    async addLongTuSend(e) {
+        await addLongTuSend(e)
+        return true
+    }
+
+    async sendLongTu(e) {
+        await sendLongTu(e)
+        return true
+    }
+
+    async sendDioTuNum(e) {
+        await sendDioTuNum(e)
+        return true
+    }
+
+    async addDioTuSend(e) {
+        await addDioTuSend(e)
+        return true
+    }
+
+    async sendDioTu(e) {
+        await sendDioTu(e)
+        return true
+    }
+
+    async updateLongTu(e) {
+        await updateLongTu(e)
+        return true
+    }
+
+    async updateDioTu(e) {
+        await updateDioTu(e)
+        return true
     }
 
     async Hx(e) {

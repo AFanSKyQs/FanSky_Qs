@@ -1,4 +1,6 @@
 #过滤pull文件
+resources/GitImg/
+MyWeb
 node_modules/
 .idea/
 config/TeyvatConfig/
