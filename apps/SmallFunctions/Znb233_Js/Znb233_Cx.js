@@ -16,7 +16,8 @@ export async function cx(e) {
 export async function hc(e) {
     let Msg = e.original_msg || e.msg
     let text = Msg.replace(/还抽|#|hc/g, '').trim();
-    let msg = await dechouxiang(text);
+    let text1 = await dechouxiang1(text);
+    let msg = await dechouxiang2(text1)
     await e.reply(msg)
     return true
 }
@@ -58,8 +59,6 @@ const emoji = {
     "shengqi": "💢",
     "!": "❕",
     "?": "¿",
-    "！": "❕",
-    "？": "¿",
     "shuijiao": "💤",
     "fangpi": "💨",
     "di": "💦",
@@ -386,7 +385,6 @@ const emoji = {
     "cuo": "👏",
     "tang": "🍬",
     "ban": "🍝",
-    "pa": "爪巴",
     "jiang": "🥇",
     "ming": "💗",
     "xin": "💚",
@@ -439,7 +437,6 @@ const emoji = {
     "xi": "‍🎊",
     "zao": "‍⛏",
     "xizao": "‍🚿",
-    "da": "‍🤜😫🤛",
     "hui": "‍🌠",
     "lai": "‍🍼",
     "le": "‍😆",
@@ -510,8 +507,6 @@ const emoji = {
     "ok": "👌",
     "haode": "👌",
     "hao": "👍",
-    "dian": "dian",
-    "dianzan": "dian👍",
     "zan": "👍",
     "bang": "👍",
     "cha": "👎",
@@ -1097,8 +1092,6 @@ const emoji = {
     "yuan": "⭕",
     "dui": "✅",
     "cuo": "❌",
-    "bisi": "biss",
-    "gaokuaidian": "GKD",
     "jia": "➕",
     "jian": "➖",
     "chu": "➗",
@@ -1114,7 +1107,7 @@ const emoji = {
     "6": "6️⃣",
     "7": "7️⃣",
     "8": "8️⃣",
-    "nin": "ning",
+    "nin": "0️⃣",
     "9": "9️⃣",
     "10": "🔟",
     "ku": "🆒",
@@ -1416,14 +1409,12 @@ const emoji = {
     "xiaren": "🍤",
     "sharen": "🍤",
     "qian": "💰",
-    "feiwu": "five",
     "qiu": "⚽",
     "tu": "🤮",
     "tou": "🌿",
     "cao": "🌿",
     "fu": "🪓",
     "ping": "🍎",
-    "tounima": "tony🐎",
     "wenzi": "🦟",
     "ding": "🦟"
 };
@@ -1558,12 +1549,69 @@ function rawPinyin(s) {
     else return s
 }
 
-async function dechouxiang(s) {
+async function dechouxiang1(text) {
+    //创建一个空字符串，用来存储替换后的文字
+    var result = "";
+    //创建一个变量，用来记录当前是否匹配到属性值
+    var matched = false;
+    //遍历文字的每个字符
+    for (var i = 0; i < text.length; i++) {
+        //获取当前字符
+        var char = text[i];
+        //如果当前字符是高代理项（头代理），并且下一个字符是低代理项（尾代理），则可能是一个emoji
+        if (/[\uD800-\uDBFF]/.test(char) && /[\uDC00-\uDFFF]/.test(text[i + 1])) {
+            //获取当前字符和下一个字符组成的emoji
+            var emojiChar = char + text[i + 1];
+            //创建一个数组，用来存储匹配到的属性名
+            var names = [];
+            //遍历对象的每个属性和属性值
+            for (var key in emoji) {
+                //如果属性值等于emoji，说明匹配到了
+                if (emoji[key] === emojiChar) {
+                    //将属性名添加到数组中
+                    names.push(key);
+                }
+            }
+            //如果数组不为空，说明匹配到了至少一个属性名
+            if (names.length > 0) {
+                //将数组中的属性名用/连接起来，作为替换的字符串
+                var replaceStr = names.join("/");
+                //如果之前已经匹配到了属性值，就在替换字符串前面加上_
+                if (matched) {
+                    replaceStr = "_" + replaceStr;
+                }
+                //将替换字符串添加到结果中
+                result += replaceStr;
+                //将匹配标志设为true
+                matched = true;
+                //跳过下一个字符，因为已经处理过了
+                i++;
+            } else {
+                //如果数组为空，说明没有匹配到任何属性名，就将emoji原样添加到结果中
+                result += emojiChar;
+                //将匹配标志设为false
+                matched = false;
+                //跳过下一个字符，因为已经处理过了
+                i++;
+            }
+        } else {
+            //如果当前字符不是高代理项（头代理），或者下一个字符不是低代理项（尾代理），则不可能是一个emoji，就将字符原样添加到结果中
+            result += char;
+            //将匹配标志设为false
+            matched = false;
+        }
+    }
+    //返回结果
+    return result;
+}
+
+
+async function dechouxiang2(s) {
     const h = s.split('');
     const cxresult = h.map(function (char) {
         return rawPinyin(char);
     });
-    return cxresult.join('-');
+    return cxresult.join('');
 }
 
 async function huaxue(s) {
