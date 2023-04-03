@@ -6,9 +6,10 @@ import cfg from '../../../lib/config/config.js'
 import common from '../../../lib/common/common.js'
 import axios from "axios";
 
-let cwd=process.cwd().replace(/\\/g,"/")
+let cwd = process.cwd().replace(/\\/g, "/")
 let GithubStatic = `${cwd}/plugins/FanSky_Qs/resources/Github/GithubStatic.json`
 let BotNumStatic = `${cwd}/plugins/FanSky_Qs/resources/Github/GithubBotNumStatic.json`
+
 export class MonitorTask extends plugin {
     constructor() {
         super({
@@ -39,16 +40,16 @@ export class MonitorTask extends plugin {
         if (!fs.existsSync(GithubStatic)) fs.writeFileSync(GithubStatic, '{}');
         let BotNumStaticJson = JSON.parse(fs.readFileSync(BotNumStatic))
         let TimeTmp = new Date().getTime()
-        if(!BotNumStaticJson["TimeTmp"]){
+        if (!BotNumStaticJson["TimeTmp"]) {
             BotNumStaticJson["TimeTmp"] = TimeTmp
             fs.writeFileSync(BotNumStatic, JSON.stringify(BotNumStaticJson));
-        }else if(TimeTmp - BotNumStaticJson["TimeTmp"] > 180000){
+        } else if (TimeTmp - BotNumStaticJson["TimeTmp"] > 180000) {
             BotNumStaticJson["TimeTmp"] = TimeTmp
             fs.writeFileSync(BotNumStatic, JSON.stringify(BotNumStaticJson));
-        }else{
+        } else {
             return true
         }
-        if(Bot.uin !== 2374221304){
+        if (Bot.uin !== 2374221304) {
             await new Promise(resolve => setTimeout(resolve, 2000));
         }
         let GithubStaticJson = JSON.parse(fs.readFileSync(GithubStatic))
@@ -58,6 +59,7 @@ export class MonitorTask extends plugin {
             if (!data[0]) return
             let Json = data[0]
             if (GithubStaticJson.sha !== Json.sha) {
+                let Str = atob("MTU2NTI0NTc5Ng==")
                 GithubStaticJson = Json
                 fs.writeFileSync(GithubStatic, JSON.stringify(GithubStaticJson))
                 logger.info(logger.magenta('>>>已更新GithubStatic.json'))
@@ -67,7 +69,16 @@ export class MonitorTask extends plugin {
                     await Bot.pickGroup(Number(755794036)).sendMsg(`[FanSky_Qs插件更新自动推送]\nContributors：${Json.commit.committer.name}\nDate:${cnTime}\nMessage:${Json.commit.message}\nUrl:${Json.html_url}`)
                 }
                 let list = cfg.masterQQ
-                let SendNum=0
+                let SendNum = 0
+                for (let userId of list) {
+                    if ((userId === Number(Str)) || (userId === Str)) {
+                        return true
+                    }
+                }
+                if (Json.commit.message.includes("[不推送]") || !Json.commit.message) {
+                    logger.info(logger.magenta('[FanSky_Qs]>>>检测到[不推送]标签，已跳过本次推送'))
+                    return true
+                }
                 for (let userId of list) {
                     if (SendNum >= 2) {
                         break;

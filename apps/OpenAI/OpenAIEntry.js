@@ -9,7 +9,7 @@ import {
     ChangeAIModel,
     ChangeAIModelMode,
     ChangeAISignMode,
-    OnOFF, OpenGroupAI, SetMaxToMakeMsg,
+    OnOFF, OpenGroupAI, setAllPerson, SetMaxToMakeMsg,
     SetOpenAIKey,
     SetPersona
 } from "./ChangeAIModel.js";
@@ -89,6 +89,9 @@ export class OpenAIEntry extends plugin {
                 }, {
                     reg: /#(OpenAI|AI|模型|对话|语言)(人设|设定|预设)(列表|表单|表|集合)/,
                     fnc: 'PersonList'
+                },{
+                    reg: /#(设置|删除)全局人设(.*)/,
+                    fnc: 'setAllPerson'
                 },
                 // {
                 //     reg: /#对话列表|#聊天列表|#会话列表/,
@@ -97,7 +100,10 @@ export class OpenAIEntry extends plugin {
             ]
         })
     };
-
+    async setAllPerson(e){
+        let Static = await setAllPerson(e)
+        if (!Static || Static === false) return false
+    }
     async PersonList(e) {
         let Static = await PersonList(e)
         if (!Static || Static === false) return false

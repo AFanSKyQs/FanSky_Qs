@@ -152,8 +152,8 @@ export async function helpData() {
                     }
                     , {
                         "icon": "OpenAI",
-                        "title": "#使用AI人设1",
-                        "desc": "使用预设人设1"
+                        "title": "#使用AI人设x",
+                        "desc": "1:病娇 | 2:猫娘"
                     }
                     , {
                         "icon": "剩余",
@@ -181,8 +181,18 @@ export async function helpData() {
                 "list": [
                     {
                         "icon": "密钥",
-                        "title": "#设置模型key sk-xxxxxx",
-                        "desc": "设置OpenAI的key"
+                        "title": "#设置模型key xxx",
+                        "desc": "xxx为：sk-xx..."
+                    },
+                    {
+                        "icon": "OpenAI",
+                        "title": "#设置全局人设xxx",
+                        "desc": "个人 > 全局 >系统预设"
+                    },
+                    {
+                        "icon": "OpenAI",
+                        "title": "#设置模型模式x",
+                        "desc": "1:不记忆 | 2:记忆"
                     }, {
                         "icon": "OpenAI",
                         "title": "#开启群模型123456 | #关闭..",

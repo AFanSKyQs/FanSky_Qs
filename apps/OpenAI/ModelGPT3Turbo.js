@@ -11,17 +11,16 @@ let Moudel1Num = []
 export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
     let msg = e.original_msg || e.msg
     Bot.logger.info('处理插件：FanSky_Qs-OpenAI模型1:' + `\n群：${e.group_id}\n` + 'QQ:' + `${e.user_id}\n` + `消息：${msg}`)
-    let Persona = "你是喵喵喵喵~"
-    let Redis = JSON.parse(await redis.get(`FanSky:OpenAI:Person:Default`))
-    if (Redis) {
-        Persona = Redis.Person
-    } else {
-        e.reply("没有检测到默认人设，请重启或联系开发人员检查问题")
-        return false
-    }
+    let Persona = "你是一个小助手~"
     if (await redis.get(`FanSky:OpenAI:Person:${e.user_id}`)) {
-        let singlePersona = JSON.parse(await redis.get(`FanSky:OpenAI:Person:${e.user_id}`))
-        Persona = singlePersona.Person
+        Persona = (JSON.parse(await redis.get(`FanSky:OpenAI:Person:${e.user_id}`))).Person
+    } else if (await redis.get(`FanSky:OpenAI:Person:MasterPerson`)) {
+        Persona = (JSON.parse(await redis.get(`FanSky:OpenAI:Person:MasterPerson`))).Person
+    } else if (await redis.get(`FanSky:OpenAI:Person:Default`)) {
+        Persona = (JSON.parse(await redis.get(`FanSky:OpenAI:Person:Default`))).Person
+    } else {
+        e.reply("没有检测到任何人设，请重启或联系开发人员检查问题")
+        return false
     }
     MoudelStatus[e.user_id] = true
     let DataList = {

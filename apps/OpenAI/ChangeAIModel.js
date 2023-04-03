@@ -4,6 +4,35 @@ import getCfg, {getOpenAIConfig} from '../../models/getCfg.js'
 let yunPath = process.cwd().replace(/\\/g, "/")
 let OpenAIPath = `${yunPath}/plugins/FanSky_Qs/config/OpenAI.json`
 
+export async function setAllPerson(e) {
+    if (!e.isMaster) {
+        e.reply("你不能设置全局人设噢喵~")
+        return true
+    }
+    let msg = e.original_msg || e.msg
+    if (msg && msg.includes("删除")) {
+        await redis.del(`FanSky:OpenAI:Person:MasterPerson`)
+        e.reply(`已删除全局人设~\n状态：用户个人 > 系统预设`)
+        return true
+    }
+    const matchResult = msg.match(/#设置全局人设(.+)/)
+    const person = matchResult ? matchResult[1] : null
+    if (!person) {
+        e.reply("设置失败，人设不能为空")
+        return true
+    } else if (person.length <= 6) {
+        e.reply("人设太短啦，再考虑考虑~")
+        return true
+    }
+    await redis.set(`FanSky:OpenAI:Person:MasterPerson`, JSON.stringify({
+        Person: `${person}`,
+        Time: `${new Date().getTime()}`,
+        type: "MasterPerson"
+    }))
+    e.reply(`设置成功，全局人设为\n(当用户无人设时)：\n${person}`)
+    return true
+}
+
 export async function OnOFF(e) {
     if (!e.isMaster) {
         e.reply("你不能关闭我喵~")

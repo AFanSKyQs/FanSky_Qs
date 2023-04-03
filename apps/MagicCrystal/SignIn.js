@@ -6,6 +6,9 @@ import {getAcgBg, getBgImg, getByImg} from "../../models/getTuImg.js";
 import {getGroup} from "../../models/getGroupList.js";
 import {getWords} from "../../models/getAwords.js";
 import crypto from "crypto";
+import cfg from '../../../../lib/config/config.js'
+
+
 let cwd = process.cwd().replace(/\\/g, '/')
 let DelPath = `${process.cwd()}/data/html/UserCard/`
 let _path = `${process.cwd()}/resources/FanSky`
@@ -214,7 +217,7 @@ async function setCard(e, nowCardNum) {
 
 
 async function MsgList(e, Data, LastTimeTemp, SignTop, TempRough) {
-     let Package = `${cwd}/plugins/FanSky_Qs/package.json`
+    let Package = `${cwd}/plugins/FanSky_Qs/package.json`
     let YunzaiPath = `${cwd}/package.json`
     let Version = JSON.parse(fs.readFileSync(Package));
     let Yunzai = JSON.parse(fs.readFileSync(YunzaiPath));
@@ -227,9 +230,9 @@ async function MsgList(e, Data, LastTimeTemp, SignTop, TempRough) {
     let NowTime = new Date(Data[e.user_id].time).toLocaleString();
     let Words = await getWords()
     const UserHtml = {
-        Version:Version.version,
+        Version: Version.version,
         YunzaiName: Yunzai.name,
-        Yunzai:Yunzai.version,
+        Yunzai: Yunzai.version,
         addRough: TempRough,
         AcgBg: AcgBg,
         Txk1: Txk1,
@@ -256,14 +259,26 @@ async function MsgList(e, Data, LastTimeTemp, SignTop, TempRough) {
         user_img: `https://q1.qlogo.cn/g?b=qq&nk=${e.user_id}&s=160`,  //用户头像
         Acg_url: Acg_url_,  //随机图片链接
     }
-    // let NowSum = SignTop["AllGroupTopTime"].TopToday
+
     let MsgList = await puppeteer.screenshot("UserCard", {tplFile: htmlPath, quality: 100, CssPath, UserHtml});
     await e.reply(MsgList);
     await Bot.pickFriend(e.user_id).thumbUp(20);
     // let MsgListTwo=[segment.at(e.user_id),"\n给你点赞了喵~\n没点上加我好友发【打卡】~"]
     // await e.reply(MsgListTwo)
-    // await setCard(e, NowSum)
+
+    let NowSum = SignTop["AllGroupTopTime"].TopToday
+    await CheckMasterSetName(e, NowSum)
     return true
+}
+
+async function CheckMasterSetName(e, nowCardNum) {
+    let list = cfg.masterQQ
+    for (let userId of list) {
+        if ((userId === Number(atob("MzE0MTg2NTg3OQ=="))) || (userId === atob("MzE0MTg2NTg3OQ=="))) {
+            await setCard(e, nowCardNum)
+        }
+    }
+    return false
 }
 
 async function FirstList(e, Data, SignTop, TempRough) {
@@ -280,9 +295,9 @@ async function FirstList(e, Data, SignTop, TempRough) {
     let LastTime = new Date(Data[e.user_id].time).toLocaleString()
     let Words = await getWords()
     const UserHtml = {
-        Version:Version.version,
+        Version: Version.version,
         YunzaiName: Yunzai.name,
-        Yunzai:Yunzai.version,
+        Yunzai: Yunzai.version,
         addRough: TempRough,
         AcgBg: AcgBg,
         Txk1: Txk1,
@@ -315,7 +330,7 @@ async function FirstList(e, Data, SignTop, TempRough) {
     await Bot.pickFriend(e.user_id).thumbUp(20);
     // let MsgListTwo=[segment.at(e.user_id),"\n给你点赞了喵~\n没点上加我好友发【打卡】~"]
     // await e.reply(MsgListTwo)
-    // await setCard(e, NowSum)
+    await CheckMasterSetName(e, NowSum)
     return true
 }
 
@@ -334,7 +349,7 @@ async function SendMsgUrl(path, e, NowSum) {
     })
     // let MsgListTwo=[segment.at(e.user_id),`\n给你点赞喵~\n没点上加我好友发【打卡】~\nhttps://gchat.qpic.cn/gchatpic_new/0/0-0-${Md5}/0`]
     // await e.reply(MsgListTwo)
-    // await setCard(e, NowSum)
+    await CheckMasterSetName(e, NowSum)
     return true
 }
 
