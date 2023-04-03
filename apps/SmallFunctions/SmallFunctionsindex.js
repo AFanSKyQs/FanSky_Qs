@@ -8,7 +8,7 @@ import {AchievementTop} from "./ChestAndAcheTop/AchieveTop.js";
 import ChestTop from "./ChestAndAcheTop/ChestTop.js";
 import {ChestGroupTop} from "./ChestAndAcheTop/ChestGroupTop.js";
 import plugin from "../../../../lib/plugins/plugin.js";
-import {cx, cxbz, hc, hx} from "./Znb233_Js/Znb233_Cx.js";
+import {cxbz, cx, hc, hx, zp} from "./Znb233_Js/Znb233_Cx.js";
 import {updateDioTu, updateLongTu} from "../../models/UpdateImg.js";
 import {addDioTuSend, sendDioTu, sendDioTuNum} from "./DioLongTu/DioTu.js";
 import {addLongTuSend, sendLongTu, sendLongTuNum} from "./DioLongTu/LongTu.js";
@@ -64,6 +64,9 @@ export class SmallFunctionsindex extends plugin {
                 }, {
                     reg: "^#?(化学|hx)",
                     fnc: "Hx",
+                }, {
+                    reg: "^#?(转拼|zp)",
+                    fnc: "Zp",
                 }, {
                     reg: /^#(更新|下载|载入|加载)(d|弔|吊|屌|diao|dio|碉|雕|貂)图$/,
                     fnc: "updateDioTu"
@@ -131,6 +134,10 @@ export class SmallFunctionsindex extends plugin {
     async updateDioTu(e) {
         await updateDioTu(e)
         return true
+    }
+
+    async Zp(e) {
+        await zp(e)
     }
 
     async Hx(e) {

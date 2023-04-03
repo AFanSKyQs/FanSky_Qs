@@ -8,6 +8,7 @@ resources/cache/
 resources/SmallFunction/AT_Xiaozuo7_CxkEmo/CxkImg
 config/OpenAI.json
 package-lock.json
+.vscode/
 
 
 # Compiled class file
