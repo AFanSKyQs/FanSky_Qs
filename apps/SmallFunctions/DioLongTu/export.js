@@ -5,6 +5,7 @@ import MD5 from 'md5'
 import lodash from 'lodash'
 import {segment} from 'oicq'
 import {getEmoji} from "../../../models/getString.js";
+import fetch from "node-fetch";
 
 let MasterQQ = 3141865879 // 接到上传请求时，机器人转发给谁
 let imgMaxSize = 5 // 最大上传单张图片大小，单位MB
