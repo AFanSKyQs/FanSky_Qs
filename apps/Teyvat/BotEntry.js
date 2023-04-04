@@ -7,6 +7,7 @@ import {getTeam} from './TeyvatTotalEntry.js'
 import _ from 'lodash'
 import gsCfg from '../../../genshin/model/gsCfg.js'
 import {getHelpBg} from "../../models/getTuImg.js";
+import {getVersionInfo} from "../../models/getVersion.js";
 
 let cwd = process.cwd().replace(/\\/g, '/')
 let DATA_PATH = `${process.cwd()}/plugins/FanSky_Qs/config/TeyvatConfig/TeyvatUrlJson.json`
@@ -50,27 +51,23 @@ export class BotEntry extends plugin {
         if (!UidRolesDataAvatars) return true
         let LastUpdateTime = UidRolesDataAvatars.next - 80 * 1000
         let date = new Date(LastUpdateTime).toLocaleString()
-        let Package = `${cwd}/plugins/FanSky_Qs/package.json`
-        let YunzaiPath = `${cwd}/package.json`
-        let PluginVersion = JSON.parse(fs.readFileSync(Package));
-        let BotInfo = JSON.parse(fs.readFileSync(YunzaiPath));
-        let ScreenData = await this.getRolesScreenData(BotInfo, PluginVersion.version, UidRolesDataAvatars, uid, e, date)
+        let ScreenData = await this.getRolesScreenData(UidRolesDataAvatars, uid, e, date)
         let img = await puppeteer.screenshot('FanSkyTeyvatTeamScreen', ScreenData)
         await e.reply(img)
         return true
     }
 
-    async getRolesScreenData(BotInfo, PluginVersion, UidRolesDataAvatars, uid, e, LastUpdateTime) {
+    async getRolesScreenData(UidRolesDataAvatars, uid, e, LastUpdateTime) {
+        let BotInfo = await getVersionInfo()
         let Card = e.sender.nickname || e.sender.card
-        let BotName = BotInfo.name.replace(/( |^)[a-z]/g, (L) => L.toUpperCase());
         let AcgPath = await getHelpBg()
         return {
             acgBg: AcgPath,
             uid: uid,
-            BotVersion: BotInfo.version,
-            BotName: BotName,
+            BotVersion: BotInfo.BotVersion,
+            BotName: BotInfo.BotName,
             saveId: e.user_id,
-            PluginVersion: PluginVersion,
+            PluginVersion: BotInfo.PluginVersion,
             RolesInfo: UidRolesDataAvatars.avatars,
             cwd: `${cwd}`,
             // tplFile: `E:/Bot_V3/yunzai/Yunzai-Bot/plugins/AFanSKyQs-TeyvatPlugin/resources/Teyvat/TeamCache/TeamRoles.html`,
@@ -163,10 +160,7 @@ export class BotEntry extends plugin {
     }
 
     async screenData(e, data, detail) {
-        let Package = `${cwd}/plugins/FanSky_Qs/package.json`
-        let YunzaiPath = `${cwd}/package.json`
-        let Version = JSON.parse(fs.readFileSync(Package));
-        let Yunzai = JSON.parse(fs.readFileSync(YunzaiPath));
+        let BotInfo = await getVersionInfo()
         const RoleData = await JSON.parse(data["pie_data"]);
         const DamageMap = await RoleData.map((item) => item.damage);
         const total = await DamageMap.reduce((prev, cur) => prev + cur);
@@ -184,17 +178,17 @@ export class BotEntry extends plugin {
         }, {});
         let AcgBg = await getHelpBg()
         return {
+            version: BotInfo.PluginVersion,
+            YunzaiName: BotInfo.BotName,
+            YunzaiVersion: BotInfo.BotVersion,
             result: Result2,
             RoleData: RoleData,
             quality: 100,
             AcgBg: AcgBg,
             Bing: Result,
             detail: detail,
-            YunzaiName: Yunzai.name,
-            YunzaiVersion: Yunzai.version,
             data: data,
             cwd: cwd,
-            version: `${Version.version}`,
             saveId: e.user_id,
             miaoRes: `${cwd}/plugins/miao-plugin/resources/`,
             tplFile: `${cwd}/plugins/FanSky_Qs/resources/Teyvat/html.html`,

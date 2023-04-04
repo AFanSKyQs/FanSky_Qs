@@ -7,6 +7,7 @@ import {getGroup} from "../../models/getGroupList.js";
 import {getWords} from "../../models/getAwords.js";
 import crypto from "crypto";
 import cfg from '../../../../lib/config/config.js'
+import {getVersionInfo} from "../../models/getVersion.js";
 
 
 let cwd = process.cwd().replace(/\\/g, '/')
@@ -217,6 +218,7 @@ async function setCard(e, nowCardNum) {
 
 
 async function MsgList(e, Data, LastTimeTemp, SignTop, TempRough) {
+    let BotInfo = await getVersionInfo()
     let Package = `${cwd}/plugins/FanSky_Qs/package.json`
     let YunzaiPath = `${cwd}/package.json`
     let Version = JSON.parse(fs.readFileSync(Package));
@@ -230,9 +232,9 @@ async function MsgList(e, Data, LastTimeTemp, SignTop, TempRough) {
     let NowTime = new Date(Data[e.user_id].time).toLocaleString();
     let Words = await getWords()
     const UserHtml = {
-        Version: Version.version,
-        YunzaiName: Yunzai.name,
-        Yunzai: Yunzai.version,
+        Version: BotInfo.PluginVersion,
+        YunzaiName: BotInfo.BotName,
+        Yunzai: BotInfo.BotVersion,
         addRough: TempRough,
         AcgBg: AcgBg,
         Txk1: Txk1,
@@ -282,10 +284,7 @@ async function CheckMasterSetName(e, nowCardNum) {
 }
 
 async function FirstList(e, Data, SignTop, TempRough) {
-    let Package = `${cwd}/plugins/FanSky_Qs/package.json`
-    let YunzaiPath = `${cwd}/package.json`
-    let Version = JSON.parse(fs.readFileSync(Package));
-    let Yunzai = JSON.parse(fs.readFileSync(YunzaiPath));
+    let BotInfo = await getVersionInfo()
     let ImgList = await getBgImg()
     let syc, hy, hg, name, salou, star, yuans, Txk1;
     [syc, hy, hg, name, salou, star, yuans, Txk1] = ImgList
@@ -295,9 +294,9 @@ async function FirstList(e, Data, SignTop, TempRough) {
     let LastTime = new Date(Data[e.user_id].time).toLocaleString()
     let Words = await getWords()
     const UserHtml = {
-        Version: Version.version,
-        YunzaiName: Yunzai.name,
-        Yunzai: Yunzai.version,
+        Version: BotInfo.PluginVersion,
+        YunzaiName: BotInfo.BotName,
+        Yunzai: BotInfo.BotVersion,
         addRough: TempRough,
         AcgBg: AcgBg,
         Txk1: Txk1,

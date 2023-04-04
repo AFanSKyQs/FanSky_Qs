@@ -38,14 +38,14 @@ export async function toImgSend(e, type, uid, signature, level, Name, JsonRes) {
             fs.mkdirSync(dirPath, {recursive: true});
             if (!fs.existsSync(achieveTopPath)) fs.writeFileSync(achieveTopPath, '{}');
             let Json = JSON.parse(fs.readFileSync(achieveTopPath, 'utf-8'));
-            if(!Json[e.group_id]){
+            if (!Json[e.group_id]) {
                 Json[e.group_id] = {}
             }
             if (!Json[e.group_id][e.user_id]) Json[e.group_id][e.user_id] = JsonRes.data[0]
             Json[e.group_id][e.user_id].uid = uid
             Json[e.group_id][e.user_id].nickname = signature
             await fs.writeFileSync(achieveTopPath, JSON.stringify(Json))
-            e.reply("你可以通过【#宝箱排行榜】查看群内数据了(已更新的)")
+            e.reply("你可以通过【#宝箱排行榜】查看群内数据了(已更新的)", true)
         }
         let ChestHtml = {
             uid: uid,

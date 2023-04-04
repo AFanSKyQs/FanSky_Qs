@@ -1,26 +1,31 @@
-import fs from "fs";
 import {getHelpBg} from "../../models/getTuImg.js";
+import {getVersionInfo} from "../../models/getVersion.js";
 
 let cwd = process.cwd().replace(/\\/g, '/')
 
 export async function screenData(e) {
+    let BotInfo = await getVersionInfo()
     // let BgImgPath=`${cwd}/plugins/FanSky_Qs/resources/help/img/bg`
     let NameList = ['艾尔海森', '八重神子', '迪希雅', '甘雨', '柯莱', '可莉', '流浪者', '纳西妲', '妮露', '赛诺', '提纳里', '夜兰']
-    let Package = `${cwd}/plugins/FanSky_Qs/package.json`
-    let YunzaiPath = `${cwd}/package.json`
-    let Version = JSON.parse(fs.readFileSync(Package));
-    let Yunzai = JSON.parse(fs.readFileSync(YunzaiPath));
-    let Data = (await helpData()).helpData
+    let msg = e.original_msg || e.msg
+    let Data = (await MainHelpData()).helpData
+    if (msg.includes("原神") || msg.includes("GenShin") || msg.includes("元神")) {
+        Data = (await GenshinHelp()).helpData
+    } else if (msg.includes("对话") || msg.includes("聊天") || msg.includes("OpenAI") || msg.includes("chatgpt")) {
+        Data = (await OpenAIHelp()).helpData
+    } else if (msg.includes("魔晶") || msg.includes("打卡")) {
+        Data = (await MagicCrystalHelp()).helpData
+    } else if (msg.includes("功能")) {
+        Data = (await SmallFunctionHelp()).helpData
+    }
     let headImg = (NameList[Math.floor(Math.random() * NameList.length)])
-    // let RandomBgImg
-    // fs.readdir(BgImgPath, (err, files) => {if (err) throw err;RandomBgImg = files[Math.floor(Math.random() * files.length)];console.log("随机名字："+RandomBgImg); });
     let AcgPath = await getHelpBg()
     return {
+        version: BotInfo.PluginVersion,
+        YunzaiName: BotInfo.BotName,
+        YunzaiVersion: BotInfo.BotVersion,
         acgBg: AcgPath,
-        YunzaiName: Yunzai.name,
-        YunzaiVersion: Yunzai.version,
         helpData: Data,
-        version: `${Version.version}`,
         saveId: e.user_id,
         cwd: cwd,
         tplFile: `${cwd}/plugins/FanSky_Qs/resources/help/help.html`,
@@ -30,7 +35,7 @@ export async function screenData(e) {
     }
 }
 
-export async function helpData() {
+export async function MainHelpData() {
     return {
         helpData: [
             {
@@ -147,37 +152,71 @@ export async function helpData() {
                 "list": [
                     {
                         "icon": "OpenAI",
-                        "title": "#模型人设列表",
-                        "desc": "查看目前自带的预设人设"
-                    }
-                    , {
-                        "icon": "OpenAI",
-                        "title": "#使用AI人设x",
-                        "desc": "1:病娇 | 2:猫娘"
-                    }
-                    , {
-                        "icon": "剩余",
-                        "title": "#key剩余查询",
-                        "desc": "查询OpenAI的key使用情况"
-                    }
-                    ,
-                    // {
-                    //     "icon": "OpenAI",
-                    //     "title": "语言模型列表",
-                    //     "desc": "查看当前已有模型列表"
-                    // },
-                    {
-                        "icon": "重置记忆",
-                        "title": "#重置对话",
-                        "desc": "重新开始你的记忆"
-                    }, {
-                        "icon": "人设",
-                        "title": "设置模型人设xxx",
-                        "desc": "将OpenAI模型人设设置为xxx(每个人独立)"
+                        "title": "#fan聊天菜单",
+                        "desc": "OpenAI相关模块"
                     },
+                    {
+                        "icon": "OpenAI",
+                        "title": "由于OpenAI菜单项过多，已经分离到【#fan聊天菜单】中",
+                        "desc": ""
+                    }
                 ]
             }, {
-                "group": "主人命令",
+                "group": "普通主人命令",
+                "list": [{
+                    "icon": "sign",
+                    "title": "打卡总计",
+                    "desc": "统计今日已经打卡和系统总打卡用户"
+                }, {
+                    "icon": "点赞",
+                    "title": "#开启fan点赞",
+                    "desc": "设置点赞功能开启"
+                },
+                ]
+            },
+        ]
+    }
+}
+
+export async function OpenAIHelp() {
+    return {
+        helpData: [{
+            "group": "OpenAI菜单：艾特机器人即可开始聊天",
+            "list": [
+                {
+                    "icon": "OpenAI",
+                    "title": "#模型人设列表",
+                    "desc": "查看目前自带的预设人设"
+                }
+                , {
+                    "icon": "OpenAI",
+                    "title": "#使用AI人设x",
+                    "desc": "1:病娇 | 2:猫娘"
+                }
+                , {
+                    "icon": "剩余",
+                    "title": "#key剩余查询",
+                    "desc": "查询OpenAI的key使用情况"
+                }
+                ,
+                // {
+                //     "icon": "OpenAI",
+                //     "title": "语言模型列表",
+                //     "desc": "查看当前已有模型列表"
+                // },
+                {
+                    "icon": "重置记忆",
+                    "title": "#重置对话",
+                    "desc": "重新开始你的记忆"
+                }, {
+                    "icon": "人设",
+                    "title": "设置模型人设xxx",
+                    "desc": "将OpenAI模型人设设置为xxx(每个人独立)"
+                },
+            ]
+        },
+            {
+                "group": "OpenAI主人菜单",
                 "list": [
                     {
                         "icon": "密钥",
@@ -211,30 +250,163 @@ export async function helpData() {
                         "title": "#清空全部",
                         "desc": "清除所有人的对话记录"
                     }
-                    ,
-                    {
+                    , {
                         "icon": "拉黑",
                         "title": "拉黑模型使用[QQ]",
                         "desc": "拉黑某人使用，如：拉黑模型使用3141865879"
                     }
                     ,
+                    {
+                        "icon": "最大",
+                        "title": "设置模型打卡开启",
+                        "desc": "OpenAI的使用绑定魔晶[开启、关闭]"
+                    },
                     // {
                     //     "icon": "OpenAI",
                     //     "title": "更换语言模型1",
                     //     "desc": "更换OpenAI的语言模型[1、2]"
                     // },
+                ]
+            },
+        ]
+    }
+}
+
+export async function MagicCrystalHelp() {
+    return {
+        helpData: [{
+            "group": "【打卡-魔晶系统】[正在开发小游戏]",
+            "list": [
+                {
+                    "icon": "最大",
+                    "title": "打卡、冒泡",
+                    "desc": "记录你的每一天信息"
+                }, {
+                    "icon": "首次打卡时间",
+                    "title": "首次打卡时间",
+                    "desc": "你的首次打卡时间"
+                }, {
+                    "icon": "最大",
+                    "title": "emoji猜成语",
+                    "desc": "emoji猜成语，获得魔晶奖励"
+                }, {
+                    "icon": "sign",
+                    "title": "打卡总计",
+                    "desc": "统计今日已经打卡和系统总打卡用户"
+                },
+            ]
+        },
+        ]
+    }
+}
+
+export async function GenshinHelp() {
+    return {
+        helpData: [{
+            "group": "原神菜单[数据：非小酋、提瓦特小助手]",
+            "list": [
+                {
+                    "icon": "队伍伤害",
+                    "title": "#队伍伤害xx xx...",
+                    "desc": "#队伍伤害uid xx xx xx"
+                }, {
+                    "icon": "队伍伤害",
+                    "title": "#队伍面板",
+                    "desc": "查看已经缓存的角色数据，可直接组合调用队伍伤害"
+                }
+                , {
+                    "icon": "排行榜",
+                    "title": "#宝箱排行",
+                    "desc": "官 & B服宝箱排行"
+                }, {
+                    "icon": "排行榜",
+                    "title": "#成就排行",
+                    "desc": "官 & B服宝箱排行"
+                }, {
+                    "icon": "排行榜",
+                    "title": "#宝箱排行榜",
+                    "desc": "群内宝箱排行榜（需用户通过【#宝箱排行】写入数据）"
+                },
+                {
+                    "icon": "排行榜",
+                    "title": "#成就排行榜",
+                    "desc": "群内成就排行榜（需用户通过【#成就排行】写入数据）"
+                }
+            ]
+        }
+        ]
+    }
+}
+
+export async function SmallFunctionHelp() {
+    return {
+        helpData: [
+            {
+                "group": "主人设置",
+                "list": [
                     {
-                        "icon": "最大",
-                        "title": "设置模型打卡开启",
-                        "desc": "OpenAI的使用绑定魔晶[开启、关闭]"
-                    }, {
-                        "icon": "sign",
-                        "title": "打卡总计",
-                        "desc": "统计今日已经打卡和系统总打卡用户"
-                    }, {
                         "icon": "点赞",
                         "title": "#开启fan点赞",
                         "desc": "设置点赞功能开启"
+                    },
+                ]
+            },
+            {
+                "group": "单功能菜单",
+                "list": [
+                    {
+                        "icon": "龙图",
+                        "title": "l图 | 龙图 | 加l图 | #更新l图 |有多少l图",
+                        "desc": ""
+                    }, {
+                        "icon": "弔图",
+                        "title": "d图 | 弔图 | 加d图 | #更新d图 |有多少d图",
+                        "desc": ""
+                    },
+                    {
+                        "icon": "化学",
+                        "title": "化学xxx",
+                        "desc": "将xxx转换为化学元素周期表"
+                    },
+
+                    {
+                        "icon": "抽象",
+                        "title": "抽象帮助 | cxbz",
+                        "desc": "将文字转换为多种抽象的东西"
+                    }, {
+                        "icon": "抽象",
+                        "title": "抽象xxxx",
+                        "desc": "将xxx转换为emoji"
+                    },
+                    {
+                        "icon": "化学",
+                        "title": "化学xxx",
+                        "desc": "将xxx转换为化学元素周期表"
+                    },
+                    {
+                        "icon": "鸡哥",
+                        "title": "鸡哥 | 小黑子",
+                        "desc": "纯路人表情包"
+                    },
+                    {
+                        "icon": "丁真",
+                        "title": "一眼丁真",
+                        "desc": "各种丁真表情包"
+                    },
+                    {
+                        "icon": "猫眼票房",
+                        "title": "电影票房",
+                        "desc": "猫眼实时电影票房"
+                    },
+                    {
+                        "icon": "点赞",
+                        "title": "点赞",
+                        "desc": "发送卡片并点赞(需要加机器人好友)"
+                    },
+                    {
+                        "icon": "发病",
+                        "title": "发病",
+                        "desc": "或艾特机器人不加任何消息 | 对你发病"
                     },
                 ]
             },
