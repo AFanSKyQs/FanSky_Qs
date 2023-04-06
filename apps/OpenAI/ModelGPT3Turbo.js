@@ -1,7 +1,6 @@
 /* eslint-disable camelcase */
 import common from '../../../../lib/common/common.js'
 import axios from 'axios'
-import fs from 'fs'
 import {getOpenAIConfig} from "../../models/getCfg.js";
 
 let Moudel1List = []
@@ -9,6 +8,13 @@ let MoudelStatus = []
 let Moudel1Num = []
 
 export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
+    let Proxy = JSON.parse(await redis.get(`FanSky:OpenAI:Proxy:Default`))
+    if (!Proxy) {
+        e.reply("没有检测到任何代理，请重启或联系开发人员检查问题")
+        return true
+    }
+    process.env.HTTP_PROXY = `http://${Proxy.Proxy}`;
+    process.env.HTTPS_PROXY = `http://${Proxy.Proxy}`;
     let msg = e.original_msg || e.msg
     Bot.logger.info('处理插件：FanSky_Qs-OpenAI模型1:' + `\n群：${e.group_id}\n` + 'QQ:' + `${e.user_id}\n` + `消息：${msg}`)
     let Persona = "你是一个小助手~"
@@ -55,11 +61,6 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
                 Authorization: 'Bearer ' + OpenAI_Key
             },
             data: JSON.stringify(Moudel1List[e.user_id]),
-            proxy: {
-                protocol: 'http',
-                host: '127.0.0.1',
-                port: 7890
-            },
         }).then(async function (response) {
             await SendResMsg(e, response, Json, GetResult)
         }).catch(async function () {

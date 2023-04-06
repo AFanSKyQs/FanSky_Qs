@@ -14,16 +14,18 @@ export async function Complaint(e) {
 }
 
 async function ReplyComplaint(e) {
-    let Name = e.sender.nickname || e.sender.card
+    let Name = e.sender.nickname || e.sender.card || e.nickname
     let Complaint = await getComplaint()
     let Reply = Complaint.replace(/{target_name}/g, Name)
-    if (Reply.length > 110) {
-        let MsgList = [`${Reply}`]
-        let SendResult = await common.makeForwardMsg(e, MsgList, `${Name},嘿嘿嘿,我的${Name}(流口水)~`)
-        await e.reply(SendResult)
-        return true
-    } else {
-        await e.reply(Reply, false, {recallMsg: 30})
-        return true
-    }
+    // if (Reply.length > 110) {
+    //     let MsgList = [`${Reply}`]
+    //     let SendResult = await common.makeForwardMsg(e, MsgList, `${Name},嘿嘿嘿,我的${Name}(流口水)~`)
+    //     await e.reply(SendResult)
+    //     return true
+    // } else {
+    //     await e.reply(Reply, false, {recallMsg: 30})
+    //     return true
+    // }
+    await e.reply(Reply)
+    return true
 }

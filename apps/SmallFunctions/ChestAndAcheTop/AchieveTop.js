@@ -15,15 +15,6 @@ export async function AchievementTop(e) {
     }
     uid = parseInt(uid)
     let url = `https://feixiaoqiu.com/search_achievement_ajax/?draw=1&columns[0][data]=total_index_div()&columns[0][name]=&columns[0][searchable]=true&columns[0][orderable]=false&columns[0][search][value]=&columns[0][search][regex]=false&columns[1][data]=nick_name_div()&columns[1][name]=&columns[1][searchable]=true&columns[1][orderable]=false&columns[1][search][value]=&columns[1][search][regex]=false&columns[2][data]=title_div()&columns[2][name]=&columns[2][searchable]=true&columns[2][orderable]=false&columns[2][search][value]=&columns[2][search][regex]=false&columns[3][data]=grade_div()&columns[3][name]=&columns[3][searchable]=true&columns[3][orderable]=false&columns[3][search][value]=&columns[3][search][regex]=false&columns[4][data]=achievement_number_div()&columns[4][name]=&columns[4][searchable]=true&columns[4][orderable]=false&columns[4][search][value]=&columns[4][search][regex]=false&start=0&length=20&search[value]=&search[regex]=false&uid=${uid}&_=1774705299791`
-
-    // node-fetch
-    // let res = await fetch(url).catch((err) => logger.error(err))
-    // if (!res) {
-    //     logger.error('[成就排行] 接口请求失败！')
-    //     return e.reply('成就排行接口请求失败~')
-    // }
-    // let Json_Res = await res.json()
-
     let Json_Res
     try {
         const response = await axios.get(url)

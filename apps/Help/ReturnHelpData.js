@@ -185,6 +185,11 @@ export async function OpenAIHelp() {
             "list": [
                 {
                     "icon": "OpenAI",
+                    "title": "#设置模型代理地址xxx",
+                    "desc": "格式：127.0.0.1:7890"
+                },
+                {
+                    "icon": "OpenAI",
                     "title": "#模型人设列表",
                     "desc": "查看目前自带的预设人设"
                 }
