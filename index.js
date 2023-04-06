@@ -1,10 +1,15 @@
-import fs from 'fs'
+﻿import fs from 'fs'
 import {StarRunCheckConfig} from "./tools/StarRunCheckConfig.js";
 
-let cwd = process.cwd().replace(/\\/g, '/')
+let Cwd = process.cwd().replace(/\\/g, "/")
+let Path, Version
 logger.info(logger.magenta(`'-------------QwQ--------------`))
-let PluginVersion = JSON.parse(fs.readFileSync(`${cwd}/plugins/FanSky_Qs/package.json`));
-logger.info(logger.magenta(`----FanSky_Qs插件【${PluginVersion.version}】初始化中------`))
+try {
+    Version = await JSON.parse(fs.readFileSync(`${Cwd}/plugins/FanSky_Qs/package.json`, 'utf-8'));
+} catch (err) {
+    Version = {version: "1.4.6"}
+}
+logger.info(logger.magenta(`----FanSky_Qs插件【${Version.version}】初始化中------`))
 const files = fs.readdirSync('./plugins/FanSky_Qs/apps').filter(file => file.endsWith('.js'))
 await StarRunCheckConfig()
 let ret = []

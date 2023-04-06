@@ -12,6 +12,6 @@ export async function setOpenAIProxy(e) {
 
 async function set(Proxy) {
     await redis.set(`FanSky:OpenAI:Proxy:Default`, JSON.stringify({
-        Proxy: `http://${Proxy}`,
+        Proxy: `${Proxy}`,
     }))
 }
