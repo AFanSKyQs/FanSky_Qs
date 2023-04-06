@@ -91,7 +91,7 @@ export class MonitorTask extends plugin {
                 }
             }
         } catch (error) {
-            console.error(error)
+            return true
         }
         // fetch('https://api.github.com/repos/AFanSKyQs/FanSky_Qs/commits').then(res => res.json()).then(async res => {
         //   if (!res[0]) return

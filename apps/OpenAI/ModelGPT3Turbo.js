@@ -62,10 +62,19 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
                             'Content-Type': 'application/json',
                             Authorization: 'Bearer ' + OpenAI_Key
                         },
+                        proxy: {
+                            protocol: 'http',
+                            host: '127.0.0.1',
+                            port: 7890
+                        },
                         data: JSON.stringify(Moudel1List[e.user_id]),
-                    }).then(async function (response) {
+                    },).then(async function (response) {
+                        process.env.HTTP_PROXY = null;
+                        process.env.HTTPS_PROXY = null;
                         await SendResMsg(e, response, Json, GetResult)
                     }).catch(async function () {
+                        process.env.HTTP_PROXY = null;
+                        process.env.HTTPS_PROXY = null;
                         try {
                             await axios({
                                 method: 'post', url: 'https://api.openai.com/v1/chat/completions', headers: {
@@ -93,12 +102,16 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
                         }
                     })
                 } catch (err) {
+                    process.env.HTTP_PROXY = null;
+                    process.env.HTTPS_PROXY = null;
                     e.reply('运行有问题~,请联系开发人员(3141865879)')
                     console.log(err)
                 }
             }
         }
         const proxyFunction = await useProxy(`http://${Proxy.Proxy}`, `http://${Proxy.Proxy}`);
+        process.env.HTTP_PROXY = null;
+        process.env.HTTPS_PROXY = null;
         await proxyFunction();
     }
 }
