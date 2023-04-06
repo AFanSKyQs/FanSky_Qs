@@ -8,6 +8,8 @@ let MoudelStatus = []
 let Moudel1Num = []
 
 export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
+    const prevHttpProxy = process.env.HTTP_PROXY;
+    const prevHttpsProxy = process.env.HTTPS_PROXY;
     let Proxy = JSON.parse(await redis.get(`FanSky:OpenAI:Proxy:Default`))
     if (!Proxy) {
         e.reply("没有检测到任何代理，请重启或联系开发人员检查问题")
@@ -69,12 +71,12 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
                         },
                         data: JSON.stringify(Moudel1List[e.user_id]),
                     },).then(async function (response) {
-                        process.env.HTTP_PROXY = null;
-                        process.env.HTTPS_PROXY = null;
+                        delete process.env.HTTP_PROXY;
+                        delete process.env.HTTPS_PROXY;
                         await SendResMsg(e, response, Json, GetResult)
                     }).catch(async function () {
-                        process.env.HTTP_PROXY = null;
-                        process.env.HTTPS_PROXY = null;
+                        delete process.env.HTTP_PROXY;
+                        delete process.env.HTTPS_PROXY;
                         try {
                             await axios({
                                 method: 'post', url: 'https://api.openai.com/v1/chat/completions', headers: {
@@ -102,16 +104,16 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
                         }
                     })
                 } catch (err) {
-                    process.env.HTTP_PROXY = null;
-                    process.env.HTTPS_PROXY = null;
+                    delete process.env.HTTP_PROXY;
+                    delete process.env.HTTPS_PROXY;
                     e.reply('运行有问题~,请联系开发人员(3141865879)')
                     console.log(err)
                 }
             }
         }
         const proxyFunction = await useProxy(`http://${Proxy.Proxy}`, `http://${Proxy.Proxy}`);
-        process.env.HTTP_PROXY = null;
-        process.env.HTTPS_PROXY = null;
+        delete process.env.HTTP_PROXY;
+        delete process.env.HTTPS_PROXY;
         await proxyFunction();
     }
 }
