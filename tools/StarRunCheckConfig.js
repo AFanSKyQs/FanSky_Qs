@@ -90,7 +90,7 @@ async function GetJson(PATH) {
             DATA_JSON.RELIC_APPEND = RELIC_APPEND
         }
         if(Error){
-            await Bot.pickFriend(cfg.masterQQ[0]).sendMsg(`[FanSky_Qs]：队伍伤害${Error}请求失败，您的网络似乎有点问题?\n可能原因：后台运行axios请求出现了未知问题\n理论可解决：先使用node app启动获取配置文件，然后再使用pm2?启动后台`)
+            await Bot.pickFriend(cfg.masterQQ[0]).sendMsg(`[FanSky_Qs]：队伍伤害${Error}请求失败，您的网络似乎有点问题?\n可能原因：pm2后台运行自动设置了什么代理，导致请求失败\n\n理论可解决：先前台使用node app?启动获取配置文件,然后再转后台即可`)
         }
         fs.writeFileSync(PATH, JSON.stringify(DATA_JSON))
     } catch (err) {

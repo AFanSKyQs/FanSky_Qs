@@ -1,6 +1,7 @@
 import fs from 'fs'
 import {isFileExist} from '../../../models/isFileExist.js'
 import axios from "axios";
+import cfg from '../../../../../lib/config/config.js'
 
 // 本地测试用
 // let DATA_PATH = 'G:/GitHub/GithubTest/Miao-Yunzai/plugins/FanSky_Qs/config/TeyvatConfig/TeyvatUrlJson.json'
@@ -34,30 +35,40 @@ async function ReturnConfig() {
 
 async function GetJson(PATH) {
     let DATA_JSON = JSON.parse(fs.readFileSync(PATH))
+    let Error = null
     let CHAR_DATA = await LocalUpdateJson('https://cdn.monsterx.cn/bot/gspanel/char-data.json')
     if (!CHAR_DATA) {
         console.log('CHAR_DATA请求失败')
+        Error += `CHAR_DATA、`
+    } else {
+        DATA_JSON.CHAR_DATA = CHAR_DATA
     }
     // console.info(`>>>已写入CHAR_DATA配置项 `);
     let HASH_TRANS = await LocalUpdateJson('https://cdn.monsterx.cn/bot/gspanel/hash-trans.json')
     if (!HASH_TRANS) {
+        Error += `HASH_TRANS、`
         console.log('HASH_TRANS请求失败')
+    } else {
+        DATA_JSON.HASH_TRANS = HASH_TRANS
     }
     // console.info(`>>>已写入HASH_TRANS配置项 `);
     let CALC_RULES = await LocalUpdateJson('https://cdn.monsterx.cn/bot/gspanel/calc-rule.json')
     if (!CALC_RULES) {
         console.log('CALC_RULES请求失败')
+    } else {
+        DATA_JSON.CALC_RULES = CALC_RULES
     }
     // console.info(`>>>已写入CALC_RULES配置项 `);
     let RELIC_APPEND = await LocalUpdateJson('https://cdn.monsterx.cn/bot/gspanel/relic-append.json')
     if (!RELIC_APPEND) {
+        Error += `RELIC_APPEND、`
         console.log('RELIC_APPEND请求失败')
+    } else {
+        DATA_JSON.RELIC_APPEND = RELIC_APPEND
     }
-    // console.info(`>>>已写入RELIC_APPEND配置项 `);
-    DATA_JSON.CHAR_DATA = CHAR_DATA
-    DATA_JSON.HASH_TRANS = HASH_TRANS
-    DATA_JSON.CALC_RULES = CALC_RULES
-    DATA_JSON.RELIC_APPEND = RELIC_APPEND
+    if (Error) {
+        await Bot.pickFriend(cfg.masterQQ[0]).sendMsg(`[FanSky_Qs]：队伍伤害${Error}请求失败，您的网络似乎有点问题?\n可能原因：pm2后台运行自动设置了什么代理，导致请求失败\n\n理论可解决：先前台使用node app?启动获取配置文件,然后再转后台即可`)
+    }
     fs.writeFileSync(PATH, JSON.stringify(DATA_JSON))
 }
 
