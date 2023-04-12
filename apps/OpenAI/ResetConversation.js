@@ -7,7 +7,7 @@ export async function DelAllConversation(e) {
     } else {
         try {
             await DelGPT3TurboList()
-            e.reply('已清空[所有用户]的OpenAI对话记录~')
+            e.reply('已清空[所有用户]的OpenAI对话记录~\n如果有正在请求中的记录请等待请求完成~')
         } catch (err) {
             e.reply('后台似乎报错了喵~')
             console.log(err)
@@ -19,7 +19,7 @@ export async function DelAllConversation(e) {
 export async function ResetConversation(e) {
     try {
         await ResetGPT3TurboList(e)
-        e.reply('已重置您的对话记录~')
+        e.reply('已重置您的对话记录~\n如果有正在请求中的记录请等待请求完成喵~')
     } catch (err) {
         e.reply('后台似乎报错了喵~')
         console.log(err)

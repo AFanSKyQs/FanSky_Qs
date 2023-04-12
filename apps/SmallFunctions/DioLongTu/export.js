@@ -142,48 +142,50 @@ export async function addTu(e, tuPath, TuName, gitPath) {
 }
 
 export async function getImgPath(e, tuPath, TuName, gitPath) {
-    function getImgPath(randomPath) {
-        return new Promise((resolve, reject) => {
-            fs.readdir(randomPath, async (err, files) => {
-                if (err) {
-                    console.error(err)
-                    reject(err)
-                } else {
-                    resolve(files)
-                }
-            })
-        })
+    async function getImgPaths(folderPath) {
+        try {
+            const files = await fs.promises.readdir(folderPath)
+            return files.map(file => folderPath + '/' + file);
+        } catch (err) {
+            logger.info(logger.red(err))
+            console.error(err);
+            return [];
+        }
     }
 
-    let randomPath = gitPath
+    const tuFiles = await getImgPaths(tuPath);
+    const gitFiles = await getImgPaths(gitPath);
+    const allFiles = [...tuFiles, ...gitFiles];
 
-    //正在优化随机算法
-    // let randomPath = tuPath
-    // if (fs.existsSync(gitPath)) {
-    //     const paths = [tuPath, gitPath];
-    //     const randomPathIndex = Math.floor(Math.random() * paths.length);
-    //     randomPath = paths[randomPathIndex];
-    // }
+    if (allFiles.length === 0) {
+        logger.info(logger.cyan('[FanSky_Qs]'), logger.yellow(`[DioLongTu]`), logger.red(`[getImgPath]`), `这个文件夹是空滴~.`);
+        let emoji = await getEmoji(e);
+        e.reply(`暂时还没有${TuName}图哦${emoji}~\n请通过[加${TuName}图]指令来增加\n或通过[#更新${TuName}图]更新云图库`);
+        return false;
+    }
 
-    return await getImgPath(randomPath).then(async (files) => {
-        if (files.length === 0) {
-            logger.info(logger.cyan('[FanSky_Qs]'), logger.yellow(`[DioLongTu]`), logger.red(`[getImgPath]`), `这个文件夹是空滴~.`)
-            let emoji = await getEmoji(e)
-            e.reply(`暂时还没有${TuName}图哦${emoji}~\n请通过[加${TuName}图]指令来增加\n或通过[#更新${TuName}图]更新云图库`)
-            return false
-        }
-        const randomIndex = Math.floor(Math.random() * files.length)
-        const randomFile = files[randomIndex]
-        const randomFilePath = randomPath + '/' + randomFile
-        logger.info(logger.cyan('[FanSky_Qs]'), logger.yellow(`[DioLongTu]`), logger.red(`[getImgPath]`), `得到的地址: ${randomFilePath}`)
-        return randomFilePath
-    }).catch(async (err) => {
-        console.log(err)
-        let emoji = await getEmoji(e)
-        e.reply(`暂时还没有${TuName}图哦${emoji}~\n请通过[加${TuName}图]指令来增加\n或通过[#更新${TuName}图]更新云图库`)
-        // e.reply(`获取图片失败${emoji}`)
-        return false
-    })
+    /** 获取未被记录到 redis 中的地址列表*/
+    const unselectedFiles = await Promise.all(
+        allFiles.map(async (file) => {
+            const isFileSelected = await redis.get(`FanSky:SmallFunctions:DLRandomIMG:${TuName}:${file}`);
+            return !isFileSelected ? file : null;
+        })
+    ).then((result) => result.filter((file) => file !== null));
+
+    /** 如果未被记录的地址列表为空，则重置 redis 中的记录，并重新获取未被记录的地址列表 */
+    if (unselectedFiles.length === 0) {
+        logger.info(logger.cyan('[FanSky_Qs]'), logger.yellow(`[DioLongTu]`), `所有图片已经被选过了，重置记录。`);
+        await redis.del(`FanSky:SmallFunctions:DLRandomIMG:${TuName}`);
+        return await getImgPath(e, tuPath, TuName, gitPath);
+    }
+
+    /** 随机选择一个未被记录的地址，并将其记录到 redis 中*/
+    const randomIndex = Math.floor(Math.random() * unselectedFiles.length);
+    const randomFilePath = unselectedFiles[randomIndex];
+    await redis.set(`FanSky:SmallFunctions:DLRandomIMG:${TuName}:${randomFilePath}`, true.toString());
+
+    logger.info(logger.cyan('[FanSky_Qs]'), logger.yellow(`[DioLongTu]`), logger.red(`[getImgPath]`), `得到的地址: ${randomFilePath}`);
+    return randomFilePath;
 }
 
 export async function saveImages(e, imageMessages, TuPath, TuName, gitPath) {

@@ -8,7 +8,6 @@ let _path = `${process.cwd()}/resources/FanSky`
 let path = `${process.cwd()}/resources/FanSky/SignIn.json`
 let path_SignTop = `${process.cwd()}/resources/FanSky/SignTop.json`
 let OpenAIConfig = yunPath + '/plugins/FanSky_Qs/config/OpenAI.json'
-let MoudelStatus = []
 
 export async function UseModel(e) {
     // if (e.message[0].type !== "at") {
@@ -56,26 +55,26 @@ export async function UseModel(e) {
     if (BlackList.includes(e.user_id)) {
         // e.reply('伱被禁止与我聊天了呜呜（；へ：）~')
         console.log('\nAI对话黑名单：' + e.user_id)
-        return true
+        return false
     }
-    if (MoudelStatus[e.user_id]) {
-        e.reply('AI正在处理柠上一个请求噢~', true)
-        return true
+
+    if (await redis.get(`FanSky:OpenAI:Status:${e.user_id}`)) {
+        e.reply('AI正在处理柠上一个请求噢~\n请耐心等待喵QWQ~', true)
+        return false
     }
+
     let GetResult = '不限'
     if (Json.SignMode === '开启') {
         GetResult = await SingIn(e)
         console.log('GetResult:' + GetResult)
         if (!GetResult || GetResult === true || GetResult === 'true') {
-            return true
+            return false
         }
     }
     if (Json.Model === 1) {
         await ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult)
-        // delete MoudelStatus[e.user_id]
     } else if (Json.Model === 2) {
         e.reply("其他模型已被移除，目前仅【1】模型可用：gpt-3.5")
-        // delete MoudelStatus[e.user_id]
     }
     return true
 }
