@@ -164,6 +164,10 @@ export async function MainHelpData() {
             }, {
                 "group": "普通主人命令",
                 "list": [{
+                    "icon": "github",
+                    "title": "#fan设置github开启/关闭",
+                    "desc": "开启或关闭更新推送"
+                }, {
                     "icon": "sign",
                     "title": "打卡总计",
                     "desc": "统计今日已经打卡和系统总打卡用户"

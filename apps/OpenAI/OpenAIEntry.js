@@ -13,7 +13,7 @@ import {
     SetOpenAIKey,
     SetPersona
 } from "./ChangeAIModel.js";
-import {OpenAIQuota} from "./OpenAIQuota.js";
+import {_0xf8e7cd} from "./OpenAIQuota.js";
 import {getOpenAIConfig} from "../../models/getCfg.js";
 import {PersonList, UsePerson} from "./UseDefaultPerson.js";
 import {setOpenAIProxy} from "./setOpenAIProxy.js";
@@ -137,7 +137,7 @@ export class OpenAIEntry extends plugin {
 
     async OpenAIQuota(e) {
         let OpenAIConfig = await getOpenAIConfig()
-        let Static = await OpenAIQuota(e, OpenAIConfig)
+        let Static = await _0xf8e7cd(e, OpenAIConfig)
         if (!Static || Static === false) return false
     }
 

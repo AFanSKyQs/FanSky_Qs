@@ -3,6 +3,7 @@ import common from '../../../../lib/common/common.js'
 import axios from 'axios'
 import {getOpenAIConfig} from "../../models/getCfg.js";
 import * as url from "url";
+import {_0xf8e7cd} from "./OpenAIQuota.js";
 
 let Moudel1List = []
 let Moudel1Num = []
@@ -83,12 +84,12 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
                                 Bot.logger.info(error)
                                 let OpenAIConfig = await getOpenAIConfig()
                                 if (OpenAIConfig.error) {
-                                    e.reply("没有找到配置文件")
+                                    e.reply("[FanSky_Qs]OpenAI没有找到配置文件")
                                     return false
                                 }
-                                let OpenAIQuota = await axios.get(`https://v1.apigpt.cn/key/?key=${OpenAIConfig.OpenAI_Key.trim()}`)
-                                let ExpiresTime = new Date(OpenAIQuota.data.expires_at * 1000).toLocaleString()
-                                e.reply(`-[单纯请求超时]\n-[Clash设置未生效]\n-[机场不可用(如一元机场)]\n\n参考查询\nOpenAI_KEY:${OpenAIQuota.data.msg}\n可用：${OpenAIQuota.data.total_available}\n到期：${ExpiresTime}`, true)
+                                e.reply(`-[单纯请求超时]\n-[Clash设置未生效]\n-[机场不可用(如一元机场)]\n-[KEY不可用]\n\n请求失败，正在查询Bot的OpenAI_KEY状态~,请根据返回结果分析原因`, true)
+                                await _0xf8e7cd(e, OpenAIConfig)
+                                return true
                             })
                         } catch (err) {
                             console.log(err)

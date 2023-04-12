@@ -15,6 +15,7 @@ export async function StarRunCheckConfig() {
     let IsExist = await CheckConfigExist()
     const dirPath = path.dirname(GitImg);
     fs.mkdirSync(dirPath, {recursive: true});
+    await GithubPush()
     await setProxy()
     await CheckPersona()
     if (IsExist.True) {
@@ -29,6 +30,12 @@ export async function StarRunCheckConfig() {
     setTimeout(async () => {
         await CheckTeyvatDownload()
     }, 10000)
+}
+
+async function GithubPush() {
+    if (!(await redis.get(`FanSky:Github:Push`))) {
+        await redis.set(`FanSky:Github:Push`, JSON.stringify({PushStatus: 1}))
+    }
 }
 
 async function setProxy() {
@@ -59,37 +66,37 @@ async function CheckTeyvatDownload() {
 
 async function GetJson(PATH) {
     let DATA_JSON = JSON.parse(fs.readFileSync(PATH))
-    let Error=null
+    let Error = null
     try {
         let CHAR_DATA = await LocalUpdateJson('https://cdn.monsterx.cn/bot/gspanel/char-data.json')
         if (!CHAR_DATA) {
             logger.info(logger.red('CHAR_DATA请求失败'))
-            Error+=`CHAR_DATA、`
-        }else{
+            Error += `CHAR_DATA、`
+        } else {
             DATA_JSON.CHAR_DATA = CHAR_DATA
         }
         let HASH_TRANS = await LocalUpdateJson('https://cdn.monsterx.cn/bot/gspanel/hash-trans.json')
         if (!HASH_TRANS) {
-            Error+=`HASH_TRANS、`
+            Error += `HASH_TRANS、`
             logger.info(logger.red('HASH_TRANS请求失败'))
-        }else{
+        } else {
             DATA_JSON.HASH_TRANS = HASH_TRANS
         }
         let CALC_RULES = await LocalUpdateJson('https://cdn.monsterx.cn/bot/gspanel/calc-rule.json')
         if (!CALC_RULES) {
-            Error+=`CALC_RULES、`
+            Error += `CALC_RULES、`
             logger.info(logger.red('CALC_RULES请求失败'))
-        }else{
+        } else {
             DATA_JSON.CALC_RULES = CALC_RULES
         }
         let RELIC_APPEND = await LocalUpdateJson('https://cdn.monsterx.cn/bot/gspanel/relic-append.json')
         if (!RELIC_APPEND) {
-            Error+=`RELIC_APPEND、`
+            Error += `RELIC_APPEND、`
             logger.info(logger.red('RELIC_APPEND请求失败'))
-        }else{
+        } else {
             DATA_JSON.RELIC_APPEND = RELIC_APPEND
         }
-        if(Error){
+        if (Error) {
             await Bot.pickFriend(cfg.masterQQ[0]).sendMsg(`[FanSky_Qs]：队伍伤害${Error}请求失败，您的网络似乎有点问题?\n可能原因：pm2后台运行自动设置了什么代理，导致请求失败\n\n理论可解决：先前台使用node app?启动获取配置文件,然后再转后台即可`)
         }
         fs.writeFileSync(PATH, JSON.stringify(DATA_JSON))
