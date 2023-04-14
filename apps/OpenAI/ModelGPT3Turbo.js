@@ -3,7 +3,7 @@ import common from '../../../../lib/common/common.js'
 import axios from 'axios'
 import {getOpenAIConfig} from "../../models/getCfg.js";
 import * as url from "url";
-import {_0xf8e7cd} from "./OpenAIQuota.js";
+import {l} from "./OpenAIQuota.js";
 
 let Moudel1List = []
 let Moudel1Num = []
@@ -88,7 +88,7 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
                                     return false
                                 }
                                 e.reply(`-[单纯请求超时]\n-[Clash设置未生效]\n-[机场不可用(如一元机场)]\n-[KEY不可用]\n\n请求失败，正在查询Bot的OpenAI_KEY状态~,请根据返回结果分析原因`, true)
-                                await _0xf8e7cd(e, OpenAIConfig)
+                                await l(e, OpenAIConfig)
                                 return true
                             })
                         } catch (err) {

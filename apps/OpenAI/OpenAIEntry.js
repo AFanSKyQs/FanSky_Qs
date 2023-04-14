@@ -13,10 +13,10 @@ import {
     SetOpenAIKey,
     SetPersona
 } from "./ChangeAIModel.js";
-import {_0xf8e7cd} from "./OpenAIQuota.js";
 import {getOpenAIConfig} from "../../models/getCfg.js";
 import {PersonList, UsePerson} from "./UseDefaultPerson.js";
 import {setOpenAIProxy} from "./setOpenAIProxy.js";
+import {l} from "./OpenAIQuota.js";
 
 export class OpenAIEntry extends plugin {
     constructor() {
@@ -98,6 +98,10 @@ export class OpenAIEntry extends plugin {
                     reg: /#(设置|更改)模型代理地址(.*)/,
                     fnc: 'setOpenAIProxy'
                 },
+                {
+                    reg: /#查询模型密钥(.*)/,
+                    fnc: 'SearchGPTKEY'
+                }
                 // {
                 //     reg: /#对话列表|#聊天列表|#会话列表/,
                 //     fnc: 'Axios_list'
@@ -105,6 +109,14 @@ export class OpenAIEntry extends plugin {
             ]
         })
     };
+
+
+    async SearchGPTKEY(e) {
+        let OpenAIKey = (e.original_msg || e.msg).replace(/#查询模型密钥/i, '').trim()
+        let OpenAIConfig = {OpenAI_Key: OpenAIKey}
+        let Static = await l(e, OpenAIConfig)
+        if (!Static || Static === false) return false
+    }
 
     async setOpenAIProxy(e) {
         await setOpenAIProxy(e)
@@ -137,7 +149,7 @@ export class OpenAIEntry extends plugin {
 
     async OpenAIQuota(e) {
         let OpenAIConfig = await getOpenAIConfig()
-        let Static = await _0xf8e7cd(e, OpenAIConfig)
+        let Static = await l(e, OpenAIConfig)
         if (!Static || Static === false) return false
     }
 
