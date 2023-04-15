@@ -12,23 +12,26 @@ export async function ChestGroupTop(e) {
     const sortedData = _(data[e.group_id])
         .map((value, key) => ({qq: key, ...value}))
         .orderBy('grade', 'desc')
+        .slice(0, 15)
         .value();
     const rankedData = sortedData.map((value, index) => ({...value, rank: index + 1}));
-    let ScreenData = await getScreen(e, rankedData)
+    let top3 = rankedData.slice(0, 3);
+    let ScreenData = await getScreen(e, top3, rankedData)
     let img = await puppeteer.screenshot('FanSkyGroupChestTop', ScreenData)
     await e.reply(img)
     return true
 }
 
-async function getScreen(e, rankedData) {
+async function getScreen(e, top3, rankedData) {
     let BotInfo = await getVersionInfo()
     return {
         version: BotInfo.PluginVersion,
         YunzaiName: BotInfo.BotName,
         YunzaiVersion: BotInfo.BotVersion,
 
-        CssPath:CssPath,
+        CssPath: CssPath,
         quality: 100,
+        Top3: top3,
         rankedData: rankedData,
         cwd: cwd,
         Resources: `${cwd}/plugins/FanSky_Qs/resources/ChestAchieveTop/`,
