@@ -174,8 +174,11 @@ export async function getImgPath(e, tuPath, TuName, gitPath) {
 
     /** 如果未被记录的地址列表为空，则重置 redis 中的记录，并重新获取未被记录的地址列表 */
     if (unselectedFiles.length === 0) {
-        logger.info(logger.cyan('[FanSky_Qs]'), logger.yellow(`[DioLongTu]`), `所有图片已经被选过了，重置记录。`);
-        await redis.del(`FanSky:SmallFunctions:DLRandomIMG:${TuName}`);
+        const keys = await redis.keys(`FanSky:SmallFunctions:DLRandomIMG:${TuName}:*`);
+        for (const key of keys) {
+            await redis.del(key);
+        }
+        logger.info(logger.cyan('[FanSky_Qs]'), logger.yellow(`[DioLongTu]`), `所有${TuName}图都已看过了，已重置记录。`);
         return await getImgPath(e, tuPath, TuName, gitPath);
     }
 
