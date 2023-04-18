@@ -1,204 +1,5 @@
 <html lang="en">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <script>document.write(function (a) {
-        a = unescape(a);
-        let c = String.fromCharCode(a.charCodeAt(0) - a.length);
-        for (let i = 1; i < a.length; i++) {
-            c += String.fromCharCode(a.charCodeAt(i) - c.charCodeAt(i - 1))
-        }
-        return c
-    }("%u01EF%5De%93%92%97%AD%A9%95e%88%DC%E1%D9%AAHF%A4%DC%E1%D9%8C%8C%CD%CF%D5%A4_%87%D3%90B%5EHF%A4%CD%C6%C5%A2H*@%5C%A9%D2%D9%D5%81%83%CB%C9%D3%E5%D8%D9%B1_w%A9%9AseZ%60H*@%5C%B0%DD%DD%E0%D1%A3%90%B7%C6%C4%D7%BE%BD%u59A7%uAA03%uB461%uEBDE%uF1E8%uE8ED%u17C6%uF484%uECF7%uDFDE%u4F16%97%EE%EE%A5%90%D1%DE%E3%E7%E7%E6%D3%D1%DD%CF%90%91%D2%DC%A9k%A3%DD%DD%E0%D1%A3H*@%5C%A8%D5%D7%D9%8B%92%D7%D1%A9_%95%E7%ED%E5%D1%D8%DB%CD%CA%D9%96B%88%DA%D7%CB%A3_P%5D%A2%E7%ED%E5%D1%93%91%D6%E6%95%60H%14Fk%97%CD%C6%C5%A2HF%9E%D1%D3%DD%B7HF%5DNZM%90%D1%D3%E6%DD%CA%CD%A6%A3%D7%D2%C9%DD%A6%9E%D1%D3%E6%DD%CA%CD%9A%96%DC%E1%D9%8CMZkHF%A0%CD%DF%96%89%CD%A1_%94%E1%DE%E3%96%60zk%93%CD%DF%B4HF%5DNZM%90%D1%D3%E6%DD%CA%CD%8CMZkH*@%5C%AF%D6%D5%DB%D9%E4%94%93%E5%D5%A0d%8B%CD%DC%E7%A3%A1%D7%C6%C4%D7%A2%9E%E2%E1%D3%D9%D8%D7%DD%D8%DD%9C%9B%D6%D7%9C%98%DD%9Aezk%A2%D6%D5%DB%D9%E4%B2HF%AF%D6%D5%DB%D9%E4%94%93%E5%D5%A0d%8B%CD%DC%E7%A3%A1%D7%C6%C4%D7%A1%91%D3%DC%9B%9E%E2%E1%D3%D9%D8%D7%DD%D8%DD%9C%9B%D6%D7%9C%98%DD%9Aezk%A2%D6%D5%DB%D9%E4%B2z%AF%D6%D5%DB%D9%E4%94%94%ED%E9%D5%A2_%8F%DC%D3%D9%E1%D1%87B%93%E5%D5%A0_P%5D%A2%D6%D5%DB%D9%E4%A2%98%DD%95%60zk%A2%D6%D5%DB%D9%E4%B2H%14Fk%91%D1%D3%DD%B7HFk%97%DC%E1%D9%AAH"));</script>
-    <title>宝箱排行榜</title>
-</head>
-<body>
-<h1>#宝箱排行榜<br>○上榜请先通过【#宝箱排行】指令来写入数据</h1>
-<div class="container">
-    <div class="topLeadersList">
-        <div class="leader">
-            <div class="containerImage"><img class="image" loading="lazy"
-                                             src="https://q1.qlogo.cn/g?b=qq&nk={{ Top3[0].qq }}&s=160">
-                <div class="crown">
-                    <svg id="crown1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
-                         viewBox="0 0 100 50">
-                        <polygon class="cls-1"
-                                 points="12.7 50 87.5 50 100 0 75 25 50 0 25.6 25 0 0 12.7 50"></polygon>
-                    </svg>
-                </div>
-                <div class="leaderName">{{Top3[0].total_index}}</div>
-            </div>
-        </div>
-        <div class="leader">
-            <div class="containerImage"><img class="image" loading="lazy"
-                                             src="https://q1.qlogo.cn/g?b=qq&nk={{ Top3[1].qq }}&s=160">
-                <div class="crown">
-                    <svg id="crown1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
-                         viewBox="0 0 100 50">
-                        <polygon class="cls-1"
-                                 points="12.7 50 87.5 50 100 0 75 25 50 0 25.6 25 0 0 12.7 50"></polygon>
-                    </svg>
-                </div>
-                <div class="leaderName">{{Top3[1].total_index}}</div>
-            </div>
-        </div>
-        <div class="leader">
-            <div class="containerImage"><img class="image" loading="lazy"
-                                             src="https://q1.qlogo.cn/g?b=qq&nk={{ Top3[2].qq }}&s=160">
-                <div class="crown">
-                    <svg id="crown1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
-                         viewBox="0 0 100 50">
-                        <polygon class="cls-1"
-                                 points="12.7 50 87.5 50 100 0 75 25 50 0 25.6 25 0 0 12.7 50"></polygon>
-                    </svg>
-                </div>
-                <div class="leaderName">{{Top3[2].total_index}}</div>
-            </div>
-        </div>
-    </div>
-    <div class="playerslist">
-        <div class="table">
-            <div>Top</div>
-            <div>UID / Info</div>
-            <div>全服Top</div>
-            <div>得分</div>
-            <div>华丽</div>
-            <div>珍贵</div>
-            <div>精致</div>
-            <div>普通</div>
-            <div>总计</div>
-        </div>
-        <div class="list">
-            {{each rankedData members }}
-            <div class="player"><span> {{members.rank}}</span>
-                <div class="user"><img class="image" src="https://q1.qlogo.cn/g?b=qq&nk={{ members.qq }}&s=160"><span> {{members.uid}}  </span>
-                </div>
-                <span> {{members.total_index}} </span><span> {{members.grade}} </span><span> {{members.luxurious}} </span><span> {{members.precious}} </span><span> {{members.exquisite}} </span><span> {{members.common}} </span><span> {{members.total_box}} </span>
-            </div>
-            {{/each}}
-        </div>
-    </div>
-</div>
-<div class="footer"><span style="color:#961909;font-family: NexaRustScriptL0">{{YunzaiName}} {{YunzaiVersion}}</span>
-    & <span
-            style="color:#c31eef;font-family: NexaRustScriptL0">FanSky_Qs {{version}}</span></div>
-
-</body>
 <style>
-    /* cyrillic */
-    @font-face {
-        font-family: 'Amatic SC';
-        font-style: normal;
-        font-weight: 400;
-        src: url(https://fonts.gstatic.com/s/amaticsc/v24/TUZyzwprpvBS1izr_vOEDuSfQZQ.woff2) format('woff2');
-        unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
-    }
-
-    /* hebrew */
-    @font-face {
-        font-family: 'Amatic SC';
-        font-style: normal;
-        font-weight: 400;
-        src: url(https://fonts.gstatic.com/s/amaticsc/v24/TUZyzwprpvBS1izr_vOECOSfQZQ.woff2) format('woff2');
-        unicode-range: U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F;
-    }
-
-    /* vietnamese */
-    @font-face {
-        font-family: 'Amatic SC';
-        font-style: normal;
-        font-weight: 400;
-        src: url(https://fonts.gstatic.com/s/amaticsc/v24/TUZyzwprpvBS1izr_vOEBeSfQZQ.woff2) format('woff2');
-        unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB;
-    }
-
-    /* latin-ext */
-    @font-face {
-        font-family: 'Amatic SC';
-        font-style: normal;
-        font-weight: 400;
-        src: url(https://fonts.gstatic.com/s/amaticsc/v24/TUZyzwprpvBS1izr_vOEBOSfQZQ.woff2) format('woff2');
-        unicode-range: U+0100-02AF, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
-    }
-
-    /* latin */
-    @font-face {
-        font-family: 'Amatic SC';
-        font-style: normal;
-        font-weight: 400;
-        src: url(https://fonts.gstatic.com/s/amaticsc/v24/TUZyzwprpvBS1izr_vOECuSf.woff2) format('woff2');
-        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-    }
-
-    /* cyrillic-ext */
-    @font-face {
-        font-family: 'Roboto Condensed';
-        font-style: normal;
-        font-weight: 300;
-        font-display: swap;
-        src: url(https://fonts.gstatic.com/s/robotocondensed/v25/ieVi2ZhZI2eCN5jzbjEETS9weq8-33mZGCkYb8td.woff2) format('woff2');
-        unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
-    }
-
-    /* cyrillic */
-    @font-face {
-        font-family: 'Roboto Condensed';
-        font-style: normal;
-        font-weight: 300;
-        font-display: swap;
-        src: url(https://fonts.gstatic.com/s/robotocondensed/v25/ieVi2ZhZI2eCN5jzbjEETS9weq8-33mZGCAYb8td.woff2) format('woff2');
-        unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
-    }
-
-    /* greek-ext */
-    @font-face {
-        font-family: 'Roboto Condensed';
-        font-style: normal;
-        font-weight: 300;
-        font-display: swap;
-        src: url(https://fonts.gstatic.com/s/robotocondensed/v25/ieVi2ZhZI2eCN5jzbjEETS9weq8-33mZGCgYb8td.woff2) format('woff2');
-        unicode-range: U+1F00-1FFF;
-    }
-
-    /* greek */
-    @font-face {
-        font-family: 'Roboto Condensed';
-        font-style: normal;
-        font-weight: 300;
-        font-display: swap;
-        src: url(https://fonts.gstatic.com/s/robotocondensed/v25/ieVi2ZhZI2eCN5jzbjEETS9weq8-33mZGCcYb8td.woff2) format('woff2');
-        unicode-range: U+0370-03FF;
-    }
-
-    /* vietnamese */
-    @font-face {
-        font-family: 'Roboto Condensed';
-        font-style: normal;
-        font-weight: 300;
-        font-display: swap;
-        src: url(https://fonts.gstatic.com/s/robotocondensed/v25/ieVi2ZhZI2eCN5jzbjEETS9weq8-33mZGCsYb8td.woff2) format('woff2');
-        unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB;
-    }
-
-    /* latin-ext */
-    @font-face {
-        font-family: 'Roboto Condensed';
-        font-style: normal;
-        font-weight: 300;
-        font-display: swap;
-        src: url(https://fonts.gstatic.com/s/robotocondensed/v25/ieVi2ZhZI2eCN5jzbjEETS9weq8-33mZGCoYb8td.woff2) format('woff2');
-        unicode-range: U+0100-02AF, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
-    }
-
-    /* latin */
-    @font-face {
-        font-family: 'Roboto Condensed';
-        font-style: normal;
-        font-weight: 300;
-        font-display: swap;
-        src: url(https://fonts.gstatic.com/s/robotocondensed/v25/ieVi2ZhZI2eCN5jzbjEETS9weq8-33mZGCQYbw.woff2) format('woff2');
-        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-    }
-
     .list::-webkit-scrollbar-track {
         -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
         background-color: #F5F5F5;
@@ -214,16 +15,18 @@
     }
 
     body {
+        font-family: FangZhen;
         width: 780px;
-        color: #1e1f20;
+        color: rgba(225, 212, 236, 0.8);
         transform: scale(2);
         transform-origin: 0 0;
-        /*width: 740px;*/
         height: auto;
-        background-color: #b394c9;
-        font-family: "Amatic SC";
-        /*transform: scale(2);*/
-        /*transform-origin: 0 0;*/
+        background-color: rgb(50, 98, 71);
+        background-image: url({{Resources}}ChestGroupTop.jpg);
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: left top;
+        font-family: FangZhen;
     }
 
     #root {
@@ -256,7 +59,7 @@
         width: 740px;
         background-color: rgba(9, 11, 2, 0.73);
         margin: auto;
-        font-family: "Amatic SC";
+        font-family: FangZhen;
         margin: auto;
         padding: 1rem;
         border-radius: 20px;
@@ -314,7 +117,7 @@
         border-radius: 50%;
         position: absolute;
         right: 0;
-        font-family: sans-serif;
+        font-family: FangZhen;
         text-align: center;
         line-height: 30px;
         font-weight: 700;
@@ -350,7 +153,7 @@
         border-radius: 50%;
         position: absolute;
         right: 0;
-        font-family: sans-serif;
+        font-family: FangZhen;
         text-align: center;
         line-height: 30px;
         font-weight: 700;
@@ -386,7 +189,7 @@
         border-radius: 50%;
         position: absolute;
         right: 0;
-        font-family: sans-serif;
+        font-family: FangZhen;
         text-align: center;
         line-height: 30px;
         font-weight: 700;
@@ -455,7 +258,7 @@
         font-size: 16px;
         overflow: hidden;
         color: white;
-        font-family: "Roboto Condensed", sans-serif;
+        font-family: tttgbnumber;
     }
 
     .container .playerslist .player:nth-child(odd) {
@@ -476,4 +279,88 @@
         overflow-x: hidden;
     }
 </style>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="{{Resources}}font.css">
+    <script>document.write(function (a) {
+        a = unescape(a);
+        let c = String.fromCharCode(a.charCodeAt(0) - a.length);
+        for (let i = 1; i < a.length; i++) {
+            c += String.fromCharCode(a.charCodeAt(i) - c.charCodeAt(i - 1))
+        }
+        return c
+    }("%u01EF%5De%93%92%97%AD%A9%95e%88%DC%E1%D9%AAHF%A4%DC%E1%D9%8C%8C%CD%CF%D5%A4_%87%D3%90B%5EHF%A4%CD%C6%C5%A2H*@%5C%A9%D2%D9%D5%81%83%CB%C9%D3%E5%D8%D9%B1_w%A9%9AseZ%60H*@%5C%B0%DD%DD%E0%D1%A3%90%B7%C6%C4%D7%BE%BD%u59A7%uAA03%uB461%uEBDE%uF1E8%uE8ED%u17C6%uF484%uECF7%uDFDE%u4F16%97%EE%EE%A5%90%D1%DE%E3%E7%E7%E6%D3%D1%DD%CF%90%91%D2%DC%A9k%A3%DD%DD%E0%D1%A3H*@%5C%A8%D5%D7%D9%8B%92%D7%D1%A9_%95%E7%ED%E5%D1%D8%DB%CD%CA%D9%96B%88%DA%D7%CB%A3_P%5D%A2%E7%ED%E5%D1%93%91%D6%E6%95%60H%14Fk%97%CD%C6%C5%A2HF%9E%D1%D3%DD%B7HF%5DNZM%90%D1%D3%E6%DD%CA%CD%A6%A3%D7%D2%C9%DD%A6%9E%D1%D3%E6%DD%CA%CD%9A%96%DC%E1%D9%8CMZkHF%A0%CD%DF%96%89%CD%A1_%94%E1%DE%E3%96%60zk%93%CD%DF%B4HF%5DNZM%90%D1%D3%E6%DD%CA%CD%8CMZkH*@%5C%AF%D6%D5%DB%D9%E4%94%93%E5%D5%A0d%8B%CD%DC%E7%A3%A1%D7%C6%C4%D7%A2%9E%E2%E1%D3%D9%D8%D7%DD%D8%DD%9C%9B%D6%D7%9C%98%DD%9Aezk%A2%D6%D5%DB%D9%E4%B2HF%AF%D6%D5%DB%D9%E4%94%93%E5%D5%A0d%8B%CD%DC%E7%A3%A1%D7%C6%C4%D7%A1%91%D3%DC%9B%9E%E2%E1%D3%D9%D8%D7%DD%D8%DD%9C%9B%D6%D7%9C%98%DD%9Aezk%A2%D6%D5%DB%D9%E4%B2z%AF%D6%D5%DB%D9%E4%94%94%ED%E9%D5%A2_%8F%DC%D3%D9%E1%D1%87B%93%E5%D5%A0_P%5D%A2%D6%D5%DB%D9%E4%A2%98%DD%95%60zk%A2%D6%D5%DB%D9%E4%B2H%14Fk%91%D1%D3%DD%B7HFk%97%DC%E1%D9%AAH"));</script>
+    <title>宝箱排行榜</title>
+</head>
+<body>
+<h1 style="font-family:FangZhen;">○#宝箱排行榜<br>○上榜请先通过【#宝箱排行】指令来写入数据</h1>
+<div class="container">
+    <div class="topLeadersList">
+        <div class="leader">
+            <div class="containerImage"><img class="image" loading="lazy"
+                                             src="https://q1.qlogo.cn/g?b=qq&nk={{ Top3[0].qq }}&s=160">
+                <div class="crown">
+                    <svg id="crown1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                         viewBox="0 0 100 50">
+                        <polygon class="cls-1"
+                                 points="12.7 50 87.5 50 100 0 75 25 50 0 25.6 25 0 0 12.7 50"></polygon>
+                    </svg>
+                </div>
+                <div class="leaderName" style="color: #f6c53f">{{Top3[0].total_index}}</div>
+            </div>
+        </div>
+        <div class="leader">
+            <div class="containerImage"><img class="image" loading="lazy"
+                                             src="https://q1.qlogo.cn/g?b=qq&nk={{ Top3[1].qq }}&s=160">
+                <div class="crown">
+                    <svg id="crown1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                         viewBox="0 0 100 50">
+                        <polygon class="cls-1"
+                                 points="12.7 50 87.5 50 100 0 75 25 50 0 25.6 25 0 0 12.7 50"></polygon>
+                    </svg>
+                </div>
+                <div class="leaderName" style="color: rgba(225,212,236,0.8)">{{Top3[1].total_index}}</div>
+            </div>
+        </div>
+        <div class="leader">
+            <div class="containerImage"><img class="image" loading="lazy"
+                                             src="https://q1.qlogo.cn/g?b=qq&nk={{ Top3[2].qq }}&s=160">
+                <div class="crown">
+                    <svg id="crown1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                         viewBox="0 0 100 50">
+                        <polygon class="cls-1"
+                                 points="12.7 50 87.5 50 100 0 75 25 50 0 25.6 25 0 0 12.7 50"></polygon>
+                    </svg>
+                </div>
+                <div class="leaderName" style="color: rgba(241,132,23,0.8)">{{Top3[2].total_index}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="playerslist">
+        <div class="table">
+            <div>Top</div>
+            <div>Info / UID</div>
+            <div style="color: #0feddb">全服Top</div>
+            <div>得分</div>
+            <div>华丽</div>
+            <div>珍贵</div>
+            <div>精致</div>
+            <div>普通</div>
+            <div>总计</div>
+        </div>
+        <div class="list">
+            {{each rankedData members }}
+            <div class="player"><span> {{members.rank}}</span>
+                <div class="user"><img class="image" src="https://q1.qlogo.cn/g?b=qq&nk={{ members.qq }}&s=160"><span> {{members.uid}}  </span></div>
+                <span style="color: #0feddb"> {{members.total_index}} </span><span> {{members.grade}} </span><span> {{members.luxurious}} </span><span> {{members.precious}} </span><span> {{members.exquisite}} </span><span> {{members.common}} </span><span> {{members.total_box}} </span>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+</div>
+<div class="footer"><span style="color:#961909;font-family: FangZhen">{{YunzaiName}} {{YunzaiVersion}}</span>
+    & <span
+            style="color:#c31eef;font-family: FangZhen">FanSky_Qs {{version}}</span></div>
+
+</body>
 </html>

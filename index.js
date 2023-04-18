@@ -7,7 +7,7 @@ logger.info(logger.magenta(`'-------------QwQ--------------`))
 try {
     Version = await JSON.parse(fs.readFileSync(`${Cwd}/plugins/FanSky_Qs/package.json`, 'utf-8'));
 } catch (err) {
-    Version = {version: "1.4.8"}
+    Version = {version: "1.5.0"}
 }
 logger.info(logger.magenta(`----FanSky_Qs插件【${Version.version}】初始化中------`))
 const files = fs.readdirSync('./plugins/FanSky_Qs/apps').filter(file => file.endsWith('.js'))
