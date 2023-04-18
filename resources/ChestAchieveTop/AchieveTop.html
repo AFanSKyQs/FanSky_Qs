@@ -63,14 +63,15 @@
             <div>达成成就</div>
             <div>得分</div>
             <div>称号</div>
-            <div>个签</div>
+<!--            <div>个签</div>-->
         </div>
         <div class="list">
             {{each rankedData members }}
             <div class="player"><span> {{members.rank}}</span>
                 <div class="user"><img class="image" src="https://q1.qlogo.cn/g?b=qq&nk={{ members.qq }}&s=160"><span> {{members.uid}}  </span>
                 </div>
-                <span> {{members.total_index}} </span><span> {{members.achievement_number}} / 950</span><span> {{members.grade}} </span><span> {{members.title}} </span><span> {{members.nickname}} </span>
+                <span> {{members.total_index}} </span><span> {{members.achievement_number}} / 950</span><span> {{members.grade}} </span><span> {{members.title}} </span>
+<!--                <span> {{members.nickname}} </span>-->
             </div>
             {{/each}}
         </div>
@@ -418,7 +419,8 @@
         background-color: rgb(77 116 31 / 30%);
         /*#330b7775*/
         display: grid;
-        grid-template-columns: 0.4fr 2fr 1fr 1fr 1fr 1fr 1fr;
+        grid-template-columns: 0.4fr 2fr 1fr 1fr 1fr 1fr;
+        /*1fr;*/
         align-items: center;
         min-height: 42px;
         text-align: center;
@@ -435,7 +437,8 @@
         margin-right: 0.1rem;
         display: grid;
         font-size: 14px;
-        grid-template-columns: 0.4fr 2fr 1fr 1fr 1fr 1fr 1fr;
+        grid-template-columns: 0.4fr 2fr 1fr 1fr 1fr 1fr ;
+        /*1fr;*/
         text-align: center;
     }
 

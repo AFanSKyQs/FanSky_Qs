@@ -7,5 +7,6 @@ export async function getLocalUserData(e, uid) {
     if (!fs.existsSync(UidData)) {
         return null
     }
-    return await JSON.parse(fs.readFileSync(LocalUserData, 'utf-8'))
+
+    return await JSON.parse(fs.readFileSync(UidData, 'utf-8'))
 }
