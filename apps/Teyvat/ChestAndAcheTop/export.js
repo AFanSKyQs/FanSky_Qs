@@ -36,15 +36,16 @@ export async function toImgSend(e, type, uid, signature, level, Name, JsonRes) {
             const dirPath = path.dirname(chestTopPath);
             fs.mkdirSync(dirPath, {recursive: true});
             if (!fs.existsSync(chestTopPath)) fs.writeFileSync(chestTopPath, '{}');
-            let Json = JSON.parse(fs.readFileSync(chestTopPath, 'utf-8'));
+            let Json =await JSON.parse(fs.readFileSync(chestTopPath, 'utf-8'));
             if (!Json[e.group_id]) {
                 Json[e.group_id] = {}
             }
             if (!Json[e.group_id][e.user_id]) Json[e.group_id][e.user_id] = JsonRes.data[0]
+            Json[e.group_id][e.user_id] = JsonRes.data[0]
             Json[e.group_id][e.user_id].uid = uid
             Json[e.group_id][e.user_id].nickname = signature
             await fs.writeFileSync(chestTopPath, JSON.stringify(Json))
-            e.reply("你可以通过【#宝箱排行榜】查看群内数据了(已更新的)", true)
+            e.reply("你可以通过【#宝箱排行榜】查看群内数据了(已更新的)", true,{recallMsg: 15})
         }
         let ChestHtml = {
             uid: uid,
@@ -75,10 +76,11 @@ export async function toImgSend(e, type, uid, signature, level, Name, JsonRes) {
                 Json[e.group_id] = {}
             }
             if (!Json[e.group_id][e.user_id]) Json[e.group_id][e.user_id] = JsonRes.data[0]
+            Json[e.group_id][e.user_id] = JsonRes.data[0]
             Json[e.group_id][e.user_id].uid = uid
             Json[e.group_id][e.user_id].nickname = signature
             await fs.writeFileSync(achieveTopPath, JSON.stringify(Json))
-            e.reply("您可以通过【#成就排行榜】查看群内数据了(已更新的)", true)
+            e.reply("您可以通过【#成就排行榜】查看群内数据了(已更新的)", true,{recallMsg: 15})
         }
         let AchieveHtml = {
             uid: uid,

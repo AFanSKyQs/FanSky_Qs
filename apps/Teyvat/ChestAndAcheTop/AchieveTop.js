@@ -40,6 +40,14 @@ export async function AchievementTop(e) {
     if (JsonRes.data.length > 0) {
         JsonRes.data[0].title = unescape(JsonRes.data[0].title.replace(/\\u/g, '%u'))
         let {Name, level, signature} = await axiosRequest(uid)
+        let LocalChestData = await getLocalUserData(e, uid)
+        if (!LocalChestData) {
+        } else {
+            if (JsonRes.data[0].achievement_number < LocalChestData.info.stats.achievement) {
+                JsonRes.data[0].total_index = JsonRes.data[0].total_index + `(${JsonRes.data[0].achievement_number})`
+                JsonRes.data[0].achievement_number = LocalChestData.info.stats.achievement
+            }
+        }
         await toImgSend(e, "Achieve", uid, signature, level, Name, JsonRes)
         return true
     } else {
