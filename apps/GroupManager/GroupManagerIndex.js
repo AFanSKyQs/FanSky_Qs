@@ -1,4 +1,4 @@
-import {RecallBatch} from "./Recall.js";
+import {k} from "./Recall.js";
 
 export class GroupManagerIndex extends plugin {
     constructor() {
@@ -16,6 +16,6 @@ export class GroupManagerIndex extends plugin {
         })
     }
     async BatchRecall(e) {
-        return await RecallBatch(e);
+        return await k(e);
     }
 }

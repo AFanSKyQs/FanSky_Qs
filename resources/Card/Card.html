@@ -1,367 +1,212 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
-}<style>
-  body{
-    transform: scale(1.5);
-    transform-origin: 0 0;
-    /*background-image:url('https://api.gmit.vip/Api/DmImg?format=image');*/
-    background-image:url({{UserHtml.AcgBg}});
-    background-repeat:no-repeat;
-    background-position:left top;
-    background-attachment:scroll;
-    background-size:cover;
-    width:1800px;
-    height:1091px
-    /*width:auto;*/
-    /*height:auto;*/
-  }
-  
-  /*一言*/
-  .c4502 {
-    backdrop-filter: blur(20px);
-    opacity:0.60;
-    filter:alpha(opacity=60);/* 针对 IE8 以及更早的版本 */
-    padding-top: 10px;
-    padding-right: 10px;
-    padding-bottom: 10px;
-    padding-left: 10px;
-    text-align: center;
-    width: 1400px;
-    border-top-left-radius: 80px;
-    border-top-right-radius: 80px;
-    border-bottom-right-radius: 80px;
-    border-bottom-left-radius: 80px;
-    background-image: url({{UserHtml.StarImg}});
-    font-family: Arial Black, Gadget, sans-serif;
-    font-size: 38px;
-    border-top-width: 2px;
-    border-right-width: 2px;
-    border-bottom-width: 2px;
-    border-left-width: 2px;
-    border-top-style: inset;
-    border-right-style: inset;
-    border-bottom-style: inset;
-    border-left-style: inset;
-    border-top-color: rgb(218, 112, 112);
-    border-right-color: rgb(218, 112, 112);
-    border-bottom-color: rgb(218, 112, 112);
-    border-left-color: rgb(218, 112, 112);
-    border-image-source: initial;
-    border-image-slice: initial;
-    border-image-repeat: initial;
-    background-repeat-x: repeat;
-    background-repeat-y: repeat;
-    background-position-x: left;
-    background-position-y: center;
-    background-attachment: local;
-    background-size: cover;
-    font-weight: 600;
-    background-repeat: repeat;
-    border-image-source:initial;
-    border-image-repeat:initial;
-    margin:130px 0 0 200px;
-  }
-  /*By*/
-  .c4423{
-    padding-top:10px;
-    padding-right:10px;
-    padding-bottom:10px;
-    padding-left:10px;
-    text-align:center;
-    width:600px;
-    font-family:"Arial Black", Gadget, sans-serif;
-    border-top-left-radius:80px;
-    border-top-right-radius:80px;
-    border-bottom-right-radius:20px;
-    border-bottom-left-radius:20px;
-    background-image:url({{UserHtml.ByImg}});
-    background-repeat-x:repeat;
-    background-repeat-y:repeat;
-    background-position-x:left;
-    background-position-y:top;
-    background-attachment:scroll;
-    background-size:auto;
-    border-top-width:4px;
-    border-right-width:4px;
-    border-bottom-width:4px;
-    border-left-width:4px;
-    border-top-style:double;
-    border-right-style:double;
-    border-bottom-style:double;
-    border-left-style:double;
-    border-top-color:rgb(232, 95, 95);
-    border-right-color:rgb(232, 95, 95);
-    border-bottom-color:rgb(232, 95, 95);
-    border-left-color:rgb(232, 95, 95);
-    border-image-source:initial;
-    border-image-slice:initial;
-    border-image-repeat:initial;
-    font-size:25px;
-    color: #e83e75;
-    margin:50px 0 0 600px;
-  }
-  /*小图标背景*/
-  .c4581 {
-    opacity:0.70;
-    filter:alpha(opacity=70);/* 针对 IE8 以及更早的版本 */
-    backdrop-filter: blur(20px);
-    padding-top: 10px;
-    padding-right: 10px;
-    padding-bottom: 10px;
-    padding-left: 10px;
-    width: 500px;
-    background-color: #f0e68c;
-    font-family: "Arial Black", Gadget, sans-serif;
-    text-align: left;
-    font-size: 35px;
-    border-top-width: 5px;
-    border-right-width: 5px;
-    border-bottom-width: 5px;
-    border-left-width: 5px;
-    border-top-style: double;
-    border-right-style: double;
-    border-bottom-style: double;
-    border-left-style: double;
-    border-top-color: rgb(211, 75, 75);
-    border-right-color: rgb(211, 75, 75);
-    border-bottom-color: rgb(211, 75, 75);
-    border-left-color: rgb(211, 75, 75);
-    border-image-source: initial;
-    border-image-slice: initial;
-    border-image-repeat: initial;
-    height: 70px;
-    border-radius: 50px 50px 50px 50px;
-    margin: 10px 0 0 100px;
-    background-image:url({{UserHtml.hg}});
-    background-repeat:no-repeat;
-    background-position:right top;
-    background-attachment:scroll;
-    background-size:contain;
-  }
-  .c4186 {
-    opacity:0.70;
-    filter:alpha(opacity=70);/* 针对 IE8 以及更早的版本 */
-    backdrop-filter: blur(20px);
-    padding-top: 10px;
-    padding-right: 10px;
-    padding-bottom: 10px;
-    padding-left: 10px;
-    width: 550px;
-    background-color: #ff7f50;
-    font-family: "Arial Black", Gadget, sans-serif;
-    text-align: left;
-    font-size: 35px;
-    border-top-width: 5px;
-    border-right-width: 5px;
-    border-bottom-width: 5px;
-    border-left-width: 5px;
-    border-top-style: double;
-    border-right-style: double;
-    border-bottom-style: double;
-    border-left-style: double;
-    border-top-color: rgb(211, 75, 75);
-    border-right-color: rgb(211, 75, 75);
-    border-bottom-color: rgb(211, 75, 75);
-    border-left-color: rgb(211, 75, 75);
-    border-image-source: initial;
-    border-image-slice: initial;
-    border-image-repeat: initial;
-    height: 70px;
-    border-radius: 50px 50px 50px 50px;
-    margin: 4px 0 0 120px;
-    background-image:url({{UserHtml.hy}});
-    background-repeat:no-repeat;
-    background-position:right top;
-    background-attachment:scroll;
-    background-size:contain;
-  }
-  .c4028 {
-    opacity:0.70;
-    filter:alpha(opacity=70);/* 针对 IE8 以及更早的版本 */
-    backdrop-filter: blur(20px);
-    padding-top: 10px;
-    padding-right: 10px;
-    padding-bottom: 10px;
-    padding-left: 10px;
-    width: 600px;
-    background-color: #00fa9a;
-    font-family: "Arial Black", Gadget, sans-serif;
-    text-align: left;
-    font-size: 35px;
-    border-top-width: 5px;
-    border-right-width: 5px;
-    border-bottom-width: 5px;
-    border-left-width: 5px;
-    border-top-style: double;
-    border-right-style: double;
-    border-bottom-style: double;
-    border-left-style: double;
-    border-top-color: rgb(211, 75, 75);
-    border-right-color: rgb(211, 75, 75);
-    border-bottom-color: rgb(211, 75, 75);
-    border-left-color: rgb(211, 75, 75);
-    border-image-source: initial;
-    border-image-slice: initial;
-    border-image-repeat: initial;
-    height: 70px;
-    border-radius: 50px 50px 50px 50px;
-    margin: 4px 0 0 140px;
-    background-image:url({{UserHtml.love}});
-    background-repeat:no-repeat;
-    background-position:right top;
-    background-attachment:scroll;
-    background-size:contain;
-  }
-  .c4265 {
-    opacity:0.70;
-    filter:alpha(opacity=70);/* 针对 IE8 以及更早的版本 */
-    backdrop-filter: blur(20px);
-    padding-top: 10px;
-    padding-right: 10px;
-    padding-bottom: 10px;
-    padding-left: 10px;
-    width: 650px;
-    background-color: #00ffff;
-    font-family: "Arial Black", Gadget, sans-serif;
-    text-align: left;
-    font-size: 35px;
-    border-top-width: 5px;
-    border-right-width: 5px;
-    border-bottom-width: 5px;
-    border-left-width: 5px;
-    border-top-style: double;
-    border-right-style: double;
-    border-bottom-style: double;
-    border-left-style: double;
-    border-top-color: rgb(211, 75, 75);
-    border-right-color: rgb(211, 75, 75);
-    border-bottom-color: rgb(211, 75, 75);
-    border-left-color: rgb(211, 75, 75);
-    border-image-source: initial;
-    border-image-slice: initial;
-    border-image-repeat: initial;
-    background-position-x: center;
-    background-position-y: center;
-    box-shadow: rgb(243, 40, 40) 4px 2px 5px 0;
-    height: 70px;
-    border-radius: 50px 50px 50px 50px;
-    margin: 4px 0 0 160px;
-    background-image:url({{UserHtml.yuans}});
-    background-repeat:no-repeat;
-    background-position:right top;
-    background-attachment:scroll;
-    background-size:contain;
-  }
-  .c4344 {
-    opacity:0.70;
-    filter:alpha(opacity=70);/* 针对 IE8 以及更早的版本 */
-    backdrop-filter: blur(20px);
-    padding-top: 10px;
-    padding-right: 10px;
-    padding-bottom: 10px;
-    padding-left: 10px;
-    width: 700px;
-    background-color: #adff2f;
-    font-family: "Arial Black", Gadget, sans-serif;
-    text-align: left;
-    font-size: 35px;
-    border-top-width: 5px;
-    border-right-width: 5px;
-    border-bottom-width: 5px;
-    border-left-width: 5px;
-    border-top-style: double;
-    border-right-style: double;
-    border-bottom-style: double;
-    border-left-style: double;
-    border-top-color: rgb(211, 75, 75);
-    border-right-color: rgb(211, 75, 75);
-    border-bottom-color: rgb(211, 75, 75);
-    border-left-color: rgb(211, 75, 75);
-    border-image-source: initial;
-    border-image-slice: initial;
-    border-image-repeat: initial;
-    height: 70px;
-    border-radius: 50px 50px 50px 50px;
-    margin: 4px 0 0 180px;
-    background-image:url({{UserHtml.salou}});
-    background-repeat:no-repeat;
-    background-position:right top;
-    background-attachment:scroll;
-    background-size:contain;
-  }
-  .c4107 {
-    opacity:0.70;
-    filter:alpha(opacity=70);/* 针对 IE8 以及更早的版本 */
-    backdrop-filter: blur(20px);
-    padding-top: 10px;
-    padding-right: 10px;
-    padding-bottom: 10px;
-    padding-left: 10px;
-    width: 700px;
-    background-color: #ff00ff;
-    font-family: "Arial Black", Gadget, sans-serif;
-    text-align: left;
-    font-size: 35px;
-    border-top-width: 5px;
-    border-right-width: 5px;
-    border-bottom-width: 5px;
-    border-left-width: 5px;
-    border-top-style: double;
-    border-right-style: double;
-    border-bottom-style: double;
-    border-left-style: double;
-    border-top-color: rgb(211, 75, 75);
-    border-right-color: rgb(211, 75, 75);
-    border-bottom-color: rgb(211, 75, 75);
-    border-left-color: rgb(211, 75, 75);
-    border-image-source: initial;
-    border-image-slice: initial;
-    border-image-repeat: initial;
-    height: 70px;
-    border-radius: 50px 50px 50px 50px;
-    margin: 4px 0 0 200px;
-    background-image:url({{UserHtml.syc}});
-    background-repeat:no-repeat;
-    background-position:right top;
-    background-attachment:scroll;
-    background-size:contain;
-  }
-  </style>
-  <head>
-    <meta charset="utf-8">
-    <title>打卡-魔晶系统</title>
-<!--    <link rel="shortcut icon" href="https://htmlpage.cn/favicon.png">-->
-<!--    <link rel="stylesheet" href="{{CssPath}}style.css">-->
-    <link rel="stylesheet" href="{{CssPath}}style.css">
-  </head>
+<style>
+    body {
+        /*background-image: url('https://i.imgtg.com/2023/04/13/8Ps9L.jpg');*/
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        transform: scale(2);
+        transform-origin: 0 0;
+    }
 
-  <body>
-  <div data-v-32b84ec5=""></div>
-  <img src="{{@UserHtml.Txk1}}" alt="txk1" class="c2492" />
-  <img src="{{@UserHtml.user_img}}" alt="toux" class="c3659" />
-  
-  <div id="jrdk" class="c4581"><span id="iutl">今日第 {{@UserHtml.CardTop}} 位打卡喵~</span></div>
-<!--  <img src="{{@UserHtml.hg}}" alt="hg" class="c5773" />-->
-  <div id="lxdk" class="c4186">已连续打卡 {{@UserHtml.CardContinuous}} 天喵~</div>
-<!--  <img src="{{@UserHtml.hy}}" alt="hy" class="c4832" />-->
-  <div id="name" class="c4028">nickname：{{@UserHtml.nickname}}</div>
-<!--  <img src="{{@UserHtml.love}}" alt="love" class="c9236" />-->
-  <div id="yszj" class="c4265">魔晶总计：{{@UserHtml.CardRough}} 颗喵~ | ☆+{{@UserHtml.addRough}}</div>
-<!--  <img src="{{@UserHtml.yuans}}" alt="yuans" class="c3899" />-->
-  <div id="scdk" class="c4344">上次打卡：{{@UserHtml.CardLastTime}}</div>
-<!--  <img src="{{@UserHtml.salou}}" alt="salou" class="c6609" />-->
-  <div id="dkts" class="c4107">打卡天数：{{@UserHtml.CardDay}} 天 | 总打卡：{{@UserHtml.CardCount}} 次~</div>
-<!--  <div id="yiyan" class="c4502"><i>{{@UserHtml.AWords}}</i> | {{@UserHtml.CardNowTime}}</div>-->
-<!--  <div id="By" class="c4423"><b>Created by Yunzai-Bot 3.0 &amp; FanSky_Qs</b></div>-->
-  <!-- <img src="{{@UserHtml.TuPath}}" alt="tutu" class="c1727" /> -->
-  <div id="yiyan" class="c4502">
-    <i>{{@UserHtml.AWords}}
-    </i> | {{@UserHtml.CardNowTime}}
-  </div>
-  <div id="By" class="c4423">
-    <b>Created by {{@UserHtml.YunzaiName}} {{@UserHtml.Yunzai}} &amp; FanSky_Qs {{@UserHtml.Version}}
-    </b>
-  </div>
-<!--  <img src="{{@UserHtml.syc}}" alt="syc" class="c8111"  />-->
-    </body>
-  <html>
+    #container {
+        background-image: url({{UserHtml.AcgBg}});
+        position: absolute;
+        /*top: 20%;*/
+        /*left: 20%;*/
+        width: 1100px;
+        height: 650px;
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 20px;
+        box-shadow: 5px 5px 5px #888888;
+    }
+
+    #container .info div strong:before {
+        content: "";
+        display: inline-block;
+        width: 22px;
+        height: 22px;
+        margin-right: 8px;
+        background-image: url({{UserHtml.hy}});
+        background-size: contain;
+        margin-top: 15px;
+    }
+
+    .avatar {
+        height: 100px;
+        width: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 20px;
+        float: left;
+        backdrop-filter: blur(50px);
+    }
+
+    .info {
+        float: left;
+        margin-top: 10px;
+        font-size: 35px;
+        /*font-family: BaoTu;*/
+        font-family: ZaoZiGongFangMiaoMiao;
+        /*backdrop-filter: blur(10px);*/
+    }
+
+    .title {
+        font-size: 30px;
+        margin-bottom: 20px;
+        font-family: FangZhen;
+        font-weight: bold;
+        padding: 10px;
+        border-radius: 15px;
+        backdrop-filter: blur(5px);
+        box-shadow: rgb(26, 28, 12) 0px 0px 10px;
+        max-width: calc(100% - 50px);
+        text-align: left;
+    }
+
+    .footer {
+        font-family: YinPinMo;
+        color: #f95405;
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-weight: bold;
+        font-size: 25px;
+        padding: 10px;
+        border-radius: 15px;
+        backdrop-filter: blur(5px);
+        box-shadow: 0 0 10px rgb(26, 28, 12);
+        max-width: calc(100% - 20px);
+        text-align: center;
+        background-color: #84ff7f87;
+    }
+
+    #container .info div strong[data-icon="user"]:before {
+        background-image: url({{UserHtml.love}});
+    }
+
+    #container .info div strong[data-icon="card"]:before {
+        background-image: url({{UserHtml.hg}});
+    }
+
+    #container .info div strong[data-icon="calendar"]:before {
+        background-image: url({{UserHtml.hy}});
+    }
+
+    #container .info div strong[data-icon="gem"]:before {
+        background-image: url({{UserHtml.yuans}});
+    }
+
+    #container .info div strong[data-icon="time"]:before {
+        background-image: url({{UserHtml.salou}});
+    }
+
+    #container .info div strong[data-icon="clock"]:before {
+        background-image: url({{UserHtml.syc}});
+    }
+</style>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{CssPath}}style.css">
+    <title>打卡</title>
+</head>
+<body>
+<div id="container" class="container">
+    <div class="title">{{@UserHtml.AWords}} | {{@UserHtml.CardNowTime}}</div>
+    <img src="{{@UserHtml.user_img}}" alt="用户头像" class="avatar">
+    <div class="info">
+        <div style="color: darkorchid;backdrop-filter: blur(10px);
+    background-color: #c46fe399;
+    border-radius: 15px;
+    padding: 10px;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 15px;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 10px rgb(26, 28, 12);
+    /*max-width: calc(100% - 10px);*/
+    text-align: left;"><strong data-icon="user">NickName：</strong><span></span>{{@UserHtml.nickname}}
+        </div>
+        <div style="color: crimson;backdrop-filter: blur(10px);
+    background-color: #ff5a5a73;
+    border-radius: 15px;
+    padding: 10px;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 15px;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 10px rgb(26, 28, 12);
+    /*max-width: calc(100% - 20px);*/
+    text-align: left;
+"><strong data-icon="gem">「魔晶」总计：</strong><span></span>{{@UserHtml.CardRough}} | ☆+{{@UserHtml.addRough}}
+        </div>
+        <div style="color: blue;backdrop-filter: blur(10px);
+    background-color: #66a8d373;
+    border-radius: 15px;
+    padding: 10px;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 15px;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 10px rgb(26, 28, 12);
+    max-width: calc(100% - 30px);
+    text-align: left;
+"><strong data-icon="card">今日打卡Top[位]：</strong><span></span>「{{@UserHtml.CardTop}}」
+        </div>
+        <div style="color: chocolate;backdrop-filter: blur(10px);
+    background-color: #ffba5c9e;
+    border-radius: 15px;
+    padding: 10px;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 15px;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 10px rgb(26, 28, 12);
+    max-width: calc(100% - 100px);
+    text-align: left;
+"><strong data-icon="calendar">连续打卡[天]：</strong><span></span>[{{@UserHtml.CardContinuous}}]
+        </div>
+        <div style="color: darkblue;backdrop-filter: blur(10px);
+    background-color: #3123c357;
+    border-radius: 15px;
+    padding: 10px;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 15px;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 10px rgb(26, 28, 12);
+    max-width: calc(100% - 120px);
+    text-align: left;
+"><strong data-icon="clock">总计打卡[天]：</strong><span></span>{{@UserHtml.CardDay}}
+        </div>
+        <div style="color: teal;backdrop-filter: blur(10px);
+    background-color: #59b9aa73;
+    border-radius: 15px;
+    padding: 10px;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 15px;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 10px rgb(26, 28, 12);
+    max-width: calc(100%);
+    text-align: left;
+"><strong data-icon="time">上次打卡:</strong><span></span>{{@UserHtml.CardLastTime}}
+        </div>
+
+        <!--        <div style="color: darkorchid"><strong data-icon="user">NickName：</strong><span></span>{{@UserHtml.nickname}}</div>-->
+        <!--        <div style="color: blue"><strong data-icon="card">第几位打卡：</strong><span></span>「{{@UserHtml.CardTop}}」</div>-->
+        <!--        <div style="color: chocolate"><strong data-icon="calendar">连续打卡天数：</strong><span></span>[{{@UserHtml.CardContinuous}}]</div>-->
+        <!--        <div style="color: crimson"><strong data-icon="gem">「魔晶」总计：</strong><span></span>{{@UserHtml.CardRough}}</div>-->
+        <!--        <div style="color: teal"><strong data-icon="time">上次打卡时间：</strong><span></span>{{@UserHtml.CardLastTime}}</div>-->
+        <!--        <div style="color: darkblue"><strong data-icon="clock">打卡天数：</strong><span></span>{{@UserHtml.CardDay}}</div>-->
+
+    </div>
+    <div style="clear: both;"></div>
+    <div class="footer"><span
+            style="color:#961909;font-family: BaoTu">{{@UserHtml.YunzaiName}} {{@UserHtml.Yunzai}}</span>
+        & <span
+                style="color:#c31eef;font-family: BaoTu">FanSky_Qs {{@UserHtml.Version}}</span></div>
+</div>
+</body>
+</html>
