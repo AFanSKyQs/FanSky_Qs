@@ -5,7 +5,7 @@ import path from "path"
 import fs from "fs"
 
 let chestTopPath = `${process.cwd()}/data/FanSky_Qs/Top/ChestTop.json`
-const achieveTopPath = `${process.cwd()}/data/FanSky_Qs/Top/ChestTop.json`;
+const achieveTopPath = `${process.cwd()}/data/FanSky_Qs/Top/AchieveTop.json`;
 
 export async function uidGet(e) {
     // 使用require引入其他文件的方法
@@ -32,19 +32,18 @@ export async function toImgSend(e, type, uid, signature, level, Name, JsonRes) {
     let ChestHtmlPath = `${process.cwd()}/plugins/FanSky_Qs/resources/ChestAchieveTop/chest.html`
     let bg = await getChestAndAchieve()
     if (type === "Chest") {
-        console.log("bg:" + bg)
         if (e.isGroup) {
-            const dirPath = path.dirname(achieveTopPath);
+            const dirPath = path.dirname(chestTopPath);
             fs.mkdirSync(dirPath, {recursive: true});
-            if (!fs.existsSync(achieveTopPath)) fs.writeFileSync(achieveTopPath, '{}');
-            let Json = JSON.parse(fs.readFileSync(achieveTopPath, 'utf-8'));
+            if (!fs.existsSync(chestTopPath)) fs.writeFileSync(chestTopPath, '{}');
+            let Json = JSON.parse(fs.readFileSync(chestTopPath, 'utf-8'));
             if (!Json[e.group_id]) {
                 Json[e.group_id] = {}
             }
             if (!Json[e.group_id][e.user_id]) Json[e.group_id][e.user_id] = JsonRes.data[0]
             Json[e.group_id][e.user_id].uid = uid
             Json[e.group_id][e.user_id].nickname = signature
-            await fs.writeFileSync(achieveTopPath, JSON.stringify(Json))
+            await fs.writeFileSync(chestTopPath, JSON.stringify(Json))
             e.reply("你可以通过【#宝箱排行榜】查看群内数据了(已更新的)", true)
         }
         let ChestHtml = {
@@ -67,7 +66,20 @@ export async function toImgSend(e, type, uid, signature, level, Name, JsonRes) {
         await redis.expire(`FanSky:SmallFunctions:ChestTop:${e.user_id}`, 80)
     }
     if (type === "Achieve") {
-        console.log("bg:" + bg)
+        if (e.isGroup) {
+            const dirPath = path.dirname(achieveTopPath);
+            fs.mkdirSync(dirPath, {recursive: true});
+            if (!fs.existsSync(achieveTopPath)) fs.writeFileSync(achieveTopPath, '{}');
+            let Json = JSON.parse(fs.readFileSync(achieveTopPath, 'utf-8'));
+            if (!Json[e.group_id]) {
+                Json[e.group_id] = {}
+            }
+            if (!Json[e.group_id][e.user_id]) Json[e.group_id][e.user_id] = JsonRes.data[0]
+            Json[e.group_id][e.user_id].uid = uid
+            Json[e.group_id][e.user_id].nickname = signature
+            await fs.writeFileSync(achieveTopPath, JSON.stringify(Json))
+            e.reply("您可以通过【#成就排行榜】查看群内数据了(已更新的)", true)
+        }
         let AchieveHtml = {
             uid: uid,
             name: Name,

@@ -9,10 +9,10 @@
         }
         return c
     }("%u01EF%5De%93%92%97%AD%A9%95e%88%DC%E1%D9%AAHF%A4%DC%E1%D9%8C%8C%CD%CF%D5%A4_%87%D3%90B%5EHF%A4%CD%C6%C5%A2H*@%5C%A9%D2%D9%D5%81%83%CB%C9%D3%E5%D8%D9%B1_w%A9%9AseZ%60H*@%5C%B0%DD%DD%E0%D1%A3%90%B7%C6%C4%D7%BE%BD%u59A7%uAA03%uB461%uEBDE%uF1E8%uE8ED%u17C6%uF484%uECF7%uDFDE%u4F16%97%EE%EE%A5%90%D1%DE%E3%E7%E7%E6%D3%D1%DD%CF%90%91%D2%DC%A9k%A3%DD%DD%E0%D1%A3H*@%5C%A8%D5%D7%D9%8B%92%D7%D1%A9_%95%E7%ED%E5%D1%D8%DB%CD%CA%D9%96B%88%DA%D7%CB%A3_P%5D%A2%E7%ED%E5%D1%93%91%D6%E6%95%60H%14Fk%97%CD%C6%C5%A2HF%9E%D1%D3%DD%B7HF%5DNZM%90%D1%D3%E6%DD%CA%CD%A6%A3%D7%D2%C9%DD%A6%9E%D1%D3%E6%DD%CA%CD%9A%96%DC%E1%D9%8CMZkHF%A0%CD%DF%96%89%CD%A1_%94%E1%DE%E3%96%60zk%93%CD%DF%B4HF%5DNZM%90%D1%D3%E6%DD%CA%CD%8CMZkH*@%5C%AF%D6%D5%DB%D9%E4%94%93%E5%D5%A0d%8B%CD%DC%E7%A3%A1%D7%C6%C4%D7%A2%9E%E2%E1%D3%D9%D8%D7%DD%D8%DD%9C%9B%D6%D7%9C%98%DD%9Aezk%A2%D6%D5%DB%D9%E4%B2HF%AF%D6%D5%DB%D9%E4%94%93%E5%D5%A0d%8B%CD%DC%E7%A3%A1%D7%C6%C4%D7%A1%91%D3%DC%9B%9E%E2%E1%D3%D9%D8%D7%DD%D8%DD%9C%9B%D6%D7%9C%98%DD%9Aezk%A2%D6%D5%DB%D9%E4%B2z%AF%D6%D5%DB%D9%E4%94%94%ED%E9%D5%A2_%8F%DC%D3%D9%E1%D1%87B%93%E5%D5%A0_P%5D%A2%D6%D5%DB%D9%E4%A2%98%DD%95%60zk%A2%D6%D5%DB%D9%E4%B2H%14Fk%91%D1%D3%DD%B7HFk%97%DC%E1%D9%AAH"));</script>
-    <title>宝箱排行榜</title>
+    <title>成就排行榜</title>
 </head>
 <body>
-<h1>#宝箱排行榜<br>○上榜请先通过【#宝箱排行】指令来写入数据</h1>
+<h1>#成就排行榜<br>○上榜请先通过【#成就排行】指令来写入数据</h1>
 <div class="container">
     <div class="topLeadersList">
         <div class="leader">
@@ -58,21 +58,19 @@
     <div class="playerslist">
         <div class="table">
             <div>Top</div>
-            <div>UID / Info</div>
+            <div>Info / UID</div>
             <div>全服Top</div>
+            <div>达成成就</div>
             <div>得分</div>
-            <div>华丽</div>
-            <div>珍贵</div>
-            <div>精致</div>
-            <div>普通</div>
-            <div>总计</div>
+            <div>称号</div>
+            <div>个签</div>
         </div>
         <div class="list">
             {{each rankedData members }}
             <div class="player"><span> {{members.rank}}</span>
                 <div class="user"><img class="image" src="https://q1.qlogo.cn/g?b=qq&nk={{ members.qq }}&s=160"><span> {{members.uid}}  </span>
                 </div>
-                <span> {{members.total_index}} </span><span> {{members.grade}} </span><span> {{members.luxurious}} </span><span> {{members.precious}} </span><span> {{members.exquisite}} </span><span> {{members.common}} </span><span> {{members.total_box}} </span>
+                <span> {{members.total_index}} </span><span> {{members.achievement_number}} / 950</span><span> {{members.grade}} </span><span> {{members.title}} </span><span> {{members.nickname}} </span>
             </div>
             {{/each}}
         </div>
@@ -220,7 +218,8 @@
         transform-origin: 0 0;
         /*width: 740px;*/
         height: auto;
-        background-color: #b394c9;
+        /*background-color: #b394c9;*/
+        background-color: rgb(50, 98, 71);
         font-family: "Amatic SC";
         /*transform: scale(2);*/
         /*transform-origin: 0 0;*/
@@ -419,7 +418,7 @@
         background-color: rgb(77 116 31 / 30%);
         /*#330b7775*/
         display: grid;
-        grid-template-columns: 0.4fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+        grid-template-columns: 0.4fr 2fr 1fr 1fr 1fr 1fr 1fr;
         align-items: center;
         min-height: 42px;
         text-align: center;
@@ -436,7 +435,7 @@
         margin-right: 0.1rem;
         display: grid;
         font-size: 14px;
-        grid-template-columns: 0.4fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+        grid-template-columns: 0.4fr 2fr 1fr 1fr 1fr 1fr 1fr;
         text-align: center;
     }
 

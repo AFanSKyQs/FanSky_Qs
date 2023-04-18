@@ -9,6 +9,11 @@ import gsCfg from '../../../genshin/model/gsCfg.js'
 import {getHelpBg} from "../../models/getTuImg.js";
 import {getVersionInfo} from "../../models/getVersion.js";
 
+import {AchievementTop} from "./ChestAndAcheTop/AchieveTop.js";
+import ChestTop from "./ChestAndAcheTop/ChestTop.js";
+import {ChestGroupTop} from "./ChestAndAcheTop/ChestGroupTop.js";
+import {AchieveGroupTop} from "./ChestAndAcheTop/AchieveGroupTop.js";
+
 let cwd = process.cwd().replace(/\\/g, '/')
 let DATA_PATH = `${process.cwd()}/plugins/FanSky_Qs/config/TeyvatConfig/TeyvatUrlJson.json`
 let CachePath = `${process.cwd()}/plugins/FanSky_Qs/resources/cache`
@@ -34,9 +39,53 @@ export class BotEntry extends plugin {
                 }, {
                     reg: /^#队伍(面板|缓存|已有|数据|cache)(\d+)?$/,
                     fnc: 'TeamCache'
+                }, {
+                    reg: '^#成就(排行|排名|查询|统计)(.*)$',
+                    fnc: 'achieveTop'
+                }, {
+                    reg: '^#宝箱(排行|排名|查询|统计)(.*)$',
+                    fnc: 'ChestGroupTop'
                 },
             ]
         })
+    }
+
+    async achieveTop(e) {
+        let msg = e.original_msg || e.msg
+        if (!msg) {
+            return false
+        }
+        if (msg.includes("排行榜")) {
+            let Static = await AchieveGroupTop(e)
+            if (!Static || Static === false) {
+                return false
+            }
+        } else {
+            let Static = await AchievementTop(e)
+            if (!Static || Static === false) {
+                return false
+            }
+        }
+        return true
+    }
+
+    async ChestGroupTop(e) {
+        let msg = e.original_msg || e.msg
+        if (!msg) {
+            return false
+        }
+        if (msg.includes("排行榜")) {
+            let Static = await ChestGroupTop(e)
+            if (!Static || Static === false) {
+                return false
+            }
+        } else {
+            let Static = await ChestTop(e)
+            if (!Static || Static === false) {
+                return false
+            }
+        }
+        return true
     }
 
     async TeamCache(e) {

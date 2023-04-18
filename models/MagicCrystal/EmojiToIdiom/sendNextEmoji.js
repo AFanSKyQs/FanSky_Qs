@@ -1,6 +1,6 @@
 import {getSendList} from "./getSendList.js";
 
-export async function sendNextEmoji(e, Rounds) {
+export async function sendNextEmoji(e, Rounds,CD) {
     let SendEmoji = await getSendList()
     logger.info(logger.magenta('>>[FanSky_Qs]emoji猜成语: ' + SendEmoji.Idiom.word + ':' + SendEmoji.Emoji))
     const ttl = await redis.ttl(`FanSky:MagicCrystal:${e.group_id}:EmojiCD`)
@@ -10,6 +10,6 @@ export async function sendNextEmoji(e, Rounds) {
         Rounds: Rounds
     }))
     await redis.expire(`FanSky:MagicCrystal:${e.group_id}:EmojiCD`, ttl)
-    e.reply(`第${Rounds}轮：\n${SendEmoji.Emoji}`)
+    e.reply(`第${Rounds}轮（剩余${CD}s）：\n${SendEmoji.Emoji}`)
     return false
 }

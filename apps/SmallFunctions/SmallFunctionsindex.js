@@ -4,9 +4,6 @@ import {YiyanDinZhen} from "./YiyanDinZhen.js";
 import {Complaint} from "./ReplyComplaint.js";
 import {OnOFF} from "./ON-OFF.js";
 import {AT_Xiaozuo7_CxkEmo} from "./AT_Xiaozuo7_CxkEmo.js";
-import {AchievementTop} from "./ChestAndAcheTop/AchieveTop.js";
-import ChestTop from "./ChestAndAcheTop/ChestTop.js";
-import {ChestGroupTop} from "./ChestAndAcheTop/ChestGroupTop.js";
 import plugin from "../../../../lib/plugins/plugin.js";
 import {cxbz, cx, hc, hx, zp} from "./Znb233_Js/Znb233_Cx.js";
 import {updateDioTu, updateLongTu} from "../../models/UpdateImg.js";
@@ -46,12 +43,6 @@ export class SmallFunctionsindex extends plugin {
                 }, {
                     reg: /^#?(鸡哥|ikun|小黑子|小ji子|小鸡子|村路人|纯路人|纯鹿人|个人练习生|真虾头|感觉没必要|一眼丁鸡|一眼丁ji|cxk)$/i,
                     fnc: 'AT_Xiaozuo7_CxkEmo'
-                }, {
-                    reg: '^#成就(排行|排名|查询|统计)(.*)$',
-                    fnc: 'achieveTop'
-                }, {
-                    reg: '^#宝箱(排行|排名|查询|统计)(.*)$',
-                    fnc: 'ChestGroupTop'
                 }, {
                     reg: "^#?(抽象帮助|cxbz)",
                     fnc: "cxbz",
@@ -155,39 +146,6 @@ export class SmallFunctionsindex extends plugin {
     async cxbz(e) {
         await cxbz(e)
     }
-
-    async achieveTop(e) {
-        let msg = e.original_msg || e.msg
-        if (!msg) {
-            return false
-        }
-        if (msg.includes("排行榜")) {
-        }
-        let Static = await AchievementTop(e)
-        if (!Static || Static === false) {
-            return false
-        }
-    }
-
-    async ChestGroupTop(e) {
-        let msg = e.original_msg || e.msg
-        if (!msg) {
-            return false
-        }
-        if (msg.includes("排行榜")) {
-            let Static = await ChestGroupTop(e)
-            if (!Static || Static === false) {
-                return false
-            }
-        } else {
-            let Static = await ChestTop(e)
-            if (!Static || Static === false) {
-                return false
-            }
-        }
-        return true
-    }
-
     async AT_Xiaozuo7_CxkEmo(e) {
         let Static = await AT_Xiaozuo7_CxkEmo(e)
         if (!Static || Static === false) {

@@ -1,5 +1,6 @@
 import axios from "axios";
 import {axiosRequest, toImgSend, uidGet} from "./export.js";
+import {getLocalUserData} from "../../../models/getLocalUserData.js";
 
 
 export async function AchievementTop(e) {
@@ -21,10 +22,10 @@ export async function AchievementTop(e) {
         Json_Res = response.data
     } catch (error) {
         logger.error('[成就排行] 接口请求失败！')
-        e.reply('成就排行接口请求失败~')
+        e.reply('成就排行接口请求失败~\n尝试读取${uid}本地[ #角色 ]数据')
+        await ReadLocalData(e, uid)
         return true
     }
-
 
     let StringJson = JSON.stringify(Json_Res)
     StringJson = StringJson.replace(/\r/g, '')
@@ -39,12 +40,44 @@ export async function AchievementTop(e) {
     if (JsonRes.data.length > 0) {
         JsonRes.data[0].title = unescape(JsonRes.data[0].title.replace(/\\u/g, '%u'))
         let {Name, level, signature} = await axiosRequest(uid)
-        // let Msg = [`UID：${uid}\n`, `个性签名：${signature}\n`, `冒险等级：${level}\n`, `游戏昵称：${Name} \n`, `达成成就:【${JsonRes.data[0].achievement_number}】/892个\n`, `官哔排行：第${JsonRes.data[0].total_index}名\n`, `排名分数：${JsonRes.data[0].grade}\n图像渲染正在施工中~`]
-        // e.reply(Msg)
         await toImgSend(e, "Achieve", uid, signature, level, Name, JsonRes)
         return true
     } else {
-        e.reply(`uid:${uid}没有匹配的数据，可能是米游社权限未开放或者为国际服uid喵~`)
+        e.reply(`uid:${uid}没有匹配的数据，可能是米游社权限未开放或者为国际服uid喵~\n尝试读取${uid}本地[ #角色 ]数据`)
+        await ReadLocalData(e, uid)
+        return true
+    }
+}
+
+async function ReadLocalData(e, uid) {
+    let LocalChestData = await getLocalUserData(e, uid)
+    if (!LocalChestData) {
+        e.reply(`没有找到${uid}的本地数据~`)
+        return true
+    }
+    if (LocalChestData.info && LocalChestData.info.length > 0) {
+        let JsonRes = {
+            data: [
+                {
+                    "achievement_number": LocalChestData.info.stats.achievement,
+                    "total_index": "本地数据",
+                    "nick_name": LocalChestData.info.stats.name,
+                    "hide_name": 0,
+                    "title": "本地数据",
+                    "grade": "本地数据",
+                    "uid": uid,
+                    "nickname": LocalChestData.info.stats.sign,
+                },
+            ]
+        }
+        let {Name, level, signature} = {
+            Name: LocalChestData.name,
+            level: LocalChestData.level,
+            signature: LocalChestData.sign
+        }
+        await toImgSend(e, "Achieve", uid, signature, level, Name, JsonRes)
+    } else {
+        e.reply("您的本地[ #角色 ]数据也为空", true)
         return true
     }
 }

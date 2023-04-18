@@ -30,7 +30,7 @@ export async function runGetIdiomEmoji(e) {
             await e.reply(`[emoji猜成语]结束啦!没有人答出来，逊诶qwq${await getEmoji()}` + `\n${Answer.PinYin}\n${Answer.Words}`)
         } else {
             console.log(Answer)
-            await e.reply(`[emoji猜成语]结束啦！进行了${Answer.Rounds}轮，群友的速度达到了${60 / (Answer.Rounds)}秒/题，GPU堪比战术核显！${await getEmoji()}`+`\n${Answer.PinYin}\n${Answer.Words}`)
+            await e.reply(`[emoji猜成语]结束啦！进行了${Answer.Rounds}轮，群友的速度达到了${60 / (Answer.Rounds - 1)}秒/题，GPU堪比战术核显！${await getEmoji()}`+`\n${Answer.PinYin}\n${Answer.Words}`)
             await redis.set(`FanSky:MagicCrystal:${e.group_id}:EmojiNextCD`, "EmojiNextCD")
             await redis.expire(`FanSky:MagicCrystal:${e.group_id}:EmojiNextCD`, 15)
         }
