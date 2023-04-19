@@ -7,7 +7,7 @@ logger.info(logger.magenta(`'-------------QwQ--------------`))
 try {
     Version = await JSON.parse(fs.readFileSync(`${Cwd}/plugins/FanSky_Qs/package.json`, 'utf-8'));
 } catch (err) {
-    Version = {version: "1.5.0"}
+    Version = {version: "1.5.1"}
 }
 logger.info(logger.magenta(`----FanSky_Qs插件【${Version.version}】初始化中------`))
 const files = fs.readdirSync('./plugins/FanSky_Qs/apps').filter(file => file.endsWith('.js'))
@@ -29,6 +29,7 @@ for (let i in files) {
         if (AMatchFan) {
             const APackageNameY = AMatchFan[1];
             logger.warn(`请先在${logger.red(`plugins/FanSky_Qs`)}目录运行：${logger.red(`pnpm install`)}安装依赖`)
+            logger.error(AFanReaSon)
             APackageFanError++
         } else {
             logger.error(ret[i].reason)

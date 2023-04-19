@@ -13,6 +13,7 @@ import {AchievementTop} from "./ChestAndAcheTop/AchieveTop.js";
 import ChestTop from "./ChestAndAcheTop/ChestTop.js";
 import {ChestGroupTop} from "./ChestAndAcheTop/ChestGroupTop.js";
 import {AchieveGroupTop} from "./ChestAndAcheTop/AchieveGroupTop.js";
+import {team} from "./getTeam.js";
 
 let cwd = process.cwd().replace(/\\/g, '/')
 let DATA_PATH = `${process.cwd()}/plugins/FanSky_Qs/config/TeyvatConfig/TeyvatUrlJson.json`
@@ -89,6 +90,14 @@ export class BotEntry extends plugin {
     }
 
     async TeamCache(e) {
+
+        if (e.msg) {
+            e.msg = "#面板"
+            e.raw_message = "#面板"
+            e.original_msg = "#面板"
+            return false
+        }
+
         let Regx = /^#队伍(面板|缓存|已有|数据|cache)(\d+)?$/
         let matchTeam = e.msg.match(Regx);
         let uid = matchTeam[2] ? matchTeam[2] : await this.GetNowUid(e);
@@ -139,10 +148,6 @@ export class BotEntry extends plugin {
         }
     }
 
-    async getE() {
-        return this.e
-    }
-
     async GetNowUid(e) {
         let NoteUser = e.user
         return NoteUser._regUid
@@ -166,15 +171,26 @@ export class BotEntry extends plugin {
             uid = matchALevel[1] ? matchALevel[1] : await this.GetNowUid(e);
             roleList = matchALevel[2];
         } else {
-            console.log("用户指令：" + e.msg)
+            logger.info("用户指令：" + e.msg)
             return false
         }
         if (!uid) {
-            e.reply("尚未绑定uid~，请【绑定uid】\n或输入其他uid，如：#队伍伤害117556563钟离，阿贝多，可莉");
+            e.reply("尚未绑定uid~，请【#绑定uid】\n或增加查询参数如：#队伍伤害100000000钟离，阿贝多，可莉,魈");
             return true
         }
         if (!roleList) {
-            e.reply("尚未检测到角色，默认计算展柜前四位角色...\n具体队伍请输入对应角色名，如：\n#队伍伤害钟离，阿贝多，可莉\n#队伍伤害117556563钟离，阿贝多，可莉", true, {recallMsg: 10});
+            e.reply("指令错误，使用例子：\n#队伍伤害钟离，阿贝多，可莉，魈\n#队伍伤害100000000钟离，阿贝多，可莉，魈", true, {recallMsg: 10});
+            return true
+        }
+        await this.RequestSelect("Local", e, uid, roleList, detail)
+        return true
+    }
+
+    async RequestSelect(Type, e, uid, roleList, detail) {
+        if (Type === "Local") {
+            let roleAfterList = roleList.split(/ |,|，|、|。|-/g) || [];
+            await team(e, roleAfterList, uid)
+            return true
         }
         let res = await this.TeamDamage(e, uid, roleList);
         if (!res) {
@@ -203,8 +219,7 @@ export class BotEntry extends plugin {
             logger.info(logger.cyan("==>[FanSky_Qs]小助手 请求完成!"))
 
             for (const avatar in res.avatars) {
-                const weaponType = res.avatars[avatar].weapon.imgPath.split('/')[0];
-                res.avatars[avatar].weaponType = weaponType;
+                res.avatars[avatar].weaponType = res.avatars[avatar].weapon.imgPath.split('/')[0];
             }
 
             let ScreenData = await this.screenData(e, res, detail)
