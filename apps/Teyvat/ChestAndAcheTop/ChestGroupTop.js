@@ -18,7 +18,7 @@ export async function ChestGroupTop(e) {
     let top3 = rankedData.slice(0, 3);
     let Length=3-top3.length
     if (top3.length < 3) {
-        for (let i = 0; i < 3 - Length; i++) {
+        for (let i = 0; i < Length; i++) {
             top3.push({
                 "box": 0,
                 "total_index": 999999,
@@ -38,6 +38,7 @@ export async function ChestGroupTop(e) {
             })
         }
     }
+
     let ScreenData = await getScreen(e, top3, rankedData)
     let img = await puppeteer.screenshot('FanSkyGroupChestTop', ScreenData)
     await e.reply(img)

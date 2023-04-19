@@ -201,6 +201,12 @@ export class BotEntry extends plugin {
             }
             await fs.writeFileSync(cachePath, JSON.stringify(res))
             logger.info(logger.cyan("==>[FanSky_Qs]小助手 请求完成!"))
+
+            for (const avatar in res.avatars) {
+                const weaponType = res.avatars[avatar].weapon.imgPath.split('/')[0];
+                res.avatars[avatar].weaponType = weaponType;
+            }
+
             let ScreenData = await this.screenData(e, res, detail)
             let img = await puppeteer.screenshot('FanSkyTeyvat', ScreenData)
             await e.reply(img)

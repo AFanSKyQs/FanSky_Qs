@@ -1,12 +1,14 @@
 import fs from "fs";
 
-let LocalUserData = (`${process.cwd()}/data/UserData`).replace(/\\/g, '/')
+let cwd=process.cwd().replace(/\\/g, '/')
+
 
 export async function getLocalUserData(e, uid) {
-    let UidData = `${LocalUserData}/${uid}.json`
+    let LocalUserData = cwd+'/data/UserData/'
+    let UidData = `${LocalUserData}${uid}.json`
+    Bot.logger.info(UidData)
     if (!fs.existsSync(UidData)) {
         return null
     }
-
-    return await JSON.parse(fs.readFileSync(UidData, 'utf-8'))
+    return JSON.parse(fs.readFileSync(UidData, 'utf-8'))
 }
