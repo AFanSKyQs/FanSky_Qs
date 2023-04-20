@@ -44,10 +44,11 @@
 
 <br>
 
+## 反馈交流群：[755794036](https://jq.qq.com/?_wv=1027&k=I2HCxKdM)
+
 * ## 开发中
-    - ⊚ `提瓦特小助手其他功能[资源依赖@yoimiya-kokomi(miao-plugin)]`
+    - ⊚ 队伍伤害-`历史伤害`-`伤害排行`
     - ⊚ 打卡-魔晶系统-`卡牌系统`
-    - ⊚ `宝箱成就排行渲染调整`
     - ⊚ 欢迎加入开发qwq喵~
     - <h2> 发送 #fans帮助 查看更多功能(累鸟🐦...) </h2>
 
@@ -73,35 +74,35 @@
 
 - ### 方法2、`Miao-Yunzai/plugins`目录下：
 
-```
-git clone --depth=1 https://gitee.com/FanSky_Qs/FanSky_Qs.git
-```
+  ```
+  git clone --depth=1 https://gitee.com/FanSky_Qs/FanSky_Qs.git
+  ```
 
-```
-cd FanSky_Qs
-```
+  ```
+  cd FanSky_Qs
+  ```
 
-```
-pnpm install
-```
+  ```
+  pnpm install
+  ```
 
 <hr>
 <hr>
 
 <h1>二、更新</h1>
 
-- ### 普通更新：`#fans更新`
+  - ### 普通更新：`#fans更新`
 
-- ### 强制更新： `#fans强制更新`
+    - ### 强制更新： `#fans强制更新`
 
 <hr>
 <hr>
 
 <h1>三、可用功能介绍：</h1>
 
-### 部分帮助展示
+  - ### 部分帮助展示
 
-![S@QNXEP$V{2TY`Z@SNKQ8XL](https://user-images.githubusercontent.com/59954030/231217519-b942fef4-ae63-4629-9fac-796740470db7.png)
+  - ![S@QNXEP$V{2TY`Z@SNKQ8XL](https://user-images.githubusercontent.com/59954030/231217519-b942fef4-ae63-4629-9fac-796740470db7.png)
 
 <div align="left">
   <h3>🔥一、提瓦特小助手系统</h3>

@@ -6,6 +6,7 @@ import {Character, Player} from '../../../miao-plugin/models/index.js'
 import {getServer, simpleTeamDamageRes} from './Index.js'
 import puppeteer from '../../../../lib/puppeteer/puppeteer.js'
 import fs from "fs";
+import {ReturnTeamArr} from "../../config/ReturnSimpleArr/getTeamString.js";
 
 const _path = process.cwd()
 let cwd = process.cwd().replace(/\\/g, '/')
@@ -50,11 +51,20 @@ let dmgKeys =
         "grass_dmg": "dendro",
     }
 
-export async function team(e, teamlist, uid) {
-    if (teamlist.length !== 4) {
-        await e.reply("请指定4位角色计算伤害\n（暂时还没适配缩写如:神鹤万心）", true);
-        logger.info(logger.cyan(teamlist))
+export async function team(e, teamlist, uid, detail) {
+    if (teamlist.length === 1) {
+        const res = await ReturnTeamArr(teamlist[0]);
+        if (res && res.length > 0) {
+            teamlist = res;
+        }else{
+            await e.reply(`识别到您输入为简写\n暂时没有收录[${teamlist[0]}]`, true);
+            return true
+        }
+    }else if(teamlist.length === 0){
+        await e.reply("请指定您要计算的队伍喵~", true);
         return true
+    }else if(teamlist.length > 4){
+        teamlist = teamlist.slice(0,4)
     }
 
     let teamarId = [];
@@ -81,11 +91,17 @@ export async function team(e, teamlist, uid) {
         let player = Player.create(uid)
         let profile = player.getProfile(char_p.id)
 
+        if (char_p.name === "旅行者" || char_p.name === "空" || char_p.name === "荧" || char_p.name === "萤") {
+            await e.reply(`[旅行者]暂不支持计算伤害喵！~`);
+            return true
+        }
+
         if (!profile || !profile.hasData) {
             NoDataName += char_p.name + "|"
             NoData++
             continue
         }
+
         isData += char_p.name + "|"
         let m_roleData = await covProfileroleData(profile)
         weaponsData[char_p.name] = m_roleData.weapon
@@ -94,11 +110,11 @@ export async function team(e, teamlist, uid) {
         role_data.push(m_TeyvatData);
     }
     if (NoData > 0) {
-        await e.reply(`UID:${uid}缺少以下角色面板信息\n${NoDataName}\n请先通过【#更新面板】拿到对应角色数据。`, true);
+        await e.reply(`UID:${uid}缺少${NoDataName}\n请先通过【#更新面板】拿到对应角色数据。`, true);
         return true
     }
-    await e.reply(`请求UID:${uid}${isData}\n中`);
-    logger.info(logger.cyan(`[FanSky_Qs]>>>队伍伤害[请求UID:${uid}]>>>${isData}`))
+    await e.reply(`UID:${uid}${isData}`);
+    logger.info(logger.cyan(`[FanSky_Qs]队伍伤害[请求UID:${uid}]>>>${isData}`))
     TiwateBody['role_data'] = role_data;
     TiwateBody.server = getServer(uid, true)
 
@@ -119,7 +135,7 @@ export async function team(e, teamlist, uid) {
             logger.info(key)
             data['avatars'][key].weapon.imgPath = weaponsData[key].weaponPath
         }
-        let ScreenData = await screenData(e, data, '')
+        let ScreenData = await screenData(e, data, detail)
         let img = await puppeteer.screenshot('FanSkyTeyvat', ScreenData)
         await e.reply(img)
         return true
@@ -193,13 +209,15 @@ async function covProfileTeyvatData(profile, uid) {
     TeyvatData["weapon"] = profile.weapon.name;
     TeyvatData["weapon_level"] = profile.weapon.level;
     TeyvatData["weapon_class"] = '精炼' + profile.weapon.affix + '阶';
-    TeyvatData["hp"] = Format.int(attr.hp.replace(/,/, ""));
-    TeyvatData["base_hp"] = Format.int(attr.hpBase.replace(/,/, ""));
-    TeyvatData["attack"] = Format.int(attr.atk.replace(/,/, ""));
-    TeyvatData["base_attack"] = Format.int(attr.atkBase.replace(/,/, ""));
-    TeyvatData["defend"] = Format.int(attr.def.replace(/,/, ""));
-    TeyvatData["base_defend"] = Format.int(attr.defBase.replace(/,/, ""));
-    TeyvatData["element"] = Format.int(attr.mastery.replace(/,/, ""));
+
+    TeyvatData["hp"] = Format.int(attr.hp?.replace(/,/g, "") ?? "");
+    TeyvatData["base_hp"] = Format.int(attr.hpBase?.replace(/,/g, "") ?? "");
+    TeyvatData["attack"] = Format.int(attr.atk?.replace(/,/g, "") ?? "");
+    TeyvatData["base_attack"] = Format.int(attr.atkBase?.replace(/,/g, "") ?? "");
+    TeyvatData["defend"] = Format.int(attr.def?.replace(/,/g, "") ?? "");
+    TeyvatData["base_defend"] = Format.int(attr.defBase?.replace(/,/g, "") ?? "");
+    TeyvatData["element"] = Format.int(attr.mastery?.replace(/,/g, "") ?? "");
+
     TeyvatData["crit"] = attr.cpct;
     TeyvatData["crit_dmg"] = attr.cdmg;
     TeyvatData["heal"] = Format.pct(a.heal);
@@ -212,7 +230,7 @@ async function covProfileTeyvatData(profile, uid) {
         }
     }
 
-    TeyvatData["physical_dmg"]= Format.pct(a.phy);
+    TeyvatData["physical_dmg"] = Format.pct(a.phy);
 
     TeyvatData["ability1"] = profile.talent.a.level;
     TeyvatData["ability2"] = profile.talent.e.level;
@@ -251,12 +269,12 @@ async function covProfileTeyvatData(profile, uid) {
         }
         m_artifacts_detail["level"] = profile.artis.artis[key].level
         m_artifacts_detail["maintips"] = attrsKeys[profile.artis.artis[key].main.key]
-        m_artifacts_detail["mainvalue"] = artisDetail.artis[key].main.value.replace(/,/, "");
+        m_artifacts_detail["mainvalue"] = artisDetail.artis[key]?.main?.value?.replace(/,/g, "") ?? "";
         let m_t_i = 0
         for (const key_att in profile.artis.artis[key].attrs) {
             m_t_i = m_t_i + 1
             let a_n = profile.artis.artis[key].attrs[key_att].key
-            let a_v = artisDetail.artis[key].attrs[key_att].value.replace(/,/, "");
+            let a_v = artisDetail.artis[key].attrs[key_att]?.value?.replace(/,/g, "") ?? "";
             m_artifacts_detail["tips" + m_t_i] = attrsKeys[a_n] + "+" + a_v
         }
         artifacts_detail.push(m_artifacts_detail);

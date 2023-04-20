@@ -182,6 +182,7 @@ export class BotEntry extends plugin {
             e.reply("指令错误，使用例子：\n#队伍伤害钟离，阿贝多，可莉，魈\n#队伍伤害100000000钟离，阿贝多，可莉，魈", true, {recallMsg: 30});
             return true
         }
+
         await this.RequestSelect("Local", e, uid, roleList, detail)
         return true
     }
@@ -190,7 +191,7 @@ export class BotEntry extends plugin {
         if (Type === "Local") {
             let roleAfterList = roleList.trim().split(/[\s,，、。-]+/g) || [];
             // let roleAfterList = roleList.split(/ |,|，|、|。|-/g) || [];
-            await team(e, roleAfterList, uid)
+            await team(e, roleAfterList,uid,detail)
             return true
         }
         let res = await this.TeamDamage(e, uid, roleList);

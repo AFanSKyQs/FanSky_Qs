@@ -82,7 +82,7 @@ export class MonitorTask extends plugin {
             return true
         }
         if (Bot.uin !== 2374221304) {
-            await new Promise(resolve => setTimeout(resolve, 2000));
+            await new Promise(resolve => setTimeout(resolve, 3000));
         }
         let GithubStaticJson = JSON.parse(fs.readFileSync(GithubStatic))
         try {
@@ -97,7 +97,7 @@ export class MonitorTask extends plugin {
                 logger.info(logger.magenta('>>>已更新GithubStatic.json'))
                 let UTC_Date = Json.commit.committer.date
                 const cnTime = new Date(UTC_Date).toLocaleString('zh-CN', {timeZone: 'Asia/Shanghai', hour12: false})
-                if (Bot.uin === 2374221304) {
+                if (Bot.uin === 2374221304 || Bot.uin === 3226351618) {
                     await Bot.pickGroup(Number(755794036)).sendMsg(`[FanSky_Qs插件更新自动推送]\nContributors：${Json.commit.committer.name}\nDate:${cnTime}\nMessage:${Json.commit.message}\nUrl:${Json.html_url}`)
                 }
                 let list = cfg.masterQQ
@@ -111,15 +111,18 @@ export class MonitorTask extends plugin {
                     logger.info(logger.magenta('[FanSky_Qs]>>>检测到[不推送]标签，已跳过本次推送'))
                     return true
                 }
-                for (let userId of list) {
-                    if (SendNum >= 2) {
-                        break;
+                let MasterNum = list.length
+                // 推送策略：只推一个人,从第一个人开始，但是如果第一个人的QQ号长度大于11，那就推第二个人，以此类推，当成功推送一次后，就不再推送
+                for (let i = 0; i < MasterNum; i++) {
+                    if (list[i].length <= 11) {
+                        try {
+                            // 推送消息给当前主人
+                            await Bot.pickFriend(list[i]).sendMsg(`[FanSky_Qs插件更新]:\nContributors：${Json.commit.committer.name}\nDate:${cnTime}\nMessage:${Json.commit.message}\nUrl:${Json.html_url}`)
+                            break // 推送成功后跳出循环
+                        } catch (err) {
+                            logger.info(`QQ号${list[i]}推送失败: ${err}`)
+                        }
                     }
-                    if (userId.length > 11) continue
-                    await Bot.pickFriend(userId).sendMsg(`[FanSky_Qs插件更新]:\nContributors：${Json.commit.committer.name}\nDate:${cnTime}\nMessage:${Json.commit.message}\nUrl:${Json.html_url}`)
-                    await new Promise(resolve => setTimeout(resolve, 5000));
-                    await common.sleep(3000)
-                    SendNum++
                 }
             }
         } catch (error) {

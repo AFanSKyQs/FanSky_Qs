@@ -19,7 +19,7 @@ export async function StarRunCheckConfig() {
     await setProxy()
     await CheckPersona()
     if (IsExist.True) {
-        await CheckKey()
+        // await CheckKey()
         await CheckthuMUpOFF()
         await CheckOpenAIOFF()
         await CheckSignMode()
@@ -31,7 +31,6 @@ export async function StarRunCheckConfig() {
         await CheckTeyvatDownload()
     }, 10000)
 }
-
 async function GithubPush() {
     if (!(await redis.get(`FanSky:Github:Push`))) {
         await redis.set(`FanSky:Github:Push`, JSON.stringify({PushStatus: 1}))
@@ -46,7 +45,7 @@ async function setProxy() {
         logger.info(logger.cyan('[FanSky_Qs]>>已设置OpenAI默认代理：http://127.0.0.1:7890'))
     } else {
         let Proxy = JSON.parse(await redis.get(`FanSky:OpenAI:Proxy:Default`))
-        logger.info(logger.cyan('[FanSky_Qs]>>已获取OpenAI代理设置：http://' + Proxy.Proxy))
+        // logger.info(logger.cyan('[FanSky_Qs]>>已获取OpenAI代理设置：http://' + Proxy.Proxy))
     }
 }
 
@@ -138,7 +137,7 @@ async function CheckPersona() {
         Person: `${PersonStr}`,
         type: "Default"
     }))
-    logger.info(logger.cyan('[FanSky_Qs]已写入Redis默认[乖巧猫娘]人设,更多请： | #AI人设列表  | #设置全局人设xxx'))
+    // logger.info(logger.cyan('[FanSky_Qs]已写入Redis默认[乖巧猫娘]人设,更多请： | #AI人设列表  | #设置全局人设xxx'))
 }
 
 async function CheckConfigExist() {
@@ -178,7 +177,7 @@ async function CheckthuMUpOFF() {
         logger.info(logger.cyan('[FanSky_Qs]thuMUpOFF检查成功，已开启'))
         await fs.writeFileSync(ConfigPath, JSON.stringify(ConfigJson))
     } else {
-        logger.info(logger.cyan(`[FanSky_Qs]thuMUpOFF检查成功，点赞状态：${ConfigJson.thuMUpOFF}`))
+        // logger.info(logger.cyan(`[FanSky_Qs]thuMUpOFF检查成功，点赞状态：${ConfigJson.thuMUpOFF}`))
     }
 }
 
@@ -189,7 +188,7 @@ async function CheckOpenAIOFF() {
         await fs.writeFileSync(ConfigPath, JSON.stringify(ConfigJson))
         logger.info(logger.cyan('[FanSky_Qs]OpenAI开关写入成功，已打开OpenAI[艾特对话]'))
     } else {
-        logger.info(logger.cyan(`[FanSky_Qs]OpenAI开关检查成功，OpenAI状态：${ConfigJson.OnOff}`))
+        // logger.info(logger.cyan(`[FanSky_Qs]OpenAI开关检查成功，OpenAI状态：${ConfigJson.OnOff}`))
     }
 }
 
@@ -200,7 +199,7 @@ async function CheckSignMode() {
         await fs.writeFileSync(ConfigPath, JSON.stringify(ConfigJson))
         logger.info(logger.cyan('[FanSky_Qs]模型联动打卡写入成功，默认打卡模式[开启]'))
     } else {
-        logger.info(logger.cyan(`[FanSky_Qs]模型联动打卡检查成功，模型联动打卡：${ConfigJson.SignMode}`))
+        // logger.info(logger.cyan(`[FanSky_Qs]模型联动打卡检查成功，模型联动打卡：${ConfigJson.SignMode}`))
     }
 }
 
@@ -212,13 +211,13 @@ async function CheckOpenGroup() {
         logger.info(logger.cyan('[FanSky_Qs]OpenAI群开关写入成功，默认空数组，开启所有群'))
     } else {
         if (!ConfigJson.OpenAIGroup.length) {
-            logger.info(logger.cyan(`[FanSky_Qs]OpenAI群开关检查成功：默认开启所有群`))
+            // logger.info(logger.cyan(`[FanSky_Qs]OpenAI群开关检查成功：默认开启所有群`))
         } else {
             let GroupStr = ""
             for (let i = 0; i < ConfigJson.OpenAIGroup.length; i++) {
                 GroupStr += `${ConfigJson.OpenAIGroup[i]} ,`
             }
-            logger.info(logger.cyan(`[FanSky_Qs]OpenAI群开关检查成功，OpenAI开启群：${GroupStr}`))
+            // logger.info(logger.cyan(`[FanSky_Qs]OpenAI群开关检查成功，OpenAI开启群：${GroupStr}`))
         }
     }
 }
