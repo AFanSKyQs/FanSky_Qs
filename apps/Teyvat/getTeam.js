@@ -5,6 +5,7 @@ import {Character, Player} from '../../../miao-plugin/models/index.js'
 //import { getTargetUid } from '../miao-plugin/apps/profile/ProfileCommon'
 import {getServer, simpleTeamDamageRes} from './Index.js'
 import puppeteer from '../../../../lib/puppeteer/puppeteer.js'
+import fs from "fs";
 
 const _path = process.cwd()
 let cwd = process.cwd().replace(/\\/g, '/')
@@ -49,9 +50,9 @@ let dmgKeys =
         "grass_dmg": "dendro",
     }
 
-export async function team(e,teamlist,uid) {
+export async function team(e, teamlist, uid) {
     if (teamlist.length !== 4) {
-        await e.reply("请指定4位角色计算伤害\n（暂时还没适配缩写如:神鹤万心）",true);
+        await e.reply("请指定4位角色计算伤害\n（暂时还没适配缩写如:神鹤万心）", true);
         logger.info(logger.cyan(teamlist))
         return true
     }
@@ -72,9 +73,9 @@ export async function team(e,teamlist,uid) {
     let weaponsData = {}
     TiwateBody['uid'] = uid;
     let role_data = []
-    let NoData= 0
+    let NoData = 0
     let NoDataName = "|"
-    let isData="|"
+    let isData = "|"
     for (var i = 0; i < teamarId.length; i++) {
         let char_p = teamarId[i]
         let player = Player.create(uid)
@@ -82,7 +83,7 @@ export async function team(e,teamlist,uid) {
 
         if (!profile || !profile.hasData) {
             NoDataName += char_p.name + "|"
-            NoData ++
+            NoData++
             continue
         }
         isData += char_p.name + "|"
@@ -92,18 +93,26 @@ export async function team(e,teamlist,uid) {
         let m_TeyvatData = await covProfileTeyvatData(profile, uid);
         role_data.push(m_TeyvatData);
     }
-    if(NoData > 0){
-        await e.reply(`UID:${uid}缺少以下角色面板信息\n${NoDataName}\n请先通过【#更新面板】拿到对应角色数据。`,true);
+    if (NoData > 0) {
+        await e.reply(`UID:${uid}缺少以下角色面板信息\n${NoDataName}\n请先通过【#更新面板】拿到对应角色数据。`, true);
         return true
     }
     await e.reply(`请求UID:${uid}${isData}\n中`);
     logger.info(logger.cyan(`[FanSky_Qs]>>>队伍伤害[请求UID:${uid}]>>>${isData}`))
     TiwateBody['role_data'] = role_data;
     TiwateBody.server = getServer(uid, true)
+
+    // let CachePath = `${process.cwd()}/plugins/FanSky_Qs/resources/TevatRequestDataCache/MiaoData/${uid}.json`
+    // if (!fs.existsSync(CachePath)) {
+    //     fs.writeFileSync(CachePath, '{}')
+    // }
+    // await fs.writeFileSync(CachePath, JSON.stringify(TiwateBody))
+
     const TiwateRaw = await getTeyvatData(TiwateBody, 'team')
     if (TiwateRaw.code !== 200 || !TiwateRaw.result) {
         logger.error(`>>>[错误信息] ${TiwateRaw.info}`)
-        await e.reply(`提瓦特小助手接口无法访问或返回错误`,true);
+        await e.reply(`提瓦特小助手接口无法访问或返回错误`, true);
+        return true
     } else {
         let data = await simpleTeamDamageRes(TiwateRaw.result, rolesData)
         for (const key in weaponsData) {
@@ -202,6 +211,9 @@ async function covProfileTeyvatData(profile, uid) {
             TeyvatData[key] = Format.pct(0);
         }
     }
+
+    TeyvatData["physical_dmg"]= Format.pct(a.phy);
+
     TeyvatData["ability1"] = profile.talent.a.level;
     TeyvatData["ability2"] = profile.talent.e.level;
     TeyvatData["ability3"] = profile.talent.q.level;
@@ -243,8 +255,8 @@ async function covProfileTeyvatData(profile, uid) {
         let m_t_i = 0
         for (const key_att in profile.artis.artis[key].attrs) {
             m_t_i = m_t_i + 1
-            let a_n = profile.artis.artis[key].attrs[key_att].key;
-            let a_v = artisDetail.artis[key].attrs[key_att].value;
+            let a_n = profile.artis.artis[key].attrs[key_att].key
+            let a_v = artisDetail.artis[key].attrs[key_att].value.replace(/,/, "");
             m_artifacts_detail["tips" + m_t_i] = attrsKeys[a_n] + "+" + a_v
         }
         artifacts_detail.push(m_artifacts_detail);
@@ -341,7 +353,10 @@ async function getTeyvatData(TBody, type = 'single') {
             body: JSON.stringify(TBody),
             timeout: 15000
         })
-        return await response.json()
+        const jsonResponse = await response.json()
+        // logger.info(jsonResponse)
+        // logger.info(jsonResponse.result)
+        return jsonResponse
     } catch (error) {
         logger.info(error)
         return {

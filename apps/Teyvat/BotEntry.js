@@ -179,7 +179,7 @@ export class BotEntry extends plugin {
             return true
         }
         if (!roleList) {
-            e.reply("指令错误，使用例子：\n#队伍伤害钟离，阿贝多，可莉，魈\n#队伍伤害100000000钟离，阿贝多，可莉，魈", true, {recallMsg: 10});
+            e.reply("指令错误，使用例子：\n#队伍伤害钟离，阿贝多，可莉，魈\n#队伍伤害100000000钟离，阿贝多，可莉，魈", true, {recallMsg: 30});
             return true
         }
         await this.RequestSelect("Local", e, uid, roleList, detail)
@@ -188,7 +188,8 @@ export class BotEntry extends plugin {
 
     async RequestSelect(Type, e, uid, roleList, detail) {
         if (Type === "Local") {
-            let roleAfterList = roleList.split(/ |,|，|、|。|-/g) || [];
+            let roleAfterList = roleList.trim().split(/[\s,，、。-]+/g) || [];
+            // let roleAfterList = roleList.split(/ |,|，|、|。|-/g) || [];
             await team(e, roleAfterList, uid)
             return true
         }
@@ -268,7 +269,8 @@ export class BotEntry extends plugin {
     }
 
     async TeamDamage(e, uid, roleList) {
-        let chars = roleList.split(/ |,|，|、|。|-/g) || [];
+        let chars = roleList.split(/[\s,，、。-]+/g) || [];
+        // let chars = roleList.split(/ |,|，|、|。|-/g) || [];
         chars = _.compact(chars);
         if (!_.isEmpty(chars)) {
             let err_chars = _.filter(chars, v => !gsCfg.getRole(v));
