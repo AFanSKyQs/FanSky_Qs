@@ -219,8 +219,6 @@ export class SmallFunctionsindex extends plugin {
     }
 
     async Complaint(e) {
-        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
-        if (OpenStatus.SmallFunction !== 1) return false
         let Static = await Complaint(e)
         if (!Static || Static === false) {
             return false

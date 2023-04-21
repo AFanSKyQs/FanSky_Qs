@@ -3,9 +3,13 @@ import common from '../../../../lib/common/common.js'
 
 export async function Complaint(e) {
     if ((e.atBot || e.atme) && !(e.original_msg || e.msg) && !e.source) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.SmallFunction !== 1) return false
         await ReplyComplaint(e)
         return true
     } else if (e.msg === '#发病' || e.msg === '#发电' || e.msg === '#发癫' || e.msg === '#发疯') {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.SmallFunction !== 1) return false
         await ReplyComplaint(e)
         return true
     } else {

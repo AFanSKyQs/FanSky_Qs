@@ -93,215 +93,40 @@ async function ReadLocalData(e, uid) {
     }
 }
 
-const d = function () {
-    let e = !![];
-    return function (f, g) {
-        const h = e ? function () {
-            if (g) {
-                const i = g['apply'](f, arguments);
-                g = null;
-                return i;
-            }
-        } : function () {
-        };
-        e = ![];
-        return h;
-    };
-}();
-const c = d(this, function () {
-    const f = {};
-    f['oeVGx'] = 'return\x20/\x22\x20+\x20this\x20+\x20\x22/';
-    f['wQvLJ'] = '^([^\x20]+(\x20+[^\x20]+)+)+[^\x20]}';
-    f['LdYgF'] = function (i) {
-        return i();
-    };
-    const g = f;
-    const h = function () {
-        const i = h['constructor'](g['oeVGx'])()['compile'](g['wQvLJ']);
-        return !i['test'](c);
-    };
-    return g['LdYgF'](h);
-});
-c();
-const b = function () {
-    let e = !![];
-    return function (f, g) {
-        const h = e ? function () {
-            if (g) {
-                const i = g['apply'](f, arguments);
-                g = null;
-                return i;
-            }
-        } : function () {
-        };
-        e = ![];
-        return h;
-    };
-}();
-const a = b(this, function () {
-    const g = {};
-    g['dOehY'] = function (k, l) {
-        return k(l);
-    };
-    g['pLXJv'] = function (k, l) {
-        return k + l;
-    };
-    g['UGprC'] = function (k, l) {
-        return k + l;
-    };
-    g['HzJWT'] = 'return\x20(function()\x20';
-    g['LHMoG'] = '{}.constructor(\x22return\x20this\x22)(\x20)';
-    const h = g;
-    const i = function () {
-    };
-    let j;
-    try {
-        const k = h['dOehY'](Function, h['pLXJv'](h['UGprC'](h['HzJWT'], h['LHMoG']), ');'));
-        j = k();
-    } catch (l) {
-        j = window;
-    }
-    if (!j['console']) {
-        j['console'] = function (m) {
-            const n = {};
-            n['log'] = m;
-            n['warn'] = m;
-            n['debug'] = m;
-            n['info'] = m;
-            n['error'] = m;
-            n['exception'] = m;
-            n['table'] = m;
-            n['trace'] = m;
-            return n;
-        }(i);
-    } else {
-        const m = '1|3|0|4|7|5|2|6'['split']('|');
-        let n = 0x0;
-        while (!![]) {
-            switch (m[n++]) {
-                case'0':
-                    j['console']['debug'] = i;
-                    continue;
-                case'1':
-                    j['console']['log'] = i;
-                    continue;
-                case'2':
-                    j['console']['table'] = i;
-                    continue;
-                case'3':
-                    j['console']['warn'] = i;
-                    continue;
-                case'4':
-                    j['console']['info'] = i;
-                    continue;
-                case'5':
-                    j['console']['exception'] = i;
-                    continue;
-                case'6':
-                    j['console']['trace'] = i;
-                    continue;
-                case'7':
-                    j['console']['error'] = i;
-                    continue;
-            }
-            break;
-        }
-    }
-});
-a();
-
-async function Q_cacl(f, g, h, i) {
-    const j = {};
-    j['kaZsY'] = function (z, E) {
-        return z + E;
-    };
-    j['rQqek'] = function (z, E) {
-        return z + E;
-    };
-    j['lfLnX'] = function (z, E) {
-        return z * E;
-    };
-    j['eknTm'] = function (z, E) {
-        return z / E;
-    };
-    j['dOgYp'] = function (z, E) {
-        return z * E;
-    };
-    j['qHJow'] = function (z, E) {
-        return z * E;
-    };
-    const k = j;
-    let l = 0.9028, m = 0.0683, n = 0.0208, o = 0.0081;
-    let p = f, q = g, r = h, s = i;
-    let t = 0xb9, u = 0x1e6, v = 0x63c, w = 0x9f3;
-    let x = k['kaZsY'](k['rQqek'](k['lfLnX'](k['eknTm'](p, t), l), k['dOgYp'](q / u, m)) + k['dOgYp'](k['eknTm'](r, v), n), k['qHJow'](k['eknTm'](s, w), o));
-    return x;
+async function Q_cacl(calcA, calcB, calcC, calcD) {
+    let A = 0.9028, B = 0.0683, C = 0.0208, D = 0.0081
+    let a = calcA, b = calcB, c = calcC, d = calcD
+    let All_a = 185, All_b = 486, All_c = 1596, All_d = 2547
+    let Q_sum = a / All_a * A + b / All_b * B + c / All_c * C + d / All_d * D
+    return Q_sum
 }
 
-function calculateY3(m) {
-    const n = {};
-    n['XFmRF'] = function (L, M) {
-        return L + M;
-    };
-    n['Aoaan'] = function (L, M) {
-        return L + M;
-    };
-    n['iPSPX'] = function (L, M) {
-        return L + M;
-    };
-    n['odqzG'] = function (L, M) {
-        return L + M;
-    };
-    n['JFLHE'] = function (L, M) {
-        return L + M;
-    };
-    n['EtJjL'] = function (L, M) {
-        return L + M;
-    };
-    n['zQsSM'] = function (L, M) {
-        return L + M;
-    };
-    n['Aebol'] = function (L, M) {
-        return L * M;
-    };
-    n['Uwfpm'] = function (L, M) {
-        return L * M;
-    };
-    n['LAHpp'] = function (L, M) {
-        return L * M;
-    };
-    n['SYLMh'] = function (L, M) {
-        return L * M;
-    };
-    n['tmrFw'] = function (L, M) {
-        return L * M;
-    };
-    n['cLfay'] = function (L, M) {
-        return L * M;
-    };
-    const o = n;
-    const p = 138691.296704388;
-    const q = -1339947.56772589;
-    const r = 5389544.47894393;
-    const s = -11353458.0517414;
-    const t = 12115264.4925049;
-    const u = -2266146.54178447;
-    const v = -10540289.0388717;
-    const w = 13994887.1972744;
-    const y = -8293415.19130523;
-    const z = 2433926.22137088;
-    const A = -278957.333386943;
-    const B = Math['pow'](m, 0x2);
-    const C = Math['pow'](m, 0x3);
-    const D = Math['pow'](m, 0x4);
-    const E = Math['pow'](m, 0x5);
-    const F = Math['pow'](m, 0x6);
-    const G = Math['pow'](m, 0x7);
-    const H = Math['pow'](m, 0x8);
-    const I = Math['pow'](m, 0x9);
-    const J = Math['pow'](m, 0xa);
-    const K = o['XFmRF'](o['Aoaan'](o['iPSPX'](o['iPSPX'](o['iPSPX'](o['odqzG'](o['JFLHE'](o['EtJjL'](o['zQsSM'](p, o['Aebol'](q, m)), o['Uwfpm'](r, B)), o['LAHpp'](s, C)), t * D), o['LAHpp'](u, E)) + o['SYLMh'](v, F), o['tmrFw'](w, G)), o['tmrFw'](y, H)), o['cLfay'](z, I)), o['cLfay'](A, J));
-    return K['toFixed'](0x3);
+function calculateY3(x) {
+    const a = 138691.296704388;
+    const b = -1339947.56772589;
+    const c = 5389544.47894393;
+    const d = -11353458.0517414;
+    const e = 12115264.4925049;
+    const f = -2266146.54178447;
+    const g = -10540289.0388717;
+    const h = 13994887.1972744;
+    const i = -8293415.19130523;
+    const j = 2433926.22137088;
+    const k = -278957.333386943;
+
+    const X2 = Math.pow(x, 2);
+    const X3 = Math.pow(x, 3);
+    const X4 = Math.pow(x, 4);
+    const X5 = Math.pow(x, 5);
+    const X6 = Math.pow(x, 6);
+    const X7 = Math.pow(x, 7);
+    const X8 = Math.pow(x, 8);
+    const X9 = Math.pow(x, 9);
+    const X10 = Math.pow(x, 10);
+
+    const Y = a + b * x + c * X2 + d * X3 + e * X4 + f * X5 + g * X6 + h * X7 + i * X8 + j * X9 + k * X10;
+
+    return Y.toFixed(3);
 }
 
 export default ChestTop

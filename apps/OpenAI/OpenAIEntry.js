@@ -33,7 +33,8 @@ export class OpenAIEntry extends plugin {
                 {
                     reg: /^#重置(对话|聊天|记忆)$/i,
                     fnc: 'Reset'
-                },
+                }
+                ,
                 {
                     reg: /.*/i,
                     fnc: 'UseModel',
@@ -180,7 +181,7 @@ export class OpenAIEntry extends plugin {
         let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
         if (OpenStatus.OpenAI !== 1) return false
         let Static = await UseModel(e)
-        if (!Static.wait) return true
+        if (Static.wait) return false
         if (!Static || Static === false) return false
     }
 

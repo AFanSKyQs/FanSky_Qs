@@ -56,8 +56,8 @@ export class MagicCrystalIndex extends plugin {
     }
 
     async ListenAnswer(e) {
-        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
-        if(OpenStatus.MagicCrystal!==1) return false
+        // let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        // if(OpenStatus.MagicCrystal!==1) return false
         if (await redis.get(`FanSky:MagicCrystal:${e.group_id}:EmojiCD`)) {
             await ListenAnswer(e)
         }

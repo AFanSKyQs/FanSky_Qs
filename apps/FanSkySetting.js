@@ -19,7 +19,7 @@ export class FanSkySetting extends plugin {
 
     async FanSkySetting(e) {
         if (!e.isMaster) {
-            e.reply('只有主人只能这样做喵！')
+            e.reply('只有主人才能这样做喵！！')
             return true
         }
         let input = e.msg || e.original_msg || e.raw_message || "#fan设置"
@@ -42,10 +42,10 @@ export class FanSkySetting extends plugin {
         let MsgList = [
             `指令：#fan设置+系统名+开启/关闭`,
             `如：#fan设置群管系统开启`,
-            `群管系统：${OpenStatus.GroupManager === 1 ? '开启' : '关闭'}`+"\n"
-            `原神系统：${OpenStatus.Teyvat === 1 ? '开启' : '关闭'}`+"\n"
-            `魔晶系统：${OpenStatus.MagicCrystal === 1 ? '开启' : '关闭'}`+"\n"
-            `聊天系统：${OpenStatus.OpenAI === 1 ? '开启' : '关闭'}`+"\n"
+            `群管系统：${OpenStatus.GroupManager === 1 ? '开启' : '关闭'}`+"\n"+
+            `原神系统：${OpenStatus.Teyvat === 1 ? '开启' : '关闭'}`+"\n"+
+            `魔晶系统：${OpenStatus.MagicCrystal === 1 ? '开启' : '关闭'}`+"\n"+
+            `聊天系统：${OpenStatus.OpenAI === 1 ? '开启' : '关闭'}`+"\n"+
             `娱乐系统：${OpenStatus.SmallFunction === 1 ? '开启' : '关闭'}`,
         ]
         let Msg = await common.makeForwardMsg(e, MsgList, '[FanSky_Qs]当前设置')
