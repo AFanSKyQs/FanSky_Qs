@@ -59,8 +59,8 @@ export async function UseModel(e) {
     }
 
     if (await redis.get(`FanSky:OpenAI:Status:${e.user_id}`)) {
-        e.reply('AI正在处理柠上一个请求噢~\n请耐心等待喵QWQ~', true)
-        return false
+        await e.reply('AI正在处理柠上一个请求噢~\n请耐心等待喵QWQ~', true)
+        return {wait: true}
     }
 
     let GetResult = '不限'

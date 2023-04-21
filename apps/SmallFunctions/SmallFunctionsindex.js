@@ -88,65 +88,94 @@ export class SmallFunctionsindex extends plugin {
     }
 
     async sendLongTuNum(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.SmallFunction !== 1) return false
         await sendLongTuNum(e)
         return true
     }
 
     async addLongTuSend(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.SmallFunction !== 1) return false
         await addLongTuSend(e)
         return true
     }
 
     async sendLongTu(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.SmallFunction !== 1) return false
         await sendLongTu(e)
         return true
     }
 
     async sendDioTuNum(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.SmallFunction !== 1) return false
         await sendDioTuNum(e)
         return true
     }
 
     async addDioTuSend(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.SmallFunction !== 1) return false
         await addDioTuSend(e)
         return true
     }
 
     async sendDioTu(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.SmallFunction !== 1) return false
         await sendDioTu(e)
         return true
     }
 
     async updateLongTu(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.SmallFunction !== 1) return false
         await updateLongTu(e)
         return true
     }
 
     async updateDioTu(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.SmallFunction !== 1) return false
         await updateDioTu(e)
         return true
     }
 
     async Zp(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.SmallFunction !== 1) return false
         await zp(e)
     }
 
     async Hx(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.SmallFunction !== 1) return false
         await hx(e)
     }
 
     async Hc(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.SmallFunction !== 1) return false
         await hc(e)
     }
 
     async cx(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.SmallFunction !== 1) return false
         await cx(e)
     }
 
     async cxbz(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.SmallFunction !== 1) return false
         await cxbz(e)
     }
+
     async AT_Xiaozuo7_CxkEmo(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.SmallFunction !== 1) return false
         let Static = await AT_Xiaozuo7_CxkEmo(e)
         if (!Static || Static === false) {
             return false
@@ -154,6 +183,8 @@ export class SmallFunctionsindex extends plugin {
     }
 
     async OnOFF(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.SmallFunction !== 1) return false
         let Static = await OnOFF(e)
         if (!Static || Static === false) {
             return false
@@ -161,6 +192,8 @@ export class SmallFunctionsindex extends plugin {
     }
 
     async thuMUp(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.SmallFunction !== 1) return false
         let Static = await thuMUp(e)
         if (!Static || Static === false) {
             return false
@@ -168,6 +201,8 @@ export class SmallFunctionsindex extends plugin {
     }
 
     async CatEyeBoxOffice(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.SmallFunction !== 1) return false
         let Static = await CatEyeBoxOffice(e)
         if (!Static || Static === false) {
             return false
@@ -175,6 +210,8 @@ export class SmallFunctionsindex extends plugin {
     }
 
     async YiyanDinZhen(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.SmallFunction !== 1) return false
         let Static = await YiyanDinZhen(e)
         if (!Static || Static === false) {
             return false
@@ -182,6 +219,8 @@ export class SmallFunctionsindex extends plugin {
     }
 
     async Complaint(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.SmallFunction !== 1) return false
         let Static = await Complaint(e)
         if (!Static || Static === false) {
             return false

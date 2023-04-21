@@ -112,6 +112,8 @@ export class OpenAIEntry extends plugin {
 
 
     async SearchGPTKEY(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.OpenAI !== 1) return false
         let OpenAIKey = (e.original_msg || e.msg).replace(/#查询模型密钥/i, '').trim()
         let OpenAIConfig = {OpenAI_Key: OpenAIKey}
         let Static = await l(e, OpenAIConfig)
@@ -119,96 +121,135 @@ export class OpenAIEntry extends plugin {
     }
 
     async setOpenAIProxy(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.OpenAI !== 1) return false
         await setOpenAIProxy(e)
     }
 
     async setAllPerson(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.OpenAI !== 1) return false
         let Static = await setAllPerson(e)
         if (!Static || Static === false) return false
     }
 
     async PersonList(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.OpenAI !== 1) return false
         let Static = await PersonList(e)
         if (!Static || Static === false) return false
     }
 
     async UsePerson(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.OpenAI !== 1) return false
         let Static = await UsePerson(e)
         if (!Static || Static === false) return false
     }
 
     async OpenGroupAI(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.OpenAI !== 1) return false
         let Static = await OpenGroupAI(e)
         if (!Static || Static === false) return false
     }
 
     async SetMaxToMakeMsg(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.OpenAI !== 1) return false
         let Static = await SetMaxToMakeMsg(e)
         if (!Static || Static === false) return false
     }
 
     async OpenAIQuota(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.OpenAI !== 1) return false
         let OpenAIConfig = await getOpenAIConfig()
         let Static = await l(e, OpenAIConfig)
         if (!Static || Static === false) return false
     }
 
     async OpenAPModelList(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.OpenAI !== 1) return false
         let Static = await OpenAPModelList(e)
         if (!Static || Static === false) return false
     }
 
     async UseModel(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.OpenAI !== 1) return false
         let Static = await UseModel(e)
+        if (!Static.wait) return true
         if (!Static || Static === false) return false
     }
 
     async DelAll(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.OpenAI !== 1) return false
         let Static = await DelAllConversation(e)
         if (!Static || Static === false) return false
     }
 
     async Reset(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.OpenAI !== 1) return false
         let Static = await ResetConversation(e)
         if (!Static || Static === false) return false
     }
 
     async SayHelloToAI(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.OpenAI !== 1) return false
         let Static = await SayHelloToAI(e)
         if (!Static || Static === false) return false
     }
 
     async OnOFF(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.OpenAI !== 1) return false
         let Static = await OnOFF(e)
         if (!Static || Static === false) return false
     }
 
     async SetOpenAIKey(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.OpenAI !== 1) return false
         let Static = await SetOpenAIKey(e)
         if (!Static || Static === false) return false
     }
 
     async ChangeAISignMode(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.OpenAI !== 1) return false
         let Static = await ChangeAISignMode(e)
         if (!Static || Static === false) return false
     }
 
     async ChangeAIModelMode(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.OpenAI !== 1) return false
         let Static = await ChangeAIModelMode(e)
         if (!Static || Static === false) return false
     }
 
     async addBlackList(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.OpenAI !== 1) return false
         let Static = await addBlackList(e)
         if (!Static || Static === false) return false
     }
 
     async SetPersona(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.OpenAI !== 1) return false
         let Static = await SetPersona(e)
         if (!Static || Static === false) return false
     }
 
     async ChangeAIModel(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.OpenAI !== 1) return false
         let Static = await ChangeAIModel(e)
         if (!Static || Static === false) return false
     }

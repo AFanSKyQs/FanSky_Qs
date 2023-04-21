@@ -17,10 +17,6 @@ export class MagicCrystalIndex extends plugin {
                     fnc: 'MagicCrystalSign',
                 },
                 {
-                    reg: /^签到$/,
-                    fnc: 'MagicCrystalSign',
-                },
-                {
                     reg: /^🌨️🔥$/,
                     fnc: 'MagicCrystalSign',
                 },
@@ -51,6 +47,8 @@ export class MagicCrystalIndex extends plugin {
     }
 
     async RoundsCard(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if(OpenStatus.MagicCrystal!==1) return false
         let Static = await RoundsCard(e)
         if (!Static || Static === false) {
             return false
@@ -58,6 +56,8 @@ export class MagicCrystalIndex extends plugin {
     }
 
     async ListenAnswer(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if(OpenStatus.MagicCrystal!==1) return false
         if (await redis.get(`FanSky:MagicCrystal:${e.group_id}:EmojiCD`)) {
             await ListenAnswer(e)
         }
@@ -65,6 +65,8 @@ export class MagicCrystalIndex extends plugin {
     }
 
     async runGetIdiomEmoji(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if(OpenStatus.MagicCrystal!==1) return false
         let Static = await runGetIdiomEmoji(e)
         if (!Static || Static === false) {
             return false
@@ -72,6 +74,8 @@ export class MagicCrystalIndex extends plugin {
     }
 
     async MagicCrystalSign(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if(OpenStatus.MagicCrystal!==1) return false
         let Static = await SingleTest(e)
         if (!Static || Static === false) {
             return false
@@ -79,6 +83,8 @@ export class MagicCrystalIndex extends plugin {
     }
 
     async FirstSignTime(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if(OpenStatus.MagicCrystal!==1) return false
         let Static = await FirstSignTime(e)
         if (!Static || Static === false) {
             return false
@@ -86,6 +92,8 @@ export class MagicCrystalIndex extends plugin {
     }
 
     async CardList(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if(OpenStatus.MagicCrystal!==1) return false
         let Static = await CardList(e)
         if (!Static || Static === false) {
             return false

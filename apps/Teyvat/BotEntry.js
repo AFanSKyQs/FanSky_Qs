@@ -34,13 +34,16 @@ export class BotEntry extends plugin {
                 {
                     reg: /^#单人评级(\d+)?(.*)$/,
                     fnc: 'TeyvatEnTry'
-                }, {
+                },
+                {
                     reg: /#更新小助手配置/,
                     fnc: 'UpdataJSON'
-                }, {
-                    reg: /^#队伍(面板|缓存|已有|数据|cache)(\d+)?$/,
-                    fnc: 'TeamCache'
-                }, {
+                },
+                // {
+                //     reg: /^#队伍(面板|缓存|已有|数据|cache)(\d+)?$/,
+                //     fnc: 'TeamCache'
+                // },
+                {
                     reg: '^#成就(排行|排名|查询|统计)(.*)$',
                     fnc: 'achieveTop'
                 }, {
@@ -52,6 +55,8 @@ export class BotEntry extends plugin {
     }
 
     async achieveTop(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.Teyvat !== 1) return false
         let msg = e.original_msg || e.msg
         if (!msg) {
             return false
@@ -71,6 +76,8 @@ export class BotEntry extends plugin {
     }
 
     async ChestGroupTop(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.Teyvat !== 1) return false
         let msg = e.original_msg || e.msg
         if (!msg) {
             return false
@@ -90,6 +97,8 @@ export class BotEntry extends plugin {
     }
 
     async TeamCache(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.Teyvat !== 1) return false
 
         if (e.msg) {
             e.msg = "#面板"
@@ -154,6 +163,8 @@ export class BotEntry extends plugin {
     }
 
     async TeyvatEnTry(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.Teyvat !== 1) return false
         let at = e.at;
         const regexTeam = /^#队伍伤害(详情|过程|全图)?(\d+)?(.*)$/;
         const regexALevel = /^#单人评级(\d+)?(.*)$/;
@@ -191,7 +202,7 @@ export class BotEntry extends plugin {
         if (Type === "Local") {
             let roleAfterList = roleList.trim().split(/[\s,，、。-]+/g) || [];
             // let roleAfterList = roleList.split(/ |,|，|、|。|-/g) || [];
-            await team(e, roleAfterList,uid,detail)
+            await team(e, roleAfterList, uid, detail)
             return true
         }
         let res = await this.TeamDamage(e, uid, roleList);
@@ -285,6 +296,8 @@ export class BotEntry extends plugin {
     }
 
     async UpdataJSON(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.Teyvat !== 1) return false
         e.reply('>>>[FanSky_Qs]正在更新提瓦特小助手JSON...')
         await this.UPJSON(e)
         return true

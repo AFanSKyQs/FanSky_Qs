@@ -18,6 +18,7 @@ export async function StarRunCheckConfig() {
     await GithubPush()
     await setProxy()
     await CheckPersona()
+    await SetOpenFunction()
     if (IsExist.True) {
         // await CheckKey()
         await CheckthuMUpOFF()
@@ -30,6 +31,12 @@ export async function StarRunCheckConfig() {
     setTimeout(async () => {
         await CheckTeyvatDownload()
     }, 10000)
+}
+async function SetOpenFunction(){
+    if (!(await redis.get(`FanSky:FunctionOFF`))) {
+        logger.info(logger.cyan('[FanSky_Qs]更新写入>>已默认开启：群管、原神、OpenAI、娱乐、魔晶'))
+        await redis.set(`FanSky:FunctionOFF`, JSON.stringify({GroupManager:1,MagicCrystal:1,OpenAI:1,SmallFunction:1,Teyvat:1,Meme:1,SmallGame:1,Push:1}))
+    }
 }
 async function GithubPush() {
     if (!(await redis.get(`FanSky:Github:Push`))) {

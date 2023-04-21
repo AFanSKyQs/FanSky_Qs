@@ -29,7 +29,7 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
                     e.reply("没有检测到任何人设，请重启或联系开发人员检查问题")
                     return false
                 }
-                await redis.set(`FanSky:OpenAI:Status:${e.user_id}`, true.toString());
+                await redis.set(`FanSky:OpenAI:Status:${e.user_id}`, JSON.stringify({Status:1}))
                 let DataList = {
                     model: 'gpt-3.5-turbo',
                     messages: [
