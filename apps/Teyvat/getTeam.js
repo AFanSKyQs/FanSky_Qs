@@ -57,8 +57,7 @@ export async function team(e, teamlist, uid, detail) {
         if (res && res.length > 0) {
             teamlist = res;
         }else{
-            await e.reply(`识别到您输入为简写\n暂时没有收录[${teamlist[0]}]`, true);
-            return true
+            await e.reply(`暂未收录[${teamlist[0]}]简写\n尝试识别为单人~`, true);
         }
     }else if(teamlist.length === 0){
         await e.reply("请指定您要计算的队伍喵~", true);
