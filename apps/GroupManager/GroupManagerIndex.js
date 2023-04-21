@@ -1,4 +1,4 @@
-import {k} from "./Recall.js";
+import {RecallBatch} from "./Recall.js";
 
 export class GroupManagerIndex extends plugin {
     constructor() {
@@ -18,6 +18,6 @@ export class GroupManagerIndex extends plugin {
     async BatchRecall(e) {
         let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
         if(OpenStatus.GroupManager!==1) return false
-        return await k(e);
+        return await RecallBatch(e);
     }
 }
