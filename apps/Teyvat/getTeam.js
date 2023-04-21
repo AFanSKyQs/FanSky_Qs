@@ -54,7 +54,7 @@ let dmgKeys =
 export async function team(e, teamlist, uid, detail) {
     if (teamlist.length === 1) {
         const res = await ReturnTeamArr(teamlist[0]);
-        if (res && res.length > 0) {
+        if (res && res[0]) {
             teamlist = res;
         }else{
             await e.reply(`暂未收录[${teamlist[0]}]简写\n尝试识别为单人~`, true);

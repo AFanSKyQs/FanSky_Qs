@@ -93,7 +93,7 @@ export class MonitorTask extends plugin {
                 let MasterNum = list.length
                 // 推送策略：只推一个人,从第一个人开始，但是如果第一个人的QQ号长度大于11，说明是频道号，那就推第二个人，以此类推，当成功推送一次后，就不再推送
                 for (let i = 0; i < MasterNum; i++) {
-                    if (list[i].length <= 11) {
+                    if ((list[i].toString()).length <= 11) {
                         logger.info(logger.magenta(`Master:${list[i]}`))
                         try {
                             // 推送消息给当前主人
