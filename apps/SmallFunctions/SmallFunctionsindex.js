@@ -48,7 +48,7 @@ export class SmallFunctionsindex extends plugin {
                     fnc: "cxbz",
                 }, {
                     reg: "^#?(抽象|cx)",
-                    fnc: "cx",
+                    fnc: "Cx",
                 }, {
                     reg: "^#?(还抽|hc)",
                     fnc: "Hc",
