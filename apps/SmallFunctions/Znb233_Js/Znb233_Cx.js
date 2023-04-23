@@ -5,15 +5,15 @@ export async function cxbz(e) {
     return true
 }
 
-export async function cx(e) {
+export async function Cx(e) {
     let Msg = e.original_msg || e.msg
     let text = Msg.replace(/抽象|#|cx/g, '').trim();
     let msg = await chouxiang(text);
-    await e.reply(msg)
+    await e.reply(msg.zhjgzhl)
     return true
 }
 
-export async function hc(e) {
+export async function Hc(e) {
     let Msg = e.original_msg || e.msg
     let text = Msg.replace(/还抽|#|hc/g, '').trim();
     let text1 = await dechouxiang1(text);
@@ -22,15 +22,15 @@ export async function hc(e) {
     return true
 }
 
-export async function hx(e) {
+export async function Hx(e) {
     let Msg = e.original_msg || e.msg
     let text = Msg.replace(/化学|#|hx/g, '').trim();
     let msg = await huaxue(text);
-    await e.reply(msg)
+    await e.reply(msg.zhjgzhl)
     return true
 }
 
-export async function zp(e) {
+export async function Zp(e) {
     let Msg = e.original_msg || e.msg
     let text = Msg.replace(/转拼|#|zp/g, '').trim();
     let msg = await zhuanpinyin(text);
@@ -1329,7 +1329,7 @@ const elementsP = {
     "lu": "镥",
     "ha": "铪",
     "wu": "钨",
-    "lai": " 铼",
+    "lai": "铼",
     "e": "锇",
     "bo": "铂",
     "jin": "金",
@@ -1360,6 +1360,11 @@ const elementsP = {
 };
 
 async function chouxiang(s) {
+    // 在方法外赋值cxjg={}
+    var cxjg = {};
+    // 在方法内赋值a=0, b=0
+    var a = 0;
+    var b = 0;
     var h = [];
     for (let v of s) {
         h.push(v)
@@ -1367,15 +1372,43 @@ async function chouxiang(s) {
     var cxresult = "";
     for (let index = 0; index < h.length; index++) {
         if (index < h.length && emoji[await getPinyin(h[index]) + await getPinyin(h[index + 1])] !== undefined) {
+            // 如果成功转换
+            // a值加1
+            a++;
             cxresult += emoji[await getPinyin(h[index]) + await getPinyin(h[index + 1])];
             index++
         } else if (emoji[await getPinyin(h[index])] !== undefined) {
+            // 如果成功转换
+            // a值加1
+            a++;
             cxresult += emoji[await getPinyin(h[index])]
+        } else if (pinyin.hasOwnProperty(h[index])) {
+            // 如果没有成功转换
+            // b值加一
+            b++;
+            cxresult += h[index]
         } else {
             cxresult += h[index]
         }
     }
-    return cxresult
+    // 计算a/(a+b)，也就是转换率，保留小数点后4位
+    var ratio = function () {
+        var ratio = "抽象度：" + (a / (a + b)) * 100 + "%";
+        if (ratio.length > 10) {
+            // 删除文本中倒数第2个和正数第6个字符
+            // 也就是只保留从左往右5个字符和倒数第1个字符
+            return ratio.slice(0, 9) + ratio.slice(-1);
+        } else {
+            // 否则不做任何改变
+            return ratio;
+        }
+    }
+    // 把转换结果和转换率分别以属性名zhjg和zhl，存入cxjg变量中
+    cxjg.zhjg = cxresult;
+    cxjg.zhl = ratio();
+    cxjg.zhjgzhl = cxresult + "\n\n" + ratio();
+    // 返回cxjg变量
+    return cxjg;
 }
 
 function rawPinyin(s) {
@@ -1438,7 +1471,12 @@ async function dechouxiang1(text) {
             }
         } else {
             //如果当前字符不是高代理项（头代理），或者下一个字符不是低代理项（尾代理），则不可能是一个emoji，就将字符原样添加到结果中
-            result += char;
+            if (i < text.length - 1) {
+                result += char + '_';
+            }
+            else {
+                result += char;
+            }
             //将匹配标志设为false
             matched = false;
         }
@@ -1468,12 +1506,15 @@ async function zhuanpinyin(text) {
         if (pinyin[char]) {
             result += pinyin[char];
             //如果不是最后一个字符或者后面跟着一个标点符号，就加上__
-            if (i < text.length - 1 && !/[。？！，；：‘’“”（）【】《》\n]/.test(text[i + 1])) {
+            if (i < text.length - 1) {
                 result += "__";
             }
         } else {
-            //如果当前字符不是属性名，就保持不变
             result += char;
+            //如果当前字符不是属性名，就保持不变
+            if (i < text.length - 1) {
+                result += "__";
+            }
         }
     }
     //返回结果
@@ -1481,6 +1522,11 @@ async function zhuanpinyin(text) {
 }
 
 async function huaxue(s) {
+    // 在方法外赋值cxjg={}
+    var hxjg = {};
+    // 在方法内赋值a=0, b=0
+    var a = 0;
+    var b = 0;
     var h = [];
     for (let v of s) {
         h.push(v)
@@ -1488,13 +1534,41 @@ async function huaxue(s) {
     var cxresult = "";
     for (let index = 0; index < h.length; index++) {
         if (index < h.length && elementsP[await getPinyin(h[index]) + await getPinyin(h[index + 1])] !== undefined) {
+            // 如果成功转换
+            // a值加1
+            a++;
             cxresult += elementsP[await getPinyin(h[index]) + await getPinyin(h[index + 1])];
             index++
         } else if (elementsP[await getPinyin(h[index])] !== undefined) {
+            // 如果成功转换
+            // a值加1
+            a++;
             cxresult += elementsP[await getPinyin(h[index])]
+        } else if (pinyin.hasOwnProperty(h[index])) {
+            // 如果没有成功转换
+            // b值加一
+            b++;
+            cxresult += h[index]
         } else {
             cxresult += h[index]
         }
     }
-    return cxresult
+    // 计算a/(a+b)，也就是转换率，保留小数点后4位
+    var ratio = function () {
+        var ratio = "化学度：" + (a / (a + b)) * 100 + "%";
+        if (ratio.length > 10) {
+            // 删除文本中倒数第2个和正数第6个字符
+            // 也就是只保留从左往右5个字符和倒数第1个字符
+            return ratio.slice(0, 9) + ratio.slice(-1);
+        } else {
+            // 否则不做任何改变
+            return ratio;
+        }
+    }
+    // 把转换结果和转换率分别以属性名zhjg和zhl，存入cxjg变量中
+    hxjg.zhjg = cxresult;
+    hxjg.zhl = ratio();
+    hxjg.zhjgzhl = cxresult + "\n\n" + ratio();
+    // 返回cxjg变量
+    return hxjg;
 }
