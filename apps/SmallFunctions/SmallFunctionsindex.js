@@ -5,7 +5,7 @@ import {Complaint} from "./ReplyComplaint.js";
 import {OnOFF} from "./ON-OFF.js";
 import {AT_Xiaozuo7_CxkEmo} from "./AT_Xiaozuo7_CxkEmo.js";
 import plugin from "../../../../lib/plugins/plugin.js";
-import {cxbz, Cx, Hc, Hx, Zp} from "./Znb233_Js/Znb233_Cx.js";
+import {cxbz, cx, hc, hx, zp} from "./Znb233_Js/Znb233_Cx.js";
 import {updateDioTu, updateLongTu} from "../../models/UpdateImg.js";
 import {addDioTuSend, sendDioTu, sendDioTuNum} from "./DioLongTu/DioTu.js";
 import {addLongTuSend, sendLongTu, sendLongTuNum} from "./DioLongTu/LongTu.js";
@@ -45,7 +45,7 @@ export class SmallFunctionsindex extends plugin {
                     fnc: 'AT_Xiaozuo7_CxkEmo'
                 }, {
                     reg: "^#?(抽象帮助|cxbz)",
-                    fnc: "cxbz",
+                    fnc: "Cxbz",
                 }, {
                     reg: "^#?(抽象|cx)",
                     fnc: "Cx",
@@ -146,28 +146,28 @@ export class SmallFunctionsindex extends plugin {
     async Zp(e) {
         let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
         if (OpenStatus.SmallFunction !== 1) return false
-        await Zp(e)
+        await zp(e)
     }
 
     async Hx(e) {
         let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
         if (OpenStatus.SmallFunction !== 1) return false
-        await Hx(e)
+        await hx(e)
     }
 
     async Hc(e) {
         let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
         if (OpenStatus.SmallFunction !== 1) return false
-        await Hc(e)
+        await hc(e)
     }
 
-    async cx(e) {
+    async Cx(e) {
         let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
         if (OpenStatus.SmallFunction !== 1) return false
-        await Cx(e)
+        await cx(e)
     }
 
-    async cxbz(e) {
+    async Cxbz(e) {
         let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
         if (OpenStatus.SmallFunction !== 1) return false
         await cxbz(e)

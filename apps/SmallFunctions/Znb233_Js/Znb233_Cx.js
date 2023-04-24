@@ -5,7 +5,7 @@ export async function cxbz(e) {
     return true
 }
 
-export async function Cx(e) {
+export async function cx(e) {
     let Msg = e.original_msg || e.msg
     let text = Msg.replace(/抽象|#|cx/g, '').trim();
     let msg = await chouxiang(text);
@@ -13,7 +13,7 @@ export async function Cx(e) {
     return true
 }
 
-export async function Hc(e) {
+export async function hc(e) {
     let Msg = e.original_msg || e.msg
     let text = Msg.replace(/还抽|#|hc/g, '').trim();
     let text1 = await dechouxiang1(text);
@@ -22,7 +22,7 @@ export async function Hc(e) {
     return true
 }
 
-export async function Hx(e) {
+export async function hx(e) {
     let Msg = e.original_msg || e.msg
     let text = Msg.replace(/化学|#|hx/g, '').trim();
     let msg = await huaxue(text);
@@ -30,7 +30,7 @@ export async function Hx(e) {
     return true
 }
 
-export async function Zp(e) {
+export async function zp(e) {
     let Msg = e.original_msg || e.msg
     let text = Msg.replace(/转拼|#|zp/g, '').trim();
     let msg = await zhuanpinyin(text);
