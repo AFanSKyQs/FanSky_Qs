@@ -13,7 +13,7 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
     let SelectProxy
     let AFanSKyQsProxy = JSON.parse(await redis.get(`FanSky:OpenAI:AFanSKyQsProxy`))
     if (AFanSKyQsProxy && AFanSKyQsProxy.Proxy) {
-        Proxy = AFanSKyQsProxy.Proxy
+        Proxy = AFanSKyQsProxy
         SelectProxy = "AFanSKyQs"
     } else {
         Proxy = JSON.parse(await redis.get(`FanSky:OpenAI:Proxy:Default`))
