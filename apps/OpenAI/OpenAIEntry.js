@@ -102,6 +102,10 @@ export class OpenAIEntry extends plugin {
                 {
                     reg: /#查询模型密钥(.*)/,
                     fnc: 'SearchGPTKEY'
+                },
+                {
+                    reg: /#设置fan代理(.*)/,
+                    fnc: 'setAFanSKyQs'
                 }
                 // {
                 //     reg: /#对话列表|#聊天列表|#会话列表/,
@@ -111,7 +115,11 @@ export class OpenAIEntry extends plugin {
         })
     };
 
-
+    async setAFanSKyQs(e){
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.OpenAI !== 1) return false
+        await setOpenAIProxy(e,"fan")
+    }
     async SearchGPTKEY(e) {
         let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
         if (OpenStatus.OpenAI !== 1) return false
@@ -124,7 +132,7 @@ export class OpenAIEntry extends plugin {
     async setOpenAIProxy(e) {
         let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
         if (OpenStatus.OpenAI !== 1) return false
-        await setOpenAIProxy(e)
+        await setOpenAIProxy(e,"default")
     }
 
     async setAllPerson(e) {

@@ -65,7 +65,11 @@ export class MonitorTask extends plugin {
             }
         }
         if (await redis.get(`FanSky:Github:PushStatus`)) {
+            logger.info(logger.magenta("已存在推送进程"))
             return true
+        } else {
+            await redis.set(`FanSky:Github:PushStatus`, JSON.stringify({PushStatus: 1}));
+            await redis.expire(`FanSky:Github:PushStatus`, 60 * 4 - 5);
         }
         const dirPath = path.dirname(GithubStatic);
         fs.mkdirSync(dirPath, {recursive: true});
@@ -98,8 +102,6 @@ export class MonitorTask extends plugin {
                         try {
                             // 推送消息给当前主人
                             await Bot.pickFriend(Number(list[i])).sendMsg(`[FanSky_Qs插件更新]:\nContributors：${Json.commit.committer.name}\nDate:${cnTime}\nMessage:${Json.commit.message}\nUrl:${Json.html_url}`)
-                            await redis.set(`FanSky:Github:PushStatus`, JSON.stringify({PushStatus: 1}));
-                            await redis.expire(`FanSky:Github:PushStatus`, 60 * 4 - 5);
                             break // 推送成功后跳出循环
                         } catch (err) {
                             logger.info(`QQ号${list[i]}推送失败，已往下走~`)

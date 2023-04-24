@@ -5,7 +5,7 @@ import {Complaint} from "./ReplyComplaint.js";
 import {OnOFF} from "./ON-OFF.js";
 import {AT_Xiaozuo7_CxkEmo} from "./AT_Xiaozuo7_CxkEmo.js";
 import plugin from "../../../../lib/plugins/plugin.js";
-import {cxbz, cx, hc, hx, zp} from "./Znb233_Js/Znb233_Cx.js";
+import {cxbz, Cx, Hc, Hx, Zp} from "./Znb233_Js/Znb233_Cx.js";
 import {updateDioTu, updateLongTu} from "../../models/UpdateImg.js";
 import {addDioTuSend, sendDioTu, sendDioTuNum} from "./DioLongTu/DioTu.js";
 import {addLongTuSend, sendLongTu, sendLongTuNum} from "./DioLongTu/LongTu.js";
@@ -146,25 +146,25 @@ export class SmallFunctionsindex extends plugin {
     async Zp(e) {
         let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
         if (OpenStatus.SmallFunction !== 1) return false
-        await zp(e)
+        await Zp(e)
     }
 
     async Hx(e) {
         let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
         if (OpenStatus.SmallFunction !== 1) return false
-        await hx(e)
+        await Hx(e)
     }
 
     async Hc(e) {
         let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
         if (OpenStatus.SmallFunction !== 1) return false
-        await hc(e)
+        await Hc(e)
     }
 
     async cx(e) {
         let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
         if (OpenStatus.SmallFunction !== 1) return false
-        await cx(e)
+        await Cx(e)
     }
 
     async cxbz(e) {
