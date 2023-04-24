@@ -7,6 +7,7 @@ import {getServer, simpleTeamDamageRes} from './Index.js'
 import puppeteer from '../../../../lib/puppeteer/puppeteer.js'
 import fs from "fs";
 import {ReturnTeamArr} from "../../config/ReturnSimpleArr/getTeamString.js";
+import {savaHistoryData} from "./HistoryTeam.js";
 
 const _path = process.cwd()
 let cwd = process.cwd().replace(/\\/g, '/')
@@ -135,6 +136,7 @@ export async function team(e, teamlist, uid, detail) {
             data['avatars'][key].weapon.imgPath = weaponsData[key].weaponPath
         }
         let ScreenData = await screenData(e, data, detail)
+        await savaHistoryData(ScreenData)
         let img = await puppeteer.screenshot('FanSkyTeyvat', ScreenData)
         await e.reply(img)
         return true

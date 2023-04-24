@@ -49,11 +49,19 @@ export class BotEntry extends plugin {
                 }, {
                     reg: '^#宝箱(排行|排名|查询|统计)(.*)$',
                     fnc: 'ChestGroupTop'
+                }, {
+                    reg: /^#历史队伍伤害(DPS|Dps|dps|总伤害|总伤)?(\d+)?(.*)$/,
+                    fnc: 'HistoryTeam'
                 },
             ]
         })
     }
 
+    async HistoryTeam(e){
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.Teyvat !== 1) return false
+        await e.reply("正在开发中~\n每次每个人的队伍数据请求都已经写入了数据库，正在完成最后的渲染设计")
+    }
     async achieveTop(e) {
         let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
         if (OpenStatus.Teyvat !== 1) return false
