@@ -65,7 +65,7 @@ export class MonitorTask extends plugin {
             }
         }
         if (await redis.get(`FanSky:Github:PushStatus`)) {
-            logger.info(logger.magenta("已存在推送进程"))
+            // logger.info(logger.magenta("已存在推送进程"))
             return true
         } else {
             await redis.set(`FanSky:Github:PushStatus`, JSON.stringify({PushStatus: 1}));

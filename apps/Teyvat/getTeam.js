@@ -57,14 +57,14 @@ export async function team(e, teamlist, uid, detail) {
         const res = await ReturnTeamArr(teamlist[0]);
         if (res && res[0]) {
             teamlist = res;
-        }else{
+        } else {
             await e.reply(`暂未收录[${teamlist[0]}]简写\n尝试识别为单人~`, true);
         }
-    }else if(teamlist.length === 0){
+    } else if (teamlist.length === 0) {
         await e.reply("请指定您要计算的队伍喵~", true);
         return true
-    }else if(teamlist.length > 4){
-        teamlist = teamlist.slice(0,4)
+    } else if (teamlist.length > 4) {
+        teamlist = teamlist.slice(0, 4)
     }
 
     let teamarId = [];
@@ -136,7 +136,11 @@ export async function team(e, teamlist, uid, detail) {
             data['avatars'][key].weapon.imgPath = weaponsData[key].weaponPath
         }
         let ScreenData = await screenData(e, data, detail)
-        await savaHistoryData(ScreenData)
+        try {
+            await savaHistoryData(ScreenData)
+        } catch (err) {
+            logger.error("这个队伍伤害保存失败了：" + err)
+        }
         let img = await puppeteer.screenshot('FanSkyTeyvat', ScreenData)
         await e.reply(img)
         return true

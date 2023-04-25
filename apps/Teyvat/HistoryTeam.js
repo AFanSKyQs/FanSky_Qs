@@ -34,24 +34,52 @@ async function GetAtUid(e) {
     }
 }
 
+async function  extractNumber(str) {
+    if (!str) return 0
+
+    let number = ''
+    for (let i = 0; i < str.length; i++) {
+        if ((str[i] >= '0' && str[i] <= '9') || str[i] === '.') {
+            number += str[i]
+        }
+    }
+    return parseFloat(number) || 0
+}
+
+
 export async function savaHistoryData(JsonData) {
     let jsonArray = [];
     let uid = JsonData.data.uid
-    let Change = {}
-    Change.uid = JsonData.data.uid
-    Change.elem = JsonData.data.elem
-    Change.rank = JsonData.data.rank
-    Change.dps = JsonData.data.dps
-    Change.tm = JsonData.data.tm
-    Change.total = Number(JsonData.data.total.match(/\d+\.\d+/)[0])
-    Change.RoleData = JsonData.RoleData
-    Change.avatars = JsonData.data.avatars
+    let historyEntry = {
+        uid: uid,
+        elem: JsonData.data.elem,
+        rank: JsonData.data.rank,
+        dps: JsonData.data.dps,
+        tm: JsonData.data.tm,
+        total: await extractNumber(JsonData.data.total),
+        RoleData: JsonData.RoleData,
+        avatars: JsonData.data.avatars
+    };
     let TempJson = await redis.get(`FanSky:Teyvat:HistoryTeam:DPS:${uid}`);
     if (!TempJson) {
-        jsonArray.push(Change)
+        jsonArray.push(historyEntry)
     } else {
         jsonArray = JSON.parse(TempJson)
-        jsonArray.push(Change)
+        let avatarsKeys = Object.keys(JsonData.data.avatars);
+        let isExist = false;
+        for (let i = 0; i < jsonArray.length; i++) {
+            let tempKeys = Object.keys(jsonArray[i].avatars);
+            if (tempKeys.length === avatarsKeys.length && tempKeys.every(key => avatarsKeys.includes(key))) {
+                isExist = true;
+                if (jsonArray[i].dps < historyEntry.dps) {
+                    jsonArray[i] = historyEntry;
+                }
+                break;
+            }
+        }
+        if (!isExist) {
+            jsonArray.push(historyEntry)
+        }
         jsonArray.sort((a, b) => b.dps - a.dps);
         if (jsonArray.length >= 10) {
             jsonArray = jsonArray.slice(0, 10)
