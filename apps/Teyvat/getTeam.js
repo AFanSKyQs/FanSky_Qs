@@ -136,11 +136,11 @@ export async function team(e, teamlist, uid, detail) {
             data['avatars'][key].weapon.imgPath = weaponsData[key].weaponPath
         }
         let ScreenData = await screenData(e, data, detail)
-        try {
-            await savaHistoryData(ScreenData)
-        } catch (err) {
-            logger.error("这个队伍伤害保存失败了：" + err)
-        }
+        // try {
+        //     await savaHistoryData(ScreenData)
+        // } catch (err) {
+        //     logger.info("这个队伍伤害保存失败了：" + err)
+        // }
         let img = await puppeteer.screenshot('FanSkyTeyvat', ScreenData)
         await e.reply(img)
         return true
