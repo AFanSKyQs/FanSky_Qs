@@ -157,7 +157,7 @@ function getFace (role) {
 
 function getTalentPath (role, icon) {
   // 每个角色只读一遍
-  if (!_.isEmpty(roleData) || roleData.name !== role) {
+  if (_.isEmpty(roleData) || roleData.name != role) {
     roleData = readJson(role)
   }
 
