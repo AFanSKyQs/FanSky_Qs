@@ -1,9 +1,10 @@
 /* eslint-disable camelcase */
-import _ from 'lodash';
-import gsCfg from '../../../../genshin/model/gsCfg.js';
-import fs from 'node:fs';
+import _ from 'lodash'
+import gsCfg from '../../../../genshin/model/gsCfg.js'
+import fs from 'node:fs'
 
 const cwd = process.cwd().replace(/\\/g,'/');
+let roleData = {}
 /**
  * 转换队伍伤害计算请求数据为精简格式
  * @param {Object} raw 队伍伤害计算请求数据，由 getTeyvatData(*, "team")["result"] 获取
@@ -40,7 +41,7 @@ async function simpleTeamDamageRes (raw, rolesData) {
     let skills = []
     _.each(panelData.skills, skill => {
       skills.push({
-        icon: skill.icon,
+        icon: getTalentPath(role.role, skill.icon),
         style: skill.style,
         level: skill.level
       })
@@ -146,24 +147,43 @@ function getWeapon (icon) {
     return false;
   }
 
-  const miaoType = {
-    单手剑: 'sword',
-    双手剑: 'claymore',
-    长柄武器: 'polearm',
-    法器: 'catalyst',
-    弓: 'bow'
-  };
-
-  let type = weaponCfg['Type'][name] || false;
-  if (!type) {
-    return false;
-  }
-  return `${miaoType[type]}/${name}`;
+  return `${roleData.weapon}/${name}`;
 }
 
 function getFace (role) {
   let miaoPath = `${cwd}/plugins/miao-plugin/resources/meta/character/${role}/imgs/`;
   return fs.existsSync(`${miaoPath}face-q.webp`) ? miaoPath += 'face-q.webp' : miaoPath += 'face.webp';
+}
+
+function getTalentPath (role, icon) {
+  // 每个角色只读一遍
+  if (!_.isEmpty(roleData) || roleData.name !== role) {
+    roleData = readJson(role)
+  }
+
+  let weapon = roleData.weapon
+  let talentCons = roleData.talentCons
+
+  let type = icon.split('_')[1]
+  switch (type) {
+    case 'A':
+      return `common/item/atk-${weapon}.webp`
+    case 'S':
+      return `meta/character/${role}/icons/${talentCons.e === 3 ? 'cons-3' : 'cons-5'}.webp`
+    case 'E':
+      return `meta/character/${role}/icons/${talentCons.q === 5 ? 'cons-5' : 'cons-3'}.webp`
+  }
+  return '未知'
+}
+
+function readJson (name) {
+  let data = {}
+  let file = `${cwd}/plugins/miao-plugin/resources/meta/character/${name}/data.json`
+  if (fs.existsSync(file)) {
+    // 获取本地数据 进行数据合并
+    data = JSON.parse(fs.readFileSync(file, 'utf8'))
+  }
+  return data
 }
 
 export default simpleTeamDamageRes
