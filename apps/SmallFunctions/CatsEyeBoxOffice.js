@@ -29,7 +29,14 @@ export async function CatEyeBoxOffice(e) {
     }
 
     // let Json=await getUrlJson(url, e)
-    let UpdateTime = new Date(Json.movieList.data.updateInfo.updateTimestamp).toLocaleString()
+    let UpdateTime
+    try {
+        UpdateTime = new Date(Json.movieList.data.updateInfo.updateTimestamp).toLocaleString()
+    } catch (err) {
+        logger.info(err)
+        await e.reply(`您的网络设置似乎有点问题，请机器人电脑打开官网测试是否连通:\nhttp://pf.fe.st.maoyan.com/dashboard`)
+        return true
+    }
     let MsgList = []
     MsgList.push(`实时大盘：${Json.movieList.data.nationBoxInfo.nationBoxSplitUnit.num} ${Json.movieList.data.nationBoxInfo.nationBoxSplitUnit.unit}\n总出票为：${Json.movieList.data.nationBoxInfo.viewCountDesc}张\n总场次为：${Json.movieList.data.nationBoxInfo.showCountDesc}场\n更新时间：${UpdateTime}\n数据来源：猫眼电影\n当前在榜：${Json.movieList.data.list.length}部\n当前最大仅显示前15部喵~\n`)
     const totalBoxOffice = Json.movieList.data.nationBoxInfo.nationBoxSplitUnit.num * ({
