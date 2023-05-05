@@ -39,7 +39,7 @@ for (let i in files) {
     }
     apps[name] = ret[i].value[Object.keys(ret[i].value)[0]]
 }
-Bot.logger.info(`----FanSky_Qs插件载入完成------`)
+logger.info(logger.magenta(`----FanSky_Qs插件载入完成------`))
 if (APackageFanError > 0) {
     logger.warn(logger.yellow(`---请按提示安装依赖，否则对应功能会无效喵！------`))
     logger.warn(logger.yellow(`---请按提示安装依赖，否则对应功能会无效喵！------`))
