@@ -125,7 +125,7 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
                                         e.reply("[FanSky_Qs]OpenAI没有找到配置文件")
                                         return false
                                     }
-                                    e.reply(`-[单纯请求超时]\n-[Clash设置未生效]\n-[机场不可用(如一元机场)]\n-[KEY不可用]\n\n请求失败，正在查询Bot的OpenAI_KEY状态~,请根据返回结果分析原因`, true)
+                                    e.reply(`-[单纯请求超时]\n-[Clash设置未生效]\n-[机场不可用(如一元机场)]\n-[KEY不可用]\n\n请求失败，正在查询Bot的OpenAI_KEY状态~,请根据返回结果分析原因`, true,{recallMsg: 15})
                                     await l(e, OpenAIConfig)
                                     return true
                                 })
