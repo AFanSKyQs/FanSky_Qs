@@ -222,11 +222,10 @@ export async function OpenAIHelp(e) {
                 "icon": "OpenAI",
                 "title": "#模型人设列表",
                 "desc": "查看目前自带的预设人设"
-            }
-            , {
+            }, {
                 "icon": "OpenAI",
                 "title": "#使用模型人设x",
-                "desc": "1:猫娘 | 2:辉夜 | 3：病娇 |4：派蒙 | 5:抽象emoji大师 | 6：祖安钢琴师"
+                "desc": "1:猫娘 | 2:辉夜 | 3：病娇 |4：派蒙 | 5:抽象emoji大师 | 6：祖安钢琴师 | 7:发芩的媳妇"
             }
             , {
                 "icon": "剩余",
