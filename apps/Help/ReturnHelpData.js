@@ -226,7 +226,7 @@ export async function OpenAIHelp(e) {
             , {
                 "icon": "OpenAI",
                 "title": "#使用模型人设x",
-                "desc": "1:猫娘 | 2:辉夜 | 3：病娇 |4：派蒙 | 5:抽象emoji大师"
+                "desc": "1:猫娘 | 2:辉夜 | 3：病娇 |4：派蒙 | 5:抽象emoji大师 | 6：祖安钢琴师"
             }
             , {
                 "icon": "剩余",
