@@ -3,10 +3,12 @@ import common from '../../../../lib/common/common.js'
 import axios from 'axios'
 import {getOpenAIConfig} from "../../models/getCfg.js";
 import * as url from "url";
+import fetch from 'node-fetch'
 import {l} from "./OpenAIQuota.js";
 
 let Moudel1List = []
 let Moudel1Num = []
+let HttpsProxyAgent = ''
 
 export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
     let Proxy
@@ -75,6 +77,7 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
                             },
                             data: JSON.stringify(data),
                         }).then(async function (response) {
+                            await redis.del(`FanSky:OpenAI:Status:${e.user_id}`);
                             let res = {
                                 data: {
                                     choices: [{
@@ -87,61 +90,58 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
                             await SendResMsg(e, res, Json, GetResult)
                         })
                     } catch (err) {
-                        console.log(err)
-                        e.reply("代理请求失败，请重启或联系开发人员检查问题")
+                        logger.info(err)
+                        delete Moudel1List[e.user_id]
+                        delete Moudel1Num[e.user_id]
+                        await redis.del(`FanSky:OpenAI:Status:${e.user_id}`);
+                        await e.reply("代理请求失败，请重启或联系开发人员检查问题")
                     }
                 } else if (SelectProxy === "Default") {
+                    const OPENAI_API_KEY = OpenAI_Key.trim();
+                    const url = 'https://api.openai.com/v1/chat/completions';
+                    const headers = {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${OPENAI_API_KEY}`
+                    };
+                    const data = JSON.stringify(Moudel1List[e.user_id]);
+                    const param = {
+                        method: 'POST',
+                        headers,
+                        agent: await getAgent(`http://${Addr}:${Port}`),
+                        body: data,
+                        timeout: 20000
+                    };
+                    let response = {};
                     try {
-                        axios({
-                            method: 'post',
-                            url: 'https://api.openai.com/v1/chat/completions',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                Authorization: 'Bearer ' + OpenAI_Key
-                            },
-                            proxy: {
-                                protocol: `http`,
-                                host: `${Addr}`,
-                                port: Port
-                            },
-                            data: JSON.stringify(Moudel1List[e.user_id]),
-                        },).then(async function (response) {
-                            await SendResMsg(e, response, Json, GetResult)
-                        }).catch(async function () {
-                            try {
-                                await axios({
-                                    method: 'post', url: 'https://api.openai.com/v1/chat/completions', headers: {
-                                        'Content-Type': 'application/json',
-                                        Authorization: 'Bearer ' + OpenAI_Key
-                                    }, data: JSON.stringify(Moudel1List[e.user_id])
-                                }).then(async (response) => {
-                                    await SendResMsg(e, response, Json, GetResult)
-                                }).catch(async function (error) {
-                                    await redis.del(`FanSky:OpenAI:Status:${e.user_id}`);
-                                    delete Moudel1List[e.user_id]
-                                    Bot.logger.info(error)
-                                    let OpenAIConfig = await getOpenAIConfig()
-                                    if (OpenAIConfig.error) {
-                                        e.reply("[FanSky_Qs]OpenAI没有找到配置文件")
-                                        return false
-                                    }
-                                    e.reply(`-[单纯请求超时]\n-[Clash设置未生效]\n-[机场不可用(如一元机场)]\n-[KEY不可用]\n\n请求失败，正在查询Bot的OpenAI_KEY状态~,请根据返回结果分析原因`, true,{recallMsg: 15})
-                                    await l(e, OpenAIConfig)
-                                    return true
-                                })
-                            } catch (err) {
-                                logger.info(err)
-                                e.reply("请检查你的代理设置\n设置指令：#设置模型代理地址xxx\n\n格式(只是例子，实际根据你的代理来设置)ip+http端口：\n127.0.0.1:7890", true)
-                            }
-                        })
-                    } catch (err) {
-                        e.reply('运行有问题~,请联系开发人员(3141865879)')
-                        logger.info(err)
+                        response = await fetch(url, param);
+                    } catch (error) {
+                        await e.reply("报错惹，康康后台", true, {recallMsg: 10})
+                        await redis.del(`FanSky:OpenAI:Status:${e.user_id}`);
+                        delete Moudel1List[e.user_id]
+                        delete Moudel1Num[e.user_id]
+                        logger.info(error)
+                        return false
                     }
+                    await redis.del(`FanSky:OpenAI:Status:${e.user_id}`);
+                    if (!response.ok) {
+                        await e.reply("接口请求失败~", true, {recallMsg: 10})
+                        delete Moudel1List[e.user_id]
+                        delete Moudel1Num[e.user_id]
+                        logger.info(response)
+                        return false
+                    }
+                    const res = await response.json();
+                    if (!res) {
+                        await e.reply("接口没有数据返回~", true, {recallMsg: 10})
+                        delete Moudel1List[e.user_id]
+                        delete Moudel1Num[e.user_id]
+                        return false
+                    }
+                    await redis.del(`FanSky:OpenAI:Status:${e.user_id}`);
+                    await SendResMsg(e, {data:res}, Json, GetResult)
                 }
             }
         }
-
         const proxyString = Proxy.Proxy
         const proxyUrl = url.parse(`http://${proxyString}`);
         const proxyAddress = proxyUrl.hostname;
@@ -149,6 +149,22 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
         const proxyFunction = await useProxy(proxyAddress, proxyPort, SelectProxy);
         await proxyFunction();
     }
+}
+
+async function getAgent(Proxy) {
+    let proxyAddress = Proxy
+    if (!proxyAddress) return null
+    if (proxyAddress === 'http://0.0.0.0:0') return null
+    if (HttpsProxyAgent === '') {
+        HttpsProxyAgent = await import('https-proxy-agent').catch((err) => {
+            console.log(err)
+        })
+        HttpsProxyAgent = HttpsProxyAgent ? HttpsProxyAgent.default : undefined
+    }
+    if (HttpsProxyAgent) {
+        return new HttpsProxyAgent(proxyAddress)
+    }
+    return null
 }
 
 async function SendResMsg(e, response, Json, GetResult) {
