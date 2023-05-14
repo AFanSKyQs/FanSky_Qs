@@ -41,6 +41,7 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
                     return false
                 }
                 await redis.set(`FanSky:OpenAI:Status:${e.user_id}`, JSON.stringify({Status: 1}))
+                await redis.expire(`FanSky:OpenAI:Status:${e.user_id}`, 20); //设置过期时间,20s
                 let DataList = {
                     model: 'gpt-3.5-turbo',
                     messages: [
@@ -88,13 +89,18 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
                                 }
                             }
                             await SendResMsg(e, res, Json, GetResult)
+                        }).catch(async function (error) {
+                            delete Moudel1List[e.user_id]
+                            delete Moudel1Num[e.user_id]
+                            await redis.del(`FanSky:OpenAI:Status:${e.user_id}`);
+                            await e.reply("\n[fGet返回]返回数据异常，已重置记忆",false,{at: true,recallMsg: 10})
                         })
                     } catch (err) {
                         logger.info(err)
                         delete Moudel1List[e.user_id]
                         delete Moudel1Num[e.user_id]
                         await redis.del(`FanSky:OpenAI:Status:${e.user_id}`);
-                        await e.reply("代理请求失败，请重启或联系开发人员检查问题")
+                        await e.reply("\n[发起fGet]发起请求异常，已重置记忆",false,{at: true,recallMsg: 10})
                     }
                 } else if (SelectProxy === "Default") {
                     const OPENAI_API_KEY = OpenAI_Key.trim();
@@ -115,7 +121,7 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
                     try {
                         response = await fetch(url, param);
                     } catch (error) {
-                        await e.reply("报错惹，康康后台", true, {recallMsg: 10})
+                        await e.reply("\n[Fetch]报错惹，康康后台",false,{at: true,recallMsg: 10})
                         await redis.del(`FanSky:OpenAI:Status:${e.user_id}`);
                         delete Moudel1List[e.user_id]
                         delete Moudel1Num[e.user_id]
@@ -124,7 +130,7 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
                     }
                     await redis.del(`FanSky:OpenAI:Status:${e.user_id}`);
                     if (!response.ok) {
-                        await e.reply("接口请求失败~", true, {recallMsg: 10})
+                        await e.reply("\n[Response]接口请求异常~\n请检查代理设置",false,{at: true,recallMsg: 10})
                         delete Moudel1List[e.user_id]
                         delete Moudel1Num[e.user_id]
                         logger.info(response)
@@ -132,7 +138,7 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
                     }
                     const res = await response.json();
                     if (!res) {
-                        await e.reply("接口没有数据返回~", true, {recallMsg: 10})
+                        await e.reply("[返回数据]接口数据为空~", true, {recallMsg: 10})
                         delete Moudel1List[e.user_id]
                         delete Moudel1Num[e.user_id]
                         return false
@@ -175,12 +181,12 @@ async function SendResMsg(e, response, Json, GetResult) {
         if (response.data.choices[0].message.content.length > Json.Text_img) {
             let NowTime = (new Date(Date.now())).toLocaleString()
             MsgList = [`${result}`, `${NowTime}\n魔晶：${GetResult}\n重置：${10 - Moudel1Num[e.user_id]}\n${response.data.choices[0].message.content.length}字`]
-            let tmpMsg = result.substring(0, 15)
+            let tmpMsg = result.substring(0, 50)
             SendResult = await common.makeForwardMsg(e, MsgList, `${NowTime} | ${tmpMsg}`)
             await e.reply(SendResult)
         } else {
             SendResult = `距重置：${10 - Moudel1Num[e.user_id]} | ${response.data.choices[0].message.content.length}字\n` + result
-            e.reply(SendResult, true)
+            e.reply("\n"+SendResult,false,{at: true})
         }
     } else {
         if (response.data.choices[0].message.content.length > Json.Text_img) {
@@ -191,7 +197,7 @@ async function SendResMsg(e, response, Json, GetResult) {
             await e.reply(SendResult)
         } else {
             SendResult = `魔晶：${GetResult} | 重置：${10 - Moudel1Num[e.user_id]} | ${response.data.choices[0].message.content.length}字\n` + result
-            e.reply(SendResult, true)
+            e.reply("\n"+SendResult,false,{at: true})
         }
     }
     Moudel1List[e.user_id].messages.push({role: 'assistant', content: result})
