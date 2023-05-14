@@ -1,4 +1,5 @@
 /* eslint-disable camelcase */
+import HttpsProxyAgent from 'https-proxy-agent'
 import common from '../../../../lib/common/common.js'
 import axios from 'axios'
 import {getOpenAIConfig} from "../../models/getCfg.js";
@@ -8,7 +9,6 @@ import {l} from "./OpenAIQuota.js";
 
 let Moudel1List = []
 let Moudel1Num = []
-let HttpsProxyAgent = ''
 
 export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
     let Proxy
@@ -158,19 +158,10 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
 }
 
 async function getAgent(Proxy) {
-    let proxyAddress = Proxy
-    if (!proxyAddress) return null
-    if (proxyAddress === 'http://0.0.0.0:0') return null
-    if (HttpsProxyAgent === '') {
-        HttpsProxyAgent = await import('https-proxy-agent').catch((err) => {
-            console.log(err)
-        })
-        HttpsProxyAgent = HttpsProxyAgent ? HttpsProxyAgent.default : undefined
-    }
-    if (HttpsProxyAgent) {
-        return new HttpsProxyAgent(proxyAddress)
-    }
-    return null
+    let proxyAddress = Proxy;
+    if (!proxyAddress) return null;
+    if (proxyAddress === 'http://0.0.0.0:0') return null;
+    return new HttpsProxyAgent(proxyAddress);
 }
 
 async function SendResMsg(e, response, Json, GetResult) {
@@ -233,3 +224,21 @@ export async function ResetGPT3TurboList(e) {
         logger.info(err)
     }
 }
+
+
+// let HttpsProxyAgent = ''
+// async function getAgent(Proxy) {
+//     let proxyAddress = Proxy
+//     if (!proxyAddress) return null
+//     if (proxyAddress === 'http://0.0.0.0:0') return null
+//     if (HttpsProxyAgent === '') {
+//         HttpsProxyAgent = await import('https-proxy-agent').catch((err) => {
+//             logger.info(err)
+//         })
+//         HttpsProxyAgent = HttpsProxyAgent ? HttpsProxyAgent.default : undefined
+//     }
+//     if (HttpsProxyAgent) {
+//         return new HttpsProxyAgent(proxyAddress)
+//     }
+//     return null
+// }
