@@ -19,7 +19,7 @@ export class FanSkySetting extends plugin {
 
     async FanSkySetting(e) {
         if (!e.isMaster) {
-            e.reply('只有主人才能这样做喵！！')
+            e.reply('只有主人才能这样做喵！！喵呜！')
             return true
         }
         let input = e.msg || e.original_msg || e.raw_message || "#fan设置"
@@ -42,11 +42,14 @@ export class FanSkySetting extends plugin {
         let MsgList = [
             `指令：#fan设置+系统名+开启/关闭`,
             `如：#fan设置群管系统开启`,
-            `群管系统：${OpenStatus.GroupManager === 1 ? '开启' : '关闭'}`+"\n"+
-            `原神系统：${OpenStatus.Teyvat === 1 ? '开启' : '关闭'}`+"\n"+
-            `魔晶系统：${OpenStatus.MagicCrystal === 1 ? '开启' : '关闭'}`+"\n"+
-            `聊天系统：${OpenStatus.OpenAI === 1 ? '开启' : '关闭'}`+"\n"+
-            `娱乐系统：${OpenStatus.SmallFunction === 1 ? '开启' : '关闭'}`,
+            `群管系统：${OpenStatus.GroupManager === 1 ? '开启' : '关闭'}` + "\n" +
+            `原神系统：${OpenStatus.Teyvat === 1 ? '开启' : '关闭'}` + "\n" +
+            `魔晶系统：${OpenStatus.MagicCrystal === 1 ? '开启' : '关闭'}` + "\n" +
+            `聊天系统：${OpenStatus.OpenAI === 1 ? '开启' : '关闭'}` + "\n" +
+            `娱乐系统：${OpenStatus.SmallFunction === 1 ? '开启' : '关闭'}` + "\n\n" +
+            `【其他小设置】：` + "\n" +
+            `艾特对话：${OpenStatus.AtTalk === 1 ? '开启' : '关闭'}`+ "\n" +
+            `发病功能：${OpenStatus.Crazy === 1 ? '开启' : '关闭'}`
         ]
         let Msg = await common.makeForwardMsg(e, MsgList, '[FanSky_Qs]当前设置')
         await e.reply(Msg)
@@ -68,7 +71,7 @@ export class FanSkySetting extends plugin {
         if (!args) {
             ReturnSet.Setting = true;
         } else {
-            const toolsRegex = /^(原神系统|OpenAI系统|聊天系统|群管系统|魔晶系统|娱乐系统)(开启|关闭)$/;
+            const toolsRegex = /^(原神系统|OpenAI系统|聊天系统|群管系统|魔晶系统|娱乐系统|艾特对话|发病功能)(开启|关闭)$/;
             const toolsMatches = args.match(toolsRegex);
 
             if (toolsMatches) {
@@ -79,6 +82,8 @@ export class FanSkySetting extends plugin {
                     '群管系统': 'GroupManager',
                     '魔晶系统': 'MagicCrystal',
                     '娱乐系统': 'SmallFunction',
+                    '艾特对话': 'AtTalk',
+                    '发病功能': 'Crazy'
                 };
                 const functionName = functionKeyMap[toolsMatches[1]];
                 const functionStatus = toolsMatches[2] === '开启' ? 1 : 0;

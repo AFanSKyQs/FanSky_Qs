@@ -18,7 +18,7 @@ export class MonitorTask extends plugin {
             rule: [
                 {
                     reg: /^#?检测(仓库|github|fan)更新$/,
-                    fnc: 'MonitorTask'
+                    fnc: 'Monitor'
                 }, {
                     reg: /^#fan(设置|更改|改变)(github|Github|GITHUB)(开启|打开|open|关闭|shutdown)$/,
                     fnc: 'setGithubPushStatus'
@@ -29,7 +29,7 @@ export class MonitorTask extends plugin {
             name: 'FanSky_Qs仓库更新检测',
             cron: '0 0/4 * * * ? ',
             fnc: () => {
-                this.MonitorTask()
+                this.MonitorTask(true)
             }
         }
     }
@@ -53,8 +53,14 @@ export class MonitorTask extends plugin {
         }
         return true
     }
-
-    async MonitorTask() {
+    async Monitor(e) {
+        await this.MonitorTask(false, e)
+    }
+    async MonitorTask(Auto = false,e=null) {
+        if (Auto === false) {
+            await this.SelectMonitor(e)
+            return true
+        }
         const redisValue = await redis.get('FanSky:Github:Push');
         if (!redisValue) {
             await redis.set('FanSky:Github:Push', JSON.stringify({PushStatus: 1}));
@@ -112,6 +118,18 @@ export class MonitorTask extends plugin {
         } catch (error) {
             return true
         }
+        return true
+    }
+
+    async SelectMonitor(e) {
+        const res = await axios.get('https://api.github.com/repos/AFanSKyQs/FanSky_Qs/commits')
+        const data = res.data
+        if (!data[0]) return
+        let Json = data[0]
+        logger.info(logger.magenta('>>>手动检测FanSky_Qs仓库最新代码'))
+        let UTC_Date = Json.commit.committer.date
+        const cnTime = new Date(UTC_Date).toLocaleString('zh-CN', {timeZone: 'Asia/Shanghai', hour12: false})
+        await e.reply(`[FanSky_Qs最近更新]\nContributors：${Json.commit.committer.name}\nDate:${cnTime}\nMessage:${Json.commit.message}\nUrl:${Json.html_url}`)
         return true
     }
 }

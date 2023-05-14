@@ -33,8 +33,11 @@ export class OpenAIEntry extends plugin {
                 {
                     reg: /^#重置(对话|聊天|记忆)$/i,
                     fnc: 'Reset'
-                }
-                ,
+                }, {
+                    reg: /^#dd(.*)/u,
+                    fnc: 'PrefixAI',
+                    log: false
+                },
                 {
                     reg: /.*/i,
                     fnc: 'UseModel',
@@ -115,11 +118,20 @@ export class OpenAIEntry extends plugin {
         })
     };
 
-    async setAFanSKyQs(e){
+    async PrefixAI(e) {
         let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
         if (OpenStatus.OpenAI !== 1) return false
-        await setOpenAIProxy(e,"fan")
+        let Static = await UseModel(e, true)
+        if (Static.wait) return false
+        if (!Static || Static === false) return false
     }
+
+    async setAFanSKyQs(e) {
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.OpenAI !== 1) return false
+        await setOpenAIProxy(e, "fan")
+    }
+
     async SearchGPTKEY(e) {
         let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
         if (OpenStatus.OpenAI !== 1) return false
@@ -132,7 +144,7 @@ export class OpenAIEntry extends plugin {
     async setOpenAIProxy(e) {
         let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
         if (OpenStatus.OpenAI !== 1) return false
-        await setOpenAIProxy(e,"default")
+        await setOpenAIProxy(e, "default")
     }
 
     async setAllPerson(e) {

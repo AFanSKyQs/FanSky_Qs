@@ -29,8 +29,8 @@ export async function UsePerson(e) {
             e.reply(`已将您的AI人设设置为[${numStr}]：\n祖安钢琴师(来一场键盘的较量)~`)
         } else if(numStr === "7") {
             await setRedis(e, 6)
-            logger.info(logger.magenta(`${e.user_id}:使用预设7-发芩、少女、老婆`));
-            e.reply(`已将您的AI人设设置为[${numStr}]：\n发芩、少女、老婆~`)
+            logger.info(logger.magenta(`${e.user_id}:使用预设7-涩涩、少女、老婆`));
+            e.reply(`已将您的AI人设设置为[${numStr}]：\n涩涩、少女、老婆~`)
         } else{
             e.reply(`没有【${numStr}】号预设噢\n请发送【#AI人设列表】查看目前支持人设~`)
         }
@@ -56,7 +56,7 @@ export async function PersonList(e) {
         "4、无敌可爱小派蒙(不容易醒)\n" +
         "5、emoji回复派AI(乐乐乐)\n" +
         "6、祖安钢琴师(来一场键盘的较量)\n" +
-        "7、发芩、少女、老婆（比较sao，谨慎食用）"+"\n\n"+
+        "7、涩涩、少女、老婆（比较瑟，谨慎食用）"+"\n\n"+
         "可发送【#使用模型人设x】来使用人设"
     e.reply(PersonList)
     return true

@@ -119,12 +119,16 @@ export async function MainHelpData(e) {
     if (OpenStatus.SmallFunction === 1) {
         helpData.push({
             "group": "娱乐系统",
-            "list": [
+            "list": [{
+                    "icon": "发病",
+                    "title": "#fan设置发病功能开启/关闭",
+                    "desc": "单独关闭发电功能"
+                },
                 {
                     "icon": "龙图",
                     "title": "l图 | 龙图 | 加l图 | #更新l图 |有多少l图",
                     "desc": ""
-                }, 
+                },
                 {
                     "icon": "弔图",
                     "title": "d图 | 弔图 | 加d图 | #更新d图 |有多少d图",
@@ -134,7 +138,7 @@ export async function MainHelpData(e) {
                     "icon": "抽象",
                     "title": "抽象帮助 | cxbz",
                     "desc": "将文字转换为多种抽象的东西"
-                }, 
+                },
                 {
                     "icon": "抽象",
                     "title": "抽象xxxx",
@@ -199,6 +203,10 @@ export async function MainHelpData(e) {
                     "title": "#fan设置github开启/关闭",
                     "desc": "开启或关闭更新推送"
                 }, {
+                    "icon": "github",
+                    "title": "#检测fan更新",
+                    "desc": "手动检测fan最近一次更新"
+                }, {
                     "icon": "sign",
                     "title": "打卡总计",
                     "desc": "今日已经打卡和系统总打卡用户"
@@ -220,12 +228,17 @@ export async function OpenAIHelp(e) {
         "list": [
             {
                 "icon": "OpenAI",
+                "title": "#dd你要说的话",
+                "desc": "【#dd】是对话前缀，或者直接艾特说话"
+            },
+            {
+                "icon": "OpenAI",
                 "title": "#模型人设列表",
                 "desc": "查看目前自带的预设人设"
             }, {
                 "icon": "OpenAI",
                 "title": "#使用模型人设x",
-                "desc": "1:猫娘 | 2:辉夜 | 3：病娇 |4：派蒙 | 5:抽象emoji大师 | 6：祖安钢琴师 | 7:发芩的媳妇"
+                "desc": "1:猫娘 | 2:辉夜 | 3：病娇 |4：派蒙 | 5:抽象emoji大师 | 6：祖安钢琴师 | 7:涩涩状态的媳妇"
             }
             , {
                 "icon": "剩余",
@@ -253,6 +266,11 @@ export async function OpenAIHelp(e) {
             {
                 "group": "OpenAI主人菜单",
                 "list": [
+                    {
+                        "icon": "OpenAI",
+                        "title": "#关闭模型艾特对话",
+                        "desc": "不再响应艾特或回复，响应[#dd]开头的对话"
+                    },
                     {
                         "icon": "最大",
                         "title": "设置模型打卡开启",
@@ -393,7 +411,7 @@ export async function SmallFunctionHelp() {
                         "icon": "龙图",
                         "title": "l图 | 龙图 | 加l图 | #更新l图 |有多少l图",
                         "desc": ""
-                    }, 
+                    },
                     {
                         "icon": "弔图",
                         "title": "d图 | 弔图 | 加d图 | #更新d图 |有多少d图",
@@ -403,7 +421,7 @@ export async function SmallFunctionHelp() {
                         "icon": "抽象",
                         "title": "抽象帮助 | cxbz",
                         "desc": "将文字转换为多种抽象的东西"
-                    }, 
+                    },
                     {
                         "icon": "抽象",
                         "title": "抽象xxxx",

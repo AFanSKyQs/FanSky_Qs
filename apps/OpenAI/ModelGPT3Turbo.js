@@ -28,6 +28,10 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
         const useProxy = (Addr, Port, SelectProxy) => {
             return async () => {
                 let msg = e.original_msg || e.msg
+                if ((msg+"").startsWith('#dd')) {
+                    msg = msg.slice(3);
+                }
+                msg=msg.trim()
                 Bot.logger.info('处理插件：FanSky_Qs-OpenAI模型1:' + `\n群：${e.group_id}\n` + 'QQ:' + `${e.user_id}\n` + `消息：${msg}`)
                 let Persona = "你是一个小助手~"
                 if (await redis.get(`FanSky:OpenAI:Person:${e.user_id}`)) {
@@ -93,14 +97,14 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
                             delete Moudel1List[e.user_id]
                             delete Moudel1Num[e.user_id]
                             await redis.del(`FanSky:OpenAI:Status:${e.user_id}`);
-                            await e.reply("\n[fGet返回]返回数据异常，已重置记忆",false,{at: true,recallMsg: 10})
+                            await e.reply("\n[fGet返回]返回数据异常，已重置记忆", false, {at: true, recallMsg: 10})
                         })
                     } catch (err) {
                         logger.info(err)
                         delete Moudel1List[e.user_id]
                         delete Moudel1Num[e.user_id]
                         await redis.del(`FanSky:OpenAI:Status:${e.user_id}`);
-                        await e.reply("\n[发起fGet]发起请求异常，已重置记忆",false,{at: true,recallMsg: 10})
+                        await e.reply("\n[发起fGet]发起请求异常，已重置记忆", false, {at: true, recallMsg: 10})
                     }
                 } else if (SelectProxy === "Default") {
                     const OPENAI_API_KEY = OpenAI_Key.trim();
@@ -121,7 +125,7 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
                     try {
                         response = await fetch(url, param);
                     } catch (error) {
-                        await e.reply("\n[Fetch]报错惹，康康后台",false,{at: true,recallMsg: 10})
+                        await e.reply("\n[Fetch]报错惹，康康后台", false, {at: true, recallMsg: 10})
                         await redis.del(`FanSky:OpenAI:Status:${e.user_id}`);
                         delete Moudel1List[e.user_id]
                         delete Moudel1Num[e.user_id]
@@ -130,7 +134,7 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
                     }
                     await redis.del(`FanSky:OpenAI:Status:${e.user_id}`);
                     if (!response.ok) {
-                        await e.reply("\n[Response]接口请求异常~\n请检查代理设置",false,{at: true,recallMsg: 10})
+                        await e.reply("\n[Response]接口请求异常~\n请检查代理设置", false, {at: true, recallMsg: 10})
                         delete Moudel1List[e.user_id]
                         delete Moudel1Num[e.user_id]
                         logger.info(response)
@@ -144,7 +148,7 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
                         return false
                     }
                     await redis.del(`FanSky:OpenAI:Status:${e.user_id}`);
-                    await SendResMsg(e, {data:res}, Json, GetResult)
+                    await SendResMsg(e, {data: res}, Json, GetResult)
                 }
             }
         }
@@ -177,7 +181,7 @@ async function SendResMsg(e, response, Json, GetResult) {
             await e.reply(SendResult)
         } else {
             SendResult = `距重置：${10 - Moudel1Num[e.user_id]} | ${response.data.choices[0].message.content.length}字\n` + result
-            e.reply("\n"+SendResult,false,{at: true})
+            e.reply("\n" + SendResult, false, {at: true})
         }
     } else {
         if (response.data.choices[0].message.content.length > Json.Text_img) {
@@ -188,7 +192,7 @@ async function SendResMsg(e, response, Json, GetResult) {
             await e.reply(SendResult)
         } else {
             SendResult = `魔晶：${GetResult} | 重置：${10 - Moudel1Num[e.user_id]} | ${response.data.choices[0].message.content.length}字\n` + result
-            e.reply("\n"+SendResult,false,{at: true})
+            e.reply("\n" + SendResult, false, {at: true})
         }
     }
     Moudel1List[e.user_id].messages.push({role: 'assistant', content: result})

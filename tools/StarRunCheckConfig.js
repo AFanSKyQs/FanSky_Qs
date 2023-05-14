@@ -32,12 +32,47 @@ export async function StarRunCheckConfig() {
         await CheckTeyvatDownload()
     }, 10000)
 }
-async function SetOpenFunction(){
+
+async function SetOpenFunction() {
     if (!(await redis.get(`FanSky:FunctionOFF`))) {
         logger.info(logger.cyan('[FanSky_Qs]更新写入>>已默认开启：群管、原神、OpenAI、娱乐、魔晶'))
-        await redis.set(`FanSky:FunctionOFF`, JSON.stringify({GroupManager:1,MagicCrystal:1,OpenAI:1,SmallFunction:1,Teyvat:1,Meme:1,SmallGame:1,Push:1}))
+        await redis.set(`FanSky:FunctionOFF`, JSON.stringify({
+            GroupManager: 1,
+            MagicCrystal: 1,
+            OpenAI: 1,
+            SmallFunction: 1,
+            Teyvat: 1,
+            Meme: 1,
+            SmallGame: 1,
+            Push: 1,
+            AtTalk: 1,
+            Crazy: 1
+        }))
+    } else {
+        logger.info(logger.cyan('[FanSky_Qs]检测是否有新配置开关中'));
+        const key = 'FanSky:FunctionOFF';
+        await checkAndUpdateOpenStatus(key, 1, 'GroupManager');
+        await checkAndUpdateOpenStatus(key, 1, 'MagicCrystal');
+        await checkAndUpdateOpenStatus(key, 1, 'OpenAI');
+        await checkAndUpdateOpenStatus(key, 1, 'SmallFunction');
+        await checkAndUpdateOpenStatus(key, 1, 'Teyvat');
+        await checkAndUpdateOpenStatus(key, 1, 'Meme');
+        await checkAndUpdateOpenStatus(key, 1, 'SmallGame');
+        await checkAndUpdateOpenStatus(key, 1, 'Push');
+        await checkAndUpdateOpenStatus(key, 1, 'AtTalk');
+        await checkAndUpdateOpenStatus(key, 1, 'Crazy');
     }
 }
+
+async function checkAndUpdateOpenStatus(key, defaultStatus, name) {
+    let OpenStatus = JSON.parse(await redis.get(key));
+    if (!OpenStatus[name]) {
+        logger.info(logger.cyan(`[FanSky_Qs]更新写入>>已默认开启：${name}`));
+        OpenStatus[name] = defaultStatus;
+    }
+    await redis.set(key, JSON.stringify(OpenStatus));
+}
+
 async function GithubPush() {
     if (!(await redis.get(`FanSky:Github:Push`))) {
         await redis.set(`FanSky:Github:Push`, JSON.stringify({PushStatus: 1}))

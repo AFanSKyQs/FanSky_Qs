@@ -9,7 +9,7 @@ let path = `${process.cwd()}/resources/FanSky/SignIn.json`
 let path_SignTop = `${process.cwd()}/resources/FanSky/SignTop.json`
 let OpenAIConfig = yunPath + '/plugins/FanSky_Qs/config/OpenAI.json'
 
-export async function UseModel(e) {
+export async function UseModel(e, Prefix = false) {
     // if (e.message[0].type !== "at") {
     //     return false
     // }
@@ -20,12 +20,22 @@ export async function UseModel(e) {
     if (!e.isGroup && !e.isMaster) {
         return false
     }
-    if (/^#/.test(e.msg)) {
-        // e.reply("如果是想与AI对话\n请不要在开头输入#\n【这一般是指令】\n\n如果是指令请不要艾特机器人\n【艾特一般是与机器人对话】", true)
-        return false
+    if ((e.msg + "").startsWith('#dd')) {
+        // 处理以 #dd 开头的消息，不论是否艾特机器人
+        // ...
+
+    } else if ((e.msg + "").startsWith('#')) {
+        // 以 # 开头但不是以 #dd 开头的消息不处理
+        return false;
+    } else if (e.atBot || e.atme) {
+        // 艾特机器人的消息处理
+        // ...
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.AtTalk !== 1) return false
+    } else {
+        return false; // 其他消息不处理
     }
-    if (!e.atBot && !e.atme) return false
-    if (!e.msg) {
+    if (!e.msg || (e.msg + "").trim() === "") {
         return false
     }
     const Json = await getCfg(yunPath, 'OpenAI')
