@@ -48,6 +48,18 @@ export async function MainHelpData(e) {
         helpData.push({
             "group": "群管系统/设置",
             "list": [{
+                "icon": "黑QQ",
+                "title": "#拉黑(群)3141865879",
+                "desc": "默认拉黑QQ(可艾特)，可指定群"
+            },{
+                "icon": "白QQ",
+                "title": "#解黑(群)3141865879",
+                "desc": "解除黑名单QQ或群"
+            },{
+                "icon": "白QQ",
+                "title": "#加白群755794036",
+                "desc": "添加755..到白名单群"
+            },{
                 "icon": "设置",
                 "title": "#fan设置",
                 "desc": "查看当前各功能开关"
