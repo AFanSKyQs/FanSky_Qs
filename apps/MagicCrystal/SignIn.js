@@ -269,7 +269,7 @@ async function MsgList(e, Data, LastTimeTemp, SignTop, TempRough) {
     // await e.reply(MsgListTwo)
 
     let NowSum = SignTop["AllGroupTopTime"].TopToday
-    await CheckMasterSetName(e, NowSum)
+    // await CheckMasterSetName(e, NowSum)
     return true
 }
 
@@ -329,7 +329,7 @@ async function FirstList(e, Data, SignTop, TempRough) {
     await Bot.pickFriend(e.user_id).thumbUp(20);
     // let MsgListTwo=[segment.at(e.user_id),"\n给你点赞了喵~\n没点上加我好友发【打卡】~"]
     // await e.reply(MsgListTwo)
-    await CheckMasterSetName(e, NowSum)
+    // await CheckMasterSetName(e, NowSum)
     return true
 }
 
@@ -348,7 +348,7 @@ async function SendMsgUrl(path, e, NowSum) {
     })
     // let MsgListTwo=[segment.at(e.user_id),`\n给你点赞喵~\n没点上加我好友发【打卡】~\nhttps://gchat.qpic.cn/gchatpic_new/0/0-0-${Md5}/0`]
     // await e.reply(MsgListTwo)
-    await CheckMasterSetName(e, NowSum)
+    // await CheckMasterSetName(e, NowSum)
     return true
 }
 

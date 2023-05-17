@@ -46,7 +46,9 @@ async function SetOpenFunction() {
             SmallGame: 1,
             Push: 1,
             AtTalk: 1,
-            Crazy: 1
+            Crazy: 1,
+            API4: 1,
+            GitHubPush: 1,
         }))
     } else {
         logger.info(logger.cyan('[FanSky_Qs]检测是否有新配置开关中'));
@@ -61,6 +63,8 @@ async function SetOpenFunction() {
         await checkAndUpdateOpenStatus(key, 1, 'Push');
         await checkAndUpdateOpenStatus(key, 1, 'AtTalk');
         await checkAndUpdateOpenStatus(key, 1, 'Crazy');
+        await checkAndUpdateOpenStatus(key, 1, 'API4');
+        await checkAndUpdateOpenStatus(key, 1, 'GitHubPush');
     }
 }
 

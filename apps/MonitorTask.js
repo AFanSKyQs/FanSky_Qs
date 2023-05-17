@@ -19,9 +19,6 @@ export class MonitorTask extends plugin {
                 {
                     reg: /^#?检测(仓库|github|fan)更新$/,
                     fnc: 'Monitor'
-                }, {
-                    reg: /^#fan(设置|更改|改变)(github|Github|GITHUB)(开启|打开|open|关闭|shutdown)$/,
-                    fnc: 'setGithubPushStatus'
                 }
             ]
         })
@@ -34,42 +31,17 @@ export class MonitorTask extends plugin {
         }
     }
 
-    async setGithubPushStatus(e) {
-        if (!e.isMaster) {
-            e.reply("你干嘛！喵!> x <")
-            return true
-        }
-        let Msg = e.original_msg || e.msg
-        if (!Msg) {
-            e.reply("没有获取到指令喵~\n如：#fan设置github开启")
-            return true
-        }
-        if (Msg.includes("开启") || Msg.includes("打开") || Msg.includes("open")) {
-            await redis.set('FanSky:Github:Push', JSON.stringify({PushStatus: 1}));
-            e.reply("[FanSky仓库更新检测]已开启\n当更新包含[不推送]标签时是不会向您推送的喵~\n以尽量推送比较重要的更新")
-        } else {
-            await redis.set('FanSky:Github:Push', JSON.stringify({PushStatus: 0}));
-            e.reply("[FanSky仓库更新检测]已关闭\n以后将不会向您推送任何更新喵~")
-        }
-        return true
-    }
     async Monitor(e) {
         await this.MonitorTask(false, e)
     }
-    async MonitorTask(Auto = false,e=null) {
+
+    async MonitorTask(Auto = false, e = null) {
         if (Auto === false) {
             await this.SelectMonitor(e)
             return true
         }
-        const redisValue = await redis.get('FanSky:Github:Push');
-        if (!redisValue) {
-            await redis.set('FanSky:Github:Push', JSON.stringify({PushStatus: 1}));
-        } else {
-            const parsedValue = JSON.parse(redisValue);
-            if (parsedValue.PushStatus !== 1) {
-                return true
-            }
-        }
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if (OpenStatus.GitHubPush !== 1) return true
         if (await redis.get(`FanSky:Github:PushStatus`)) {
             // logger.info(logger.magenta("已存在推送进程"))
             return true

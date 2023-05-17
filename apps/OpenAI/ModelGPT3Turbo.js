@@ -28,10 +28,10 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
         const useProxy = (Addr, Port, SelectProxy) => {
             return async () => {
                 let msg = e.original_msg || e.msg
-                if ((msg+"").startsWith('#dd')) {
+                if ((msg + "").startsWith('#dd')) {
                     msg = msg.slice(3);
                 }
-                msg=msg.trim()
+                msg = msg.trim()
                 Bot.logger.info('处理插件：FanSky_Qs-OpenAI模型1:' + `\n群：${e.group_id}\n` + 'QQ:' + `${e.user_id}\n` + `消息：${msg}`)
                 let Persona = "你是一个小助手~"
                 if (await redis.get(`FanSky:OpenAI:Person:${e.user_id}`)) {
@@ -52,6 +52,16 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
                         {role: 'system', content: Persona}
                     ]
                 }
+                let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+                if (OpenStatus.API4 === 1) {
+                    DataList = {
+                        model: 'gpt-4',
+                        messages: [
+                            {role: 'system', content: Persona}
+                        ]
+                    }
+                }
+
                 if (!Moudel1List[e.user_id]) {
                     DataList.messages.push({role: 'user', content: msg})
                     Moudel1List[e.user_id] = DataList
@@ -125,7 +135,7 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
                     try {
                         response = await fetch(url, param);
                     } catch (error) {
-                        await e.reply("\n[Fetch]报错惹，康康后台", false, {at: true, recallMsg: 10})
+                        await e.reply("\n[Fetch]报错惹，可能没有设置代理~", false, {at: true, recallMsg: 10})
                         await redis.del(`FanSky:OpenAI:Status:${e.user_id}`);
                         delete Moudel1List[e.user_id]
                         delete Moudel1Num[e.user_id]
@@ -175,23 +185,27 @@ async function SendResMsg(e, response, Json, GetResult) {
     if (GetResult === '不限') {
         if (response.data.choices[0].message.content.length > Json.Text_img) {
             let NowTime = (new Date(Date.now())).toLocaleString()
-            MsgList = [`${result}`, `${NowTime}\n魔晶：${GetResult}\n重置：${10 - Moudel1Num[e.user_id]}\n${response.data.choices[0].message.content.length}字`]
+            // MsgList = [`${result}`, `${NowTime}\n魔晶：${GetResult}\n重置：${10 - Moudel1Num[e.user_id]}\n${response.data.choices[0].message.content.length}字`]
+            MsgList = [`${result}`]
             let tmpMsg = result.substring(0, 50)
             SendResult = await common.makeForwardMsg(e, MsgList, `${NowTime} | ${tmpMsg}`)
             await e.reply(SendResult)
         } else {
-            SendResult = `距重置：${10 - Moudel1Num[e.user_id]} | ${response.data.choices[0].message.content.length}字\n` + result
+            // SendResult = `距重置：${10 - Moudel1Num[e.user_id]} | ${response.data.choices[0].message.content.length}字\n` + result
+            SendResult = `重置：${10 - Moudel1Num[e.user_id]}\n` + result
             e.reply("\n" + SendResult, false, {at: true})
         }
     } else {
         if (response.data.choices[0].message.content.length > Json.Text_img) {
             let NowTime = (new Date(Date.now())).toLocaleString()
-            MsgList = [`${result}`, `${NowTime}\n魔晶：${GetResult}\n重置：${10 - Moudel1Num[e.user_id]}\n${response.data.choices[0].message.content.length}字`]
+            // MsgList = [`${result}`, `${NowTime}\n魔晶：${GetResult}\n重置：${10 - Moudel1Num[e.user_id]}\n${response.data.choices[0].message.content.length}字`]
+            MsgList = [`${result}`, `${GetResult}\n重置：${10 - Moudel1Num[e.user_id]}\n${response.data.choices[0].message.content.length}字`]
             let tmpMsg = result.substring(0, 15)
             SendResult = await common.makeForwardMsg(e, MsgList, `${NowTime} | ${tmpMsg}`)
             await e.reply(SendResult)
         } else {
-            SendResult = `魔晶：${GetResult} | 重置：${10 - Moudel1Num[e.user_id]} | ${response.data.choices[0].message.content.length}字\n` + result
+            // SendResult = `魔晶：${GetResult} | 重置：${10 - Moudel1Num[e.user_id]} | ${response.data.choices[0].message.content.length}字\n` + result
+            SendResult = `重置：${10 - Moudel1Num[e.user_id]}\n` + result
             e.reply("\n" + SendResult, false, {at: true})
         }
     }

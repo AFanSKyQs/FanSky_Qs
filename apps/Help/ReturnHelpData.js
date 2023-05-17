@@ -48,21 +48,21 @@ export async function MainHelpData(e) {
         helpData.push({
             "group": "群管系统/设置",
             "list": [{
-                "icon": "黑QQ",
-                "title": "#拉黑(群)3141865879",
-                "desc": "默认拉黑QQ(可艾特)，可指定群"
-            },{
-                "icon": "白QQ",
-                "title": "#解黑(群)3141865879",
-                "desc": "解除黑名单QQ或群"
-            },{
-                "icon": "白QQ",
-                "title": "#加白群755794036",
-                "desc": "添加755..到白名单群"
-            },{
                 "icon": "设置",
                 "title": "#fan设置",
                 "desc": "查看当前各功能开关"
+            }, {
+                "icon": "黑QQ",
+                "title": "#拉黑(群)3141865879",
+                "desc": "默认拉黑QQ(可艾特)，可指定群"
+            }, {
+                "icon": "白QQ",
+                "title": "#解黑(群)3141865879",
+                "desc": "解除黑名单QQ或群"
+            }, {
+                "icon": "白QQ",
+                "title": "#加白群755794036",
+                "desc": "添加755..到白名单群"
             },
                 {
                     "icon": "设置",
@@ -132,10 +132,10 @@ export async function MainHelpData(e) {
         helpData.push({
             "group": "娱乐系统",
             "list": [{
-                    "icon": "发病",
-                    "title": "#fan设置发病功能开启/关闭",
-                    "desc": "单独关闭发电功能"
-                },
+                "icon": "发病",
+                "title": "#fan设置发病功能开启/关闭",
+                "desc": "单独关闭发电功能"
+            },
                 {
                     "icon": "龙图",
                     "title": "l图 | 龙图 | 加l图 | #更新l图 |有多少l图",
@@ -212,7 +212,7 @@ export async function MainHelpData(e) {
             "list": [
                 {
                     "icon": "github",
-                    "title": "#fan设置github开启/关闭",
+                    "title": "#fan设置github推送开启/关闭",
                     "desc": "开启或关闭更新推送"
                 }, {
                     "icon": "github",
@@ -277,7 +277,11 @@ export async function OpenAIHelp(e) {
         helpData.push(
             {
                 "group": "OpenAI主人菜单",
-                "list": [
+                "list": [{
+                    "icon": "OpenAI",
+                    "title": "#fan设置模型接口4开启/关闭",
+                    "desc": "开启或关闭OpenAI4(需特殊账号)"
+                },
                     {
                         "icon": "OpenAI",
                         "title": "#关闭模型艾特对话",
