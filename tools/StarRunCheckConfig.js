@@ -72,7 +72,7 @@ async function SetOpenFunction() {
 
 async function checkAndUpdateOpenStatus(key, defaultStatus, name) {
     let OpenStatus = JSON.parse(await redis.get(key));
-    if (!OpenStatus[name]) {
+    if (OpenStatus[name] === undefined || OpenStatus[name] === null) {
         logger.info(logger.cyan(`[FanSky_Qs]更新写入>>已写入默认设置：${name}`));
         OpenStatus[name] = defaultStatus;
     }
