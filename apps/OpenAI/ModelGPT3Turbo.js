@@ -53,7 +53,7 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
                     ]
                 }
                 let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
-                if (OpenStatus.API4 === 1) {
+                if (OpenStatus.OpenAI4 === 1) {
                     DataList = {
                         model: 'gpt-4',
                         messages: [

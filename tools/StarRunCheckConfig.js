@@ -47,7 +47,8 @@ async function SetOpenFunction() {
             Push: 1,
             AtTalk: 1,
             Crazy: 1,
-            API4: 1,
+            API4: 0,
+            OpenAI4: 0,
             GitHubPush: 1,
         }))
     } else {
@@ -63,7 +64,8 @@ async function SetOpenFunction() {
         await checkAndUpdateOpenStatus(key, 1, 'Push');
         await checkAndUpdateOpenStatus(key, 1, 'AtTalk');
         await checkAndUpdateOpenStatus(key, 1, 'Crazy');
-        await checkAndUpdateOpenStatus(key, 1, 'API4');
+        await checkAndUpdateOpenStatus(key, 0, 'API4');
+        await checkAndUpdateOpenStatus(key, 0, 'OpenAI4');
         await checkAndUpdateOpenStatus(key, 1, 'GitHubPush');
     }
 }
@@ -71,7 +73,7 @@ async function SetOpenFunction() {
 async function checkAndUpdateOpenStatus(key, defaultStatus, name) {
     let OpenStatus = JSON.parse(await redis.get(key));
     if (!OpenStatus[name]) {
-        logger.info(logger.cyan(`[FanSky_Qs]更新写入>>已默认开启：${name}`));
+        logger.info(logger.cyan(`[FanSky_Qs]更新写入>>已写入默认设置：${name}`));
         OpenStatus[name] = defaultStatus;
     }
     await redis.set(key, JSON.stringify(OpenStatus));
