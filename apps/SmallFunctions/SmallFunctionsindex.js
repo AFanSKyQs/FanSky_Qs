@@ -35,7 +35,7 @@ export class SmallFunctionsindex extends plugin {
                     fnc: 'Complaint',
                     log: false
                 }, {
-                    reg: /#(发病|发电|发癫|发疯)/,
+                    reg: /^#(发病|发电|发癫|发疯)(.*)/u,
                     fnc: 'Complaint'
                 }, {
                     reg: /^#(开启|打开|open|关闭|启用)(fan|Fansky|Fan|fans)点赞$/,
@@ -194,6 +194,9 @@ export class SmallFunctionsindex extends plugin {
     async thuMUp(e) {
         let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
         if (OpenStatus.SmallFunction !== 1) return false
+
+        if(OpenStatus.thuMUpON !== 1) return false
+
         let Static = await thuMUp(e)
         if (!Static || Static === false) {
             return false

@@ -48,9 +48,10 @@ export class FanSkySetting extends plugin {
             `聊天系统：${OpenStatus.OpenAI === 1 ? '开启' : '关闭'}` + "\n" +
             `娱乐系统：${OpenStatus.SmallFunction === 1 ? '开启' : '关闭'}` + "\n\n" +
             `【其他小设置】：` + "\n" +
-            `艾特对话：${OpenStatus.AtTalk === 1 ? '开启' : '关闭'}`+ "\n" +
-            `github推送：${OpenStatus.GitHubPush === 1 ? '开启' : '关闭'}`+ "\n" +
-            `发病功能：${OpenStatus.Crazy === 1 ? '开启' : '关闭'}`+ "\n\n" +
+            `艾特对话：${OpenStatus.AtTalk === 1 ? '开启' : '关闭'}` + "\n" +
+            `点赞功能：${OpenStatus.thuMUpON === "开启" ? '开启' : '关闭'}` + "\n" +
+            `github推送：${OpenStatus.GitHubPush === 1 ? '开启' : '关闭'}` + "\n" +
+            `发病功能：${OpenStatus.Crazy === 1 ? '开启' : '关闭'}` + "\n\n" +
             `【OpenAI】：` + "\n" +
             `模型接口4：${OpenStatus.OpenAI4 === 1 ? '开启' : '关闭'} (需特殊key)`
         ]
@@ -74,7 +75,7 @@ export class FanSkySetting extends plugin {
         if (!args) {
             ReturnSet.Setting = true;
         } else {
-            const toolsRegex = /^(原神系统|OpenAI系统|聊天系统|群管系统|魔晶系统|娱乐系统|艾特对话|发病功能|模型接口4|github推送)(开启|关闭)$/;
+            const toolsRegex = /^(原神系统|OpenAI系统|聊天系统|群管系统|魔晶系统|娱乐系统|艾特对话|发病功能|模型接口4|github推送|点赞功能)(开启|关闭)$/;
             const toolsMatches = args.match(toolsRegex);
 
             if (toolsMatches) {
@@ -88,7 +89,8 @@ export class FanSkySetting extends plugin {
                     '艾特对话': 'AtTalk',
                     '发病功能': 'Crazy',
                     '模型接口4': 'OpenAI4',
-                    'github推送': 'GitHubPush'
+                    'github推送': 'GitHubPush',
+                    '点赞功能': 'thuMUpON'
                 };
                 const functionName = functionKeyMap[toolsMatches[1]];
                 const functionStatus = toolsMatches[2] === '开启' ? 1 : 0;

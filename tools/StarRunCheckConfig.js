@@ -50,6 +50,7 @@ async function SetOpenFunction() {
             API4: 0,
             OpenAI4: 0,
             GitHubPush: 1,
+            thuMUpON: 1
         }))
     } else {
         logger.info(logger.cyan('[FanSky_Qs]检测是否有新配置开关中'));
@@ -67,6 +68,7 @@ async function SetOpenFunction() {
         await checkAndUpdateOpenStatus(key, 0, 'API4');
         await checkAndUpdateOpenStatus(key, 0, 'OpenAI4');
         await checkAndUpdateOpenStatus(key, 1, 'GitHubPush');
+        await checkAndUpdateOpenStatus(key, 1, 'thuMUpON');
     }
 }
 

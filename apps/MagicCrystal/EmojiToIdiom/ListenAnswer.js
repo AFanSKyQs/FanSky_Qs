@@ -7,7 +7,7 @@ export async function ListenAnswer(e) {
     let Answer = JSON.parse(await redis.get(`FanSky:MagicCrystal:${e.group_id}:EmojiCD`))
     let UserAnswer = e.msg.replace(/\s+/g, "").replace(/\r/g, "").replace(/\n/g, "")
     if (UserAnswer === Answer.Words) {
-        let UserName = e.sender.nickname || e.sender.card || e.user_id
+        let UserName = e.sender.card || e.sender.nickname || e.user_id
         e.reply(`恭喜[${UserName}]答对了!\n${Answer.PinYin}\n${Answer.Words}`)
         let RandomNum = Math.floor(Math.random() * 40 + 70);
         let AddNum = Answer.Rounds * RandomNum

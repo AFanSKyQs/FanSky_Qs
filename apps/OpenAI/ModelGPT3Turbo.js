@@ -2,6 +2,7 @@
 import HttpsProxyAgent from 'https-proxy-agent'
 import common from '../../../../lib/common/common.js'
 import axios from 'axios'
+import {segment} from 'oicq'
 import {getOpenAIConfig} from "../../models/getCfg.js";
 import * as url from "url";
 import fetch from 'node-fetch'
@@ -178,35 +179,51 @@ async function getAgent(Proxy) {
     return new HttpsProxyAgent(proxyAddress);
 }
 
+async function QQMsg(MsgList, e) {
+    let NickName = e.sender.card || e.sender.nickname || e.user_id
+    let acgList = []
+    let bot = {nickname: "回复To: "+NickName, user_id: Bot.uin}
+    acgList.push(
+        {
+            message: MsgList,
+            ...bot,
+        },
+    )
+    return acgList
+}
+
 async function SendResMsg(e, response, Json, GetResult) {
     logger.info(response.data.choices[0])
     let result = response.data.choices[0].message.content
     let SendResult, MsgList
     if (GetResult === '不限') {
         if (response.data.choices[0].message.content.length > Json.Text_img) {
-            let NowTime = (new Date(Date.now())).toLocaleString()
             // MsgList = [`${result}`, `${NowTime}\n魔晶：${GetResult}\n重置：${10 - Moudel1Num[e.user_id]}\n${response.data.choices[0].message.content.length}字`]
             MsgList = [`${result}`]
-            let tmpMsg = result.substring(0, 50)
-            SendResult = await common.makeForwardMsg(e, MsgList, `${NowTime} | ${tmpMsg}`)
-            await e.reply(SendResult)
+            let SendMsg = await QQMsg(MsgList, e)
+            if (e.isGroup) {
+                await e.group.sendMsg([await e.group.makeForwardMsg(SendMsg)])
+                await e.member.poke()
+            } else {
+                await e.reply([await e.friend.makeForwardMsg(SendMsg)])
+            }
         } else {
-            // SendResult = `距重置：${10 - Moudel1Num[e.user_id]} | ${response.data.choices[0].message.content.length}字\n` + result
-            SendResult = `重置：${10 - Moudel1Num[e.user_id]}\n` + result
-            e.reply("\n" + SendResult, false, {at: true})
+            e.reply("\n" + result, false, {at: true})
         }
     } else {
         if (response.data.choices[0].message.content.length > Json.Text_img) {
-            let NowTime = (new Date(Date.now())).toLocaleString()
             // MsgList = [`${result}`, `${NowTime}\n魔晶：${GetResult}\n重置：${10 - Moudel1Num[e.user_id]}\n${response.data.choices[0].message.content.length}字`]
-            MsgList = [`${result}`, `${GetResult}\n重置：${10 - Moudel1Num[e.user_id]}\n${response.data.choices[0].message.content.length}字`]
-            let tmpMsg = result.substring(0, 15)
-            SendResult = await common.makeForwardMsg(e, MsgList, `${NowTime} | ${tmpMsg}`)
-            await e.reply(SendResult)
+            MsgList = [`${result}`]
+            let SendMsg = await QQMsg(MsgList, e)
+            if (e.isGroup) {
+                await e.group.sendMsg([await e.group.makeForwardMsg(SendMsg)])
+                await e.member.poke()
+            } else {
+                await e.reply([await e.friend.makeForwardMsg(SendMsg)])
+            }
         } else {
             // SendResult = `魔晶：${GetResult} | 重置：${10 - Moudel1Num[e.user_id]} | ${response.data.choices[0].message.content.length}字\n` + result
-            SendResult = `重置：${10 - Moudel1Num[e.user_id]}\n` + result
-            e.reply("\n" + SendResult, false, {at: true})
+            e.reply("\n" + result, false, {at: true})
         }
     }
     Moudel1List[e.user_id].messages.push({role: 'assistant', content: result})

@@ -1,5 +1,6 @@
 import {RecallBatch} from "./Recall.js";
 import {PullBlack,AddWhiteGroup} from "./PullBlackQQ.js";
+import {RecallGroup} from "./RecallGroup.js";
 export class GroupManagerIndex extends plugin {
     constructor() {
         super({
@@ -9,7 +10,11 @@ export class GroupManagerIndex extends plugin {
             priority: 3141,
             rule: [
                 {
-                    reg: /^#批量撤回(.*)$/,
+                    reg: /^#(清|清理|清除|清空)(屏|屏幕|记录|历史)(.*)/u,
+                    fnc: 'RecallGroup',
+                },
+                {
+                    reg: /^#(批量撤回|大量撤回)(.*)/u,
                     fnc: 'BatchRecall',
                 },{
                     reg: /^#(拉黑|解黑|取消拉黑)(QQ|Q群|QQ群|群)?(.*)/u,
@@ -20,6 +25,15 @@ export class GroupManagerIndex extends plugin {
                 },
             ]
         })
+    }
+    async RecallGroup(e){
+        if(!e.isGroup){
+            e.reply("清屏是群聊功能喵~")
+            return false
+        }
+        let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
+        if(OpenStatus.GroupManager!==1) return false
+        return await RecallGroup(e);
     }
     async AddWhiteGroup(e){
         if(!e.isMaster){

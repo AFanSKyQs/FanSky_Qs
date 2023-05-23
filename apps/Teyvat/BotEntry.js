@@ -134,7 +134,7 @@ export class BotEntry extends plugin {
 
     async getRolesScreenData(UidRolesDataAvatars, uid, e, LastUpdateTime) {
         let BotInfo = await getVersionInfo()
-        let Card = e.sender.nickname || e.sender.card
+        let Card = e.sender.card || e.sender.nickname
         let AcgPath = await getHelpBg()
         return {
             acgBg: AcgPath,

@@ -50,7 +50,15 @@ export async function MainHelpData(e) {
             "list": [{
                 "icon": "设置",
                 "title": "#fan设置",
-                "desc": "查看当前各功能开关"
+                "desc": "fan插件总设置模块"
+            }, {
+                "icon": "设置",
+                "title": "#清屏100",
+                "desc": "撤回群内最近100条消息(最大可选150)"
+            }, {
+                "icon": "设置",
+                "title": "#批量撤回@张三/123456 20",
+                "desc": "#批量撤回+对象 条数[非管理可对自己操作]"
             }, {
                 "icon": "黑QQ",
                 "title": "#拉黑(群)3141865879",
@@ -63,12 +71,7 @@ export async function MainHelpData(e) {
                 "icon": "白QQ",
                 "title": "#加白群755794036",
                 "desc": "添加755..到白名单群"
-            },
-                {
-                    "icon": "设置",
-                    "title": "#批量撤回123456/@张三",
-                    "desc": "#批量撤回+对象 [非群管仅可对自己操作]"
-                }
+            }
             ]
         })
     }
@@ -111,7 +114,15 @@ export async function MainHelpData(e) {
     if (OpenStatus.MagicCrystal === 1) {
         helpData.push({
             "group": "魔晶系统 [小游戏开发中]",
-            "list": [
+            "list": [{
+                "icon": "魔晶",
+                "title": "#加/减123456 100",
+                "desc": "增加/减少QQ[123456]魔晶[100]"
+            }, {
+                "icon": "最大",
+                "title": "打卡、冒泡",
+                "desc": "记录你的每一天信息"
+            },
                 {
                     "icon": "最大",
                     "title": "打卡、冒泡",
@@ -131,11 +142,7 @@ export async function MainHelpData(e) {
     if (OpenStatus.SmallFunction === 1) {
         helpData.push({
             "group": "娱乐系统",
-            "list": [{
-                "icon": "发病",
-                "title": "#fan设置发病功能开启/关闭",
-                "desc": "单独关闭发电功能"
-            },
+            "list": [
                 {
                     "icon": "龙图",
                     "title": "l图 | 龙图 | 加l图 | #更新l图 |有多少l图",
@@ -183,8 +190,8 @@ export async function MainHelpData(e) {
                 },
                 {
                     "icon": "发病",
-                    "title": "发病",
-                    "desc": "或艾特机器人不加任何消息 | 对你发病"
+                    "title": "#发病 | #发病@张三 | @机器人",
+                    "desc": "指令 | 指令@某人(或加文字) | 直接艾特机器人不加任何指令"
                 },
             ]
         })
@@ -208,25 +215,16 @@ export async function MainHelpData(e) {
     }
     if (e.isMaster) {
         helpData.push({
-            "group": "其他主人快捷命令",
-            "list": [
-                {
-                    "icon": "github",
-                    "title": "#fan设置github推送开启/关闭",
-                    "desc": "开启或关闭更新推送"
-                }, {
-                    "icon": "github",
-                    "title": "#检测fan更新",
-                    "desc": "手动检测fan最近一次更新"
-                }, {
-                    "icon": "sign",
-                    "title": "打卡总计",
-                    "desc": "今日已经打卡和系统总打卡用户"
-                }, {
-                    "icon": "点赞",
-                    "title": "#开启fan点赞",
-                    "desc": "设置点赞功能开启"
-                },
+            "group": "其他命令",
+            "list": [{
+                "icon": "github",
+                "title": "#检测fan更新",
+                "desc": "手动检测fan最近一次更新"
+            }, {
+                "icon": "sign",
+                "title": "打卡总计",
+                "desc": "今日已经打卡和系统总打卡用户"
+            }
             ]
         })
     }
