@@ -49,7 +49,7 @@ export class FanSkySetting extends plugin {
             `娱乐系统：${OpenStatus.SmallFunction === 1 ? '开启' : '关闭'}` + "\n\n" +
             `【其他小设置】：` + "\n" +
             `艾特对话：${OpenStatus.AtTalk === 1 ? '开启' : '关闭'}` + "\n" +
-            `点赞功能：${OpenStatus.thuMUpON === "开启" ? '开启' : '关闭'}` + "\n" +
+            `点赞功能：${OpenStatus.thuMUpON === 1 ? '开启' : '关闭'}` + "\n" +
             `github推送：${OpenStatus.GitHubPush === 1 ? '开启' : '关闭'}` + "\n" +
             `发病功能：${OpenStatus.Crazy === 1 ? '开启' : '关闭'}` + "\n\n" +
             `【OpenAI】：` + "\n" +
