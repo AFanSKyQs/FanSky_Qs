@@ -116,7 +116,7 @@ export async function MainHelpData(e) {
             "group": "魔晶系统 [小游戏开发中]",
             "list": [{
                 "icon": "魔晶",
-                "title": "#加/减123456 100",
+                "title": "#加/减魔晶123456 100",
                 "desc": "增加/减少QQ[123456]魔晶[100]"
             }, {
                 "icon": "最大",
