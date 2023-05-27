@@ -105,10 +105,19 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
                             }
                             await SendResMsg(e, res, Json, GetResult)
                         }).catch(async function (error) {
-                            delete Moudel1List[e.user_id]
-                            delete Moudel1Num[e.user_id]
+                            let SendErr = error.code
+                            if (SendErr === -70) {
+                                await e.reply("\n你跟我说了什么ww！我的消息被风控啦啊a！", false, {
+                                    at: true,
+                                    recallMsg: 15
+                                })
+                            } else {
+                                delete Moudel1List[e.user_id]
+                                delete Moudel1Num[e.user_id]
+                                await e.reply("\n[fGet返回]返回数据异常，已重置记忆", false, {at: true, recallMsg: 10})
+                            }
+                            logger.info(error)
                             await redis.del(`FanSky:OpenAI:Status:${e.user_id}`);
-                            await e.reply("\n[fGet返回]返回数据异常，已重置记忆", false, {at: true, recallMsg: 10})
                         })
                     } catch (err) {
                         logger.info(err)
@@ -182,7 +191,7 @@ async function getAgent(Proxy) {
 async function QQMsg(MsgList, e) {
     let NickName = e.sender.card || e.sender.nickname || e.user_id
     let acgList = []
-    let bot = {nickname: "回复To: "+NickName, user_id: Bot.uin}
+    let bot = {nickname: "回复To: " + NickName, user_id: Bot.uin}
     acgList.push(
         {
             message: MsgList,
