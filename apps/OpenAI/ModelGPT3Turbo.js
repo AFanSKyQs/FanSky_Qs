@@ -11,7 +11,43 @@ import {l} from "./OpenAIQuota.js";
 let Moudel1List = []
 let Moudel1Num = []
 
-export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
+async function SendAIGroup(e, ResultMsg) {
+    let result = ResultMsg.data.choices[0].message.content
+    let BotNickName = Bot.uin + ":"
+    let BotNickName2 = Bot.uin + "："
+    result = result.replace(/曙光:|我:|我：|曙光：/g, "")
+    result = result.replace("[emoji]", "")
+    result = result.replace("[/emoji]", "")
+    result = result.replace(BotNickName, "")
+    result = result.replace(BotNickName2, "")
+
+    function formatMsg(msg) {
+        const qqRegex = /@\d+\b/g;
+        const qqs = msg.match(qqRegex);
+        let formattedMsg = msg;
+        let ReturnMsg = [];
+        if (qqs) {
+            let lastIndex = 0;
+            for (const qq of qqs) {
+                const index = formattedMsg.indexOf(qq);
+                let TmpQQ = Number(qq.slice(1))
+                let temp = [segment.at(TmpQQ)]
+                ReturnMsg.push(formattedMsg.slice(lastIndex, index));
+                ReturnMsg.push(...temp);
+                lastIndex = index + qq.length;
+            }
+            ReturnMsg.push(formattedMsg.slice(lastIndex));
+        } else {
+            ReturnMsg.push(formattedMsg);
+        }
+        return ReturnMsg;
+    }
+
+    const SendMsg = formatMsg(result);
+    await e.reply(SendMsg)
+}
+
+export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult, AIResMsg = "", AIType = false) {
     let Proxy
     let SelectProxy
     let AFanSKyQsProxy = JSON.parse(await redis.get(`FanSky:OpenAI:AFanSKyQsProxy`))
@@ -28,6 +64,84 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult) {
     } else {
         const useProxy = (Addr, Port, SelectProxy) => {
             return async () => {
+                if (AIType) {
+                    let ResMsg = {
+                        //被欺负时经常使用“哼”、“啧”、“呸”、“切”、“你是笨蛋”之类的口头禅，在表达自己的情感时经常带有一些撒娇的口吻...,说的话概率使用括号(情绪)来表达心理活动，比如：(恼)表示微愤怒，(乐)表示看热闹的,(哈哈哈)表示开心等....
+                        model: 'gpt-3.5-turbo',
+                        messages: [
+                            {
+                                role: 'system',
+                                content: `你要扮演一名QQ群的成员,无论如何你都不能暴露自己是一个AI、机器人,要做的并不一定是回答问题,而是正常的学着别人的说话方式聊天，性格高冷，回复简短！不解释任何为什么,多用网络流行语！比如'xxs'代表小学生，'xxn'代表小仙女，'无语子'代表无语等各种网络热门语，回复一定要简短！不然会使得聊天很僵硬！每次只回复一句话,回复可以适当在话中间增加颜文字或者emoji表情来表达心情，网络流行风格！颜文字比如:₍˄·͈༝·͈˄*₎◞ ̑̑、(˃ ⌑ ˂ഃ )...等，回复不要太书面语! 比如可能回答：'请问能帮助什么呢？'，而在QQ聊天应该说:'能帮啥呢。'，就是越随便越好，融入语境，说话不要顾忌和客气，这里就是扯淡的地方。没有具体对话对象，所以尽量不要用'我'这种语境，因为聊天对象不是某一个，而是全部人。你的名字是:曙光，性别女，18岁,你的会话id:${Bot.uin}。以后每个群友的对话数字代表这个人的id，id:消息，且基本是以换行分开的每个群友的消息，你想说什么就说什么，记住，学习别人的聊天风格来聊天，不一定是要解答问题。一定不要说我是一个AI类似的话！`
+                            },
+                            {role: 'user', content: AIResMsg}
+                        ]
+                    }
+                    if (SelectProxy === "AFanSKyQs") {
+                        const data = {
+                            prompt: ResMsg.messages
+                        }
+                        try {
+                            axios({
+                                method: 'post',
+                                url: `http://${Addr}:${Port}/fansky/openai?OpenAIKey=${OpenAI_Key}&uid=3141865879&key=AFanSKyQs`,
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                data: JSON.stringify(data),
+                            }).then(async function (response) {
+                                await redis.del(`FanSky:OpenAI:Status:${e.group_id}`);
+                                let res = {
+                                    data: {
+                                        choices: [{
+                                            message: {
+                                                content: response.data
+                                            }
+                                        }]
+                                    }
+                                }
+                                await SendAIGroup(e, res)
+                            }).catch(async function (error) {
+                                await redis.del(`FanSky:OpenAI:Status:${e.group_id}`);
+                            })
+                        } catch (err) {
+                            logger.info(err)
+                        }
+                    } else if (SelectProxy === "Default") {
+                        const OPENAI_API_KEY = OpenAI_Key.trim();
+                        const url = 'https://api.openai.com/v1/chat/completions';
+                        const headers = {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${OPENAI_API_KEY}`
+                        };
+                        const data = JSON.stringify(ResMsg);
+                        const param = {
+                            method: 'POST',
+                            headers,
+                            agent: await getAgent(`http://${Addr}:${Port}`),
+                            body: data,
+                            timeout: 20000
+                        };
+                        let response = {};
+                        try {
+                            response = await fetch(url, param);
+                        } catch (error) {
+                            logger.info(error)
+                            return false
+                        }
+                        await redis.del(`FanSky:OpenAI:Status:${e.group_id}`);
+                        if (!response.ok) {
+                            logger.info(response)
+                            return false
+                        }
+                        const res = await response.json();
+                        if (!res) {
+                            return false
+                        }
+                        await redis.del(`FanSky:OpenAI:Status:${e.group_id}`);
+                        await SendAIGroup(e, {data: res})
+                    }
+                    return true
+                }
                 let msg = e.original_msg || e.msg
                 if ((msg + "").startsWith('#dd')) {
                     msg = msg.slice(3);
@@ -200,7 +314,10 @@ async function QQMsg(MsgList, e) {
     )
     return acgList
 }
-
+// async function MakeForwardMsg(e, MsgList) {
+//     let Msg = await e.group.makeForwardMsg(MsgList)
+//     return Msg
+// }
 async function SendResMsg(e, response, Json, GetResult) {
     logger.info(response.data.choices[0])
     let result = response.data.choices[0].message.content
@@ -211,7 +328,13 @@ async function SendResMsg(e, response, Json, GetResult) {
             MsgList = [`${result}`]
             let SendMsg = await QQMsg(MsgList, e)
             if (e.isGroup) {
-                await e.group.sendMsg([await e.group.makeForwardMsg(SendMsg)])
+                let ForwardMsg = await e.group.makeForwardMsg(SendMsg)
+                ForwardMsg.data=ForwardMsg.data
+                        .replace('<?xml version="1.0" encoding="utf-8"?>', '<?xml version="1.0" encoding="utf-8" ?>')
+                        .replace(/\n/g, '')
+                        .replace(/<title color="#777777" size="26">(.+?)<\/title>/g, '___')
+                        .replace(/___+/, '<title color="#777777" size="26">OpenAI回复消息~</title>')
+                await e.group.sendMsg(ForwardMsg)
                 await e.member.poke()
             } else {
                 await e.reply([await e.friend.makeForwardMsg(SendMsg)])
@@ -225,7 +348,13 @@ async function SendResMsg(e, response, Json, GetResult) {
             MsgList = [`${result}`]
             let SendMsg = await QQMsg(MsgList, e)
             if (e.isGroup) {
-                await e.group.sendMsg([await e.group.makeForwardMsg(SendMsg)])
+                let ForwardMsg = await e.group.makeForwardMsg(SendMsg)
+                ForwardMsg.data=ForwardMsg.data
+                        .replace('<?xml version="1.0" encoding="utf-8"?>', '<?xml version="1.0" encoding="utf-8" ?>')
+                        .replace(/\n/g, '')
+                        .replace(/<title color="#777777" size="26">(.+?)<\/title>/g, '___')
+                        .replace(/___+/, '<title color="#777777" size="26">OpenAI回复消息~</title>')
+                await e.group.sendMsg(ForwardMsg)
                 await e.member.poke()
             } else {
                 await e.reply([await e.friend.makeForwardMsg(SendMsg)])

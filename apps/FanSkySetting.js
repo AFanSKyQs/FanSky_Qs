@@ -53,7 +53,8 @@ export class FanSkySetting extends plugin {
             `github推送：${OpenStatus.GitHubPush === 1 ? '开启' : '关闭'}` + "\n" +
             `发病功能：${OpenStatus.Crazy === 1 ? '开启' : '关闭'}` + "\n\n" +
             `【OpenAI】：` + "\n" +
-            `模型接口4：${OpenStatus.OpenAI4 === 1 ? '开启' : '关闭'} (需特殊key)`
+            `模型接口4：${OpenStatus.OpenAI4 === 1 ? '开启' : '关闭'} (需特殊key)`+'\n'+
+            `群聊AI：${OpenStatus.GroupOpenAI === 1 ? '开启' : '关闭'} `
         ]
         let Msg = await common.makeForwardMsg(e, MsgList, '[FanSky_Qs]当前设置')
         await e.reply(Msg)
@@ -75,7 +76,7 @@ export class FanSkySetting extends plugin {
         if (!args) {
             ReturnSet.Setting = true;
         } else {
-            const toolsRegex = /^(原神系统|OpenAI系统|聊天系统|群管系统|魔晶系统|娱乐系统|艾特对话|发病功能|模型接口4|github推送|点赞功能)(开启|关闭)$/;
+            const toolsRegex = /^(原神系统|OpenAI系统|聊天系统|群管系统|魔晶系统|娱乐系统|艾特对话|发病功能|模型接口4|github推送|点赞功能|群聊AI)(开启|关闭)$/;
             const toolsMatches = args.match(toolsRegex);
 
             if (toolsMatches) {
@@ -90,7 +91,8 @@ export class FanSkySetting extends plugin {
                     '发病功能': 'Crazy',
                     '模型接口4': 'OpenAI4',
                     'github推送': 'GitHubPush',
-                    '点赞功能': 'thuMUpON'
+                    '点赞功能': 'thuMUpON',
+                    '群聊AI': 'GroupOpenAI'
                 };
                 const functionName = functionKeyMap[toolsMatches[1]];
                 const functionStatus = toolsMatches[2] === '开启' ? 1 : 0;

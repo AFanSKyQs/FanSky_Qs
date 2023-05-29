@@ -10,7 +10,7 @@ export async function Complaint(e) {
         await ReplyComplaint(e)
         return true
     } else {
-        let message = ((e.raw_message||e.msg || e.original_msg) + "").trim()
+        let message = ((e.raw_message || e.msg || e.original_msg) + "").trim()
         if (message === '#发病' || message === '#发电' || message === '#发癫' || message === '#发疯') {
             let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
             if (OpenStatus.SmallFunction !== 1) return false
@@ -18,7 +18,7 @@ export async function Complaint(e) {
             await ReplyComplaint(e)
             return true
         }
-        if (message.indexOf('#发病') !== -1 || message.indexOf('#发电') !== -1 || message.indexOf('#发癫') !== -1 || message.indexOf('#发疯') !== -1) {
+        if (message.includes('#发病') || message.includes('#发电') || message.includes('#发癫') || message.includes('#发疯')) {
             let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
             if (OpenStatus.SmallFunction !== 1) return false
             if (OpenStatus.Crazy !== 1) return false
@@ -43,6 +43,7 @@ export async function Complaint(e) {
 }
 
 async function ReplyComplaint(e, More = false, NickName = "喵喵喵~") {
+    logger.info(logger.magenta(`[FanSky_Qs]发病：${NickName}`));
     let Name
     if (More) {
         Name = NickName
@@ -54,7 +55,14 @@ async function ReplyComplaint(e, More = false, NickName = "喵喵喵~") {
     if (Reply.length > 55) {
         let MsgList = await QQMsg(Reply, Name)
         if (e.isGroup) {
-            await e.group.sendMsg([await e.group.makeForwardMsg(MsgList)])
+            let ForwardMsg = await e.group.makeForwardMsg(MsgList)
+            ForwardMsg.data=ForwardMsg.data
+                        .replace('<?xml version="1.0" encoding="utf-8"?>', '<?xml version="1.0" encoding="utf-8" ?>')
+                        .replace(/\n/g, '')
+                        .replace(/<title color="#777777" size="26">(.+?)<\/title>/g, '___')
+                        .replace(/___+/, '<title color="#777777" size="26">你知道吗，我喜欢你很久了</title>')
+            // ForwardMsg.data = ForwardMsg.data.replace(/^<\?xml.*version=.*?>/g, '<?xml version="1.0" encoding="utf-8" ?>');
+            await e.reply(ForwardMsg)
             await e.member.poke()
         } else {
             await e.reply([await e.friend.makeForwardMsg(MsgList)])
@@ -68,7 +76,7 @@ async function ReplyComplaint(e, More = false, NickName = "喵喵喵~") {
 
 async function QQMsg(MsgList, Name) {
     let acgList = []
-    let bot = {nickname: `我喜欢你很久了「${Name}」,你知道吗`, user_id: Bot.uin}
+    let bot = {nickname: `「${Name}」,我喜欢你很久了`, user_id: Bot.uin}
     acgList.push(
         {
             message: [`${MsgList}`],
