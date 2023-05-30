@@ -57,6 +57,11 @@ export class FanSkySetting extends plugin {
             `群聊AI：${OpenStatus.GroupOpenAI === 1 ? '开启' : '关闭'} `
         ]
         let Msg = await common.makeForwardMsg(e, MsgList, '[FanSky_Qs]当前设置')
+                Msg.data=Msg.data
+                        .replace('<?xml version="1.0" encoding="utf-8"?>', '<?xml version="1.0" encoding="utf-8" ?>')
+                        .replace(/\n/g, '')
+                        .replace(/<title color="#777777" size="26">(.+?)<\/title>/g, '___')
+                        .replace(/___+/, '<title color="#777777" size="26">[FanSky_Qs]当前设置</title>')
         await e.reply(Msg)
     }
 
