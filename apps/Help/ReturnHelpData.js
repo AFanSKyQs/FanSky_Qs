@@ -240,17 +240,15 @@ export async function OpenAIHelp(e) {
                 "icon": "OpenAI",
                 "title": "#dd你要说的话",
                 "desc": "【#dd】是对话前缀，或者直接艾特说话"
-            },
-            {
+            },{
                 "icon": "OpenAI",
                 "title": "#模型人设列表",
                 "desc": "查看目前自带的预设人设"
-            }, {
+            },{
                 "icon": "OpenAI",
                 "title": "#使用模型人设x",
                 "desc": "1:猫娘 | 2:辉夜 | 3：病娇 |4：派蒙 | 5:抽象emoji大师 | 6：祖安钢琴师 | 7:涩涩状态的媳妇"
-            }
-            , {
+            },{
                 "icon": "剩余",
                 "title": "#key剩余查询",
                 "desc": "查询OpenAI的key使用情况"
@@ -264,7 +262,7 @@ export async function OpenAIHelp(e) {
                 "icon": "重置记忆",
                 "title": "#重置对话",
                 "desc": "重新开始你的记忆"
-            }, {
+            },{
                 "icon": "人设",
                 "title": "#设置模型人设xxx",
                 "desc": "将OpenAI模型人设设置为xxx[每个人独立]"
@@ -276,6 +274,18 @@ export async function OpenAIHelp(e) {
             {
                 "group": "OpenAI主人菜单",
                 "list": [{
+                    "icon": "OpenAI",
+                    "title": "#设置模型代理地址xxx",
+                    "desc": "格式(默认镜像站)：127.0.0.1:7890"
+                }, {
+                    "icon": "密钥",
+                    "title": "#查看模型key",
+                    "desc": "主人且私聊，查看当前OpenAI的key"
+                },{
+                    "icon": "OpenAI",
+                    "title": "#删除fan代理",
+                    "desc": "删除fan反代，使用自己或系统代理"
+                }, {
                     "icon": "OpenAI",
                     "title": "#fan设置模型接口4开启/关闭",
                     "desc": "开启或关闭OpenAI4(需特殊账号)"
@@ -291,10 +301,6 @@ export async function OpenAIHelp(e) {
                         "desc": "OpenAI的使用绑定魔晶[开启、关闭]"
                     },
                     {
-                        "icon": "OpenAI",
-                        "title": "#设置模型代理地址xxx",
-                        "desc": "格式：127.0.0.1:7890"
-                    }, {
                         "icon": "密钥",
                         "title": "#设置模型key xxx",
                         "desc": "xxx为：sk-xx..."

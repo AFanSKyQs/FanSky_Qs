@@ -16,7 +16,8 @@ import {
 import {getOpenAIConfig} from "../../models/getCfg.js";
 import {PersonList, UsePerson} from "./UseDefaultPerson.js";
 import {setOpenAIProxy} from "./setOpenAIProxy.js";
-import {l} from "./OpenAIQuota.js";
+import {OpenAIQuota} from "./OpenAIQuota.js";
+import fs from "fs";
 
 export class OpenAIEntry extends plugin {
     constructor() {
@@ -73,7 +74,7 @@ export class OpenAIEntry extends plugin {
                     reg: /#?(设置|更改|修改)模型打卡(开启|打开|启用|关闭|不启用)/,
                     fnc: 'ChangeAISignMode'
                 }, {
-                    reg: /#(设置|更改|修改|添加|更换)(OpenAI|模型|语言模型|OpenAI模型)key(.*)/,
+                    reg: /#(设置|更改|修改|添加|更换|查看)(OpenAI|模型|语言模型|OpenAI模型)key(.*)/,
                     fnc: 'SetOpenAIKey'
                 }, {
                     reg: /#?(设置|更改|修改)(OpenAI|AI|模型|对话)(开启|打开|启用|关闭|不启用)$/,
@@ -107,7 +108,7 @@ export class OpenAIEntry extends plugin {
                     fnc: 'SearchGPTKEY'
                 },
                 {
-                    reg: /#设置fan代理(.*)/,
+                    reg: /#(设置|删除)fan代理(.*)/,
                     fnc: 'setAFanSKyQs'
                 }
                 // {
@@ -129,6 +130,12 @@ export class OpenAIEntry extends plugin {
     async setAFanSKyQs(e) {
         let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
         if (OpenStatus.OpenAI !== 1) return false
+        let msg = (e.original_msg || e.msg) + ""
+        if (msg.includes("删除")) {
+            await redis.del(`FanSky:OpenAI:AFanSKyQsProxy`)
+            await e.reply(`已删除Fan反代，将采用您设置的或系统默认代理地址...`)
+            return true
+        }
         await setOpenAIProxy(e, "fan")
     }
 
@@ -186,7 +193,7 @@ export class OpenAIEntry extends plugin {
         let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
         if (OpenStatus.OpenAI !== 1) return false
         let OpenAIConfig = await getOpenAIConfig()
-        let Static = await l(e, OpenAIConfig)
+        let Static = await OpenAIQuota(e, OpenAIConfig)
         if (!Static || Static === false) return false
     }
 
@@ -236,6 +243,22 @@ export class OpenAIEntry extends plugin {
     async SetOpenAIKey(e) {
         let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
         if (OpenStatus.OpenAI !== 1) return false
+        if ((e.msg + "").includes("查看")) {
+            if (e.isMaster) {
+                if (e.isGroup) {
+                    await e.reply("主人，我们能不能私底下看鸭(˃ ⌑ ˂ഃ )")
+                } else {
+                    let path = `${process.cwd()}/plugins/FanSky_Qs/config/OpenAI.json`
+                    path = path.replace(/\\/g, '/')
+                    let OpenAIJson = JSON.parse(fs.readFileSync(path))
+                    await e.reply(`主人，我的OpenAI密钥是：${OpenAIJson.OpenAI_Key}`)
+                }
+                return true
+            } else {
+                await e.reply("大坏蛋大坏蛋！那个...你不能看！(˃ ⌑ ˂ഃ )")
+                return true
+            }
+        }
         let Static = await SetOpenAIKey(e)
         if (!Static || Static === false) return false
     }

@@ -6,7 +6,6 @@ import {segment} from 'oicq'
 import {getOpenAIConfig} from "../../models/getCfg.js";
 import * as url from "url";
 import fetch from 'node-fetch'
-import {l} from "./OpenAIQuota.js";
 
 let Moudel1List = []
 let Moudel1Num = []
@@ -108,7 +107,13 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult, AIResMsg = 
                         }
                     } else if (SelectProxy === "Default") {
                         const OPENAI_API_KEY = OpenAI_Key.trim();
-                        const url = 'https://api.openai.com/v1/chat/completions';
+                        let url = 'https://api.openai.com/v1/chat/completions';
+                        let Proxy = `http://${Addr}:${Port}`
+                        if (Addr === "127.0.0.1" && Port === "7890") {
+                            logger.info("[FanSky_Qs]使用镜像站请求中...")
+                            url = 'https://api.openai-proxy.com/v1/chat/completions';
+                            Proxy = 'http://0.0.0.0:0'
+                        }
                         const headers = {
                             'Content-Type': 'application/json',
                             'Authorization': `Bearer ${OPENAI_API_KEY}`
@@ -117,7 +122,7 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult, AIResMsg = 
                         const param = {
                             method: 'POST',
                             headers,
-                            agent: await getAgent(`http://${Addr}:${Port}`),
+                            agent: await getAgent(Proxy),
                             body: data,
                             timeout: 20000
                         };
@@ -242,7 +247,13 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult, AIResMsg = 
                     }
                 } else if (SelectProxy === "Default") {
                     const OPENAI_API_KEY = OpenAI_Key.trim();
-                    const url = 'https://api.openai.com/v1/chat/completions';
+                    let url = 'https://api.openai.com/v1/chat/completions';
+                    let Proxy = `http://${Addr}:${Port}`
+                    if (Addr === "127.0.0.1" && (Port === "7890" || Port === 7890)) {
+                        logger.info("[FanSky_Qs]使用镜像站请求中...")
+                        url = 'https://api.openai-proxy.com/v1/chat/completions';
+                        Proxy = 'http://0.0.0.0:0'
+                    }
                     const headers = {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${OPENAI_API_KEY}`
@@ -251,7 +262,7 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult, AIResMsg = 
                     const param = {
                         method: 'POST',
                         headers,
-                        agent: await getAgent(`http://${Addr}:${Port}`),
+                        agent: await getAgent(Proxy),
                         body: data,
                         timeout: 20000
                     };
@@ -314,6 +325,7 @@ async function QQMsg(MsgList, e) {
     )
     return acgList
 }
+
 // async function MakeForwardMsg(e, MsgList) {
 //     let Msg = await e.group.makeForwardMsg(MsgList)
 //     return Msg
@@ -329,11 +341,11 @@ async function SendResMsg(e, response, Json, GetResult) {
             let SendMsg = await QQMsg(MsgList, e)
             if (e.isGroup) {
                 let ForwardMsg = await e.group.makeForwardMsg(SendMsg)
-                ForwardMsg.data=ForwardMsg.data
-                        .replace('<?xml version="1.0" encoding="utf-8"?>', '<?xml version="1.0" encoding="utf-8" ?>')
-                        .replace(/\n/g, '')
-                        .replace(/<title color="#777777" size="26">(.+?)<\/title>/g, '___')
-                        .replace(/___+/, '<title color="#777777" size="26">OpenAI回复消息~</title>')
+                ForwardMsg.data = ForwardMsg.data
+                    .replace('<?xml version="1.0" encoding="utf-8"?>', '<?xml version="1.0" encoding="utf-8" ?>')
+                    .replace(/\n/g, '')
+                    .replace(/<title color="#777777" size="26">(.+?)<\/title>/g, '___')
+                    .replace(/___+/, '<title color="#777777" size="26">OpenAI回复消息~</title>')
                 await e.group.sendMsg(ForwardMsg)
                 await e.member.poke()
             } else {
@@ -349,11 +361,11 @@ async function SendResMsg(e, response, Json, GetResult) {
             let SendMsg = await QQMsg(MsgList, e)
             if (e.isGroup) {
                 let ForwardMsg = await e.group.makeForwardMsg(SendMsg)
-                ForwardMsg.data=ForwardMsg.data
-                        .replace('<?xml version="1.0" encoding="utf-8"?>', '<?xml version="1.0" encoding="utf-8" ?>')
-                        .replace(/\n/g, '')
-                        .replace(/<title color="#777777" size="26">(.+?)<\/title>/g, '___')
-                        .replace(/___+/, '<title color="#777777" size="26">OpenAI回复消息~</title>')
+                ForwardMsg.data = ForwardMsg.data
+                    .replace('<?xml version="1.0" encoding="utf-8"?>', '<?xml version="1.0" encoding="utf-8" ?>')
+                    .replace(/\n/g, '')
+                    .replace(/<title color="#777777" size="26">(.+?)<\/title>/g, '___')
+                    .replace(/___+/, '<title color="#777777" size="26">OpenAI回复消息~</title>')
                 await e.group.sendMsg(ForwardMsg)
                 await e.member.poke()
             } else {

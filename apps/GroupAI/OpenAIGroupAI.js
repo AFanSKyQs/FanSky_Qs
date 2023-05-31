@@ -14,19 +14,21 @@ export async function GroupAI(e) {
     if ((e.msg + "").startsWith('*')) {
         return false
     }
-    if (await redis.get(`FanSky:OpenAI:Status:${e.group_id}`)) {
+    let GroupId= e.group_id
+    if(!GroupId){
+        return false
+    }
+    if (await redis.get(`FanSky:OpenAI:Status:${GroupId}`)) {
         return false
     }
     let ResMsg = "" //请求Msg
     if (e.atBot || e.atme) {
         ResMsg = await ReturnResMsg(e)
-        logger.info(ResMsg);
         if (!ResMsg || ResMsg === false) return false
     } else {
         let Random = Math.random()
         if (Random > 0.3) return false
         ResMsg = await ReturnResMsg(e)
-        logger.info(ResMsg);
         if (!ResMsg || ResMsg === false) return false
     }
     const Json = await getCfg(yunPath, 'OpenAI')
@@ -34,8 +36,10 @@ export async function GroupAI(e) {
     if (OpenAI_Key === '这里填入你的OpenAI密钥即可' || !OpenAI_Key || OpenAI_Key === '') {
         return false
     }
-    await redis.set(`FanSky:OpenAI:Status:${e.group_id}`, JSON.stringify({Status: 1}))
-    await redis.expire(`FanSky:OpenAI:Status:${e.group_id}`, 20); //设置过期时间,20s
+
+    logger.info(ResMsg);
+    await redis.set(`FanSky:OpenAI:Status:${GroupId}`, JSON.stringify({Status: 1}));
+    await redis.expire(`FanSky:OpenAI:Status:${GroupId}`, 20); //设置过期时间,20s
     await ModelGPT3Turbo(e, OpenAI_Key, Json, "不限", ResMsg, true)
     return true
 }
