@@ -3,8 +3,17 @@ import {ModelGPT3Turbo} from "../OpenAI/ModelGPT3Turbo.js";
 
 const keywords = new Set(['角色面板','开始获取', '当前面板服务', '开始获取', '#绑定', '退群了', '绑定成功', '来切换uid', '请重新绑定', '米游社查询', '可能会需要一定时间', '更新面板', '角色展柜', '当前uid', '当前绑定']);
 let yunPath = process.cwd().replace(/\\/g, "/")
-
 export async function GroupAI(e) {
+    const GroupOn = await getCfg(yunPath, 'OpenAI')
+    if (!e.isPrivate) {
+        let GroupIndex = GroupOn.OpenAIGroup.indexOf((e.group_id).toString())
+        console.log(GroupIndex)
+        if (GroupIndex !== -1) {
+        } else if (GroupOn.OpenAIGroup.length === 0) {
+        } else {
+            return false
+        }
+    }
     if ((e.msg + "").startsWith('#dd')) {
         return true
     }
