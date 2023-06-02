@@ -14,6 +14,8 @@ import ChestTop from "./ChestAndAcheTop/ChestTop.js";
 import {ChestGroupTop} from "./ChestAndAcheTop/ChestGroupTop.js";
 import {AchieveGroupTop} from "./ChestAndAcheTop/AchieveGroupTop.js";
 import {team} from "./getTeam.js";
+import {getQQ} from "../../models/getQQ.js";
+import MysApi from "./GetATUID.js";
 
 let cwd = process.cwd().replace(/\\/g, '/')
 let DATA_PATH = `${process.cwd()}/plugins/FanSky_Qs/config/TeyvatConfig/TeyvatUrlJson.json`
@@ -57,11 +59,12 @@ export class BotEntry extends plugin {
         })
     }
 
-    async HistoryTeam(e){
+    async HistoryTeam(e) {
         let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
         if (OpenStatus.Teyvat !== 1) return false
         await e.reply("正在开发中~\n每次每个人的队伍数据请求都已经写入了数据库，正在完成最后的渲染设计")
     }
+
     async achieveTop(e) {
         let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
         if (OpenStatus.Teyvat !== 1) return false
@@ -167,7 +170,11 @@ export class BotEntry extends plugin {
 
     async GetNowUid(e) {
         let NoteUser = e.user
-        return NoteUser._regUid
+        let Uid = NoteUser._regUid
+        if (!Uid) {
+            Uid = e.user.getUid('gs')
+        }
+        return Uid
     }
 
     async TeyvatEnTry(e) {
@@ -180,11 +187,23 @@ export class BotEntry extends plugin {
         if (e.msg.includes("#队伍伤害")) {
             const matchTeam = e.msg.match(regexTeam);
             uid = matchTeam[2] ? matchTeam[2] : await this.GetNowUid(e);
-            if (!uid && at) {
-                uid = await redis.get(`Yz:genshin:mys:qq-uid:${at}`);
+            if (at) {
+                if (at) {
+                    let AT_UID=await MysApi.getAT_UID(e,'all')
+                    if(!AT_UID){
+                        AT_UID = await redis.get(`genshin:id-uid:${at}`) || await redis.get(`Yz:genshin:mys:qq-uid:${at}`)
+                    }
+                    if (AT_UID) {
+                        uid = AT_UID
+                    }else{
+                        e.reply(`QQ:${at}尚未绑定uid~\n请该用户先【#绑定uid】`);
+                        return true
+                    }
+                }
             }
             roleList = matchTeam[3];
             detail = !!matchTeam[1];
+            logger.info(e.msg)
         } else if (e.msg.includes("#单人评级")) {
             const matchALevel = e.msg.match(regexALevel);
             uid = matchALevel[1] ? matchALevel[1] : await this.GetNowUid(e);
@@ -194,14 +213,13 @@ export class BotEntry extends plugin {
             return false
         }
         if (!uid) {
-            e.reply("尚未绑定uid~，请【#绑定uid】\n或增加查询参数如：#队伍伤害100000000钟离，阿贝多，可莉,魈");
+            e.reply("尚未绑定uid，请先【#绑定xxx】\n直接指定查询：#队伍伤害100000000钟离，阿贝多，可莉,魈");
             return true
         }
         if (!roleList) {
-            e.reply("指令错误，使用例子：\n#队伍伤害钟离，阿贝多，可莉，魈\n#队伍伤害100000000钟离，阿贝多，可莉，魈", true, {recallMsg: 30});
+            e.reply("指令错误，使用例子：\n#队伍伤害(@张三)钟离，阿贝多，可莉，魈\n#队伍伤害100000000钟离，阿贝多，可莉，魈", true, {recallMsg: 30});
             return true
         }
-
         await this.RequestSelect("Local", e, uid, roleList, detail)
         return true
     }

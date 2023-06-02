@@ -203,7 +203,7 @@ async function CheckConfigExist() {
                 break;
             }
             if (userId.length > 11) continue
-            await Bot.pickFriend(userId).sendMsg('[首次启动提示]：如果要使用OpenAI功能请发送\n#设置模型key sk-xxxxxxx\n然后Clash打开开关即可(非内陆节点均可)。')
+            await Bot.pickFriend(userId).sendMsg('[首次启动提示]：如果要使用OpenAI功能请发送\n#设置模型key sk-xxxxxxx\nKey需要有可用额度，目前使用镜像站，不需要代理即可使用。')
             SendNum++
         }
         return {False: "true"}
