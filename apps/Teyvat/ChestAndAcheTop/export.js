@@ -17,12 +17,17 @@ export async function uidGet(e) {
     let UID
     if (uidRet) {
         UID = uidRet[0]
-        console.log('输入的uid为：' + UID)
         // msg = msg.replace(uidRet[0], '')
     }
-    let NoteUser = e.user
-    let NoteUid = NoteUser._regUid
-    return UID || NoteUid
+    if (!UID) {
+        let NoteUser = e.user
+        UID = NoteUser._regUid
+        if (!UID) {
+            UID = e.user.getUid('gs')
+        }
+    }
+    logger.info('宝箱成就排行请求UID：' + UID)
+    return UID
 }
 
 export async function toImgSend(e, type, uid, signature, level, Name, JsonRes) {
@@ -36,7 +41,7 @@ export async function toImgSend(e, type, uid, signature, level, Name, JsonRes) {
             const dirPath = path.dirname(chestTopPath);
             fs.mkdirSync(dirPath, {recursive: true});
             if (!fs.existsSync(chestTopPath)) fs.writeFileSync(chestTopPath, '{}');
-            let Json =await JSON.parse(fs.readFileSync(chestTopPath, 'utf-8'));
+            let Json = await JSON.parse(fs.readFileSync(chestTopPath, 'utf-8'));
             if (!Json[e.group_id]) {
                 Json[e.group_id] = {}
             }
@@ -45,7 +50,7 @@ export async function toImgSend(e, type, uid, signature, level, Name, JsonRes) {
             Json[e.group_id][e.user_id].uid = uid
             Json[e.group_id][e.user_id].nickname = signature
             await fs.writeFileSync(chestTopPath, JSON.stringify(Json))
-            e.reply("你可以通过【#宝箱排行榜】查看群内数据了(已更新的)", true,{recallMsg: 15})
+            e.reply("你可以通过【#宝箱排行榜】查看群内数据了(已更新的)", true, {recallMsg: 15})
         }
         let ChestHtml = {
             uid: uid,
@@ -80,7 +85,7 @@ export async function toImgSend(e, type, uid, signature, level, Name, JsonRes) {
             Json[e.group_id][e.user_id].uid = uid
             Json[e.group_id][e.user_id].nickname = signature
             await fs.writeFileSync(achieveTopPath, JSON.stringify(Json))
-            e.reply("您可以通过【#成就排行榜】查看群内数据了(已更新的)", true,{recallMsg: 15})
+            e.reply("您可以通过【#成就排行榜】查看群内数据了(已更新的)", true, {recallMsg: 15})
         }
         let AchieveHtml = {
             uid: uid,
