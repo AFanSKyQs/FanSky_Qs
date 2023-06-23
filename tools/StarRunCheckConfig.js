@@ -195,6 +195,9 @@ async function CheckConfigExist() {
     if (!await isFileExist(ConfigPath)) {
         await fs.copyFileSync(defaultConfigPath, ConfigPath)
         logger.info(logger.cyan('首次启动本插件喵~，欢迎使用，已创建OpenAI.json'))
+        await redis.set(`FanSky:OpenAI:Proxy:Default`, JSON.stringify({
+            Proxy: `127.0.0.1:7890`,
+        }))
         logger.info(logger.cyan('食用请根据机器人提示进行设置喵~'))
         let list = cfg.masterQQ
         let SendNum = 0

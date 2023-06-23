@@ -118,10 +118,6 @@ export async function MainHelpData(e) {
                 "icon": "魔晶",
                 "title": "#加/减魔晶123456 100",
                 "desc": "增加/减少QQ[123456]魔晶[100]"
-            }, {
-                "icon": "最大",
-                "title": "打卡、冒泡",
-                "desc": "记录你的每一天信息"
             },
                 {
                     "icon": "最大",
