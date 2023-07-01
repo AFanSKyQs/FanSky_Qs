@@ -334,10 +334,12 @@ async function QQMsg(MsgList, e) {
 async function SendResMsg(e, response, Json, GetResult) {
     logger.info(response.data.choices[0])
     let result = response.data.choices[0].message.content
+    let View = result.substring(0, 30)
     let SendResult, MsgList
     if (GetResult === '不限') {
         if (response.data.choices[0].message.content.length > Json.Text_img) {
             // MsgList = [`${result}`, `${NowTime}\n魔晶：${GetResult}\n重置：${10 - Moudel1Num[e.user_id]}\n${response.data.choices[0].message.content.length}字`]
+            //取result的前30个字符
             MsgList = [`${result}`]
             let SendMsg = await QQMsg(MsgList, e)
             if (e.isGroup) {
@@ -346,7 +348,8 @@ async function SendResMsg(e, response, Json, GetResult) {
                     .replace('<?xml version="1.0" encoding="utf-8"?>', '<?xml version="1.0" encoding="utf-8" ?>')
                     .replace(/\n/g, '')
                     .replace(/<title color="#777777" size="26">(.+?)<\/title>/g, '___')
-                    .replace(/___+/, '<title color="#777777" size="26">OpenAI回复消息~</title>')
+                    .replace(/___+/, `<title color="#777777" size="26">${View}</title>`)
+
                 await e.group.sendMsg(ForwardMsg)
                 await e.member.poke()
             } else {
@@ -366,7 +369,7 @@ async function SendResMsg(e, response, Json, GetResult) {
                     .replace('<?xml version="1.0" encoding="utf-8"?>', '<?xml version="1.0" encoding="utf-8" ?>')
                     .replace(/\n/g, '')
                     .replace(/<title color="#777777" size="26">(.+?)<\/title>/g, '___')
-                    .replace(/___+/, '<title color="#777777" size="26">OpenAI回复消息~</title>')
+                    .replace(/___+/, `<title color="#777777" size="26">${View}</title>`)
                 await e.group.sendMsg(ForwardMsg)
                 await e.member.poke()
             } else {

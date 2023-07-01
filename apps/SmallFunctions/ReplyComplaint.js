@@ -53,6 +53,7 @@ async function ReplyComplaint(e, More = false, NickName = "喵喵喵~") {
     let Complaint = await getComplaint()
     let Reply = Complaint.replace(/{target_name}/g, "「 " + Name + " 」")
     if (Reply.length > 55) {
+        let ReplyView=Reply.substring(0, 15)
         let MsgList = await QQMsg(Reply, Name)
         if (e.isGroup) {
             let ForwardMsg = await e.group.makeForwardMsg(MsgList)
@@ -60,7 +61,7 @@ async function ReplyComplaint(e, More = false, NickName = "喵喵喵~") {
                         .replace('<?xml version="1.0" encoding="utf-8"?>', '<?xml version="1.0" encoding="utf-8" ?>')
                         .replace(/\n/g, '')
                         .replace(/<title color="#777777" size="26">(.+?)<\/title>/g, '___')
-                        .replace(/___+/, '<title color="#777777" size="26">你知道吗，我喜欢你很久了</title>')
+                        .replace(/___+/, `<title color="#777777" size="26">「${Name}」你知道吗，${ReplyView}</title>`)
             // ForwardMsg.data = ForwardMsg.data.replace(/^<\?xml.*version=.*?>/g, '<?xml version="1.0" encoding="utf-8" ?>');
             await e.reply(ForwardMsg)
             await e.member.poke()
