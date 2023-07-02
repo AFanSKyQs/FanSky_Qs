@@ -5,6 +5,7 @@ import path from 'path'
 import cfg from '../../../lib/config/config.js'
 import axios from "axios";
 
+let FanSkyGroup= 755794036
 let cwd = process.cwd().replace(/\\/g, "/")
 let GithubStatic = `${cwd}/plugins/FanSky_Qs/resources/Github/GithubStatic.json`
 
@@ -75,12 +76,12 @@ export class MonitorTask extends plugin {
                     )
                     let ForMsg= await Bot.makeForwardMsg(acgList)
                     ForMsg.data=ForMsg.data
-                        .replace('<?xml version="1.0" encoding="utf-8"?>', '<?xml version="1.0" encoding="utf-8" ?>')
                         .replace(/\n/g, '')
                         .replace(/<title color="#777777" size="26">(.+?)<\/title>/g, '___')
                         .replace(/___+/, '<title color="#777777" size="26">FanSky_Qs插件更新</title>')
-                if (Bot.uin === 2374221304) {
-                    await Bot.pickGroup(Number(755794036)).sendMsg(ForMsg)
+                let MainGroup=Array.from(Bot.getGroupList().keys()).includes(FanSkyGroup)
+                if (MainGroup) {
+                    await Bot.pickGroup(Number(FanSkyGroup)).sendMsg(ForMsg)
                 }
                 let list = cfg.masterQQ
                 if (Json.commit.message.includes("[不推送]") || !Json.commit.message) {

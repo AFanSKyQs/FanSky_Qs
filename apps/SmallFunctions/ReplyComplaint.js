@@ -53,18 +53,21 @@ async function ReplyComplaint(e, More = false, NickName = "喵喵喵~") {
     let Complaint = await getComplaint()
     let Reply = Complaint.replace(/{target_name}/g, "「 " + Name + " 」")
     if (Reply.length > 55) {
-        let ReplyView=Reply.substring(0, 15)
+        let ReplyView = Reply.substring(0, 15)
         let MsgList = await QQMsg(Reply, Name)
         if (e.isGroup) {
             let ForwardMsg = await e.group.makeForwardMsg(MsgList)
-            ForwardMsg.data=ForwardMsg.data
-                        .replace('<?xml version="1.0" encoding="utf-8"?>', '<?xml version="1.0" encoding="utf-8" ?>')
-                        .replace(/\n/g, '')
-                        .replace(/<title color="#777777" size="26">(.+?)<\/title>/g, '___')
-                        .replace(/___+/, `<title color="#777777" size="26">「${Name}」你知道吗，${ReplyView}</title>`)
+            ForwardMsg.data = ForwardMsg.data
+                .replace(/\n/g, '')
+                .replace(/<title color="#777777" size="26">(.+?)<\/title>/g, '___')
+                .replace(/___+/, `<title color="#777777" size="26">「${Name}」你知道吗，${ReplyView}</title>`)
             // ForwardMsg.data = ForwardMsg.data.replace(/^<\?xml.*version=.*?>/g, '<?xml version="1.0" encoding="utf-8" ?>');
             await e.reply(ForwardMsg)
-            await e.member.poke()
+            try {
+                await e.member.poke()
+            } catch (err) {
+                logger.info(logger.magenta(`[FanSky_Qs]发病：可能为频道，戳一戳失败`));
+            }
         } else {
             await e.reply([await e.friend.makeForwardMsg(MsgList)])
         }

@@ -15,7 +15,7 @@ async function ReturnConfig() {
     let PATH = DATA_PATH.replace(/\\/g, '/')
     if (!fs.existsSync(ONE_PATH)) {
         // Bot.logger.info('>>>已创建TeyvatConfig文件夹')
-        console.log('>>>已创建TeyvatConfig文件夹')
+        logger.info('>>>已创建TeyvatConfig文件夹')
         fs.mkdirSync(ONE_PATH)
     }
     if (!await isFileExist(DATA_PATH)) {

@@ -35,7 +35,11 @@ async function ChestTop(e) {
     StringJson = StringJson.replace(/\\n/g, '')
     StringJson = StringJson.substring(1, StringJson.length - 1)
     let JsonRes = JSON.parse(StringJson)
-    Bot.logger.info(JsonRes)
+    if (e.guild_id) {
+        logger.info(JsonRes)
+    } else {
+        Bot.logger.info(JsonRes)
+    }
     if (JsonRes.data.length > 0) {
         JsonRes.data[0].title = unescape(JsonRes.data[0].title.replace(/\\u/g, '%u'))
         let {Name, level, signature} = await axiosRequest(uid)
@@ -84,10 +88,18 @@ async function ReadLocalData(e, uid) {
             }
             await toImgSend(e, "Chest", uid, signature, level, Name, JsonRes)
         } catch (err) {
-            Bot.logger.info(Status)
+            if (e.guild_id) {
+                logger.info(Status)
+            } else {
+                Bot.logger.info(Status)
+            }
         }
     } else {
-        Bot.logger.info(Status)
+        if (e.guild_id) {
+            logger.info(Status)
+        } else {
+            Bot.logger.info(Status)
+        }
         await e.reply("您的本地[ #角色 ]数据也为空", true)
         return true
     }

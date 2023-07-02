@@ -89,11 +89,19 @@ async function ReadLocalData(e, uid) {
             return true
         } catch (err) {
             await e.reply("您的本地数据类型异常,请查看控制台数据联系开发人员", true)
-            Bot.logger.info(Status)
+            if (e.guild_id) {
+                logger.info(Status)
+            } else {
+                Bot.logger.info(Status)
+            }
             return true
         }
     } else {
-        Bot.logger.info(Status)
+        if (e.guild_id) {
+            logger.info(Status)
+        } else {
+            Bot.logger.info(Status)
+        }
         e.reply("您的本地[ #角色 ]数据也为空", true)
         return true
     }

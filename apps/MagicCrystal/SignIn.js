@@ -264,7 +264,11 @@ async function MsgList(e, Data, LastTimeTemp, SignTop, TempRough) {
 
     let MsgList = await puppeteer.screenshot("UserCard", {tplFile: htmlPath, quality: 100, CssPath, UserHtml});
     await e.reply(MsgList);
-    await Bot.pickFriend(e.user_id).thumbUp(20);
+    if(e.guild_id){
+        await e.reply(`打卡完成！当前在频道，没有点赞噢喵~\n送你一个小星星叭☆~`)
+    }else{
+       await Bot.pickFriend(e.user_id).thumbUp(20);
+    }
     // let MsgListTwo=[segment.at(e.user_id),"\n给你点赞了喵~\n没点上加我好友发【打卡】~"]
     // await e.reply(MsgListTwo)
 
@@ -326,7 +330,11 @@ async function FirstList(e, Data, SignTop, TempRough) {
     let NowSum = SignTop["AllGroupTopTime"].TopToday
     let MsgList = await puppeteer.screenshot("UserCard", {tplFile: htmlPath, quality: 100, CssPath, UserHtml});
     await e.reply(MsgList);
-    await Bot.pickFriend(e.user_id).thumbUp(20);
+    if(e.guild_id){
+        await e.reply(`打卡完成~，当前在频道，没有点赞噢喵~\n送你一个小星星叭☆~`)
+    }else{
+        await Bot.pickFriend(e.user_id).thumbUp(20);
+    }
     // let MsgListTwo=[segment.at(e.user_id),"\n给你点赞了喵~\n没点上加我好友发【打卡】~"]
     // await e.reply(MsgListTwo)
     // await CheckMasterSetName(e, NowSum)

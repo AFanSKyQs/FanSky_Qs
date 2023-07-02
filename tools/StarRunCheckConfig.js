@@ -26,8 +26,8 @@ export async function StarRunCheckConfig() {
         await CheckSignMode()
         await CheckOpenGroup()
     }
-    logger.info(logger.magenta("配置文件检查完毕,欢迎使用，祝您使用愉快喵qwq~"))
-    logger.info(logger.magenta('[FanSky_Qs]>>将在10s后开始请求队伍伤害所需JSON'))
+    logger.info(logger.cyan("配置文件检查完毕,欢迎使用，祝您使用愉快喵qwq~"))
+    logger.info(logger.cyan('[FanSky_Qs]>>将在10s后开始请求队伍伤害所需JSON'))
     setTimeout(async () => {
         await CheckTeyvatDownload()
     }, 10000)
@@ -206,7 +206,11 @@ async function CheckConfigExist() {
                 break;
             }
             if (userId.length > 11) continue
-            await Bot.pickFriend(userId).sendMsg('[首次启动提示]：如果要使用OpenAI功能请发送\n#设置模型key sk-xxxxxxx\nKey需要有可用额度，目前使用镜像站，不需要代理即可使用。')
+            try {
+                await Bot.pickFriend(userId).sendMsg('[首次启动提示]：如果要使用OpenAI功能请发送\n#设置模型key sk-xxxxxxx\nKey需要有可用额度，目前使用镜像站，不需要代理即可使用。')
+            } catch (err) {
+                logger.info(logger.red('[首次启动提示]：如果要使用OpenAI功能请发送\n#设置模型key sk-xxxxxxx\nKey需要有可用额度，目前使用镜像站，不需要代理即可使用。'))
+            }
             SendNum++
         }
         return {False: "true"}

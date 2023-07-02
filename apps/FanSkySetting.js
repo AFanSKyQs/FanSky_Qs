@@ -58,7 +58,6 @@ export class FanSkySetting extends plugin {
         ]
         let Msg = await common.makeForwardMsg(e, MsgList, '[FanSky_Qs]当前设置')
                 Msg.data=Msg.data
-                        .replace('<?xml version="1.0" encoding="utf-8"?>', '<?xml version="1.0" encoding="utf-8" ?>')
                         .replace(/\n/g, '')
                         .replace(/<title color="#777777" size="26">(.+?)<\/title>/g, '___')
                         .replace(/___+/, '<title color="#777777" size="26">[FanSky_Qs]当前设置</title>')

@@ -1,6 +1,7 @@
 import {segment} from 'oicq'
 import common from '../../../../lib/common/common.js'
 import axios from "axios";
+import {QQGuildImg} from "../../models/QQGuildMsg.js";
 
 
 export async function CatEyeBoxOffice(e) {
@@ -49,18 +50,33 @@ export async function CatEyeBoxOffice(e) {
     } else {
         LoadNum = Json.movieList.data.list.length
     }
-    for (let i = 0; i < LoadNum; i++) {
-        let ImgUrl = await getMoviImg(Json.movieList.data.list[i].movieInfo.movieId, e)
-        // 如果ImgUrl
-        if (!ImgUrl || ImgUrl.length < 10) {
-            ImgUrl = 'https://th.bing.com/th/id/R.6cc3c8870914ee76b8cf1c7f9d4b9970?rik=svdPITKpVuLUQQ&riu=http%3a%2f%2fpic.2265.com%2fupload%2f2017-2%2f20172281342598429.png&ehk=vM0xLEANoMbzxZIyzq0d01jiA4voira1iUnjadRj3Wg%3d&risl=&pid=ImgRaw&r=0'
+    if (e.guild_id) {
+        logger.info(logger.cyan("[FanSky_Qs]频道消息[电影票房]，会刷屏，只打印前几个"))
+        for (let i = 0; i < 3; i++) {
+            let ImgUrl = await getMoviImg(Json.movieList.data.list[i].movieInfo.movieId, e)
+            // 如果ImgUrl
+            if (!ImgUrl || ImgUrl.length < 4) {
+                ImgUrl = 'https://th.bing.com/th/id/R.6cc3c8870914ee76b8cf1c7f9d4b9970?rik=svdPITKpVuLUQQ&riu=http%3a%2f%2fpic.2265.com%2fupload%2f2017-2%2f20172281342598429.png&ehk=vM0xLEANoMbzxZIyzq0d01jiA4voira1iUnjadRj3Wg%3d&risl=&pid=ImgRaw&r=0'
+            }
+            let NuwBoxOffice = await ConvertNum((parseFloat(Json.movieList.data.list[i].boxRate) / 100) * totalBoxOffice)
+            MsgList.push(`   《${Json.movieList.data.list[i].movieInfo.movieName}》\n排名：${i + 1}  |  ${Json.movieList.data.list[i].movieInfo.releaseInfo}\n综合票房：${NuwBoxOffice}  |  ${Json.movieList.data.list[i].boxRate}\n今日均场：${Json.movieList.data.list[i].avgShowView}人  |  ${Json.movieList.data.list[i].avgSeatView} \n今日排片：${Json.movieList.data.list[i].showCount}  |  ${Json.movieList.data.list[i].splitBoxRate}`, segment.image(ImgUrl))
+            // \n${segment.image(await getMoviImg(Json.movieList.data.list[i].movieInfo.movieId, e))}
         }
+    } else {
+        for (let i = 0; i < LoadNum; i++) {
+            let ImgUrl = await getMoviImg(Json.movieList.data.list[i].movieInfo.movieId, e)
+            // 如果ImgUrl
+            if (!ImgUrl || ImgUrl.length < 10) {
+                ImgUrl = 'https://th.bing.com/th/id/R.6cc3c8870914ee76b8cf1c7f9d4b9970?rik=svdPITKpVuLUQQ&riu=http%3a%2f%2fpic.2265.com%2fupload%2f2017-2%2f20172281342598429.png&ehk=vM0xLEANoMbzxZIyzq0d01jiA4voira1iUnjadRj3Wg%3d&risl=&pid=ImgRaw&r=0'
+            }
 
-        let NuwBoxOffice = await ConvertNum((parseFloat(Json.movieList.data.list[i].boxRate) / 100) * totalBoxOffice)
-        MsgList.push(`   《${Json.movieList.data.list[i].movieInfo.movieName}》\n排名：${i + 1}  |  ${Json.movieList.data.list[i].movieInfo.releaseInfo}\n综合票房：${NuwBoxOffice}  |  ${Json.movieList.data.list[i].boxRate}\n今日均场：${Json.movieList.data.list[i].avgShowView}人  |  ${Json.movieList.data.list[i].avgSeatView} \n今日排片：${Json.movieList.data.list[i].showCount}  |  ${Json.movieList.data.list[i].splitBoxRate}`, segment.image(ImgUrl))
-        // \n${segment.image(await getMoviImg(Json.movieList.data.list[i].movieInfo.movieId, e))}
+            let NuwBoxOffice = await ConvertNum((parseFloat(Json.movieList.data.list[i].boxRate) / 100) * totalBoxOffice)
+            MsgList.push(`   《${Json.movieList.data.list[i].movieInfo.movieName}》\n排名：${i + 1}  |  ${Json.movieList.data.list[i].movieInfo.releaseInfo}\n综合票房：${NuwBoxOffice}  |  ${Json.movieList.data.list[i].boxRate}\n今日均场：${Json.movieList.data.list[i].avgShowView}人  |  ${Json.movieList.data.list[i].avgSeatView} \n今日排片：${Json.movieList.data.list[i].showCount}  |  ${Json.movieList.data.list[i].splitBoxRate}`, segment.image(ImgUrl))
+            // \n${segment.image(await getMoviImg(Json.movieList.data.list[i].movieInfo.movieId, e))}
+        }
     }
     await SendMsg(e, MsgList)
+    await e.reply("当前为频道，防止刷屏，只发送前3个~")
     return true
 }
 

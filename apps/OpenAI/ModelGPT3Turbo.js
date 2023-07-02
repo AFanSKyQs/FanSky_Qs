@@ -153,7 +153,11 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult, AIResMsg = 
                     msg = msg.slice(3);
                 }
                 msg = msg.trim()
-                Bot.logger.info('处理插件：FanSky_Qs-OpenAI模型1:' + `\n群：${e.group_id}\n` + 'QQ:' + `${e.user_id}\n` + `消息：${msg}`)
+                if(e.guild_id){
+                    logger.info('处理插件：FanSky_Qs-OpenAI模型1:' + `\n群：${e.guild_id}\n` + 'QQ:' + `${e.author.id}\n` + `消息：${msg}`)
+                }else{
+                    Bot.logger.info('处理插件：FanSky_Qs-OpenAI模型1:' + `\n群：${e.group_id}\n` + 'QQ:' + `${e.user_id}\n` + `消息：${msg}`)
+                }
                 let Persona = "你是一个小助手~"
                 if (await redis.get(`FanSky:OpenAI:Person:${e.user_id}`)) {
                     Persona = (JSON.parse(await redis.get(`FanSky:OpenAI:Person:${e.user_id}`))).Person
@@ -345,7 +349,6 @@ async function SendResMsg(e, response, Json, GetResult) {
             if (e.isGroup) {
                 let ForwardMsg = await e.group.makeForwardMsg(SendMsg)
                 ForwardMsg.data = ForwardMsg.data
-                    .replace('<?xml version="1.0" encoding="utf-8"?>', '<?xml version="1.0" encoding="utf-8" ?>')
                     .replace(/\n/g, '')
                     .replace(/<title color="#777777" size="26">(.+?)<\/title>/g, '___')
                     .replace(/___+/, `<title color="#777777" size="26">${View}</title>`)
@@ -366,7 +369,6 @@ async function SendResMsg(e, response, Json, GetResult) {
             if (e.isGroup) {
                 let ForwardMsg = await e.group.makeForwardMsg(SendMsg)
                 ForwardMsg.data = ForwardMsg.data
-                    .replace('<?xml version="1.0" encoding="utf-8"?>', '<?xml version="1.0" encoding="utf-8" ?>')
                     .replace(/\n/g, '')
                     .replace(/<title color="#777777" size="26">(.+?)<\/title>/g, '___')
                     .replace(/___+/, `<title color="#777777" size="26">${View}</title>`)

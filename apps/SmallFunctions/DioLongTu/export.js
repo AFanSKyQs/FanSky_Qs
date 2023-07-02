@@ -6,6 +6,7 @@ import lodash from 'lodash'
 import {segment} from 'oicq'
 import {getEmoji} from "../../../models/getString.js";
 import fetch from "node-fetch";
+import {QQGuildImg} from "../../../models/QQGuildMsg.js";
 
 let MasterQQ = 3141865879 // 接到上传请求时，机器人转发给谁
 let imgMaxSize = 5 // 最大上传单张图片大小，单位MB
@@ -20,7 +21,12 @@ export async function sendTu(e, tuPath, TuName, gitPath) {
         return true
     }
     logger.info(logger.cyan('[FanSky_Qs]'), logger.yellow(`[DioLongTu]`), logger.red(`[sendTu]`), `收到的${TuName}图地址：` + sendPath)
-    await e.reply(segment.image(`file:///${sendPath}`))
+    if(e.guild_id){
+        logger.info(logger.cyan("[FanSky_Qs]频道消息[DioLongTu]"))
+        await QQGuildImg(e, sendPath)
+    }else{
+       await e.reply(segment.image(`file:///${sendPath}`))
+    }
     return true
 }
 
