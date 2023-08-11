@@ -75,10 +75,12 @@ export class MonitorTask extends plugin {
                         },
                     )
                     let ForMsg= await Bot.makeForwardMsg(acgList)
+                try{
                     ForMsg.data=ForMsg.data
                         .replace(/\n/g, '')
                         .replace(/<title color="#777777" size="26">(.+?)<\/title>/g, '___')
                         .replace(/___+/, '<title color="#777777" size="26">FanSky_Qs插件更新</title>')
+                }catch (err){}
                 let MainGroup=Array.from(Bot.getGroupList().keys()).includes(FanSkyGroup)
                 if (MainGroup) {
                     await Bot.pickGroup(Number(FanSkyGroup)).sendMsg(ForMsg)

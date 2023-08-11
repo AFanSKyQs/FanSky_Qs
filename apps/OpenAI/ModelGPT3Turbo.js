@@ -348,11 +348,13 @@ async function SendResMsg(e, response, Json, GetResult) {
             let SendMsg = await QQMsg(MsgList, e)
             if (e.isGroup) {
                 let ForwardMsg = await e.group.makeForwardMsg(SendMsg)
-                ForwardMsg.data = ForwardMsg.data
-                    .replace(/\n/g, '')
-                    .replace(/<title color="#777777" size="26">(.+?)<\/title>/g, '___')
-                    .replace(/___+/, `<title color="#777777" size="26">${View}</title>`)
-
+                try{
+                    ForwardMsg.data = ForwardMsg.data
+                        .replace(/\n/g, '')
+                        .replace(/<title color="#777777" size="26">(.+?)<\/title>/g, '___')
+                        .replace(/___+/, `<title color="#777777" size="26">${View}</title>`)
+                }catch (err){
+                }
                 await e.group.sendMsg(ForwardMsg)
                 await e.member.poke()
             } else {
@@ -368,10 +370,15 @@ async function SendResMsg(e, response, Json, GetResult) {
             let SendMsg = await QQMsg(MsgList, e)
             if (e.isGroup) {
                 let ForwardMsg = await e.group.makeForwardMsg(SendMsg)
-                ForwardMsg.data = ForwardMsg.data
-                    .replace(/\n/g, '')
-                    .replace(/<title color="#777777" size="26">(.+?)<\/title>/g, '___')
-                    .replace(/___+/, `<title color="#777777" size="26">${View}</title>`)
+                try{
+                    ForwardMsg.data = ForwardMsg.data
+                        .replace(/\n/g, '')
+                        .replace(/<title color="#777777" size="26">(.+?)<\/title>/g, '___')
+                        .replace(/___+/, `<title color="#777777" size="26">${View}</title>`)
+                }catch (err){
+
+                }
+
                 await e.group.sendMsg(ForwardMsg)
                 await e.member.poke()
             } else {

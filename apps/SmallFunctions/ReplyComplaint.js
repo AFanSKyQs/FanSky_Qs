@@ -57,10 +57,15 @@ async function ReplyComplaint(e, More = false, NickName = "喵喵喵~") {
         let MsgList = await QQMsg(Reply, Name)
         if (e.isGroup) {
             let ForwardMsg = await e.group.makeForwardMsg(MsgList)
-            ForwardMsg.data = ForwardMsg.data
-                .replace(/\n/g, '')
-                .replace(/<title color="#777777" size="26">(.+?)<\/title>/g, '___')
-                .replace(/___+/, `<title color="#777777" size="26">「${Name}」你知道吗，${ReplyView}</title>`)
+            try{
+                ForwardMsg.data = ForwardMsg.data
+                    .replace(/\n/g, '')
+                    .replace(/<title color="#777777" size="26">(.+?)<\/title>/g, '___')
+                    .replace(/___+/, `<title color="#777777" size="26">「${Name}」你知道吗，${ReplyView}</title>`)
+
+            }catch (err){
+
+            }
             // ForwardMsg.data = ForwardMsg.data.replace(/^<\?xml.*version=.*?>/g, '<?xml version="1.0" encoding="utf-8" ?>');
             await e.reply(ForwardMsg)
             try {
