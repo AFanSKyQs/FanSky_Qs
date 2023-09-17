@@ -170,10 +170,8 @@ export class BotEntry extends plugin {
 
     async GetNowUid(e) {
         let NoteUser = e.user
-        let Uid = NoteUser._regUid
-        if (!Uid) {
-            Uid = e.user.getUid('gs')
-        }
+        let Uid = NoteUser._regUid || NoteUser.uid
+        if (!Uid) Uid = e.user.getUid('gs')
         return Uid
     }
 
@@ -226,9 +224,9 @@ export class BotEntry extends plugin {
 
     async RequestSelect(Type, e, uid, roleList, detail) {
         if (Type === "Local") {
-            let roleAfterList = roleList.trim().split(/[\s,，、。-]+/g) || [];
-            // let roleAfterList = roleList.split(/ |,|，|、|。|-/g) || [];
-            await team(e, roleAfterList, uid, detail)
+            let splitter = ['\\s', ',', '，', '、', '。', '-', '\\|']
+            let roleAfterList = roleList.trim().split(new RegExp(splitter.join('|'))) || []
+            await team(e, _.compact(roleAfterList), uid, detail)
             return true
         }
         let res = await this.TeamDamage(e, uid, roleList);

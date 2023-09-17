@@ -1,13 +1,13 @@
 import fetch from 'node-fetch'
-import lodash from 'lodash'
+import _ from 'lodash'
 import {Format} from '../../../miao-plugin/components/index.js'
 import {Character, Player} from '../../../miao-plugin/models/index.js'
 //import { getTargetUid } from '../miao-plugin/apps/profile/ProfileCommon'
 import {getServer, simpleTeamDamageRes} from './Index.js'
 import puppeteer from '../../../../lib/puppeteer/puppeteer.js'
-import fs from "fs";
-import {ReturnTeamArr} from "../../config/ReturnSimpleArr/getTeamString.js";
-import {savaHistoryData} from "./HistoryTeam.js";
+import fs from "fs"
+import {ReturnTeamArr} from "../../config/ReturnSimpleArr/getTeamString.js"
+import {savaHistoryData} from "./HistoryTeam.js"
 
 const _path = process.cwd()
 let cwd = process.cwd().replace(/\\/g, '/')
@@ -53,70 +53,80 @@ let dmgKeys =
     }
 
 export async function team(e, teamlist, uid, detail) {
-    if (teamlist.length === 1) {
-        const res = await ReturnTeamArr(teamlist[0]);
-        if (res && res[0]) {
-            teamlist = res;
-        } else {
-            await e.reply(`暂未收录[${teamlist[0]}]简写\n尝试识别为单人~`, true);
-        }
-    } else if (teamlist.length === 0) {
-        await e.reply("请指定您要计算的队伍喵~", true);
-        return true
-    } else if (teamlist.length > 4) {
-        teamlist = teamlist.slice(0, 4)
+  if (teamlist.length === 1) {
+    const res = await ReturnTeamArr(teamlist[0])
+    if (res && res[0]) {
+      teamlist = res
+    } else {
+      await e.reply(`暂未收录[${teamlist[0]}]简写\n尝试识别为单人~`, true)
     }
+  } else if (teamlist.length === 0) {
+    await e.reply("请指定您要计算的队伍喵~", true)
+    return true
+  } else if (teamlist.length > 4) {
+      teamlist = teamlist.slice(0, 4)
+  }
 
-    let teamarId = [];
-    for (var i = 0; i < teamlist.length; i++) {
-        let char_p_l = Character.get(teamlist[i].split('(')[0].trim())
-        let char_p_t = lodash.clone(char_p_l);
-        if (!char_p_t) {
-            await e.reply(`队伍中存在未能识别的角色：\n${teamlist[i].split('(')[0].trim()}`);
-            return true
-        }
-        teamarId[i] = char_p_t;
-    }
+  let teamarId = []
+  let errMsg = ''
+  try {
+    _.each(teamlist, v => {
+      let char_p_l = Character.get(v.split('(')[0].trim())
+      let char_p_t = _.clone(char_p_l)
+      if (!char_p_t) {
+        errMsg = `队伍中存在未能识别的角色：${v.split('(')[0].trim()}`
+        throw new Error()  
+      }
+      teamarId.push(char_p_t)
+    })
+  } catch (error) {
+    await e.reply(errMsg)
+    return
+  }
 
-    let TiwateBody = {}
-    let rolesData = {}
-    let weaponsData = {}
-    TiwateBody['uid'] = uid;
-    let role_data = []
-    let NoData = 0
-    let NoDataName = "|"
-    let isData = "|"
-    for (var i = 0; i < teamarId.length; i++) {
-        let char_p = teamarId[i]
-        let player = Player.create(uid)
-        let profile = player.getProfile(char_p.id)
+  let TiwateBody = {}
+  let rolesData = {}
+  let weaponsData = {}
+  TiwateBody['uid'] = uid
+  let role_data = []
+  let NoDataName = []
+  let isData = []
+  let player = Player.create(uid)
+  try {
+    _.each(teamarId, async (v) => {
+      let char = v.name
+      let profile = player.getProfile(v.id)
 
-        if (char_p.name === "旅行者" || char_p.name === "空" || char_p.name === "荧" || char_p.name === "萤") {
-            await e.reply(`[旅行者]暂不支持计算伤害喵！~`);
-            return true
-        }
+      if (['旅行者', '空', '荧', '萤'].includes(char)) {
+        errMsg = '[旅行者]暂不支持计算伤害喵！~'
+        throw new Error()
+      }
 
-        if (!profile || !profile.hasData) {
-            NoDataName += char_p.name + "|"
-            NoData++
-            continue
-        }
+      if (!profile || !profile.hasData) {
+        NoDataName.push(char)
+        return
+      }
 
-        isData += char_p.name + "|"
-        let m_roleData = await covProfileroleData(profile)
-        weaponsData[char_p.name] = m_roleData.weapon
-        rolesData[char_p.name] = m_roleData;
-        let m_TeyvatData = await covProfileTeyvatData(profile, uid);
-        role_data.push(m_TeyvatData);
-    }
-    if (NoData > 0) {
-        await e.reply(`UID:${uid}缺少${NoDataName}\n请先通过【#更新面板】拿到对应角色数据。`, true);
-        return true
-    }
-    await e.reply(`UID:${uid}${isData}`);
-    logger.info(logger.cyan(`[FanSky_Qs]队伍伤害[请求UID:${uid}]>>>${isData}`))
-    TiwateBody['role_data'] = role_data;
-    TiwateBody.server = getServer(uid, true)
+      isData.push(char)
+      let m_roleData = await covProfileroleData(profile)
+      rolesData[char] = m_roleData
+      weaponsData[char] = m_roleData.weapon
+      let m_TeyvatData = await covProfileTeyvatData(profile, uid)
+      role_data.push(m_TeyvatData)
+    })
+  } catch (error) {
+    await e.reply(errMsg)
+    return
+  }
+  
+  if (NoDataName.length > 0) {
+    await e.reply(`UID${uid}：缺少${NoDataName.join('|')}\n请先通过【#更新面板】拿到对应角色数据。`, true)
+    return true
+  }
+  await e.reply(`UID${uid}：${isData.join('|')}`)
+  logger.info(logger.cyan(`[FanSky_Qs]队伍伤害[请求UID:${uid}]>>>${isData.join('|')}`))
+  TiwateBody['role_data'] = role_data
+  TiwateBody.server = getServer(uid, true)
 
     // let CachePath = `${process.cwd()}/plugins/FanSky_Qs/resources/TevatRequestDataCache/MiaoData/${uid}.json`
     // if (!fs.existsSync(CachePath)) {
@@ -124,27 +134,27 @@ export async function team(e, teamlist, uid, detail) {
     // }
     // await fs.writeFileSync(CachePath, JSON.stringify(TiwateBody))
 
-    const TiwateRaw = await getTeyvatData(TiwateBody, 'team')
-    if (TiwateRaw.code !== 200 || !TiwateRaw.result) {
-        logger.error(`>>>[错误信息] ${TiwateRaw.info}`)
-        await e.reply(`提瓦特小助手接口无法访问或返回错误`, true);
-        return true
-    } else {
-        let data = await simpleTeamDamageRes(TiwateRaw.result, rolesData)
-        for (const key in weaponsData) {
-            logger.info(key)
-            data['avatars'][key].weapon.imgPath = weaponsData[key].weaponPath
-        }
-        let ScreenData = await screenData(e, data, detail)
-        // try {
-        //     await savaHistoryData(ScreenData)
-        // } catch (err) {
-        //     logger.info("这个队伍伤害保存失败了：" + err)
-        // }
-        let img = await puppeteer.screenshot('FanSkyTeyvat', ScreenData)
-        await e.reply(img)
-        return true
+  const TiwateRaw = await getTeyvatData(TiwateBody, 'team')
+  if (TiwateRaw.code !== 200 || !TiwateRaw.result) {
+    logger.error(`>>>[错误信息] ${TiwateRaw.info}`)
+    await e.reply(`提瓦特小助手接口无法访问或返回错误`, true)
+    return true
+  } else {
+    let data = await simpleTeamDamageRes(TiwateRaw.result, rolesData)
+    for (const key in weaponsData) {
+      logger.info(key)
+      data['avatars'][key].weapon.imgPath = weaponsData[key].weaponPath
     }
+    let ScreenData = await screenData(e, data, detail)
+    // try {
+    //     await savaHistoryData(ScreenData)
+    // } catch (err) {
+    //     logger.info("这个队伍伤害保存失败了：" + err)
+    // }
+    let img = await puppeteer.screenshot('FanSkyTeyvat', ScreenData)
+    await e.reply(img)
+    return true
+  }
 }
 
 async function screenData(e, data, detail) {
@@ -190,13 +200,13 @@ async function covProfileTeyvatData(profile, uid) {
     let a = profile.attr
     let base = profile.base
     let attr = {}
-    lodash.forEach(['hp', 'def', 'atk', 'mastery'], (key) => {
+    _.each(['hp', 'def', 'atk', 'mastery'], (key) => {
         let fn = (n) => Format.comma(n, key === 'hp' ? 0 : 1)
         attr[key] = fn(a[key])
         attr[`${key}Base`] = fn(base[key])
         attr[`${key}Plus`] = fn(a[key] - base[key])
     })
-    lodash.forEach(['cpct', 'cdmg', 'recharge', 'dmg'], (key) => {
+    _.each(['cpct', 'cdmg', 'recharge', 'dmg'], (key) => {
         let fn = Format.pct
         let key2 = key
         if (key === 'dmg' && a.phy > a.dmg) {
