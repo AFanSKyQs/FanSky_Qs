@@ -57,8 +57,11 @@ export async function team(e, teamlist, uid, detail) {
     const res = await ReturnTeamArr(teamlist[0])
     if (res && res[0]) {
       teamlist = res
+    } else if (res.err) {
+      await e.reply(res.err)
+      return
     } else {
-      await e.reply(`暂未收录[${teamlist[0]}]简写\n尝试识别为单人~`, true)
+      await e.reply(`暂未发现[${teamlist[0]}]简写\n尝试识别为单人~`, true)
     }
   } else if (teamlist.length === 0) {
     await e.reply("请指定您要计算的队伍喵~", true)
