@@ -165,13 +165,17 @@ function getTalentPath (role, icon) {
   let talentCons = roleData.talentCons
 
   let type = icon.split('_')[1]
+  let talentpath = `meta/character/${role}/icons`
+
   switch (type) {
     case 'A':
       return `common/item/atk-${weapon}.webp`
     case 'S':
-      return `meta/character/${role}/icons/${talentCons.e === 3 ? 'cons-3' : 'cons-5'}.webp`
+      if (fs.existsSync(`${talentpath}/talent-e.webp`)) return `${talentpath}/talent-e.webp`
+      return `${talentpath}/${talentCons.e === 3 ? 'cons-3' : 'cons-5'}.webp`
     case 'E':
-      return `meta/character/${role}/icons/${talentCons.q === 5 ? 'cons-5' : 'cons-3'}.webp`
+      if (fs.existsSync(`${talentpath}/talent-q.webp`)) return `${talentpath}/talent-q.webp`
+      return `${talentpath}/${talentCons.q === 5 ? 'cons-5' : 'cons-3'}.webp`
   }
   return '未知'
 }
