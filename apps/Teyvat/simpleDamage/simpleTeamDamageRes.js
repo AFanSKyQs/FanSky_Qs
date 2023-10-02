@@ -171,10 +171,10 @@ function getTalentPath (role, icon) {
     case 'A':
       return `common/item/atk-${weapon}.webp`
     case 'S':
-      if (fs.existsSync(`${talentpath}/talent-e.webp`)) return `${talentpath}/talent-e.webp`
+      if (!talentCons.e) return `${talentpath}/talent-e.webp`
       return `${talentpath}/${talentCons.e === 3 ? 'cons-3' : 'cons-5'}.webp`
     case 'E':
-      if (fs.existsSync(`${talentpath}/talent-q.webp`)) return `${talentpath}/talent-q.webp`
+      if (!talentCons.q) return `${talentpath}/talent-q.webp`
       return `${talentpath}/${talentCons.q === 5 ? 'cons-5' : 'cons-3'}.webp`
   }
   return '未知'
