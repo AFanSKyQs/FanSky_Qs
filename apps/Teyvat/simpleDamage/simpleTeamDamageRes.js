@@ -115,7 +115,7 @@ async function simpleTeamDamageRes (raw, rolesData) {
   let buffs = []
   for (let buff of raw.buff) {
     if (!buff.content) {
-      logger.error(`奇怪的伤害：${step}`)
+      logger.error(`奇怪的伤害：${buff}`)
       continue
     }
     let [t, tmp] = buff.content.split(' ')
