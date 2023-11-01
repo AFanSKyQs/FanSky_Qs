@@ -62,12 +62,12 @@ export class BotEntry extends plugin {
   }
 
   async HistoryTeam (e) {
-    if (this.TeyvatStatus() !== 1) return false
+    if (await this.TeyvatStatus() !== 1) return false
     await e.reply('正在开发中~\n每次每个人的队伍数据请求都已经写入了数据库，正在完成最后的渲染设计')
   }
 
   async achieveTop (e) {
-    if (this.TeyvatStatus() !== 1) return false
+    if (await this.TeyvatStatus() !== 1) return false
     let msg = e.original_msg || e.msg
     if (!msg) return false
 
@@ -77,7 +77,7 @@ export class BotEntry extends plugin {
   }
 
   async ChestGroupTop (e) {
-    if (this.TeyvatStatus() !== 1) return false
+    if (await this.TeyvatStatus() !== 1) return false
     let msg = e.original_msg || e.msg
     if (!msg) return false
 
@@ -87,7 +87,7 @@ export class BotEntry extends plugin {
   }
 
   async TeamCache (e) {
-    if (this.TeyvatStatus() !== 1) return false
+    if (await this.TeyvatStatus() !== 1) return false
 
     if (e.msg) {
       e.msg = '#面板'
@@ -157,7 +157,7 @@ export class BotEntry extends plugin {
   }
 
   async TeyvatEnTry (e) {
-    if (this.TeyvatStatus() !== 1) return false
+    if (await this.TeyvatStatus() !== 1) return false
     let at = e.at
     const regexTeam = /^#队伍伤害(详情|过程|全图)?(\d+)?(.*)$/
     const regexALevel = /^#单人评级(\d+)?(.*)$/
@@ -294,7 +294,7 @@ export class BotEntry extends plugin {
   }
 
   async UpdataJSON (e) {
-    if (this.TeyvatStatus() !== 1) return false
+    if (await this.TeyvatStatus() !== 1) return false
     e.reply('>>>[FanSky_Qs]正在更新提瓦特小助手JSON...')
     await this.UPJSON(e)
     return true
