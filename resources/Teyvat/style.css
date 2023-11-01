@@ -84,8 +84,8 @@ div.TopLeftPanel > div.UID {
     height: 30px;
     line-height: 30px;
     text-shadow: 0 0 3px #d3bc8e, 2px 2px 4px rgb(0 0 0 / 70%);
-    color: rgb(255 189 4 / 82%);
-    background-color: rgb(34 24 189 / 84%);
+    color: rgba(235, 205, 124, 0.82);
+    background-color: rgba(255, 255, 255, 0.3);
 }
 
 div.TopLeftPanel > div.UID::before {

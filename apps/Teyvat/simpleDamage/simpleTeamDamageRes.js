@@ -3,8 +3,9 @@ import _ from 'lodash'
 import gsCfg from '../../../../genshin/model/gsCfg.js'
 import fs from 'node:fs'
 
-const cwd = process.cwd().replace(/\\/g,'/');
+const cwd = process.cwd().replace(/\\/g, '/')
 let roleData = {}
+const miaoRes = `${cwd}/plugins/miao-plugin/resources/meta-gs`
 /**
  * 转换队伍伤害计算请求数据为精简格式
  * @param {Object} raw 队伍伤害计算请求数据，由 getTeyvatData(*, "team")["result"] 获取
@@ -30,7 +31,7 @@ async function simpleTeamDamageRes (raw, rolesData) {
   _.each(raw.role_list, role => {
     let panelData = rolesData[role.role]
 
-    let relicSet = _.pickBy(panelData.relicSet, i => i >= 2);
+    let relicSet = _.pickBy(panelData.relicSet, i => i >= 2)
     let relics = _.map(_.filter(panelData.relics, r => _.keys(relicSet).includes(r.setName)), v => _.nth(v.icon.split('_'), -2))
     relics = _.countBy(relics, v => v)
     let sets = {}
@@ -47,7 +48,7 @@ async function simpleTeamDamageRes (raw, rolesData) {
       })
     })
 
-    let weaponPath = getWeapon(panelData.weapon.icon) || '';
+    let weaponPath = getWeapon(panelData.weapon.icon) || ''
     avatars[role.role] = {
       rarity: role.role_star,
       icon: panelData.icon,
@@ -63,7 +64,7 @@ async function simpleTeamDamageRes (raw, rolesData) {
         affix: panelData.weapon.affix,
         imgPath: weaponPath
       },
-      relicSet: relicSet,
+      relicSet,
       sets,
       cp: _.round(panelData.fightProp['暴击率'], 1),
       cd: _.round(panelData.fightProp['暴击伤害'], 1),
@@ -121,7 +122,7 @@ async function simpleTeamDamageRes (raw, rolesData) {
     let b = tmp.split('-')[0]; let bd = _.tail(tmp.split('-')).join('-')
     buffs.push([t.replace('s', ''), _.toUpper(b), _.toUpper(bd)])
   }
-  
+
   return {
     uid: raw.uid,
     elem,
@@ -141,31 +142,22 @@ async function simpleTeamDamageRes (raw, rolesData) {
 }
 
 function getWeapon (icon) {
-  const weaponCfg = gsCfg.getdefSet('weapon', 'data');
-  let name = _.findKey(weaponCfg['Icon'], v => v === icon);
-  if (!name) {
-    return false;
-  }
+  const weaponCfg = gsCfg.getdefSet('weapon', 'data')
+  let name = _.findKey(weaponCfg.Icon, v => v === icon)
+  if (!name) return false
 
-  return `${roleData.weapon}/${name}`;
-}
-
-function getFace (role) {
-  let miaoPath = `${cwd}/plugins/miao-plugin/resources/meta/character/${role}/imgs/`;
-  return fs.existsSync(`${miaoPath}face-q.webp`) ? miaoPath += 'face-q.webp' : miaoPath += 'face.webp';
+  return `${roleData.weapon}/${name}`
 }
 
 function getTalentPath (role, icon) {
   // 每个角色只读一遍
-  if (_.isEmpty(roleData) || roleData.name != role) {
-    roleData = readJson(role)
-  }
+  if (_.isEmpty(roleData) || roleData.name != role) roleData = readJson(role)
 
   let weapon = roleData.weapon
   let talentCons = roleData.talentCons
 
   let type = icon.split('_')[1]
-  let talentpath = `meta/character/${role}/icons`
+  let talentpath = `meta-gs/character/${role}/icons`
 
   switch (type) {
     case 'A':
@@ -182,12 +174,17 @@ function getTalentPath (role, icon) {
 
 function readJson (name) {
   let data = {}
-  let file = `${cwd}/plugins/miao-plugin/resources/meta/character/${name}/data.json`
+  let file = `${miaoRes}/character/${name}/data.json`
   if (fs.existsSync(file)) {
     // 获取本地数据 进行数据合并
     data = JSON.parse(fs.readFileSync(file, 'utf8'))
   }
   return data
+}
+
+function getFace (role) {
+  let miaoPath = `${miaoRes}/character/${role}/imgs/`
+  return fs.existsSync(`${miaoPath}face-q.webp`) ? `${miaoPath}face-q.webp` : `${miaoPath}face-q.webp`
 }
 
 export default simpleTeamDamageRes

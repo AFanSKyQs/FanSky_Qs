@@ -10,7 +10,7 @@
     <link rel="preload" href="https://unpkg.com/@antv/g2plot@latest/dist/g2plot.js" as="script"/>
     <style>
         #container.火 {
-            background-image: url({{cwd}}/plugins/miao-plugin/resources/common/bg/bg-pyro.jpg);
+            background-image: url({{miaoRes}}common/bg/bg-pyro.jpg);
             /*background-image: url({{AcgBg}});*/
             /*background-position: inherit;*/
             /*background-repeat: repeat-y;*/
@@ -20,11 +20,11 @@
         }
 
         div.Avatars > div.avatar > div.detail > div.talent.火 > div {
-            background-image: url({{cwd}}/plugins/miao-plugin/resources/common/bg/talent-pyro.png);
+            background-image: url({{miaoRes}}common/bg/talent-pyro.png);
         }
 
         #container.水 {
-            background-image: url({{cwd}}/plugins/miao-plugin/resources/common/bg/bg-hydro.jpg);
+            background-image: url({{miaoRes}}common/bg/bg-hydro.jpg);
             /*background-image: url({{AcgBg}});*/
             /*background-repeat: repeat-y;*/
             /*background-position: inherit;*/
@@ -34,11 +34,11 @@
         }
 
         div.Avatars > div.avatar > div.detail > div.talent.水 > div {
-            background-image: url({{cwd}}/plugins/miao-plugin/resources/common/bg/talent-hydro.png);
+            background-image: url({{miaoRes}}common/bg/talent-hydro.png);
         }
 
         #container.风 {
-            background-image: url({{cwd}}/plugins/miao-plugin/resources/common/bg/bg-anemo.jpg);
+            background-image: url({{miaoRes}}common/bg/bg-anemo.jpg);
             /*background-image: url({{AcgBg}});*/
             /*background-repeat: repeat-y;*/
             /*background-position: inherit;*/
@@ -48,11 +48,11 @@
         }
 
         div.Avatars > div.avatar > div.detail > div.talent.风 > div {
-            background-image: url({{cwd}}/plugins/miao-plugin/resources/common/bg/talent-anemo.png);
+            background-image: url({{miaoRes}}common/bg/talent-anemo.png);
         }
 
         #container.雷 {
-            background-image: url({{cwd}}/plugins/miao-plugin/resources/common/bg/bg-electro.jpg);
+            background-image: url({{miaoRes}}common/bg/bg-electro.jpg);
             /*background-image: url({{AcgBg}});*/
             /*background-repeat: repeat-y;*/
             /*background-position: inherit;*/
@@ -62,11 +62,11 @@
         }
 
         div.Avatars > div.avatar > div.detail > div.talent.雷 > div {
-            background-image: url({{cwd}}/plugins/miao-plugin/resources/common/bg/talent-electro.png);
+            background-image: url({{miaoRes}}common/bg/talent-electro.png);
         }
 
         #container.草 {
-            background-image: url({{cwd}}/plugins/miao-plugin/resources/common/bg/bg-dendro.jpg);
+            background-image: url({{miaoRes}}common/bg/bg-dendro.jpg);
             /*background-image: url({{AcgBg}});*/
             /*background-repeat: repeat-y;*/
             /*background-position: inherit;*/
@@ -76,11 +76,11 @@
         }
 
         div.Avatars > div.avatar > div.detail > div.talent.草 > div {
-            background-image: url({{cwd}}/plugins/miao-plugin/resources/common/bg/talent-dendro.png);
+            background-image: url({{miaoRes}}common/bg/talent-dendro.png);
         }
 
         #container.冰 {
-            background-image: url({{cwd}}/plugins/miao-plugin/resources/common/bg/bg-cryo.jpg);
+            background-image: url({{miaoRes}}common/bg/bg-cryo.jpg);
             /*background-image: url({{AcgBg}});*/
             /*background-repeat: repeat-y;*/
             /*background-position: inherit;*/
@@ -90,11 +90,11 @@
         }
 
         div.Avatars > div.avatar > div.detail > div.talent.冰 > div {
-            background-image: url({{cwd}}/plugins/miao-plugin/resources/common/bg/talent-cryo.png);
+            background-image: url({{miaoRes}}common/bg/talent-cryo.png);
         }
 
         #container.岩 {
-            background-image: url({{cwd}}/plugins/miao-plugin/resources/common/bg/bg-geo.jpg);
+            background-image: url({{miaoRes}}common/bg/bg-geo.jpg);
             /*background-image: url({{AcgBg}});*/
             /*background-repeat: repeat-y;*/
             /*background-position: inherit;*/
@@ -104,7 +104,7 @@
         }
 
         div.Avatars > div.avatar > div.detail > div.talent.岩 > div {
-            background-image: url({{cwd}}/plugins/miao-plugin/resources/common/bg/talent-geo.png);
+            background-image: url({{miaoRes}}common/bg/talent-geo.png);
         }
     </style>
 </head>
@@ -170,12 +170,12 @@
             <div class="char-lvl">{{ a["level"] }}</div>
             <!--            <img class="weapon r{{ a['weapon']['rarity'] }}" src="./weapon/{{ a['weapon']['icon'] }}.png">-->
             <img class="weapon r{{ a['weapon']['rarity'] }}"
-                 src="{{miaoRes}}meta/weapon/{{ a['weapon']['imgPath'] }}/icon.webp">
+                 src="{{miaoRes}}meta-gs/weapon/{{ a['weapon']['imgPath'] }}/icon.webp">
             <div class="weapon-aff a{{ a['weapon']['affix'] }}"></div>
             <div class="weapon-lvl">{{ a['weapon']['level'] }}</div>
             <div class="arti">
                 {{each a["relicSet"] val key}}
-                <img class="arti s{{ val }}" src="{{miaoRes}}meta/artifact/imgs/{{ key }}/1.webp" height="100%"
+                <img class="arti s{{ val }}" src="{{miaoRes}}meta-gs/artifact/imgs/{{ key }}/1.webp" height="100%"
                      width="100%">
                 {{/each}}
             </div>
