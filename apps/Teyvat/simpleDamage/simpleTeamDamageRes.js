@@ -184,7 +184,7 @@ function readJson (name) {
 
 function getFace (role) {
   let miaoPath = `${miaoRes}/character/${role}/imgs/`
-  return fs.existsSync(`${miaoPath}face-q.webp`) ? `${miaoPath}face-q.webp` : `${miaoPath}face-q.webp`
+  return fs.existsSync(`${miaoPath}face-q.webp`) ? `${miaoPath}face-q.webp` : `${miaoPath}face.webp`
 }
 
 export default simpleTeamDamageRes
