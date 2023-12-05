@@ -2,6 +2,7 @@ import fs from "fs"
 import _ from "lodash"
 import puppeteer from "../../../../../lib/puppeteer/puppeteer.js"
 import {getVersionInfo} from "../../../models/getVersion.js";
+import gsCfg from "../../../../genshin/model/gsCfg.js";
 
 let cwd = process.cwd().replace(/\\/g, '/')
 const AchieveTopPath = `${process.cwd()}/data/FanSky_Qs/Top/AchieveTop.json`;
@@ -40,8 +41,10 @@ export async function AchieveGroupTop(e) {
 }
 
 async function getScreen(e, top3, rankedData) {
+    let lable = gsCfg.getdefSet('role', 'index')
     let BotInfo = await getVersionInfo()
     return {
+        achievement: lable.achievement,
         version: BotInfo.PluginVersion,
         YunzaiName: BotInfo.BotName,
         YunzaiVersion: BotInfo.BotVersion,
