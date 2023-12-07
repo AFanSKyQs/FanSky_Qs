@@ -4,7 +4,7 @@ let cwd = process.cwd().replace(/\\/g, '/')
 
 
 export async function getLocalUserData(e, uid) {
-    let LocalUserData = cwd + '/data/UserData/'
+    let LocalUserData = cwd + '/data/PlayerData/gs/'
     let UidData = `${LocalUserData}${uid}.json`
     if (e.guild_id) {
         logger.info(UidData)

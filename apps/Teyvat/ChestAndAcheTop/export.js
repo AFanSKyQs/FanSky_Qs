@@ -1,4 +1,5 @@
 import {getChestAndAchieve} from "../../../models/getTuImg.js";
+import gsCfg from "../../../../genshin/model/gsCfg.js";
 import axios from "axios";
 import puppeteer from "../../../../../lib/puppeteer/puppeteer.js"
 import path from "path"
@@ -31,6 +32,7 @@ export async function uidGet(e) {
 }
 
 export async function toImgSend(e, type, uid, signature, level, Name, JsonRes) {
+    let lable = gsCfg.getdefSet('role', 'index')
     let toImg
     let CssPath = `${process.cwd()}/plugins/FanSky_Qs/resources/ChestAchieveTop/`
     let AchieveHtmlPath = `${process.cwd()}/plugins/FanSky_Qs/resources/ChestAchieveTop/achieve.html`
@@ -91,6 +93,7 @@ export async function toImgSend(e, type, uid, signature, level, Name, JsonRes) {
             uid: uid,
             name: Name,
             nickname: signature,
+            achievement: lable.achievement,
             allAc: JsonRes.data[0].achievement_number,
             top: JsonRes.data[0].total_index,
             title: JsonRes.data[0].title,
