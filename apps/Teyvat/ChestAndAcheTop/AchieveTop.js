@@ -22,7 +22,7 @@ export async function AchievementTop(e) {
         Json_Res = response.data
     } catch (error) {
         logger.error('[成就排行] 接口请求失败！')
-        e.reply('成就排行接口请求失败~\n尝试读取${uid}本地[ #角色 ]数据')
+        e.reply(`成就排行接口请求失败~\n尝试读取${uid}本地[ #角色 ]数据`)
         await ReadLocalData(e, uid)
         return true
     }
