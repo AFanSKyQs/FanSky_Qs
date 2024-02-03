@@ -1,3 +1,4 @@
+# 该分支改动较大，全是报错，无解决能力请不要随意切到此分支
 <div align="center">
 <h1>FanSky_Qs</h1>
 <!--   <img src="https://i.imgtg.com/2023/02/11/cmxuS.png" alt="BgImg"> -->

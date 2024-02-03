@@ -2,19 +2,16 @@
 import puppeteer from '../../../../lib/puppeteer/puppeteer.js'
 import { getUrlJson } from '../../models/getUrlJson.js'
 import plugin from '../../../../lib/plugins/plugin.js'
-import fs from 'fs'
+import fs from 'node:fs'
 import { getTeam } from './TeyvatTotalEntry.js'
 import _ from 'lodash'
 import gsCfg from '../../../genshin/model/gsCfg.js'
 import { getHelpBg } from '../../models/getTuImg.js'
 import { getVersionInfo } from '../../models/getVersion.js'
-
-import { AchievementTop } from './ChestAndAcheTop/AchieveTop.js'
-import ChestTop from './ChestAndAcheTop/ChestTop.js'
-import { ChestGroupTop } from './ChestAndAcheTop/ChestGroupTop.js'
-import { AchieveGroupTop } from './ChestAndAcheTop/AchieveGroupTop.js'
+import { TopAchieveChest } from './ChestAndAcheTop/TopAchieveChest.js'
+import { GroupTop } from './ChestAndAcheTop/GroupTop.js'
 import { team } from './getTeam.js'
-import { getQQ } from '../../models/getQQ.js'
+// import { getQQ } from '../../models/getQQ.js'
 import MysApi from './GetATUID.js'
 
 let cwd = process.cwd().replace(/\\/g, '/')
@@ -46,13 +43,10 @@ export class BotEntry extends plugin {
         //     fnc: 'TeamCache'
         // },
         {
-          reg: '^#成就(排行|排名|查询|统计)(.*)$',
-          fnc: 'achieveTop'
+          reg: '^#(成就|宝箱)(排行|排名|查询|统计)(.*)$',
+          fnc: 'topAchieveChest'
         },
-        {
-          reg: '^#宝箱(排行|排名|查询|统计)(.*)$',
-          fnc: 'ChestGroupTop'
-        },
+
         {
           reg: /^#历史队伍伤害(DPS|Dps|dps|总伤害|总伤)?(\d+)?(.*)$/,
           fnc: 'HistoryTeam'
@@ -66,22 +60,13 @@ export class BotEntry extends plugin {
     await e.reply('正在开发中~\n每次每个人的队伍数据请求都已经写入了数据库，正在完成最后的渲染设计')
   }
 
-  async achieveTop (e) {
+  async topAchieveChest (e) {
     if (await this.TeyvatStatus() !== 1) return false
     let msg = e.original_msg || e.msg
     if (!msg) return false
 
-    let Static = msg.includes('排行榜') ? await AchieveGroupTop(e) : await AchievementTop(e)
-    if (!Static || Static === false) return false
-    return true
-  }
-
-  async ChestGroupTop (e) {
-    if (await this.TeyvatStatus() !== 1) return false
-    let msg = e.original_msg || e.msg
-    if (!msg) return false
-
-    let Static = msg.includes('排行榜') ? await ChestGroupTop(e) : await ChestTop(e)
+    let type = msg.includes('成就') ? 'achieve' : 'chest'
+    let Static = msg.includes('排行榜') ? await GroupTop(e, type) : await TopAchieveChest(e, type)
     if (!Static || Static === false) return false
     return true
   }

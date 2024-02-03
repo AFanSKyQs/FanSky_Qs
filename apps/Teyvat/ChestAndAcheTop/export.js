@@ -1,171 +1,133 @@
-import {getChestAndAchieve} from "../../../models/getTuImg.js";
-import gsCfg from "../../../../genshin/model/gsCfg.js";
-import axios from "axios";
-import puppeteer from "../../../../../lib/puppeteer/puppeteer.js"
-import path from "path"
-import fs from "fs"
+import { getChestAndAchieve } from '../../../models/getTuImg.js'
+import gsCfg from '../../../../genshin/model/gsCfg.js'
+import fetch, { AbortError } from 'node-fetch'
+import puppeteer from '../../../../../lib/puppeteer/puppeteer.js'
+import path from 'path'
+import fs from 'node:fs'
+import _ from 'lodash'
 
-let chestTopPath = `${process.cwd()}/data/FanSky_Qs/Top/ChestTop.json`
-const achieveTopPath = `${process.cwd()}/data/FanSky_Qs/Top/AchieveTop.json`;
+export async function uidGet (e) {
+  // 使用require引入其他文件的方法
+  const msg = e.original_msg || e.msg
+  if (!msg) return false
 
-export async function uidGet(e) {
-    // 使用require引入其他文件的方法
-    let msg = e.original_msg || e.msg
-    if (!msg) {
-        return false
-    }
-    let uidRet = /[0-9]{9}/.exec(msg)
-    let UID
-    if (uidRet) {
-        UID = uidRet[0]
-        // msg = msg.replace(uidRet[0], '')
-    }
-    if (!UID) {
-        let NoteUser = e.user
-        UID = NoteUser._regUid
-        if (!UID) {
-            UID = e.user.getUid('gs')
-        }
-    }
-    logger.info('宝箱成就排行请求UID：' + UID)
-    return UID
+  const uidReg = /[1-9]\d{9}/.exec(msg)
+  let UID
+  if (uidReg) UID = uidReg[0]
+  if (!UID) {
+    const user = e.user
+    UID = user._regUid || user.getUid('gs')
+  }
+  logger.info('宝箱成就排行请求UID：' + UID)
+  return UID
 }
 
-export async function toImgSend(e, type, uid, signature, level, Name, JsonRes) {
-    let lable = gsCfg.getdefSet('role', 'index')
-    let toImg
-    let CssPath = `${process.cwd()}/plugins/FanSky_Qs/resources/ChestAchieveTop/`
-    let AchieveHtmlPath = `${process.cwd()}/plugins/FanSky_Qs/resources/ChestAchieveTop/achieve.html`
-    let ChestHtmlPath = `${process.cwd()}/plugins/FanSky_Qs/resources/ChestAchieveTop/chest.html`
-    let bg = await getChestAndAchieve()
-    if (type === "Chest") {
-        if (e.isGroup) {
-            const dirPath = path.dirname(chestTopPath);
-            fs.mkdirSync(dirPath, {recursive: true});
-            if (!fs.existsSync(chestTopPath)) fs.writeFileSync(chestTopPath, '{}');
-            let Json = await JSON.parse(fs.readFileSync(chestTopPath, 'utf-8'));
-            if (!Json[e.group_id]) {
-                Json[e.group_id] = {}
-            }
-            if (!Json[e.group_id][e.user_id]) Json[e.group_id][e.user_id] = JsonRes.data[0]
-            Json[e.group_id][e.user_id] = JsonRes.data[0]
-            Json[e.group_id][e.user_id].uid = uid
-            Json[e.group_id][e.user_id].nickname = signature
-            await fs.writeFileSync(chestTopPath, JSON.stringify(Json))
-            e.reply("你可以通过【#宝箱排行榜】查看群内数据了(已更新的)", true, {recallMsg: 15})
-        }
-        let ChestHtml = {
-            uid: uid,
-            name: Name,
-            nickname: signature,
-            allchest: JsonRes.data[0].total_box,
-            top: JsonRes.data[0].total_index,
-            Achest: JsonRes.data[0].luxurious,
-            Bchest: JsonRes.data[0].precious,
-            Cchest: JsonRes.data[0].exquisite,
-            Dchest: JsonRes.data[0].common,
-            title: JsonRes.data[0].title,
-            score: JsonRes.data[0].grade,
-            user_img: `https://q1.qlogo.cn/g?b=qq&nk=${e.user_id}&s=160`,
-            AcgBg: bg
-        }
-        toImg = await puppeteer.screenshot("ChestTop", {tplFile: ChestHtmlPath, quality: 100, CssPath, ChestHtml});
-        await redis.set(`FanSky:SmallFunctions:ChestTop:${e.user_id}`, 1)
-        await redis.expire(`FanSky:SmallFunctions:ChestTop:${e.user_id}`, 80)
-    }
-    if (type === "Achieve") {
-        if (e.isGroup) {
-            const dirPath = path.dirname(achieveTopPath);
-            fs.mkdirSync(dirPath, {recursive: true});
-            if (!fs.existsSync(achieveTopPath)) fs.writeFileSync(achieveTopPath, '{}');
-            let Json = JSON.parse(fs.readFileSync(achieveTopPath, 'utf-8'));
-            if (!Json[e.group_id]) {
-                Json[e.group_id] = {}
-            }
-            if (!Json[e.group_id][e.user_id]) Json[e.group_id][e.user_id] = JsonRes.data[0]
-            Json[e.group_id][e.user_id] = JsonRes.data[0]
-            Json[e.group_id][e.user_id].uid = uid
-            Json[e.group_id][e.user_id].nickname = signature
-            await fs.writeFileSync(achieveTopPath, JSON.stringify(Json))
-            e.reply("您可以通过【#成就排行榜】查看群内数据了(已更新的)", true, {recallMsg: 15})
-        }
-        let AchieveHtml = {
-            uid: uid,
-            name: Name,
-            nickname: signature,
-            achievement: lable.achievement,
-            allAc: JsonRes.data[0].achievement_number,
-            top: JsonRes.data[0].total_index,
-            title: JsonRes.data[0].title,
-            score: JsonRes.data[0].grade,
-            user_img: `https://q1.qlogo.cn/g?b=qq&nk=${e.user_id}&s=160`,
-            AcgBg: bg
-        }
-        toImg = await puppeteer.screenshot("AchieveTop", {
-            tplFile: AchieveHtmlPath,
-            quality: 100,
-            CssPath,
-            AchieveHtml
-        });
-        await redis.set(`FanSky:SmallFunctions:AchieveTop:${e.user_id}`, 1)
-        await redis.expire(`FanSky:SmallFunctions:AchieveTop:${e.user_id}`, 80)
-    }
-    await e.reply(toImg)
-    await new Promise(resolve => setTimeout(resolve, 5000));
-    return true
+export async function toImgSend (e, type, uid, signature, level, name, JsonRes) {
+  let userdata = JsonRes.data[0]
+  const typeName = { achieve: '成就', chest: '宝箱' }
+  const TYPE = _.startCase(type)
+
+  if (e.isGroup) {
+    const file = `${process.cwd()}/data/FanSky_Qs/Top/${TYPE}Top.json`
+    const dirPath = path.dirname(file)
+    fs.mkdirSync(dirPath, { recursive: true })
+    if (!fs.existsSync(file)) fs.writeFileSync(file, '{}')
+
+    const Json = JSON.parse(fs.readFileSync(file, 'utf8'))
+    if (!Json[e.group_id]) Json[e.group_id] = {}
+
+    userdata.uid = uid
+    userdata.nickname = signature
+    Json[e.group_id][e.user_id] = userdata
+    fs.writeFileSync(file, JSON.stringify(Json))
+    await e.reply(`你可以通过【#${typeName[type]}排行榜】查看群内数据了(已更新的)`, true, { recallMsg: 15 })
+  }
+
+  let renderData = {
+    uid,
+    name,
+    nickname: signature,
+    top: userdata.total_index,
+    title: userdata.title,
+    score: userdata.grade,
+    user_img: `https://q1.qlogo.cn/g?b=qq&nk=${e.user_id}&s=160`,
+    AcgBg: await getChestAndAchieve()
+  }
+  let lable = gsCfg.getdefSet('role', 'index')
+
+  if (type === 'chest') {
+    renderData.allchest = userdata.total_box
+    renderData.Achest = userdata.luxurious
+    renderData.Bchest = userdata.precious
+    renderData.Cchest = userdata.exquisite
+    renderData.Dchest = userdata.common
+    renderData.labelAll = _(lable).filter((v, k) => k.includes('_chest') && !['all_chest', 'magic_chest'].includes(k)).sum()
+  } else if (type === 'achieve') {
+    renderData.achievement = lable.achievement
+    renderData.allAc = userdata.achievement_number
+  }
+
+  const CssPath = `${process.cwd()}/plugins/FanSky_Qs/resources/ChestAchieveTop/`
+  let toImg = {
+    tplFile: `${CssPath}/${type}.html`,
+    quality: 100,
+    CssPath
+  }
+  toImg[`${TYPE}Html`] = renderData
+  toImg = await puppeteer.screenshot(`${TYPE}Top`, toImg)
+  const key = `FanSky:SmallFunctions:${TYPE}Top:${e.user_id}`
+  await redis.set(key, 1)
+  await redis.expire(key, 80)
+
+  await e.reply(toImg)
+  await new Promise(resolve => setTimeout(resolve, 5000))
+  return true
 }
 
-export async function axiosRequest(uid) {
-    let Name = '出厂设置'
-    let level = 'NaN..?'
-    let signature = "w太懒了！没有签名喵~"
-    let ServerError = "该服接口正在维护"
-    try {
-        await axios({
-            method: 'get',
-            url: `http://enka.network/api/uid/${uid}?info`,
-            headers: {
-                'Content-Type': 'application/json',
-                // Accept: 'application/json',
-            },
-            timeout: 10000
-        }).then(async function (response) {
-            // console.log(response)
-            // console.log(response.data)
-            if (!(response.status === 200)) {
-                console.log(response)
-                return
-            }
-            if (!response.data.playerInfo) {
-                console.log(response)
-                return
-            }
-            Name = response.data.playerInfo.nickname
-            level = response.data.playerInfo.level
-            if (response.data.playerInfo.signature) {
-                signature = response.data.playerInfo.signature
-            }
-        }).catch(function (error) {
-            if (error.toString().includes("status code 424")) {
-                console.log("该服接口正在维护")
-                Name = ServerError
-                level = ServerError
-                signature = ServerError
-                return
-            }
-            if (error.toString().includes("timeout")) {
-                console.log("请求超时惹")
-                Name = "超时惹·"
-                level = "超时惹~"
-                signature = "超时惹~"
-            }
-        })
-    } catch (err) {
-        console.log("请求出错惹")
-        console.log(err)
-        Name = "Error惹·"
-        level = "Error惹~"
-        signature = "Error惹~"
+export async function axiosRequest (uid) {
+  let [Name, level, signature] = ['出厂设置', 'NaN..?', 'w太懒了！没有签名喵~']
+  const controller = new AbortController()
+  const timeout = setTimeout(() => {
+    controller.abort()
+  }, 10000)
+
+  try {
+    let res = await fetch(`http://enka.network/api/uid/${uid}?info`, {
+      headers: { 'Content-Type': 'application/json' },
+      signal: controller.signal
+    })
+
+    if (!res.ok) return
+    res = await res.json()
+
+    const player = res.playerInfo
+    if (!player) return
+
+    Name = player.nickname
+    level = player.level
+    if (player.signature) signature = player.signature
+  } catch (err) {
+    if (err instanceof AbortError) {
+      logger.error('请求超时惹')
+      Name = '超时惹·'
+      level = '超时惹~'
+      signature = '超时惹~'
+    } else if (err.toString().includes('status code 424')) {
+      const ServerError = '该服接口正在维护'
+      logger.error(ServerError)
+      Name = ServerError
+      level = ServerError
+      signature = ServerError
+      return
+    } else {
+      logger.error('请求出错惹')
+      logger.error(err)
+      Name = 'Error惹·'
+      level = 'Error惹~'
+      signature = 'Error惹~'
     }
-    return {Name, level, signature}
+  } finally {
+    clearTimeout(timeout)
+  }
+  return { Name, level, signature }
 }
