@@ -48,7 +48,6 @@ async function simpleTeamDamageRes (raw, rolesData) {
       })
     })
 
-    let weaponPath = getWeapon(panelData.weapon.icon) || ''
     avatars[role.role] = {
       rarity: role.role_star,
       icon: panelData.icon,
@@ -62,7 +61,7 @@ async function simpleTeamDamageRes (raw, rolesData) {
         level: panelData.weapon.level,
         rarity: panelData.weapon.rarity,
         affix: panelData.weapon.affix,
-        imgPath: weaponPath
+        imgPath: panelData.weapon.weaponPath
       },
       relicSet,
       sets,
@@ -139,14 +138,6 @@ async function simpleTeamDamageRes (raw, rolesData) {
     damages,
     buffs
   }
-}
-
-function getWeapon (icon) {
-  const weaponCfg = gsCfg.getdefSet('weapon', 'data')
-  let name = _.findKey(weaponCfg.Icon, v => v === icon)
-  if (!name) return false
-
-  return `${roleData.weapon}/${name}`
 }
 
 function getTalentPath (role, icon) {
