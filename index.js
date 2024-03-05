@@ -24,28 +24,29 @@ files.forEach((file) => {
 })
 ret = await Promise.allSettled(ret)
 
-let apps = {}
-let APackageFanError = 0
-for (let i in files) {
-  let name = files[i].replace('.js', '')
-  if (ret[i].status !== 'fulfilled') {
-    logger.error(`[FanSky_Qs]载入JS错误：${logger.red(name)}`)
-    const ARegexFan = /Cannot find package '([^']+)'/
-    let AFanReaSon = ret[i].reason + ''
-    const AMatchFan = AFanReaSon.match(ARegexFan)
-    if (AMatchFan) {
-      const APackageNameY = AMatchFan[1]
-      logger.warn(`请先在${logger.red('plugins/FanSky_Qs')}目录运行：${logger.red('pnpm install')}安装依赖`)
-      logger.error(AFanReaSon)
-      APackageFanError++
-    } else {
-      logger.error(ret[i].reason)
-    }
-    delete apps[name]
-    continue
-  }
-  apps[name] = ret[i].value[Object.keys(ret[i].value)[0]]
-}
+// 暂时屏蔽依赖检测
+// let apps = {}
+// let APackageFanError = 0
+// for (let i in files) {
+//   let name = files[i].replace('.js', '')
+//   if (ret[i].status !== 'fulfilled') {
+//     logger.error(`[FanSky_Qs]载入JS错误：${logger.red(name)}`)
+//     const ARegexFan = /Cannot find package '([^']+)'/
+//     let AFanReaSon = ret[i].reason + ''
+//     const AMatchFan = AFanReaSon.match(ARegexFan)
+//     if (AMatchFan) {
+//       const APackageNameY = AMatchFan[1]
+//       logger.warn(`请先在${logger.red('plugins/FanSky_Qs')}目录运行：${logger.red('pnpm install')}安装依赖`)
+//       logger.error(AFanReaSon)
+//       APackageFanError++
+//     } else {
+//       logger.error(ret[i].reason)
+//     }
+//     delete apps[name]
+//     continue
+//   }
+//   apps[name] = ret[i].value[Object.keys(ret[i].value)[0]]
+// }
 
 logger.info(logger.magenta('----FanSky_Qs插件载入完成------'))
 
