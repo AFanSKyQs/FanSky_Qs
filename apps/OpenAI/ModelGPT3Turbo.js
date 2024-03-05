@@ -2,7 +2,6 @@
 import HttpsProxyAgent from 'https-proxy-agent'
 import common from '../../../../lib/common/common.js'
 import axios from 'axios'
-import {segment} from 'oicq'
 import getCfg from "../../models/getCfg.js";
 import * as url from "url";
 import fetch from 'node-fetch'

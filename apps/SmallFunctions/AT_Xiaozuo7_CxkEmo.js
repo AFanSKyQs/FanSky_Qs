@@ -1,5 +1,4 @@
 import fs from "fs";
-import {segment} from "oicq";
 import {QQGuildImg} from "../../models/QQGuildMsg.js";
 
 let CxkEmo = `${process.cwd()}/plugins/FanSky_Qs/resources/SmallFunction/AT_Xiaozuo7_CxkEmo/CxkImg/`

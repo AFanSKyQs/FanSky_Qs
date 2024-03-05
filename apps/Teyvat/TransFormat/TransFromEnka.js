@@ -135,7 +135,8 @@ async function transFromEnka (Json, avatarInfo, ts = 0) {
         icon: equip.flat.icon,
         _appendPropIdList: equip.reliquary.appendPropIdList || []
       }
-      relicData.calc = await calcRelicMark(Json, relicData, res.element, affixWeight, pointMark, maxMark)
+      const data = { relicData, charElement: res.element, affixWeight, pointMark, maxMark }
+      relicData.calc = await calcRelicMark(Json, data)
       // 分数计算完毕后再将词条名称、数值转为适合 HTML 渲染的格式
       relicData.main.value = vStr(relicData.main.prop, relicData.main.value)
       relicData.main.prop = kStr(relicData.main.prop)

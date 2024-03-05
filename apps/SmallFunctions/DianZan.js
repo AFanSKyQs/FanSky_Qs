@@ -1,5 +1,3 @@
-import {segment} from "oicq";
-
 let urls_one = "http://api.andeer.top/API/word_pic1.php"
 
 export async function thuMUp(e) {

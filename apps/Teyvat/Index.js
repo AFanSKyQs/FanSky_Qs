@@ -9,6 +9,7 @@ import simpleTeamDamageRes from './simpleDamage/simpleTeamDamageRes.js'
 import simpleDamageRes from './simpleDamage/simpleDamageRes.js'
 import getAvatarData from './GetData/getAvatarData.js'
 import getTeyvatData from './GetData/getTeyvatData.js'
+
 /** 转换词条数值为字符串形式 */
 function vStr (prop, value) {
   if (['生命值', '攻击力', '防御力', '元素精通'].includes(prop)) {

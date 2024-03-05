@@ -1,5 +1,4 @@
 import fs from "fs";
-import {segment} from "oicq";
 import {QQGuildImg} from "../../models/QQGuildMsg.js";
 
 let DinZhen_Path = `${process.cwd()}/plugins/FanSky_Qs/resources/YiyanDinzhen/img/`

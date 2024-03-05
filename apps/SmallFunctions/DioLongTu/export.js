@@ -3,7 +3,6 @@ import {promisify} from "util";
 import {pipeline} from "stream";
 import MD5 from 'md5'
 import lodash from 'lodash'
-import {segment} from 'oicq'
 import {getEmoji} from "../../../models/getString.js";
 import fetch from "node-fetch";
 import {QQGuildImg} from "../../../models/QQGuildMsg.js";

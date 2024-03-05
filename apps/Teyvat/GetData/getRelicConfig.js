@@ -1,5 +1,4 @@
 import { GROW_VALUE, MAIN_AFFIXS, SUB_AFFIXS } from '../../../models/Teyvat/index.js'
-import { ReturnConfig } from '../Index.js'
 
 /**
  *  指定角色圣遗物计算配置获取，包括词条评分权重、词条数值原始权重、各位置圣遗物总分理论最高分和主词条理论最高得分
@@ -13,12 +12,7 @@ async function getRelicConfig (Json, char, base = {}) {
   const affixWeight = CALC_RULES[char] ?? { 攻击力百分比: 75, 暴击率: 100, 暴击伤害: 100 }
   const sortedAffixWeight = Object.fromEntries(
     Object.entries(affixWeight).sort((a, b) => {
-      return (
-        b[1] - a[1] ||
-                (a[0].includes('暴击') ? -1 : 1) ||
-                (a[0].includes('加成') ? -1 : 1) ||
-                (a[0].includes('元素') ? -1 : 1)
-      )
+      return (b[1] - a[1] || (a[0].includes('暴击') ? -1 : 1) || (a[0].includes('加成') ? -1 : 1) || (a[0].includes('元素') ? -1 : 1))
     })
   )
   const pointMark = {}
@@ -26,17 +20,15 @@ async function getRelicConfig (Json, char, base = {}) {
     pointMark[k] = v / GROW_VALUE[k]
   }
   if (pointMark['攻击力百分比']) {
-    pointMark['攻击力'] =
-            (pointMark['攻击力百分比'] / (base['攻击力'] ?? 1020)) * 100
+    pointMark['攻击力'] = (pointMark['攻击力百分比'] / (base['攻击力'] ?? 1020)) * 100
   }
   if (pointMark['防御力百分比']) {
-    pointMark['防御力'] =
-            (pointMark['防御力百分比'] / (base['防御力'] ?? 300)) * 100
+    pointMark['防御力'] = (pointMark['防御力百分比'] / (base['防御力'] ?? 300)) * 100
   }
   if (pointMark['生命值百分比']) {
-    pointMark['生命值'] =
-            (pointMark['生命值百分比'] / (base['生命值'] ?? 400)) * 100
+    pointMark['生命值'] = (pointMark['生命值百分比'] / (base['生命值'] ?? 400)) * 100
   }
+
   const maxMark = {
     1: { main: 0, total: 0 },
     2: { main: 0, total: 0 },
@@ -44,12 +36,13 @@ async function getRelicConfig (Json, char, base = {}) {
     4: { main: 0, total: 0 },
     5: { main: 0, total: 0 }
   }
+
   for (let posIdx = 1; posIdx < 6; posIdx++) {
     // 主词条最高得分
     let mainAffix
     if (posIdx <= 2) {
       // 花和羽不计算主词条得分
-      mainAffix = (posIdx === 1) ? '生命值' : '攻击力'
+      mainAffix = posIdx === 1 ? '生命值' : '攻击力'
       maxMark[posIdx.toString()].main = 0
       maxMark[posIdx.toString()].total = 0
     } else {

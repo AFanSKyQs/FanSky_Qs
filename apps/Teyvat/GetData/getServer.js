@@ -5,18 +5,20 @@
  * @returns
  */
 function getServer (uid, teyvat = false) {
-  if (uid[0] === '5') {
-    return 'cn_qd01'
-  } else if (uid[0] === '6') {
-    return teyvat ? 'us' : 'os_usa'
-  } else if (uid[0] === '7') {
-    return teyvat ? 'eur' : 'os_euro'
-  } else if (uid[0] === '8') {
-    return teyvat ? 'asia' : 'os_asia'
-  } else if (uid[0] === '9') {
-    return teyvat ? 'hk' : 'os_cht'
-  } else {
-    return 'cn_gf01'
+  let firstNum = Number(uid[0])
+  switch (firstNum) {
+    case 5:
+      return 'cn_qd01'
+    case 6:
+      return teyvat ? 'us' : 'os_usa'
+    case 7:
+      return teyvat ? 'eur' : 'os_euro'
+    case 8:
+      return teyvat ? 'asia' : 'os_asia'
+    case 9:
+      return teyvat ? 'hk' : 'os_cht'
+    default:
+      return 'cn_gf01'
   }
 }
 export default getServer

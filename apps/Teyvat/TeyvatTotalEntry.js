@@ -1,5 +1,4 @@
-import {getAvatarData, getTeyvatData, ReturnConfig, simpleTeamDamageRes, transToTeyvatRequest} from './Index.js'
-import fs from "fs";
+import { getAvatarData, getTeyvatData, ReturnConfig, simpleTeamDamageRes, transToTeyvatRequest } from './Index.js'
 
 // await getSingle('117556563', '魈') //  单人伤害：uid, 角色名
 // await getTeam('117556563'); //队伍伤害：uid，角色列表
@@ -11,54 +10,54 @@ import fs from "fs";
  @param e 事件
  @return {string|ArrayBuffer} 查询结果。一般返回图片字节，出错时返回错误信息字符串
  **/
-async function getTeam(uid, chars = [], showDetail = false, e) {
-    let Json = await ReturnConfig()
-    // 获取面板数据
-    const data = await getAvatarData(Json, uid, '全部', e)
-    if (data.error) return {error: data.error}
+async function getTeam (uid, chars = [], showDetail = false, e) {
+  let Json = await ReturnConfig()
+  // 获取面板数据
+  const data = await getAvatarData(Json, uid, '全部', e)
+  if (data.error) return { error: data.error }
 
-    let extract
-    if (chars.length) {
-        extract = data.avatars.filter(a => chars.includes(a.name))
-        if (extract.length !== chars.length) {
-            const gotThis = extract.map(a => a.name)
-            const notFound = chars.filter(c => !gotThis.includes(c))
-            return {error: `玩家 ${uid} 的最新数据中未发现${notFound.join('、')}！`}
-        }
-    } else if (data.avatars.length >= 4) {
-        extract = data.avatars.slice(0, 4)
-        e.reply(`UID${uid} 前 4 位：${extract.map(a => a.name).join('、')} 进行计算...`)
-    } else {
-        return {error: `玩家 ${uid} 的面板数据甚至不足以组成一支队伍呢！`}
+  let extract
+  if (chars.length) {
+    extract = data.avatars.filter(a => chars.includes(a.name))
+    if (extract.length !== chars.length) {
+      const gotThis = extract.map(a => a.name)
+      const notFound = chars.filter(c => !gotThis.includes(c))
+      return { error: `玩家 ${uid} 的最新数据中未发现${notFound.join('、')}！` }
     }
-    const extractCopy = extract
-    const TiwateBody = await transToTeyvatRequest(extractCopy, uid)
+  } else if (data.avatars.length >= 4) {
+    extract = data.avatars.slice(0, 4)
+    e.reply(`UID${uid} 前 4 位：${extract.map(a => a.name).join('、')} 进行计算...`)
+  } else {
+    return { error: `玩家 ${uid} 的面板数据甚至不足以组成一支队伍呢！` }
+  }
+  const extractCopy = extract
+  const TiwateBody = await transToTeyvatRequest(extractCopy, uid)
 
-    // let CachePath = `${process.cwd()}/plugins/FanSky_Qs/resources/TevatRequestDataCache/EnkaChangeData/${uid}.json`
-    // if (!fs.existsSync(CachePath)) {
-    //     fs.writeFileSync(CachePath, '{}')
-    // }
-    // await fs.writeFileSync(CachePath, JSON.stringify(TiwateBody))
+  // let CachePath = `${process.cwd()}/plugins/FanSky_Qs/resources/TevatRequestDataCache/EnkaChangeData/${uid}.json`
+  // if (!fs.existsSync(CachePath)) {
+  //     fs.writeFileSync(CachePath, '{}')
+  // }
+  // await fs.writeFileSync(CachePath, JSON.stringify(TiwateBody))
 
-    const TiwateRaw = await getTeyvatData(TiwateBody, 'team')
-    if (TiwateRaw.code !== 200 || !TiwateRaw.result) {
-        logger.error(`UID${uid} 的 ${extract.length} 位角色队伍伤害计算请求失败！\n>>>> [提瓦特返回] ${JSON.stringify(TiwateRaw)}`)
-        await e.reply(`UID ${uid} 的 ${extract.length} 位角色伤害计算请求失败！`)
-        return {error: TiwateRaw ? `玩家 ${uid} 队伍伤害计算失败，接口可能发生变动！` : '啊哦，队伍伤害计算小程序状态异常！'}
-    }
-    try {
-        let data = await simpleTeamDamageRes(TiwateRaw.result, extract.reduce((acc, a) => ({
-            ...acc,
-            [a.name]: a
-        }), {}))
-        return data;
-    } catch (e) {
-        logger.error(`[${e.constructor.name}] 队伍伤害数据解析出错`)
-        return {error: `[${e.constructor.name}] 队伍伤害数据解析出错咯`}
-    }
+  const TiwateRaw = await getTeyvatData(TiwateBody, 'team')
+  if (TiwateRaw.code !== 200 || !TiwateRaw.result) {
+    logger.error(`UID${uid} 的 ${extract.length} 位角色队伍伤害计算请求失败！\n>>>> [提瓦特返回] ${JSON.stringify(TiwateRaw)}`)
+    await e.reply(`UID ${uid} 的 ${extract.length} 位角色伤害计算请求失败！`)
+    return { error: TiwateRaw ? `玩家 ${uid} 队伍伤害计算失败，接口可能发生变动！` : '啊哦，队伍伤害计算小程序状态异常！' }
+  }
+  try {
+    let data = await simpleTeamDamageRes(TiwateRaw.result, extract.reduce((acc, a) => ({
+      ...acc,
+      [a.name]: a
+    }), {}))
+    return data
+  } catch (e) {
+    logger.error(`[${e.constructor.name}] 队伍伤害数据解析出错`)
+    return { error: `[${e.constructor.name}] 队伍伤害数据解析出错咯` }
+  }
 
-    // todo: @return html数据
-    // const htmlBase = LOCAL_DIR.resolve().toString();
+  // todo: @return html数据
+  // const htmlBase = LOCAL_DIR.resolve().toString();
 }
 
 /**
@@ -68,12 +67,12 @@ async function getTeam(uid, chars = [], showDetail = false, e) {
  * @param e 事件
  * @returns 查询结果
  */
-async function getSingle(uid, char = '全部', e) {
-    let Json = await ReturnConfig()
-    // 获取面板数据
-    let data = await getAvatarData(Json, uid, char, e)
-    if (data.error) return data.error
-    return char === '全部' ? 'list' : 'panel'
+async function getSingle (uid, char = '全部', e) {
+  let Json = await ReturnConfig()
+  // 获取面板数据
+  let data = await getAvatarData(Json, uid, char, e)
+  if (data.error) return data.error
+  return char === '全部' ? 'list' : 'panel'
 }
 
-export {getTeam, getSingle}
+export { getTeam, getSingle }

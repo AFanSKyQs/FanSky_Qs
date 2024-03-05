@@ -1,7 +1,6 @@
 import fs from "fs";
 import common from "../../../../lib/common/common.js";
 import puppeteer from "../../../../lib/puppeteer/puppeteer.js"
-import {segment} from "oicq"
 import {getAcgBg, getBgImg, getByImg} from "../../models/getTuImg.js";
 import {getGroup} from "../../models/getGroupList.js";
 import {getWords} from "../../models/getAwords.js";
