@@ -4,9 +4,9 @@ import { StarRunCheckConfig } from './tools/StarRunCheckConfig.js'
 if (!global.segment) global.segment = (await import('oicq')).segment
 
 let Cwd = process.cwd().replace(/\\/g, '/')
-let Path, Version
 logger.info(logger.magenta('-------------QwQ--------------'))
 
+let Version
 try {
   Version = await JSON.parse(fs.readFileSync(`${Cwd}/plugins/FanSky_Qs/package.json`, 'utf-8'))
 } catch (err) {

@@ -1,6 +1,9 @@
 import common from '../../../lib/common/common.js'
 import _ from 'lodash'
 
+const key = 'FanSky:FunctionOFF'
+let OpenStatus = JSON.parse(await redis.get(key))
+
 export class FanSkySetting extends plugin {
   constructor () {
     super({
@@ -29,33 +32,31 @@ export class FanSkySetting extends plugin {
       模型接口4: 'OpenAI4',
       群聊AI: 'GroupOpenAI'
     }
-
-    this.key = 'FanSky:FunctionOFF'
   }
 
   async FanSkySetting () {
     if (!this.e.isMaster) {
       this.e.reply('只有主人才能这样做喵！！喵呜！')
-      return true
+      return
     }
 
-    let Result = await this.parseUserInput(this.e.msg)
-    if (Result.Tools) await this.setRedis(Result.Tools, Result.ToolsStatus)
+    let msg = this.e.msg.match(/^#(fan|fans|fansky)设置(.*)$/)[2].trim() || ''
+    if (msg) {
+      let res = await this.parseUserInput(msg)
+      if (res.Tools) await this.setRedis(res)
+    }
 
-    const msg = await common.makeForwardMsg(this.e, await this.getRedis(), '[FanSky_Qs]当前设置')
+    msg = await common.makeForwardMsg(this.e, this.setList(), '[FanSky_Qs]当前设置')
     await this.e.reply(msg)
     return true
   }
 
-  async setRedis (FunctionKey, FunctionStatus) {
-    let OpenStatus = JSON.parse(await redis.get(this.key))
-    OpenStatus[FunctionKey] = FunctionStatus
+  async setRedis (res) {
+    OpenStatus[res.Tools] = res.ToolsStatus
     await redis.set(this.key, JSON.stringify(OpenStatus))
   }
 
-  async getRedis (e) {
-    let OpenStatus = JSON.parse(await redis.get(this.key))
-
+  setList () {
     const setList = []
     _.each(this.functionKeyMap, (v, k) => {
       if (k === '艾特对话') setList.push('\n【其他小设置】：')
@@ -70,34 +71,16 @@ export class FanSkySetting extends plugin {
   }
 
   async parseUserInput (input) {
-    let ReturnSet = {}
-    const match = input.match(/^#(fan|fans|fansky)设置(.*)$/)
-    if (!match) {
-      ReturnSet.Setting = true
-      return ReturnSet
-    }
+    input = input.replace('OpenAI系统', '聊天系统')
 
-    let args = match[2].trim()
+    let toolsMatches = new RegExp(`(${_.keys(this.functionKeyMap).join('|')})(开启|关闭)`)
+    toolsMatches = input.match(toolsMatches)
 
-    if (!args) ReturnSet.Setting = true
-    else {
-      args = args.replace('OpenAI系统', '聊天系统')
-      const toolsRegex = new RegExp(`(${_.keys(this.functionKeyMap).join('|')})(开启|关闭)`)
-      const toolsMatches = args.match(toolsRegex)
-
-      if (toolsMatches) {
-        const functionName = this.functionKeyMap[toolsMatches[1]]
-        const functionStatus = toolsMatches[2] === '开启' ? 1 : 0
-        const functionObj = { [functionName]: functionStatus }
-        ReturnSet = Object.entries(functionObj).reduce((acc, [key, value]) => {
-          acc.Tools = key
-          acc.ToolsStatus = value
-          return acc
-        }, {})
-      } else {
-        ReturnSet.Setting = true
-      }
-    }
-    return ReturnSet
+    return toolsMatches
+      ? {
+          Tools: this.functionKeyMap[toolsMatches[1]],
+          ToolsStatus: toolsMatches[2] === '开启' ? 1 : 0
+        }
+      : {}
   }
 }
