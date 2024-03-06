@@ -10,7 +10,7 @@ let GithubStatic = `${cwd}/plugins/FanSky_Qs/resources/Github/GithubStatic.json`
 export class PushUpdates extends plugin {
   constructor () {
     super({
-      name: '监控github仓库状态',
+      name: 'Fan仓库状态',
       dsc: '监控github仓库状态及更新',
       event: 'message',
       priority: 1,
@@ -20,7 +20,8 @@ export class PushUpdates extends plugin {
           fnc: 'Monitor'
         }, {
           reg: '^#(fan|Fansky|Fan|fans)(强制)?更新$',
-          fnc: 'updateFanSKYPlugin'
+          fnc: 'updateFanSKYPlugin',
+          permission: 'master'
         }
       ]
     })
