@@ -3,12 +3,14 @@ import { getVersionInfo } from './getVersion.js'
 import _ from 'lodash'
 import YAML from 'yaml'
 import fs from 'node:fs'
+import fanBase from './fanBase.js'
 
 let cwd = process.cwd().replace(/\\/g, '/')
 
-export default class help {
+export default class help extends fanBase {
   constructor (e) {
-    this.e = e
+    super(e)
+    this.model = 'help'
   }
 
   async screenData () {
@@ -29,16 +31,16 @@ export default class help {
       helpData,
       saveId: this.e.user_id,
       cwd,
-      tplFile: `${cwd}/plugins/FanSky_Qs/resources/help/help.html`,
+      tplFile: `${this.plugPath}resources/help/help.html`,
       /** 绝对路径 */
-      pluResPath: `${cwd}/plugins//FanSky_Qs/resources/help/`,
-      headStyle: `<style> .head_box { background: url(${cwd}/plugins/FanSky_Qs/resources/help/img/titleImg/${headImg}.png) #fbe1c0; background-position-x: 42px; background-repeat: no-repeat; background-size: auto 101%; }</style>`
+      pluResPath: `${this.plugPath}resources/help/`,
+      headStyle: `<style> .head_box { background: url(${this.plugPath}resources/help/img/titleImg/${headImg}.png) #fbe1c0; background-position-x: 42px; background-repeat: no-repeat; background-size: auto 101%; }</style>`
     }
   }
 
   async getHelper (msg) {
     msg = ['对话', '聊天', 'OpenAI', 'chatgpt'].includes(msg) ? 'OpenAI' : 'Main'
-    const helper = YAML.parse(fs.readFileSync(`../config/default/Help/${msg}`, 'utf8'))
+    const helper = YAML.parse(fs.readFileSync(`${this.plugPath}config/default/Help/${msg}.yaml`, 'utf8'))
 
     let helpData = []
     if (msg === 'Main') {

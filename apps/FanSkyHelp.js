@@ -1,4 +1,4 @@
-import puppeteer from '../../../../lib/puppeteer/puppeteer.js'
+import puppeteer from '../../../lib/puppeteer/puppeteer.js'
 import Help from '../models/ReturnHelpData.js'
 
 export class FanSkyHelp extends plugin {
