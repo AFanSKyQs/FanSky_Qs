@@ -1,4 +1,4 @@
-import { GroupAI } from '../models/OpenAIGroupAI'
+import GroupAI from '../models/OpenAIGroupAI.js'
 
 export class GroupAIIndex extends plugin {
   constructor () {
@@ -21,8 +21,8 @@ export class GroupAIIndex extends plugin {
     let OpenStatus = JSON.parse(await redis.get('FanSky:FunctionOFF'))
     if (!OpenStatus.GroupOpenAI) return false
 
-    let Static = await GroupAI(this.e)
-    if (!Static) return false
+    let groupAI = await new GroupAI(this.e).groupAI()
+    if (!groupAI) return false
     return true
   }
 }
