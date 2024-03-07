@@ -1,4 +1,4 @@
-import FanCfg from '../../models/getCfg.js'
+import FanCfg from './getCfg.js'
 import { ModelGPT3Turbo } from '../bapps/OpenAI/ModelGPT3Turbo.js'
 import fanBase from './fanBase.js'
 

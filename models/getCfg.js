@@ -9,7 +9,7 @@ class FanCfg {
   }
 
   getDef (dir, name) {
-    return this.getData(`${this.getDir('def')}${dir}/${name}`, 'yaml')
+    return this.getFile(`${this.getDir('def')}${dir}/`, name)
   }
 
   getFile (path, name, type = 'yaml') {
@@ -36,6 +36,12 @@ class FanCfg {
         break
     }
     return path
+  }
+
+  writeFile (data, path, name, type = 'yaml') {
+    path = `${this.getDir(path)}${name}.${type}`
+    if (type === 'yaml') data = YAML.stringify(data)
+    if (fs.existsSync(path)) fs.writeFileSync(path, data, 'utf8')
   }
 }
 
