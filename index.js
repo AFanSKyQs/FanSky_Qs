@@ -3,7 +3,7 @@ import {StarRunCheckConfig} from "./tools/StarRunCheckConfig.js";
 
 let Cwd = process.cwd().replace(/\\/g, "/")
 let Path, Version
-logger.info(logger.magenta(`'-------------QwQ--------------`))
+logger.info(logger.magenta(`--------------QwQ--------------`))
 try {
     Version = await JSON.parse(fs.readFileSync(`${Cwd}/plugins/FanSky_Qs/package.json`, 'utf-8'));
 } catch (err) {
