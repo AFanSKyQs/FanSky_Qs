@@ -248,7 +248,7 @@ export class OpenAIEntry extends plugin {
                 if (e.isGroup) {
                     await e.reply("主人，我们能不能私底下看鸭(˃ ⌑ ˂ഃ )")
                 } else {
-                    let path = `${process.cwd()}/plugins/FanSky_Qs/config/OpenAI.json`
+                    let path = `${process.cwd()}/plugins/FanSky_Qs/config/config.json`
                     path = path.replace(/\\/g, '/')
                     let OpenAIJson = JSON.parse(fs.readFileSync(path))
                     await e.reply(`主人，我的OpenAI密钥是：${OpenAIJson.OpenAI_Key}`)

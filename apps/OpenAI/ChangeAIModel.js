@@ -2,7 +2,7 @@ import fs from 'fs'
 import getCfg, {getOpenAIConfig} from '../../models/getCfg.js'
 
 let yunPath = process.cwd().replace(/\\/g, "/")
-let OpenAIPath = `${yunPath}/plugins/FanSky_Qs/config/OpenAI.json`
+let OpenAIPath = `${yunPath}/plugins/FanSky_Qs/config/config.json`
 
 export async function setAllPerson(e) {
     if (!e.isMaster) {
@@ -38,7 +38,7 @@ export async function OnOFF(e) {
         e.reply("你不能关闭我喵~")
         return true
     }
-    let path = `${process.cwd()}/plugins/FanSky_Qs/config/OpenAI.json`
+    let path = `${process.cwd()}/plugins/FanSky_Qs/config/config.json`
     path = path.replace(/\\/g, '/')
     let OpenAIJson = JSON.parse(fs.readFileSync(path))
     if (!OpenAIJson.OnOff) {
@@ -93,7 +93,7 @@ export async function SetMaxToMakeMsg(e) {
         e.reply("你不能设置我的回复数字格式哇喵！")
         return true
     }
-    let path = `${process.cwd()}/plugins/FanSky_Qs/config/OpenAI.json`
+    let path = `${process.cwd()}/plugins/FanSky_Qs/config/config.json`
     path = path.replace(/\\/g, '/')
     let OpenAIJson = JSON.parse(fs.readFileSync(path))
     if (!OpenAIJson.Text_img) {
@@ -127,7 +127,7 @@ export async function SetOpenAIKey(e) {
         e.reply('你的Key好像不太对喵~\n大概格式：sk-xxxxxxxxxxx....\n获取：OpenAI官网')
         return true
     }
-    let path = `${process.cwd()}/plugins/FanSky_Qs/config/OpenAI.json`
+    let path = `${process.cwd()}/plugins/FanSky_Qs/config/config.json`
     path = path.replace(/\\/g, '/')
     let OpenAIJson = JSON.parse(fs.readFileSync(path))
     OpenAIJson.OpenAI_Key = Key
@@ -141,7 +141,7 @@ export async function ChangeAISignMode(e) {
         e.reply('打咩，你还不可以控制这个噢(Ｔ▽Ｔ)~')
         return true
     }
-    let path = `${process.cwd()}/plugins/FanSky_Qs/config/OpenAI.json`
+    let path = `${process.cwd()}/plugins/FanSky_Qs/config/config.json`
     path = path.replace(/\\/g, '/')
     let OpenAIJson = JSON.parse(fs.readFileSync(path))
     let SignMode = e.msg.match(/#?(设置|更改|修改)模型打卡(开启|打开|启用|关闭|不启用)/)[2]
@@ -164,7 +164,7 @@ export async function ChangeAIModelMode(e) {
         e.reply('打咩，你还不可以控制这个噢(Ｔ▽Ｔ)~')
         return true
     }
-    let path = `${process.cwd()}/plugins/FanSky_Qs/config/OpenAI.json`
+    let path = `${process.cwd()}/plugins/FanSky_Qs/config/config.json`
     path = path.replace(/\\/g, '/')
     let msg = e.msg
     let ModelMode = Number(msg.match(/\d+/)[0])
@@ -188,7 +188,7 @@ export async function addBlackList(e) {
         e.reply('打咩，你在赣神魔！∑(ΦдΦlll~')
         return true
     }
-    let path = `${process.cwd()}/plugins/FanSky_Qs/config/OpenAI.json`
+    let path = `${process.cwd()}/plugins/FanSky_Qs/config/config.json`
     path = path.replace(/\\/g, '/')
     let msg = e.msg
     let QQ = Number(msg.match(/\d+/)[0])
@@ -224,7 +224,7 @@ export async function ChangeAIModel(e) {
         e.reply('打咩，你还不可以控制这个噢(Ｔ▽Ｔ)~')
         return true
     }
-    let path = `${process.cwd()}/plugins/FanSky_Qs/config/OpenAI.json`
+    let path = `${process.cwd()}/plugins/FanSky_Qs/config/config.json`
     path = path.replace(/\\/g, '/')
     let msg = e.msg
     let model = Number(msg.match(/\d+/)[0])
@@ -232,11 +232,10 @@ export async function ChangeAIModel(e) {
         let OpenAIJson = JSON.parse(fs.readFileSync(path))
         OpenAIJson.Model = model
         await fs.writeFileSync(path, JSON.stringify(OpenAIJson))
-        let Model_list = (await getCfg(yunPath, 'OpenAI')).Model_list
+        let Model_list = (await getCfg(yunPath, 'config')).Model_list
         e.reply(`已切换为${model}号模型: ${Model_list[model - 1]}`)
     } else {
         e.reply(`您选择了${model}号模型,暂时仅支持1号和2号模型~`)
     }
     return true
 }
-

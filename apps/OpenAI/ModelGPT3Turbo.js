@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import HttpsProxyAgent from 'https-proxy-agent'
+import { HttpsProxyAgent } from 'https-proxy-agent'
 import common from '../../../../lib/common/common.js'
 import axios from 'axios'
 import {segment} from 'oicq'
@@ -10,8 +10,22 @@ import fetch from 'node-fetch'
 let Moudel1List = []
 let Moudel1Num = []
 
+function pickContent(payload) {
+    const data = payload && payload.data ? payload.data : payload
+    let content = data && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content
+    if (!content && typeof data === 'string') content = data
+    return {content, data}
+}
+
 async function SendAIGroup(e, ResultMsg) {
-    let result = ResultMsg.data.choices[0].message.content
+    const {content, data} = pickContent(ResultMsg)
+    if (!content) {
+        logger.info('[FanSky_Qs][SendAIGroup] 无有效内容，原始返回：')
+        logger.info(JSON.stringify(data || {}, null, 2))
+        await e.reply('\n[接口返回异常] 未获取到内容，请检查请求地址/模型名/Key', false, {at: true, recallMsg: 10})
+        return
+    }
+    let result = content
     let BotNickName = Bot.uin + ":"
     let BotNickName2 = Bot.uin + "："
     result = result.replace(/曙光:|我:|我：|曙光：/g, "")
@@ -65,9 +79,16 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult, AIResMsg = 
         const useProxy = (Addr, Port, SelectProxy) => {
             return async () => {
                 if (AIType) {
+                    // 选择模型：优先使用配置中的 Model_list 与 Model 序号
+                    const OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`)) || {}
+                    const modelList = Array.isArray(Json.Model_list) ? Json.Model_list : []
+                    let selectedModel = modelList[Number(Json.Model) - 1] || 'gpt-3.5-turbo'
+                    if (/^gpt-/.test(selectedModel) && OpenStatus.OpenAI4 === 1) {
+                        selectedModel = 'gpt-4'
+                    }
                     let ResMsg = {
                         //被欺负时经常使用“哼”、“啧”、“呸”、“切”、“你是笨蛋”之类的口头禅，在表达自己的情感时经常带有一些撒娇的口吻...,说的话概率使用括号(情绪)来表达心理活动，比如：(恼)表示微愤怒，(乐)表示看热闹的,(哈哈哈)表示开心等....
-                        model: 'gpt-3.5-turbo',
+                        model: selectedModel,
                         messages: [
                             {
                                 role: 'system',
@@ -108,17 +129,30 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult, AIResMsg = 
                         }
                     } else if (SelectProxy === "Default") {
                         const OPENAI_API_KEY = OpenAI_Key.trim();
-                        let url = 'https://api.openai.com/v1/chat/completions';
+                        // 解析模型与基址
+                        const modelList = Array.isArray(Json.Model_list) ? Json.Model_list : []
+                        let selectedModel = modelList[Number(Json.Model) - 1] || 'gpt-3.5-turbo'
+                        const configuredBase = ((Json.requestUrl || Json.RequestURL || '') + '').trim()
+                        // 根据配置或模型猜测默认基址
+                        let base = configuredBase || (/kimi|moonshot/i.test(selectedModel) ? 'https://api.moonshot.cn/v1' : 'https://api.openai.com/v1')
+                        // 若未显式带版本后缀，则默认补 /v1
+                        if (!/\/v\d+\/?$/i.test(base)) {
+                            base = `${base.replace(/\/$/, '')}/v1`
+                        }
+                        // 构造最终 URL
+                        let url = `${base.replace(/\/$/, '')}/chat/completions`
                         let Proxy = `http://${Addr}:${Port}`
-                        if (Addr === "127.0.0.1" && Port === "7890") {
-                            logger.info("[FanSky_Qs]使用镜像站请求中...")
-                            url = 'https://api.openai-proxy.com/v1/chat/completions';
+                        // OpenAI 特殊镜像处理（仅当目标是 OpenAI 官方时）
+                        if (!configuredBase && /api\.openai\.com\/v1/i.test(base) && (Addr === "127.0.0.1") && (Port === "7890")) {
+                            logger.info("[FanSky_Qs]使用OpenAI镜像站请求中...")
+                            url = 'https://api.openai-proxy.com/v1/chat/completions'
                             Proxy = 'http://0.0.0.0:0'
                         }
                         const headers = {
                             'Content-Type': 'application/json',
                             'Authorization': `Bearer ${OPENAI_API_KEY}`
                         };
+                        // 使用上面准备好的 ResMsg 结构，确保 model 与 messages 已设置
                         const data = JSON.stringify(ResMsg);
                         const param = {
                             method: 'POST',
@@ -171,20 +205,18 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult, AIResMsg = 
                 }
                 await redis.set(`FanSky:OpenAI:Status:${e.user_id}`, JSON.stringify({Status: 1}))
                 await redis.expire(`FanSky:OpenAI:Status:${e.user_id}`, 20); //设置过期时间,20s
+                // 选择模型：优先使用配置中的 Model_list 与 Model 序号
+                const OpenStatus2 = JSON.parse(await redis.get(`FanSky:FunctionOFF`)) || {}
+                const modelList2 = Array.isArray(Json.Model_list) ? Json.Model_list : []
+                let selectedModel2 = modelList2[Number(Json.Model) - 1] || 'gpt-3.5-turbo'
+                if (/^gpt-/.test(selectedModel2) && OpenStatus2.OpenAI4 === 1) {
+                    selectedModel2 = 'gpt-4'
+                }
                 let DataList = {
-                    model: 'gpt-3.5-turbo',
+                    model: selectedModel2,
                     messages: [
                         {role: 'system', content: Persona}
                     ]
-                }
-                let OpenStatus = JSON.parse(await redis.get(`FanSky:FunctionOFF`));
-                if (OpenStatus.OpenAI4 === 1) {
-                    DataList = {
-                        model: 'gpt-4',
-                        messages: [
-                            {role: 'system', content: Persona}
-                        ]
-                    }
                 }
 
                 if (!Moudel1List[e.user_id]) {
@@ -252,11 +284,23 @@ export async function ModelGPT3Turbo(e, OpenAI_Key, Json, GetResult, AIResMsg = 
                     }
                 } else if (SelectProxy === "Default") {
                     const OPENAI_API_KEY = OpenAI_Key.trim();
-                    let url = 'https://api.openai.com/v1/chat/completions';
+                    // 解析模型与基址
+                    const modelList = Array.isArray(Json.Model_list) ? Json.Model_list : []
+                    let selectedModel = modelList[Number(Json.Model) - 1] || 'gpt-3.5-turbo'
+                    const configuredBase = ((Json.requestUrl || Json.RequestURL || '') + '').trim()
+                    // 根据配置或模型猜测默认基址
+                    let base = configuredBase || (/kimi|moonshot/i.test(selectedModel) ? 'https://api.moonshot.cn/v1' : 'https://api.openai.com/v1')
+                    // 若未显式带版本后缀，则默认补 /v1
+                    if (!/\/v\d+\/?$/i.test(base)) {
+                        base = `${base.replace(/\/$/, '')}/v1`
+                    }
+                    // 构造最终 URL
+                    let url = `${base.replace(/\/$/, '')}/chat/completions`
                     let Proxy = `http://${Addr}:${Port}`
-                    if (Addr === "127.0.0.1" && (Port === "7890" || Port === 7890)) {
-                        logger.info("[FanSky_Qs]使用镜像站请求中...")
-                        url = 'https://api.openai-proxy.com/v1/chat/completions';
+                    // OpenAI 特殊镜像处理（仅当目标是 OpenAI 官方时）
+                    if (!configuredBase && /api\.openai\.com\/v1/i.test(base) && (Addr === "127.0.0.1") && ((Port === "7890") || (Port === 7890))) {
+                        logger.info("[FanSky_Qs]使用OpenAI镜像站请求中...")
+                        url = 'https://api.openai-proxy.com/v1/chat/completions'
                         Proxy = 'http://0.0.0.0:0'
                     }
                     const headers = {
@@ -336,8 +380,17 @@ async function QQMsg(MsgList, e) {
 //     return Msg
 // }
 async function SendResMsg(e, response, Json, GetResult) {
-    logger.info(response.data.choices[0])
-    let result = response.data.choices[0].message.content
+    const {content, data} = pickContent(response)
+    if (!content) {
+        logger.info('[FanSky_Qs][SendResMsg] 无有效内容，原始返回：')
+        logger.info(JSON.stringify(data || {}, null, 2))
+        delete Moudel1List[e.user_id]
+        delete Moudel1Num[e.user_id]
+        await redis.del(`FanSky:OpenAI:Status:${e.user_id}`);
+        await e.reply('\n[接口返回异常] 未获取到内容，请检查请求地址/模型名/Key', false, {at: true, recallMsg: 10})
+        return false
+    }
+    let result = content
     let View = result.substring(0, 30)
     let SendResult, MsgList
     if (GetResult === '不限') {

@@ -7,7 +7,7 @@ let yunPath = process.cwd().replace(/\\/g, "/")
 let _path = `${process.cwd()}/resources/FanSky`
 let path = `${process.cwd()}/resources/FanSky/SignIn.json`
 let path_SignTop = `${process.cwd()}/resources/FanSky/SignTop.json`
-let OpenAIConfig = yunPath + '/plugins/FanSky_Qs/config/OpenAI.json'
+let OpenAIConfig = yunPath + '/plugins/FanSky_Qs/config/config.json'
 
 export async function UseModel(e, Prefix = false) {
     // if (e.message[0].type !== "at") {
@@ -38,7 +38,7 @@ export async function UseModel(e, Prefix = false) {
     if (!e.msg || (e.msg + "").trim() === "") {
         return false
     }
-    const Json = await getCfg(yunPath, 'OpenAI')
+    const Json = await getCfg(yunPath, 'config')
     if (!e.isPrivate) {
         let GroupIndex = Json.OpenAIGroup.indexOf((e.group_id).toString())
         console.log(GroupIndex)
@@ -50,7 +50,7 @@ export async function UseModel(e, Prefix = false) {
     }
     if (!Json.OnOff) {
         Json.OnOff = "开启"
-        await fs.writeFileSync(`${yunPath}/plugins/FanSky_Qs/config/OpenAI.json`, JSON.stringify(Json))
+        await fs.writeFileSync(`${yunPath}/plugins/FanSky_Qs/config/config.json`, JSON.stringify(Json))
     }
     if (Json.OnOff === "关闭") {
         return false

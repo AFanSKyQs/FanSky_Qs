@@ -7,9 +7,10 @@ const getCfg = function(yunPath,getName){
     return JSON.parse(fileContents);
 };
 export async function getOpenAIConfig() {
-    const fileURL = `${cwd}/plugins/FanSky_Qs/config/OpenAI.json`;
+    // 统一使用 config.json
+    const fileURL = `${cwd}/plugins/FanSky_Qs/config/config.json`;
     if (!fs.existsSync(fileURL)) {
-        return {error: "OpenAI配置文件不存在"}
+        return {error: "配置文件不存在"}
     }
     const fileContents = fs.readFileSync(fileURL, 'utf8');
     return JSON.parse(fileContents);

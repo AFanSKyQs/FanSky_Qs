@@ -1,7 +1,7 @@
 import getCfg from "../../models/getCfg.js";
 let yunPath = process.cwd().replace(/\\/g, '/')
 export async function OpenAPModelList(e) {
-    let Model_list = (await getCfg(yunPath, 'OpenAI')).Model_list
+    let Model_list = (await getCfg(yunPath, 'config')).Model_list
     let Model_list_str = ''
     for (let i = 0; i < Model_list.length; i++) {
         Model_list_str += `${i + 1}、${Model_list[i]}\n`

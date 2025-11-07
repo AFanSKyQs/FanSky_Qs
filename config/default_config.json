@@ -1,4 +1,5 @@
 {
+  "requestUrl": "",
   "OpenAI_Key": "这里填入你的OpenAI密钥即可",
   "Text_img": 100,
   "Model_list": [

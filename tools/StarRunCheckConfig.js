@@ -5,7 +5,8 @@ import axios from "axios";
 import path from "path";
 
 let cwd = process.cwd().replace(/\\/g, '/')
-let ConfigPath = `${cwd}/plugins/FanSky_Qs/config/OpenAI.json`
+// 统一使用 config.json 作为配置入口
+let ConfigPath = `${cwd}/plugins/FanSky_Qs/config/config.json`
 let defaultConfigPath = `${cwd}/plugins/FanSky_Qs/config/default_config.json`
 let TeyvatPath = `${cwd}/plugins/FanSky_Qs/config/TeyvatConfig/TeyvatUrlJson.json`
 let TeyvatFolderPath = `${cwd}/plugins/FanSky_Qs/config/TeyvatConfig`
@@ -25,6 +26,7 @@ export async function StarRunCheckConfig() {
         await CheckOpenAIOFF()
         await CheckSignMode()
         await CheckOpenGroup()
+        await CheckRequestURL()
     }
     logger.info(logger.cyan("配置文件检查完毕,欢迎使用，祝您使用愉快喵qwq~"))
     logger.info(logger.cyan('[FanSky_Qs]>>将在10s后开始请求队伍伤害所需JSON'))
@@ -194,7 +196,7 @@ async function CheckPersona() {
 async function CheckConfigExist() {
     if (!await isFileExist(ConfigPath)) {
         await fs.copyFileSync(defaultConfigPath, ConfigPath)
-        logger.info(logger.cyan('首次启动本插件喵~，欢迎使用，已创建OpenAI.json'))
+        logger.info(logger.cyan('首次启动本插件喵~，欢迎使用，已创建config.json'))
         await redis.set(`FanSky:OpenAI:Proxy:Default`, JSON.stringify({
             Proxy: `127.0.0.1:7890`,
         }))
@@ -207,9 +209,9 @@ async function CheckConfigExist() {
             }
             if (userId.length > 11) continue
             try {
-                await Bot.pickFriend(userId).sendMsg('[首次启动提示]：如果要使用OpenAI功能请发送\n#设置模型key sk-xxxxxxx\nKey需要有可用额度，目前使用镜像站，不需要代理即可使用。')
+                await Bot.pickFriend(userId).sendMsg('[首次启动提示]：如要使用AI聊天请发送\n#设置模型key sk-xxxxxxx（或服务Token）\n也可在config.json中设置 requestUrl 使用自定义接口。')
             } catch (err) {
-                logger.info(logger.red('[首次启动提示]：如果要使用OpenAI功能请发送\n#设置模型key sk-xxxxxxx\nKey需要有可用额度，目前使用镜像站，不需要代理即可使用。'))
+                logger.info(logger.red('[首次启动提示]：如要使用AI聊天请发送\n#设置模型key sk-xxxxxxx（或服务Token）\n也可在config.json中设置 requestUrl 使用自定义接口。'))
             }
             SendNum++
         }
@@ -280,3 +282,11 @@ async function CheckOpenGroup() {
     }
 }
 
+async function CheckRequestURL() {
+    let ConfigJson = await ReadConfig()
+    if (ConfigJson.requestUrl === undefined) {
+        ConfigJson.requestUrl = ""
+        await fs.writeFileSync(ConfigPath, JSON.stringify(ConfigJson))
+        logger.info(logger.cyan('[FanSky_Qs]AI接口 requestUrl 写入成功，默认空字符串'))
+    }
+}

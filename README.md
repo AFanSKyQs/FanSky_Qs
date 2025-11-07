@@ -177,6 +177,20 @@
 ![S@QNXEP$V{2TY`Z@SNKQ8XL](https://raw.githubusercontent.com/AFanSKyQs/Temp/main/OpenAI.jpg)
 
 模型的使用:设置好你的`OpenAI_Key`
+
+新增：自定义请求基址（Kimi/Moonshot 等）
+- 在 `plugins/FanSky_Qs/config/config.json` 中新增/配置字段：
+  - `requestUrl`: 自定义接口基址。例如：`http://10.101.168.212:18800` 或 `https://api.moonshot.cn/v1`
+  - `Model_list` + `Model`: 选择具体模型名（按序号，从 1 开始）。例如：`["Kimi-K2"]`，`Model: 1`
+  - `OpenAI_Key`: 对应服务的令牌（OpenAI Key 或 Kimi/Moonshot Token）
+- 最终请求路径为 `<requestUrl去掉结尾斜杠>/v1/chat/completions`；若 `requestUrl` 为空：
+  - 模型名包含 `kimi`/`moonshot` 时默认走 `https://api.moonshot.cn/v1`
+  - 否则默认走 `https://api.openai.com/v1`
+  - 对 OpenAI 且本地代理为 `127.0.0.1:7890` 时，会自动使用镜像 `https://api.openai-proxy.com/v1`
+
+默认配置模板调整
+默认配置模板
+- 默认使用 `config/default_config.json` 初始化 `config.json`。
 以后，艾特机器人即可开始对话聊天<br>![S@QNXEP$V{2TY`Z@SNKQ8XL](https://user-images.githubusercontent.com/59954030/224913376-7a6a0ca0-9d5e-48c7-a687-8f85e6ac56c3.png)
 
 ### OpenAI的API只需要key即可使用，默认采用镜像站，也可自定义代理地址,也可以通过`指令设置指定地址和端口`，有问题请入群艾特我一下，免费解决问题和提供一些东西[755794036](https://jq.qq.com/?_wv=1027&k=I2HCxKdM),`群文件`也有大佬分享的`代理`等东西
@@ -242,4 +256,3 @@
 ## Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=AFanSKyQs/FanSky_Qs&type=Date)](https://star-history.com/#AFanSKyQs/FanSky_Qs&Date)
-
